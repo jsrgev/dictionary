@@ -6,9 +6,7 @@ import {useState} from 'react';
 // import SecondaryPronunciation from './SecondaryPronunciation.js';
 
 const PartOfSpeech = (props) => {
-    let {appState, setAppState, senseIndex, posIndex} = props;
-
-    // console.log(appState.entry.senses[senseIndex].partsOfSpeech)
+    const {appState, setAppState, senseIndex, posIndex} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech;
 
     const handlePOSClick = async e => {
@@ -45,11 +43,15 @@ const PartOfSpeech = (props) => {
     const [posShown, setPosShown] = useState(true);
     const [secondaryShown, setSecondaryShown] = useState(false);
     
+    let areSecondaryForms = path[posIndex].typeForms.length > 0 ? true : false;
+
     return (
         <>
         <div className="bar">
             <div className="bar-pos" onClick={() => setPosShown(!posShown)}>Part of speech <i className={posShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-            <div className="bar-secondary" onClick={() => setSecondaryShown(!secondaryShown)}>Secondary Forms <i className={secondaryShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
+            <div className={`bar-secondary${areSecondaryForms ? "" : " no-secondary"}`} onClick={() => setSecondaryShown(!secondaryShown)}>
+                Secondary Forms {areSecondaryForms && <i className={secondaryShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>}
+                </div>
         </div>
 
         <fieldset className={`pos ${posShown ? "" : "hidden"}`}>
@@ -73,17 +75,6 @@ const PartOfSpeech = (props) => {
 
         { path[posIndex].typeForms.length>0 &&
             <fieldset className={`secondary ${secondaryShown ? "" : "hidden"}`}>
-                {/* <div></div> */}
-                {/* <div className="table-header">Exists</div> */}
-                {/* <div className="table-header">Formation</div> */}
-                {/* <div></div> */}
-                {/* <div></div> */}
-                {/* <SecondaryPronunciation appState={appState}> */}
-
-                {/* </SecondaryPronunciation> */}
-                {/* <div className="table-header">Form</div> */}
-                {/* <div className="table-header">Pronunciation</div> */}
-                {/* <div className="table-header">Notes</div> */}
                 {path[posIndex].typeForms.map((a,i) => (
                     <PosForm key={i} abc={a} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={i} appState={appState} setAppState={setAppState} />
                 ))}

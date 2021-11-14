@@ -236,6 +236,14 @@ ul.parts-of-speech, ul.types-of-POS {
 	text-decoration: line-through;
 }
 
+.no-secondary {
+	background-color: var(--light-blue);
+	/* color: var(--blue); */
+	text-decoration: line-through;
+}
+
+
+
 
 /* IPA */
 
