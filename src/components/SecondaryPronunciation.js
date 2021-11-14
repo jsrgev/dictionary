@@ -18,30 +18,21 @@ const SecondaryPronunciation = (props) => {
         if (e.target.classList.contains("disabled")) {
             return;
         }
-    //     let entryCopy = clone(appState.entry);
-    //     entryCopy.primary[morphIndex].pronunciations.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
-    //     setAppState({entry: entryCopy});
+        let entryCopy = clone(appState.entry);
+        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
+        setAppState({entry: entryCopy});
     };
 
     const deletePronunciation = (e) => {
         e.preventDefault();
-    //     let entryCopy = clone(appState.entry);
-    //     if (path.length === 1) {
-    //         entryCopy.primary[morphIndex].pronunciations = [clone(pronunciationDefault)];
-    //         return;
-    //     } else {
-    //         entryCopy.primary[morphIndex].pronunciations.splice(pronunciationIndex, 1);
-    //     }
-    //     setAppState({entry: entryCopy});
+        let entryCopy = clone(appState.entry);
+        if (path.length === 1) {
+            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations = [clone(pronunciationDefault)];
+        } else {
+            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations.splice(pronunciationIndex, 1);
+        }
+        setAppState({entry: entryCopy});
     };
-
-    // let disabled = (path[pronunciationIndex].pronunciation.trim() === "") ? true : false;
-
-
-    
-    // <i className="fas fa-plus" onClick={addSense}></i>
-    // <i className="fas fa-minus" onClick={deleteSense}></i>
-// console.log(path[pronunciationIndex].pronunciation.trim());
 
     return (
         <>
@@ -53,7 +44,6 @@ const SecondaryPronunciation = (props) => {
             value={path[pronunciationIndex].pronunciation}
             onChange={e => handleChange(e,"pronunciation")}
             />
-            {/* <input type="text" value={path[pronunciationIndex].pronunciation} onChange={handleChange} /> */}
             <div></div>
             <div></div>
             <label>Note</label>
