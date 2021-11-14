@@ -1,4 +1,4 @@
-import {clone} from '../utils.js';
+import {clone, handleBlur} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 
 const Pronunciation = (props) => {
@@ -6,11 +6,18 @@ const Pronunciation = (props) => {
     const {appState, setAppState, pronunciationIndex, morphIndex} = props;
     const path = appState.entry.primary[morphIndex].pronunciations;
 
-    const handleChange = (e,field) => {
-        console.log(document.activeElement);
-        let entryCopy = clone(appState.entry);
-        entryCopy.primary[morphIndex].pronunciations[pronunciationIndex][field] = e.target.value;
-        setAppState({entry:entryCopy});
+    // const handleChange = (e,field) => {
+    //     let entryCopy = clone(appState.entry);
+    //     entryCopy.primary[morphIndex].pronunciations[pronunciationIndex][field] = e.target.value;
+    //     setAppState({entry:entryCopy});
+    // }
+
+    const handleChange = (value, field) => {
+        if (value !== undefined) {
+            let entryCopy = clone(appState.entry);
+            entryCopy.primary[morphIndex].pronunciations[pronunciationIndex][field] = value;
+            setAppState({entry:entryCopy});    
+        }
     }
 
     const addPronunciation = e => {
@@ -34,7 +41,6 @@ const Pronunciation = (props) => {
         setAppState({entry: entryCopy});
     };
 
-
     return (
         <>
             <i className={`fas fa-plus${path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={addPronunciation}></i>           
@@ -42,14 +48,16 @@ const Pronunciation = (props) => {
             <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} >Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label>
             <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} type="text"
             value={path[pronunciationIndex].pronunciation}
-            onChange={e => handleChange(e,"pronunciation")}
+            onChange={e => handleChange(e.target.value, "pronunciation")}
+            onBlur={e => handleChange(handleBlur(e), "pronunciation")}
             />
             <div></div>
             <div></div>
             <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`}>Note</label>
             <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`} type="text"
             value={path[pronunciationIndex].note}
-            onChange={e => handleChange(e,"note")}
+            onChange={e => handleChange(e.target.value, "note")}
+            onBlur={e => handleChange(handleBlur(e), "note")}
             />
         </>
     )

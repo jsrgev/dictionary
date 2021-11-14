@@ -8,13 +8,31 @@ const Ipa = () => {
     const arr = Object.entries(ipa);
 
     const handleClick = e => {
-        console.log(document.activeElement);
-        console.log(e.target.textContent);
+        return;
+        // console.log(document.activeElement);
+        // console.log(e.target.textContent);
 
         let text = e.target.textContent;
-        let input = document.activeElement;
-        input.value += text;
+        let inputNode = document.activeElement;
+        // input.value += text;
         // input.simulate('change', { target: { value: 'Hello' } })
+
+        let {value} = inputNode;
+
+        let selectionStart = inputNode.selectionStart ?? value.length
+        let selectionEnd = inputNode.selectionEnd ?? value.length;
+
+        const nextValue = value.substring(0, selectionStart) + e.target.textContent + value.substring(selectionEnd);
+        inputNode.value = nextValue;
+        // console.log(nextValue);
+
+        const eventAwesome = new CustomEvent('input', {
+            bubbles: true,
+            detail: { text: nextValue }
+          });
+
+        inputNode.dispatchEvent(new CustomEvent('input'));
+
 
     }
 

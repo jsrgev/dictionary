@@ -101,23 +101,23 @@ const App = () => {
     }
 
     
-    useEffect(() => {
-        let inputs = document.getElementsByTagName("input");
+    // useEffect(() => {
+    //     let inputs = document.getElementsByTagName("input");
 
-        for (let input of inputs) {
-            input.addEventListener("blur", (e) => {
-                let hoverItems = document.querySelectorAll( ":hover" );
-                let clickedItem = hoverItems[hoverItems.length-1];
-                if (clickedItem === undefined) {
-                    return;
-                };
-                let closest = clickedItem.closest("#ipa");
-                if (closest) {
-                    e.target.focus();
-                }
-            });
-        }
-    })
+    //     for (let input of inputs) {
+    //         input.addEventListener("blur", (e) => {
+    //             let hoverItems = document.querySelectorAll( ":hover" );
+    //             let clickedItem = hoverItems[hoverItems.length-1];
+    //             if (clickedItem === undefined) {
+    //                 return;
+    //             };
+    //             let closest = clickedItem.closest("#ipa");
+    //             if (closest) {
+    //                 e.target.focus();
+    //             }
+    //         });
+    //     }
+    // })
 
 	return (
         <>

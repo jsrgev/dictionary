@@ -1,5 +1,4 @@
-import {capitalize} from '../utils.js';
-import {clone, getPosDef, getPosObj, getTypes, getSecondaryFormValues, getBasicSecondary} from '../utils';
+import {capitalize, clone, getPosDef, generatePos, getTypes, getSecondaryFormValues, getBasicSecondary, setSecondary} from '../utils';
 import {allPartsOfSpeech} from '../languageSettings.js';
 import PosForm from './PosForm';
 import {useState} from 'react';
@@ -14,7 +13,7 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex] = getPosObj(value);
+        entryCopy.senses[senseIndex].partsOfSpeech[posIndex] = generatePos(value);
         setAppState({entry: entryCopy});
     };
 
@@ -28,15 +27,15 @@ const PartOfSpeech = (props) => {
         let posDef = getPosDef(path[posIndex].name);
         let type = posDef.types.find(a => a.name === value);
         
-        const copyPath = entryCopy.senses[senseIndex].partsOfSpeech[posIndex];
-        copyPath.type = type.name;
-        copyPath.typeForms = [];
-
-        if (type.secondaryFormType) {
-            copyPath.typeForms = getSecondaryFormValues(type.secondaryFormType);
-            copyPath.basic = getBasicSecondary(type.secondaryFormType);
-        }
+        let copyPath = entryCopy.senses[senseIndex].partsOfSpeech[posIndex];
+        copyPath = setSecondary(copyPath, type);
         setAppState({entry:entryCopy});
+    }
+
+    const handleBarClick = e => {
+        if (!e.target.classList.contains("no-secondary")) {
+            setSecondaryShown(!secondaryShown);
+        }
     }
 
     const [posShown, setPosShown] = useState(true);
@@ -48,7 +47,7 @@ const PartOfSpeech = (props) => {
         <>
         <div className="bar">
             <div className="bar-pos" onClick={() => setPosShown(!posShown)}>Part of speech <i className={posShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-            <div className={`bar-secondary${areSecondaryForms ? "" : " no-secondary"}`} onClick={() => setSecondaryShown(!secondaryShown)}>
+            <div className={`bar-secondary${areSecondaryForms ? "" : " no-secondary"}`} onClick={handleBarClick}>
                 Secondary Forms {areSecondaryForms && <i className={secondaryShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>}
                 </div>
         </div>

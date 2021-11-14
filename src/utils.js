@@ -10,23 +10,7 @@ export const clone = a => JSON.parse(JSON.stringify(a));
 export const generateSense = () => {
     let newSense = clone(senseDefault);
     newSense.partsOfSpeech.push(generatePos());
-    // newSense.definition = clone(definitionDefault);
     return newSense;
-}
-
-export const generatePos = () => {
-    let pos = getPosDef();
-    let defaultType = getDefaultPosType(pos);        
-    let obj = {
-        name: pos.name,
-        type: defaultType.name,
-        typeForms: []
-    }
-    if (defaultType.secondaryFormType) {
-        obj.basic = getBasicSecondary(defaultType.secondaryFormType);
-        obj.typeForms = getSecondaryFormValues(defaultType.secondaryFormType);
-    }
-    return clone(obj);
 }
 
 export const getPosDef = posName => {
@@ -51,21 +35,6 @@ export const getSecondaryFormValues = secondaryFormType => {
     return typeForms; 
 };
 
-export const getPosObj = posName => {
-    let posDef = getPosDef(posName);
-    let defaultType = getDefaultPosType(posDef);
-    let obj = {
-        name: posDef.name,
-        type: defaultType.name,
-        typeForms: []
-    }
-    if (defaultType.secondaryFormType) {
-        obj.basic = getBasicSecondary(defaultType.secondaryFormType);
-        obj.typeForms = getSecondaryFormValues(defaultType.secondaryFormType);
-    }
-    return obj;
-};
-
 export const getBasicSecondary = secondaryFormType => {
     return secondaryFormTypes[secondaryFormType].basic;
 }
@@ -73,4 +42,45 @@ export const getBasicSecondary = secondaryFormType => {
 export const getTypes = pos => {
     let posDef = allPartsOfSpeech.find(a => a.name === pos);
     return posDef.types;
+}
+
+export const setSecondary = (obj, type) => {
+    obj.type = type.name;
+    obj.typeForms = [];
+    if (type.secondaryFormType) {
+        obj.basic = getBasicSecondary(type.secondaryFormType);
+        obj.typeForms = getSecondaryFormValues(type.secondaryFormType);
+    }
+    return clone(obj);
+}
+
+export const generatePos = (posName) => {
+    let posDef = getPosDef(posName);
+    let defaultType = getDefaultPosType(posDef);        
+    let obj = {
+        name: posDef.name,
+    }
+    return setSecondary(obj,defaultType);
+}
+
+
+export const handleBlur = e => {
+    let hoverItems = document.querySelectorAll( ":hover" );
+    let clickedItem = hoverItems[hoverItems.length-1];
+    if (clickedItem === undefined || !clickedItem.closest("#ipa")) {
+        return;
+    };
+    e.target.focus();
+    if (clickedItem.tagName !== "SPAN") {
+        return;
+    }
+    let inputNode = e.target;
+    let {value} = e.target;
+
+    let selectionStart = inputNode.selectionStart ?? value.length
+    let selectionEnd = inputNode.selectionEnd ?? value.length;
+
+    const newValue = value.substring(0, selectionStart) + clickedItem.textContent + value.substring(selectionEnd);
+    return(newValue);
+    // handleChange(newValue, "pronunciation");
 }
