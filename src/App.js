@@ -1,25 +1,152 @@
-import logo from './logo.svg';
-import './App.css';
+// import {useEffect, useState, useRef} from 'react';
+import Primary from './components/Primary';
+import Sense from './components/Sense';
+import Etymology from './components/Etymology';
+import Preview from './components/Preview';
+import Ipa from './components/Ipa';
+import {useEffect, useCallback} from 'react';
+import {useSetState} from 'react-use';
+import {capitalize, generateSense, clone} from './utils.js';
+import {languageData} from './languageSettings.js';
+import {entryDefault, orthForm} from './defaults.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+// const API_BASE = "http://localhost:3001";
+
+// const Details = () => {
+// };
+
+const App = () => {
+    // const [todos, setTodos] = useState([]);
+    // const [popupActive, setPopupActive] = useState(false);
+    // const [newTodo, setNewTodo] = useState("");
+
+    // useEffect(() => {
+    //     GetTodos();
+    //     console.log(todos);
+    // },[])
+
+    // const GetTodos = () => {
+    //     fetch(API_BASE + "/todos")
+    //     .then(res => res.json())
+    //     .then(data => setTodos(data))
+    //     .catch(err => console.error(`Error: ${err}`));
+    // };
+
+    // const completeTodo = async id => {
+    //     const data = await fetch(API_BASE + "/todo/complete/" + id)
+    //     .then(res => res.json());
+    //     setTodos(todos => todos.map(todo => {
+    //         if (todo._id === data._id) {
+    //             todo.complete = data.complete;
+    //         }
+    //         return todo;
+    //     }))
+    // }
+
+    // const deleteToDo = async id => {
+    //     const data = await fetch(API_BASE + "/todo/delete/" + id, {method: "DELETE"})
+    //     .then(res => res.json());
+    //     setTodos(todos => todos.filter(todo => todo._id !== data._id));
+
+    // }
+
+    // const addTodo = async () => {
+    //     const data = await fetch(API_BASE + "/todo/new", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             text: newTodo
+    //         })
+    //     })
+    //     .then(res => res.json());
+    //     setTodos([...todos, data]);
+    //     setPopupActive(false);
+    //     setNewTodo("");
+    // }
+
+    const [state, setState] = useSetState({
+        entry: undefined
+    });
+
+    const initializeEntry = useCallback(() => {
+        let newEntry = clone(entryDefault);
+        newEntry.primary = [clone(orthForm)];
+        newEntry.senses.push(generateSense());
+        newEntry.etymology = "";
+        setState({entry: newEntry});
+    }, [setState])
+
+    useEffect(() => {
+        initializeEntry();
+    },[initializeEntry])
+// console.log(state.entry)
+
+    // const [primaryMelfwmInput, setPrimaryMelfwmInput] = useState("");
+    // const [alternateForm, setAlternateForm] = useState("");
+    // const [primaryPronunciation, setPrimaryPronunciation] = useState("");
+    // const [primaryAlternatePronunciation, setPrimaryAlternatePronunciation] = useState("");
+
+    // const prevVal = useRef('');
+    // useEffect(() => {
+    //     prevVal.current = primaryMelfwmInput;
+    // });
+
+    const handleKeyDown = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    }
+
+    
+    useEffect(() => {
+        let inputs = document.getElementsByTagName("input");
+
+        for (let input of inputs) {
+            input.addEventListener("blur", (e) => {
+                let hoverItems = document.querySelectorAll( ":hover" );
+                let clickedItem = hoverItems[hoverItems.length-1];
+                if (clickedItem === undefined) {
+                    return;
+                };
+                let closest = clickedItem.closest("#ipa");
+                if (closest) {
+                    e.target.focus();
+                }
+            });
+        }
+    })
+
+	return (
+        <>
+        <header>
+            <h1><a href="../">Josh Regev</a></h1>
+            <h1>{`${capitalize(languageData.languageName)}-English Dictionary Entry`}</h1>
+        </header>
+        <main>
+            <div>
+                <form id="entryForm" onKeyDown={handleKeyDown}>
+                <Primary appState={state} setAppState={setState} />
+                {state.entry &&
+                    state.entry.senses.map((a,i) => (
+                        <Sense appState={state} setAppState={setState} key={i} senseIndex={i} />
+                    ))
+                }
+                <Etymology />
+                {state.entry &&
+                    <Preview appState={state} setAppState={setState} />
+                }
+                <fieldset id="submit">
+                    <input id="submitInput" type="submit" value="Save to Dictionary" />
+                </fieldset>
+                </form>
+            </div>
+        </main>
+        <Ipa />
+        </>
+	);
 }
 
 export default App;
