@@ -23,8 +23,6 @@ const Primary = props => {
         morphDefault: JSON.stringify(morphDefault)
     });
 
-
-
     return (
         <>
             <div className="bar-primary" onClick={()=>setPrimaryShown(!primaryShown)}>Basic Form <i className={primaryShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>

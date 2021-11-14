@@ -123,6 +123,15 @@ fieldset {
 	position: relative;
 }
 
+.fa-plus, .fa-minus {
+    transform: translateY(0.2em);
+	cursor: pointer;
+}
+
+.fa-plus:hover:not(.disabled), .fa-minus:hover:not(.disabled) {
+	color: var(--blue);
+}
+
 .bar-sense .fa-plus, .bar-sense .fa-minus {
 	font-size: .7rem;
     transform: translateY(0.4em);
@@ -137,9 +146,6 @@ fieldset {
 	left: 3rem;
 }
 
-.fa-plus, .fa-minus {
-    transform: translateY(0.2em);
-}
 
 .sense {
 	border-left: 1.26rem solid lightgray;
@@ -238,7 +244,6 @@ ul.parts-of-speech, ul.types-of-POS {
 
 .no-secondary {
 	background-color: var(--light-blue);
-	/* color: var(--blue); */
 	text-decoration: line-through;
 }
 

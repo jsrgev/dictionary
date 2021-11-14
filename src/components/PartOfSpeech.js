@@ -3,7 +3,6 @@ import {clone, getPosDef, getPosObj, getTypes, getSecondaryFormValues, getBasicS
 import {allPartsOfSpeech} from '../languageSettings.js';
 import PosForm from './PosForm';
 import {useState} from 'react';
-// import SecondaryPronunciation from './SecondaryPronunciation.js';
 
 const PartOfSpeech = (props) => {
     const {appState, setAppState, senseIndex, posIndex} = props;

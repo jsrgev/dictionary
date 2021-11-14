@@ -9,13 +9,7 @@ const Preview = (props) => {
 
     const alphaSortSet = set => {
         return set.sort((a,b) => {
-            if ( a.targetLang < b.targetLang ){
-              return -1;
-            }
-            if ( a.targetLang > b.targetLang ){
-              return 1;
-            }
-            return 0;
+            return ( a.targetLang < b.targetLang ) ? -1 : ( a.targetLang > b.targetLang ) ? 1 : 0;
           }
         );
     };

@@ -1,6 +1,5 @@
 import {clone} from '../utils.js';
 import { exampleDefault } from "../defaults";
-// import {languageData} from '../languageSettings';
 
 const Example = props => {
     const {appState, setAppState, senseIndex, exampleIndex} = props;
@@ -35,8 +34,8 @@ const Example = props => {
 
     return (
         <>
-            <i className={`fas fa-plus${path[exampleIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addExample}></i>           
-            <i className="fas fa-minus" onClick={deleteExample}></i>
+            <i className={`fas fa-plus${path[exampleIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addExample}></i>
+            <i className={`fas fa-minus${path.length === 1 && path[exampleIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteExample}></i>           
             <div>Example</div>
             <input type="text" value={path[exampleIndex].targetLang} onChange={e => handleChange(e, "targetLang")} />
             <div>Meaning</div>

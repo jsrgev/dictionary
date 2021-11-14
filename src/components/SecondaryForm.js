@@ -36,8 +36,8 @@ const SecondaryForm = (props) => {
 
     return (
         <>
-            <i className={`fas fa-plus${path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>           
-            <i className="fas fa-minus" onClick={deleteMorph}></i>           
+            <i className={`fas fa-plus${path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>
+            <i className={`fas fa-minus${path.length === 1 && path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
             <label>Form</label>
             <input value={path[secondaryFormIndex].targetLang} onChange={handleChange} />
             <fieldset className="pronunciations">

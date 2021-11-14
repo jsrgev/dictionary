@@ -1,6 +1,5 @@
 import {clone} from '../utils.js';
 import { phraseDefault } from "../defaults";
-// import {languageData} from '../languageSettings';
 
 const Phrase = props => {
     const {appState, setAppState, senseIndex, phraseIndex} = props;
@@ -35,8 +34,8 @@ const Phrase = props => {
 
     return (
         <>
-            <i className={`fas fa-plus${path[phraseIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addPhrase}></i>           
-            <i className="fas fa-minus" onClick={deletePhrase}></i>
+            <i className={`fas fa-plus${path[phraseIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addPhrase}></i>
+            <i className={`fas fa-minus${path.length === 1 && path[phraseIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deletePhrase}></i>           
             <div>Phrase</div>
             <input type="text" value={path[phraseIndex].targetLang} onChange={e => handleChange(e, "targetLang")} />
             <div>Meaning</div>

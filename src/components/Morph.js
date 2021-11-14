@@ -37,7 +37,7 @@ const Morph = props => {
     return (
         <>
             <i className={`fas fa-plus${path.targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>           
-            <i className="fas fa-minus" onClick={deleteMorph}></i>           
+            <i className={`fas fa-minus${appState.entry.primary.length === 1 && path.targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
             <label forhtml={`targetLang-${morphIndex}`} >{morphIndex===0 ? "Headword" : "Alternate"}</label>
             <input id={`targetLang-${morphIndex}`} type="text"
             value={path.targetLang}

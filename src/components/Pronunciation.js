@@ -28,28 +28,17 @@ const Pronunciation = (props) => {
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
             entryCopy.primary[morphIndex].pronunciations = [clone(pronunciationDefault)];
-            return;
         } else {
             entryCopy.primary[morphIndex].pronunciations.splice(pronunciationIndex, 1);
         }
         setAppState({entry: entryCopy});
     };
 
-    // let disabled = (path[pronunciationIndex].pronunciation.trim() === "") ? true : false;
-
-
-    
-    // <i className="fas fa-plus" onClick={addSense}></i>
-    // <i className="fas fa-minus" onClick={deleteSense}></i>
-
 
     return (
         <>
-    {/* <i className="fas fa-plus" onClick={addSense}></i> */}
-    {/* <i className="fas fa-minus" onClick={deleteSense}></i> */}
             <i className={`fas fa-plus${path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={addPronunciation}></i>           
-            {/* <i className="fas fa-plus disabled" onClick={addPronunciation}></i>            */}
-            <i className="fas fa-minus" onClick={deletePronunciation}></i>           
+            <i className={`fas fa-minus${path.length === 1 && path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
             <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} >Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label>
             <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} type="text"
             value={path[pronunciationIndex].pronunciation}
