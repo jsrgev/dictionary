@@ -2,7 +2,7 @@ import PartOfSpeech from './PartOfSpeech';
 import Phrase from './Phrase';
 import Example from './Example';
 import Definition from './Definition';
-import {generateSense, clone} from '../utils.js';
+import {generateSense, clone, getTypeDef, setSecondary} from '../utils.js';
 import {useState} from 'react';
 
 const Sense = props => {
@@ -28,7 +28,13 @@ const Sense = props => {
     const addSense = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
-        entryCopy.senses.splice(senseIndex+1, 0, generateSense());
+        let lastPosCopy = clone(path.partsOfSpeech.at(-1));
+        let newSense = generateSense(lastPosCopy.name);
+        if (lastPosCopy.type)  {
+            let type = getTypeDef(lastPosCopy.name, lastPosCopy.type);
+            newSense.partsOfSpeech = [setSecondary(lastPosCopy, type)];
+        }
+        entryCopy.senses.splice(senseIndex+1, 0, newSense);
         setAppState({entry: entryCopy});
     }
     

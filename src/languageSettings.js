@@ -42,7 +42,7 @@ export const allPartsOfSpeech = [
     ]},
     {name: "number", abbr: "num", types: []},
     {name: "preposition", abbr: "pre", types: []},
-    {name: "verb", abbr: "v", types: [
+    {name: "verb", abbr: "v", multiChoice: true, types: [
         {name: "ablative", abbr: "ab"},
         {name: "allative", abbr: "al"},
         {name: "intransitive", abbr: "i", default: true},

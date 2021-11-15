@@ -7,9 +7,9 @@ export const capitalize = string => {
 
 export const clone = a => JSON.parse(JSON.stringify(a));
 
-export const generateSense = () => {
+export const generateSense = posName => {
     let newSense = clone(senseDefault);
-    newSense.partsOfSpeech.push(generatePos());
+    newSense.partsOfSpeech.push(generatePos(posName));
     return newSense;
 }
 
@@ -22,7 +22,7 @@ export const getPosDef = posName => {
 };
 
 export const getDefaultPosType = posDef => {
-    return posDef.types.find(a => a.default) || {name: ""};
+    return posDef.types.find(a => a.default);
 };
 
 export const getSecondaryFormValues = secondaryFormType => {
@@ -39,22 +39,59 @@ export const getBasicSecondary = secondaryFormType => {
     return secondaryFormTypes[secondaryFormType].basic;
 }
 
-export const getTypes = pos => {
+export const getTypeDef = (posName, typeName) =>  {
+    let posDef = getPosDef(posName);
+    return posDef.types.find(a => a.name === typeName);
+}
+
+export const getAllTypes = pos => {
     let posDef = allPartsOfSpeech.find(a => a.name === pos);
     return posDef.types;
 }
 
-export const setSecondary = (obj, type) => {
-    obj.type = type.name;
-    obj.typeForms = [];
-    if (type.secondaryFormType) {
-        obj.basic = getBasicSecondary(type.secondaryFormType);
-        obj.typeForms = getSecondaryFormValues(type.secondaryFormType);
+export const setSecondary = (posObj, type) => {
+    let multiChoice = getPosDef(posObj.name).multiChoice;
+    if (posObj.types) {
+        let matches = posObj.types[0] === type.name;
+        console.log(matches)
+        console.log(posObj.types.length)
+        if (matches && posObj.types.length === 1) {
+            // if ()
+        // }
+        // if(!multiChoice && posObj.types[0] === type.name) {
+            return posObj;
+        }
+        // posObj.types = [];
+        // posObj.typeForms = [];
+    } else {
+        posObj.types = [];
+        posObj.typeForms = [];    
     }
-    return clone(obj);
+    // posObj.types = posObj.types ?? [];
+    // posObj.typeForms = posObj.typeForms ?? [];
+    if (type) {
+        if (multiChoice) {
+            let typeIndex = posObj.types.findIndex(a => a===type.name);
+            // console.log(typeIndex)
+            if (typeIndex >= 0) {
+                posObj.types.splice(typeIndex,1);
+            } else {
+                posObj.types.push(type.name)
+            }
+        } else {
+            posObj.types = [type.name];
+        }
+        if (type.secondaryFormType) {
+            posObj.basic = getBasicSecondary(type.secondaryFormType);
+            posObj.typeForms = getSecondaryFormValues(type.secondaryFormType);
+        }
+    }
+    return clone(posObj);
 }
 
-export const generatePos = (posName) => {
+
+
+export const generatePos = posName => {
     let posDef = getPosDef(posName);
     let defaultType = getDefaultPosType(posDef);        
     let obj = {
@@ -62,6 +99,7 @@ export const generatePos = (posName) => {
     }
     return setSecondary(obj,defaultType);
 }
+
 
 
 export const handleBlur = e => {
@@ -81,6 +119,5 @@ export const handleBlur = e => {
     let selectionEnd = inputNode.selectionEnd ?? value.length;
 
     const newValue = value.substring(0, selectionStart) + clickedItem.textContent + value.substring(selectionEnd);
-    return(newValue);
-    // handleChange(newValue, "pronunciation");
+    return newValue;
 }
