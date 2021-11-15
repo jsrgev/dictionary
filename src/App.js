@@ -82,42 +82,12 @@ const App = () => {
     useEffect(() => {
         initializeEntry();
     },[initializeEntry])
-// console.log(state.entry)
-
-    // const [primaryMelfwmInput, setPrimaryMelfwmInput] = useState("");
-    // const [alternateForm, setAlternateForm] = useState("");
-    // const [primaryPronunciation, setPrimaryPronunciation] = useState("");
-    // const [primaryAlternatePronunciation, setPrimaryAlternatePronunciation] = useState("");
-
-    // const prevVal = useRef('');
-    // useEffect(() => {
-    //     prevVal.current = primaryMelfwmInput;
-    // });
 
     const handleKeyDown = e => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     }
-
-    
-    // useEffect(() => {
-    //     let inputs = document.getElementsByTagName("input");
-
-    //     for (let input of inputs) {
-    //         input.addEventListener("blur", (e) => {
-    //             let hoverItems = document.querySelectorAll( ":hover" );
-    //             let clickedItem = hoverItems[hoverItems.length-1];
-    //             if (clickedItem === undefined) {
-    //                 return;
-    //             };
-    //             let closest = clickedItem.closest("#ipa");
-    //             if (closest) {
-    //                 e.target.focus();
-    //             }
-    //         });
-    //     }
-    // })
 
 	return (
         <>

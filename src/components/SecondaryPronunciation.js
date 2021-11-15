@@ -1,4 +1,4 @@
-import {clone} from '../utils.js';
+import {clone, handleBlur} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 
 const SecondaryPronunciation = (props) => {
@@ -6,11 +6,12 @@ const SecondaryPronunciation = (props) => {
     const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex, pronunciationIndex} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations;
 
-
-    const handleChange = (e, field) => {
-        let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations[pronunciationIndex][field] = e.target.value;
-        setAppState({entry:entryCopy});
+    const handleChange = (value, field) => {
+        if (value !== undefined) {
+            let entryCopy = clone(appState.entry);
+            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations[pronunciationIndex][field] = value;
+            setAppState({entry:entryCopy});
+        }
     }
 
     const addPronunciation = e => {
@@ -43,7 +44,8 @@ const SecondaryPronunciation = (props) => {
             <label>Pronunciation</label>
             <input type="text"
             value={path[pronunciationIndex].pronunciation}
-            onChange={e => handleChange(e,"pronunciation")}
+            onChange={e => handleChange(e.target.value, "pronunciation")}
+            onBlur={e => handleChange(handleBlur(e), "pronunciation")}
             />
             <div></div>
             <div></div>
@@ -51,7 +53,8 @@ const SecondaryPronunciation = (props) => {
             {/* <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`}>Note</label> */}
             <input type="text"
             value={path[pronunciationIndex].note}
-            onChange={e => handleChange(e,"note")}
+            onChange={e => handleChange(e.target.value, "note")}
+            onBlur={e => handleChange(handleBlur(e), "note")}
             />
         </>
     )

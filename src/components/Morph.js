@@ -1,5 +1,5 @@
 import Pronunciation from './Pronunciation';
-import {clone} from '../utils.js';
+import {clone, handleBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
 
 const Morph = props => {
@@ -7,10 +7,12 @@ const Morph = props => {
     const {appState, setAppState, morphIndex} = props;
     const path = appState.entry.primary[morphIndex];
 
-    const handleChange = e => {
-        let entryCopy = clone(appState.entry);
-        entryCopy.primary[morphIndex].targetLang = e.target.value;
-        setAppState({entry:entryCopy});
+    const handleChange = value => {
+        if (value !== undefined) {
+            let entryCopy = clone(appState.entry);
+            entryCopy.primary[morphIndex].targetLang = value;
+            setAppState({entry:entryCopy});
+        }
     }
 
     const addMorph = e => {
@@ -41,7 +43,8 @@ const Morph = props => {
             <label forhtml={`targetLang-${morphIndex}`} >{morphIndex===0 ? "Headword" : "Alternate"}</label>
             <input id={`targetLang-${morphIndex}`} type="text"
             value={path.targetLang}
-            onChange={handleChange}
+            onChange={e => handleChange(e.target.value)}
+            onBlur={e => handleChange(handleBlur(e))}
             />
             <fieldset className="pronunciations">
                 {path.pronunciations.map((a,i) => (

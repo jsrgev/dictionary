@@ -1,4 +1,4 @@
-import {clone} from '../utils.js';
+import {clone, handleBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
 import SecondaryPronunciation from './SecondaryPronunciation';
 
@@ -7,10 +7,12 @@ const SecondaryForm = (props) => {
     const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms;
 
-    const handleChange = (e) => {
-        let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].targetLang = e.target.value;
-        setAppState({entry:entryCopy});
+    const handleChange = (value) => {
+        if (value !== undefined) {
+            let entryCopy = clone(appState.entry);
+            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].targetLang = value;
+            setAppState({entry:entryCopy});
+        }
     }
 
     const addMorph = e => {
@@ -39,7 +41,7 @@ const SecondaryForm = (props) => {
             <i className={`fas fa-plus${path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>
             <i className={`fas fa-minus${path.length === 1 && path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
             <label>Form</label>
-            <input value={path[secondaryFormIndex].targetLang} onChange={handleChange} />
+            <input value={path[secondaryFormIndex].targetLang} onChange={e => handleChange(e.target.value)} onBlur={e => handleChange(handleBlur(e), "note")} />
             <fieldset className="pronunciations">
                 {path[secondaryFormIndex].pronunciations.map((a,i) => (
                     <SecondaryPronunciation appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={secondaryFormIndex} pronunciationIndex={i} key={i} />
