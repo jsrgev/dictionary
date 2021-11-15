@@ -35,8 +35,15 @@ export const getSecondaryFormValues = secondaryFormType => {
     return typeForms; 
 };
 
-export const getBasicSecondary = secondaryFormType => {
-    return secondaryFormTypes[secondaryFormType].basic;
+// export const getBasicSecondary = secondaryFormType => {
+//     return secondaryFormTypes[secondaryFormType].basic;
+// }
+
+export const getBasicForm = pos => {
+    let posDef = allPartsOfSpeech.find(a => a.name===pos.name);
+    let typeDef = posDef.types.find(a => a.name===pos.types[0]);
+    let secondaryFormType = typeDef.secondaryFormType;
+    return secondaryFormTypes[secondaryFormType].basic
 }
 
 export const getTypeDef = (posName, typeName) =>  {
@@ -53,16 +60,9 @@ export const setSecondary = (posObj, type) => {
     let multiChoice = getPosDef(posObj.name).multiChoice;
     if (posObj.types) {
         let matches = posObj.types[0] === type.name;
-        console.log(matches)
-        console.log(posObj.types.length)
         if (matches && posObj.types.length === 1) {
-            // if ()
-        // }
-        // if(!multiChoice && posObj.types[0] === type.name) {
             return posObj;
         }
-        // posObj.types = [];
-        // posObj.typeForms = [];
     } else {
         posObj.types = [];
         posObj.typeForms = [];    
@@ -72,7 +72,6 @@ export const setSecondary = (posObj, type) => {
     if (type) {
         if (multiChoice) {
             let typeIndex = posObj.types.findIndex(a => a===type.name);
-            // console.log(typeIndex)
             if (typeIndex >= 0) {
                 posObj.types.splice(typeIndex,1);
             } else {
@@ -82,8 +81,11 @@ export const setSecondary = (posObj, type) => {
             posObj.types = [type.name];
         }
         if (type.secondaryFormType) {
-            posObj.basic = getBasicSecondary(type.secondaryFormType);
+            // posObj.basic = getBasicSecondary(type.secondaryFormType);
             posObj.typeForms = getSecondaryFormValues(type.secondaryFormType);
+        } else {
+            // delete posObj.basic;
+            posObj.typeForms = [];    
         }
     }
     return clone(posObj);

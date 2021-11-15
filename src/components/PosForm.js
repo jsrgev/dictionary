@@ -1,4 +1,5 @@
-import {capitalize, clone} from '../utils.js'
+import {capitalize, clone, getBasicForm} from '../utils.js';
+import {allPartsOfSpeech, secondaryFormTypes} from '../languageSettings';
 import SecondaryForm from './SecondaryForm.js';
 
 const PosForm = (props) => {
@@ -26,7 +27,7 @@ const PosForm = (props) => {
         setAppState({entry: entryCopy});
     };
 
-    let isBasic = path.typeForms[typeFormIndex].typeForm === path.basic;
+    let isBasic = path.typeForms[typeFormIndex].typeForm === getBasicForm(path);
     let exists = path.typeForms[typeFormIndex].exists;
     let isRegular = path.typeForms[typeFormIndex].regular;
 
