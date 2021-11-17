@@ -38,20 +38,27 @@ const Morph = props => {
 
     return (
         <>
-            <i className={`fas fa-plus${path.targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>           
-            <i className={`fas fa-minus${appState.entry.primary.length === 1 && path.targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
-            <label forhtml={`targetLang-${morphIndex}`} >{morphIndex===0 ? "Headword" : "Alternate"}</label>
-            <input id={`targetLang-${morphIndex}`} type="text"
-            value={path.targetLang}
-            onChange={e => handleChange(e.target.value)}
-            onBlur={e => handleChange(handleBlur(e))}
-            />
-            <fieldset className="pronunciations">
+            {/* <i className={`fas fa-plus${path.targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>            */}
+            {/* <i className={`fas fa-minus${appState.entry.primary.length === 1 && path.targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>            */}
+            <div className="row-controls">
+
+            </div>
+            {/* <div></div> */}
+            {/* <div></div> */}
+            <div className="row-content">
+                <label forhtml={`targetLang-${morphIndex}`} >{morphIndex===0 ? "Headword" : "Alternate"}</label>
+                <input id={`targetLang-${morphIndex}`} type="text"
+                value={path.targetLang}
+                onChange={e => handleChange(e.target.value)}
+                onBlur={e => handleChange(handleBlur(e))}
+                />
+            </div>
+            <div className="row">
                 {path.pronunciations.map((a,i) => (
-                    <Pronunciation appState={appState} setAppState={setAppState} key={i} pronunciationIndex={i} morphIndex={morphIndex}
+                    <Pronunciation appState={appState} setAppState={setAppState} key={i} pronunciationIndex={i} morphIndex={morphIndex} prevIndentLevel={0}
                     />
                 ))}
-            </fieldset>
+            </div>
         </>
     )
 };

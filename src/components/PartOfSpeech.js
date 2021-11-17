@@ -1,10 +1,10 @@
-import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef} from '../utils';
+import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef, getIndent} from '../utils';
 import {allPartsOfSpeech} from '../languageSettings.js';
 import PosForm from './PosForm';
 import {useState} from 'react';
 
 const PartOfSpeech = (props) => {
-    const {appState, setAppState, senseIndex, posIndex} = props;
+    const {appState, setAppState, senseIndex, posIndex, prevIndentLevel} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech;
 
     const handlePOSClick = async e => {
@@ -39,47 +39,62 @@ const PartOfSpeech = (props) => {
     }
 
     const [posShown, setPosShown] = useState(true);
-    const [secondaryShown, setSecondaryShown] = useState(false);
+    const [secondaryShown, setSecondaryShown] = useState(true);
     
     let areSecondaryForms = path[posIndex].typeForms.length > 0 ? true : false;
 
-    // console.log(path[posIndex]);
 
     return (
         <>
-            <div className="bar">
+            {/* <div className="bar">
                 <div className="bar-pos" onClick={() => setPosShown(!posShown)}>Part of speech <i className={posShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
                 <div className={`bar-secondary${areSecondaryForms ? "" : " no-secondary"}`} onClick={handleBarClick}>
                     Secondary Forms {areSecondaryForms && <i className={secondaryShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>}
                     </div>
-            </div>
+            </div> */}
 
-            <fieldset className={`pos ${posShown ? "" : "hidden"}`}>
-                <span>Part of speech</span>
-                <ul className="parts-of-speech">
-                    {allPartsOfSpeech.map((a,i) => (
-                        <li key={i} value={a.name} className={path[posIndex].name===a.name ? "selected" : ""} onClick={handlePOSClick}>{capitalize(a.name)}</li>
-                    ))}
-                </ul>
+            {/* <fieldset className={`pos ${posShown ? "" : "hidden"}`}> */}
+                <div className="row-controls"></div>
+                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                    <span>Part of speech</span>
+                    <ul className="parts-of-speech">
+                        {allPartsOfSpeech.map((a,i) => (
+                            <li key={i} value={a.name} className={path[posIndex].name===a.name ? "selected" : ""} onClick={handlePOSClick}>{capitalize(a.name)}</li>
+                        ))}
+                    </ul>
+                </div>
                 { path[posIndex].types.length>0 &&
-                    <>
-                        <span>Type</span>
-                        <ul className="types-of-POS">
-                            { getAllTypes(path[posIndex].name).map((a,i) => (
-                            <li key={i} value={a.name} className={path[posIndex].types.find((b => b===a.name)) ? "selected" : ""} onClick={handleTypeClick}>{capitalize(a.name)}</li>
-                            )) }
-                        </ul>
-                    </>
-                }
-            </fieldset>
+                    <div className="row">
+                        <div className="row-controls"></div>
+                        <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                            <span>Type</span>
+                            <ul className="types-of-POS">
+                                { getAllTypes(path[posIndex].name).map((a,i) => (
+                                <li key={i} value={a.name} className={path[posIndex].types.find((b => b===a.name)) ? "selected" : ""} onClick={handleTypeClick}>{capitalize(a.name)}</li>
+                                )) }
+                            </ul>
+                        </div>
 
-            { path[posIndex].typeForms.length>0 &&
-                <fieldset className={`secondary ${secondaryShown ? "" : "hidden"}`}>
-                    {path[posIndex].typeForms.map((a,i) => (
-                        <PosForm key={i} abc={a} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={i} appState={appState} setAppState={setAppState} />
-                    ))}
-                </fieldset>
-            }
+                        { path[posIndex].typeForms.length>0 &&
+                            <div className={`row ${secondaryShown ? "" : "hidden"}`}>
+                                <div className="row-controls"></div>
+                                <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                                    <div>Forms</div>
+                                    <div></div>
+                                </div>
+                                {/* <div className="secondaryForms"> */}
+                                {path[posIndex].typeForms.map((a,i) => (
+                                        <PosForm key={i} abc={a} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} />
+                                    ))}
+                                {/* </div> */}
+                            </div>
+                        }
+
+
+                    </div>
+                }
+            {/* </fieldset> */}
+
     </>
     )
 };

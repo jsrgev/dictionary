@@ -1,10 +1,10 @@
-import {clone, handleBlur} from '../utils.js';
+import {clone, getIndent, getIndex, handleBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
 import SecondaryPronunciation from './SecondaryPronunciation';
 
 const SecondaryForm = (props) => {
 
-    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex} = props;
+    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex, prevIndentLevel} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms;
 
     const handleChange = (value) => {
@@ -35,19 +35,22 @@ const SecondaryForm = (props) => {
         }
         setAppState({entry: entryCopy});
     };    
-
+    
     return (
         <>
-            <i className={`fas fa-plus${path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>
-            <i className={`fas fa-minus${path.length === 1 && path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
-            <label>Form</label>
-            <input value={path[secondaryFormIndex].targetLang} onChange={e => handleChange(e.target.value)} onBlur={e => handleChange(handleBlur(e), "note")} />
-            <fieldset className="pronunciations">
+            <div className="row-controls">
+                <i className={`fas fa-plus${path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>
+                <i className={`fas fa-minus${path.length === 1 && path[secondaryFormIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>
+            </div>
+            <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <label>Form</label>
+                <input value={path[secondaryFormIndex].targetLang} onChange={e => handleChange(e.target.value)} onBlur={e => handleChange(handleBlur(e), "note")} />
+            </div>
+            <div className="row">
                 {path[secondaryFormIndex].pronunciations.map((a,i) => (
-                    <SecondaryPronunciation appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={secondaryFormIndex} pronunciationIndex={i} key={i} />
-                ))
-            }
-            </fieldset>
+                    <SecondaryPronunciation appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={secondaryFormIndex} pronunciationIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} />
+                ))}
+            </div>
         </>
     )
 };

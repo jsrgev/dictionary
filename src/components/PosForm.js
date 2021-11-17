@@ -1,10 +1,10 @@
-import {capitalize, clone, getBasicForm} from '../utils.js';
+import {capitalize, clone, getBasicForm, getIndent} from '../utils.js';
 import {allPartsOfSpeech, secondaryFormTypes} from '../languageSettings';
 import SecondaryForm from './SecondaryForm.js';
 
 const PosForm = (props) => {
 
-    const {appState, setAppState, senseIndex, posIndex, typeFormIndex} = props;
+    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, prevIndentLevel} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex];
 
     const changeExists = () => {
@@ -33,20 +33,25 @@ const PosForm = (props) => {
 
     return (
         <>
-            <div className={exists ? "" : "struck"} onClick={changeExists}>
-                {capitalize(path.typeForms[typeFormIndex].typeForm)}
-            </div>
-            <div className={isBasic ? "disabled" : ""} onClick={changeRegular}>
-                {isBasic ? "Basic" : !exists ? "" : isRegular ? "Regular" : "Irregular"}
-            </div>
-            <fieldset className="irregular">
+            <div className="row">
+                <div className="row-controls"></div>
+                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                    <div className={exists ? "" : "struck"} onClick={changeExists}>
+                        {capitalize(path.typeForms[typeFormIndex].typeForm)}
+                    </div>
+                    <div className={isBasic ? "disabled" : ""} onClick={changeRegular}>
+                        {isBasic ? "Basic" : !exists ? "" : isRegular ? "Regular" : "Irregular"}
+                    </div>
+                </div>
                 {(exists && !isRegular) &&
-                    path.typeForms[typeFormIndex].forms.map((a,i) => (
-                        <SecondaryForm appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={i} key={i} />
-                    ))
+                    <div className="row irregular">
+                   { path.typeForms[typeFormIndex].forms.map((a,i) => (
+                        <SecondaryForm appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} />
+                    ))}
+                    </div>
                 }
-            </fieldset>
-</>
+            </div>
+        </>
 
         )
 };

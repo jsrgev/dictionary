@@ -5,14 +5,14 @@ import Definition from './Definition';
 import {generateSense, clone, getTypeDef, setSecondary} from '../utils.js';
 import {useState} from 'react';
 
-const Sense = props => {
+const SenseGroup = props => {
     const {appState, setAppState, senseIndex} = props;
-    const path = appState.entry.senses[senseIndex];
+    const path = appState.entry.senses;
 
     const [senseShown, setSenseShown] = useState(true);
     const [definitionShown, setDefinitionShown] = useState(true);
-    const [phrasesShown, setPhrasesShown] = useState(false);
-    const [examplesShown, setExamplesShown] = useState(false);
+    const [phrasesShown, setPhrasesShown] = useState(true);
+    const [examplesShown, setExamplesShown] = useState(true);
         
     const deleteSense = e => {
         e.preventDefault();
@@ -28,7 +28,7 @@ const Sense = props => {
     const addSense = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
-        let lastPosCopy = clone(path.partsOfSpeech.at(-1));
+        let lastPosCopy = clone(path[senseIndex].partsOfSpeech.at(-1));
         let newSense = generateSense(lastPosCopy.name);
         if (lastPosCopy.type)  {
             let type = getTypeDef(lastPosCopy.name, lastPosCopy.type);
@@ -47,38 +47,55 @@ const Sense = props => {
         setSenseShown(!senseShown);
     }
 
+    // console.log(path[senseIndex].definitions)
+
     return (
         <>
-            <div className="bar-sense" onClick={handleClick}>
+            {/* <div className="bar-sense" onClick={handleClick}>
                 <i className="fas fa-plus" onClick={addSense}></i>
                 <i className="fas fa-minus" onClick={deleteSense}></i>
                 <div>Sense {senseIndex+1} <i className={senseShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-            </div>
-            <div className={`sense${senseShown ? "" : " hidden"}`}>
-                {path.partsOfSpeech.map((a,i) => (
-                    <PartOfSpeech appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={i} key={i} />
-                    ))
-                }
-                <div className="bar">
-                    <div className="bar-definition" onClick={()=>setDefinitionShown(!definitionShown)}>Definition <i className={definitionShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-                    <div className="bar-phrases" onClick={()=>setPhrasesShown(!phrasesShown)}>Phrases <i className={phrasesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-                    <div className="bar-examples" onClick={()=>setExamplesShown(!examplesShown)}>Examples <i className={examplesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
+            </div> */}
+            <div className="row">
+                <div className="row-controls"></div>
+                <div className="row-content">
+                    Sense group{path.length>1 ? ` ${senseIndex+1}` : ""}
                 </div>
-
-                <Definition appState={appState} setAppState={setAppState} senseIndex={senseIndex} shown={definitionShown} />
-                <fieldset className={`phrase${phrasesShown ? "" : " hidden"}`}>
-                    {path.phrases.map((a,i) => (
-                        <Phrase appState={appState} setAppState={setAppState} senseIndex={senseIndex} phraseIndex={i} key={i} />
-                    ))}
-                </fieldset>
-                <fieldset className={`example${examplesShown ? "" : " hidden"}`}>
-                    {path.examples.map((a,i) => (
-                        <Example appState={appState} setAppState={setAppState} senseIndex={senseIndex} exampleIndex={i} key={i} shown={examplesShown} />
-                    )) }
-                </fieldset>
+                <div className="row">
+                    {/* <div className={`row sense${senseShown ? "" : " hidden"}`}> */}
+                    <div className="row">
+                        {path[senseIndex].partsOfSpeech.map((a,i) => (
+                        <PartOfSpeech appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={i} key={i} prevIndentLevel={0} />
+                        ))}
+                    </div>
+                    {/* <div className={`row sense${senseShown ? "" : " hidden"}`}> */}
+                    <div className="row">
+                        {path[senseIndex].definitions.map((a,i) => (
+                        <Definition appState={appState} setAppState={setAppState} senseIndex={senseIndex} definitionIndex={i} key={i} prevIndentLevel={0} shown={definitionShown} />
+                        ))}
+                    </div>
+                </div>
             </div>
          </>
     )
 }
 
-export default Sense;
+{/* <div className="bar">
+                    <div className="bar-definition" onClick={()=>setDefinitionShown(!definitionShown)}>Definition <i className={definitionShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
+                    <div className="bar-phrases" onClick={()=>setPhrasesShown(!phrasesShown)}>Phrases <i className={phrasesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
+                    <div className="bar-examples" onClick={()=>setExamplesShown(!examplesShown)}>Examples <i className={examplesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
+                </div> */}
+
+                {/* <Definition appState={appState} setAppState={setAppState} senseIndex={senseIndex} shown={definitionShown} />
+                <div className={`phrase${phrasesShown ? "" : " hidden"}`}>
+                    {path.phrases.map((a,i) => (
+                        <Phrase appState={appState} setAppState={setAppState} senseIndex={senseIndex} phraseIndex={i} key={i} />
+                    ))}
+                </div>
+                <div className={`example${examplesShown ? "" : " hidden"}`}>
+                    {path.examples.map((a,i) => (
+                        <Example appState={appState} setAppState={setAppState} senseIndex={senseIndex} exampleIndex={i} key={i} shown={examplesShown} />
+                    )) }
+                </div> */}
+
+export default SenseGroup;

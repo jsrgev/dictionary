@@ -1,3 +1,7 @@
+export const definitionDefault = {
+    definition: "",
+};
+
 export const entryDefault = {
     senses: [],
 };
@@ -14,7 +18,7 @@ export const phraseDefault = {
 
 export const senseDefault = {
     partsOfSpeech: [],
-    definition: "",
+    definitions: [JSON.parse(JSON.stringify(definitionDefault))],
     note: "",
     examples: [JSON.parse(JSON.stringify(exampleDefault))],
     phrases: [JSON.parse(JSON.stringify(phraseDefault))]

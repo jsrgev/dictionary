@@ -1,9 +1,9 @@
-import {clone, handleBlur} from '../utils.js';
+import {clone, getIndent, handleBlur} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 
 const SecondaryPronunciation = (props) => {
 
-    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex, pronunciationIndex} = props;
+    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex, pronunciationIndex, prevIndentLevel} = props;
     const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations;
 
     const handleChange = (value, field) => {
@@ -37,25 +37,67 @@ const SecondaryPronunciation = (props) => {
 
     return (
         <>
-            <i className={`fas fa-plus${path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={e => addPronunciation(e, "pronunciation")}></i>
-            <i className={`fas fa-minus${path.length === 1 && path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
+            <div className="row-controls">
+                <i className={`fas fa-plus${path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={e => addPronunciation(e, "pronunciation")}></i>
+                <i className={`fas fa-minus${path.length === 1 && path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
+            </div>
 
             {/* <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} >Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label> */}
-            <label>Pronunciation</label>
-            <input type="text"
-            value={path[pronunciationIndex].pronunciation}
-            onChange={e => handleChange(e.target.value, "pronunciation")}
-            onBlur={e => handleChange(handleBlur(e), "pronunciation")}
-            />
+            <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <label>Pronunciation</label>
+                <input type="text"
+                value={path[pronunciationIndex].pronunciation}
+                onChange={e => handleChange(e.target.value, "pronunciation")}
+                onBlur={e => handleChange(handleBlur(e), "pronunciation")}
+                />
+            </div>
+            {/* <div></div> */}
+            {/* <div></div> */}
+            {/* <div className="row">
+                <div className="row-controls"></div>
+                <div className="row-content" style={getIndent(prevIndentLevel+1)} >
+                <label>Note</label>
+                    <input type="text"
+                    value={path[pronunciationIndex].note}
+                    onChange={e => handleChange(e.target.value, "note")}
+                    onBlur={e => handleChange(handleBlur(e), "note")}
+                    />
+                </div>
+            </div> */}
+
+
+            {/* <>
+            <div className="row-controls">
+                <i className={`fas fa-plus${path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={addPronunciation}></i>           
+                <i className={`fas fa-minus${path.length === 1 && path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
+            </div>
+            <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} >Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label>
+                <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} type="text"
+                value={path[pronunciationIndex].pronunciation}
+                onChange={e => handleChange(e.target.value, "pronunciation")}
+                onBlur={e => handleChange(handleBlur(e), "pronunciation")}
+                />
+            </div>
             <div></div>
             <div></div>
-            <label>Note</label>
-            {/* <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`}>Note</label> */}
-            <input type="text"
-            value={path[pronunciationIndex].note}
-            onChange={e => handleChange(e.target.value, "note")}
-            onBlur={e => handleChange(handleBlur(e), "note")}
-            />
+            <div className="row">
+                <div className="row-controls"></div>
+                <div className="row-content" style={getIndent(prevIndentLevel+1)} >
+                    <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`}>Note</label>
+                    <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`} type="text"
+                    value={path[pronunciationIndex].note}
+                    onChange={e => handleChange(e.target.value, "note")}
+                    onBlur={e => handleChange(handleBlur(e), "note")}
+                    />
+                </div>
+            </div>
+        </> */}
+
+
+
+
+
         </>
     )
 };

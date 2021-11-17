@@ -1,6 +1,6 @@
 // import {useEffect, useState, useRef} from 'react';
 import Primary from './components/Primary';
-import Sense from './components/Sense';
+import SenseGroup from './components/SenseGroup';
 import Etymology from './components/Etymology';
 import Preview from './components/Preview';
 import Ipa from './components/Ipa';
@@ -101,7 +101,7 @@ const App = () => {
                 <Primary appState={state} setAppState={setState} />
                 {state.entry &&
                     state.entry.senses.map((a,i) => (
-                        <Sense appState={state} setAppState={setState} key={i} senseIndex={i} />
+                        <SenseGroup appState={state} setAppState={setState} key={i} senseIndex={i} />
                     ))
                 }
                 <Etymology />

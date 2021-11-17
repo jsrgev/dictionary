@@ -62,7 +62,7 @@ const Preview = (props) => {
 
     return(
         <>
-            <div className="bar-preview" onClick={()=>setPreviewShown(!previewShown)}>Preview <i className={previewShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
+            {/* <div className="bar-preview" onClick={()=>setPreviewShown(!previewShown)}>Preview <i className={previewShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
             <div className={`preview${previewShown ? "" : " hidden"}`}>
                 {preview()}
             </div>

@@ -1,6 +1,11 @@
 import {senseDefault, secondaryFormDetailsDefault} from './defaults.js';
 import {secondaryFormTypes, allPartsOfSpeech} from './languageSettings.js';
 
+export const getIndent = (prevIndentLevel = 0) => {
+    const indentAmount = 2;
+    return {marginLeft: (prevIndentLevel+1)*indentAmount + "rem"} ;
+}
+
 export const capitalize = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -34,10 +39,6 @@ export const getSecondaryFormValues = secondaryFormType => {
     });
     return typeForms; 
 };
-
-// export const getBasicSecondary = secondaryFormType => {
-//     return secondaryFormTypes[secondaryFormType].basic;
-// }
 
 export const getBasicForm = pos => {
     let posDef = allPartsOfSpeech.find(a => a.name===pos.name);

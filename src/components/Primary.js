@@ -25,14 +25,14 @@ const Primary = props => {
 
     return (
         <>
-            <div className="bar-primary" onClick={()=>setPrimaryShown(!primaryShown)}>Basic Form <i className={primaryShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-            <fieldset className={`primaryForm${primaryShown ? "" : " hidden"}`}>
+            {/* <div className="bar-primary" onClick={()=>setPrimaryShown(!primaryShown)}>Basic Form <i className={primaryShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
+            <div className={`row primaryForm${primaryShown ? "" : " hidden"}`}>
             {appState.entry &&
             appState.entry.primary.map((a,i) => (
                 <Morph appState={appState} setAppState={setAppState} morphIndex={i} state={state} setState={setState} key={i} />
             ))
             }
-        </fieldset>
+        </div>
         </>
     )
 };
