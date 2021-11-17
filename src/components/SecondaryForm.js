@@ -1,4 +1,4 @@
-import {clone, getIndent, getIndex, handleBlur} from '../utils.js';
+import {clone, getIndent, handleBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
 import Pronunciation from './Pronunciation';
 

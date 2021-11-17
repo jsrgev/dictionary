@@ -4,12 +4,12 @@ import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {appState, setAppState, pronunciationIndex, morphIndex, prevIndentLevel, stringPath} = props;
+    const {appState, setAppState, pronunciationIndex, prevIndentLevel, stringPath} = props;
     // const path = appState.entry.primary[morphIndex].pronunciations;
-
+    console.log(stringPath)
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(appState, "entry." + pathFrag);
-    
+    // console.log(pathFrag)
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);

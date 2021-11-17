@@ -1,6 +1,6 @@
 import {capitalize, clone, getBasicForm, getIndent} from '../utils.js';
-import {allPartsOfSpeech, secondaryFormTypes} from '../languageSettings';
-import SecondaryForm from './SecondaryForm.js';
+// import {allPartsOfSpeech, secondaryFormTypes} from '../languageSettings';
+import Morph from './Morph.js';
 
 const PosForm = (props) => {
 
@@ -31,6 +31,8 @@ const PosForm = (props) => {
     let exists = path.typeForms[typeFormIndex].exists;
     let isRegular = path.typeForms[typeFormIndex].regular;
 
+    let stringPathA = `senseGroups[${senseGroupIndex}].partsOfSpeech[${posIndex}].typeForms[${typeFormIndex}].forms`;
+
     return (
         <>
             <div className="row">
@@ -46,7 +48,7 @@ const PosForm = (props) => {
                 {(exists && !isRegular) &&
                     <div className="row irregular">
                    { path.typeForms[typeFormIndex].forms.map((a,i) => (
-                        <SecondaryForm appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} />
+                        <Morph appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} />
                     ))}
                     </div>
                 }

@@ -29,7 +29,7 @@ const Primary = props => {
             <div className={`row primaryForm${primaryShown ? "" : " hidden"}`}>
             {appState.entry &&
             appState.entry.primary.map((a,i) => (
-                <Morph appState={appState} setAppState={setAppState} morphIndex={i} state={state} setState={setState} key={i} />
+                <Morph appState={appState} setAppState={setAppState} thisIndex={i} state={state} setState={setState} key={i} stringPath="primary" prevIndentLevel={-1} labels={["Headword", "Alternate"]} />
             ))
             }
         </div>
