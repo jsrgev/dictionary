@@ -1,9 +1,14 @@
+export const noteDefault = {
+    type: "general",
+    content: ""
+};
+
 export const definitionDefault = {
     definition: "",
 };
 
 export const entryDefault = {
-    senses: [],
+    senseGroups: [],
 };
 
 export const exampleDefault = {
@@ -16,7 +21,7 @@ export const phraseDefault = {
     meaning: ""
 };
 
-export const senseDefault = {
+export const senseGroupDefault = {
     partsOfSpeech: [],
     definitions: [JSON.parse(JSON.stringify(definitionDefault))],
     note: "",

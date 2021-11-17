@@ -6,7 +6,7 @@ import Preview from './components/Preview';
 import Ipa from './components/Ipa';
 import {useEffect, useCallback} from 'react';
 import {useSetState} from 'react-use';
-import {capitalize, generateSense, clone} from './utils.js';
+import {capitalize, generateSenseGroup, clone} from './utils.js';
 import {languageData} from './languageSettings.js';
 import {entryDefault, orthForm} from './defaults.js';
 
@@ -74,8 +74,8 @@ const App = () => {
     const initializeEntry = useCallback(() => {
         let newEntry = clone(entryDefault);
         newEntry.primary = [clone(orthForm)];
-        newEntry.senses.push(generateSense());
-        console.log(newEntry.senses)
+        newEntry.senseGroups.push(generateSenseGroup());
+        // console.log(newEntry.senseGroups)
         newEntry.etymology = "";
         setState({entry: newEntry});
     }, [setState])
@@ -101,8 +101,8 @@ const App = () => {
                 <form id="entryForm" onKeyDown={handleKeyDown}>
                 <Primary appState={state} setAppState={setState} />
                 {state.entry &&
-                    state.entry.senses.map((a,i) => (
-                        <SenseGroup appState={state} setAppState={setState} key={i} senseIndex={i} />
+                    state.entry.senseGroups.map((a,i) => (
+                        <SenseGroup appState={state} setAppState={setState} key={i} senseGroupIndex={i} />
                     ))
                 }
                 <Etymology />

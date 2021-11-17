@@ -1,4 +1,4 @@
-import {senseDefault, secondaryFormDetailsDefault} from './defaults.js';
+import {senseGroupDefault, secondaryFormDetailsDefault} from './defaults.js';
 import {secondaryFormTypes, allPartsOfSpeech} from './languageSettings.js';
 
 export const getIndent = (prevIndentLevel = 0) => {
@@ -12,10 +12,10 @@ export const capitalize = string => {
 
 export const clone = a => JSON.parse(JSON.stringify(a));
 
-export const generateSense = posName => {
-    let newSense = clone(senseDefault);
-    newSense.partsOfSpeech.push(generatePos(posName));
-    return newSense;
+export const generateSenseGroup = posName => {
+    let newSenseGroup = clone(senseGroupDefault);
+    newSenseGroup.partsOfSpeech.push(generatePos(posName));
+    return newSenseGroup;
 }
 
 export const getPosDef = (posName = allPartsOfSpeech[0].name) => {

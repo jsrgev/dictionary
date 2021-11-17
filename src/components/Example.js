@@ -2,13 +2,13 @@ import {clone, handleBlur} from '../utils.js';
 import { exampleDefault } from "../defaults";
 
 const Example = props => {
-    const {appState, setAppState, senseIndex, exampleIndex} = props;
-    const path = appState.entry.senses[senseIndex].examples;
+    const {appState, setAppState, senseGroupIndex, exampleIndex} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].examples;
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senses[senseIndex].examples[exampleIndex][field] = value;
+            entryCopy.senseGroups[senseGroupIndex].examples[exampleIndex][field] = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -17,9 +17,9 @@ const Example = props => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].examples = [clone(exampleDefault)];
+            entryCopy.senseGroups[senseGroupIndex].examples = [clone(exampleDefault)];
         } else {
-            entryCopy.senses[senseIndex].examples.splice(exampleIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].examples.splice(exampleIndex, 1);
         }
         setAppState({entry: entryCopy});
     }
@@ -30,7 +30,7 @@ const Example = props => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].examples.splice(exampleIndex+1, 0, clone(exampleDefault));
+        entryCopy.senseGroups[senseGroupIndex].examples.splice(exampleIndex+1, 0, clone(exampleDefault));
         setAppState({entry: entryCopy});
     }
 

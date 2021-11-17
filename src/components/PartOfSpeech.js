@@ -4,8 +4,8 @@ import PosForm from './PosForm';
 import {useState} from 'react';
 
 const PartOfSpeech = (props) => {
-    const {appState, setAppState, senseIndex, posIndex, prevIndentLevel} = props;
-    const path = appState.entry.senses[senseIndex].partsOfSpeech;
+    const {appState, setAppState, senseGroupIndex, posIndex, prevIndentLevel} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
 
 
     const addPos = e => {
@@ -14,7 +14,7 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech.splice(posIndex+1, 0, generatePos(availablePoses[0].name));
+        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech.splice(posIndex+1, 0, generatePos(availablePoses[0].name));
         setAppState({entry: entryCopy});
     };
 
@@ -22,9 +22,9 @@ const PartOfSpeech = (props) => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].partsOfSpeech = [generatePos(availablePoses[0].name)];
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech = [generatePos()];
         } else {
-            entryCopy.senses[senseIndex].partsOfSpeech.splice(posIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech.splice(posIndex, 1);
         }
         setAppState({entry: entryCopy});
     };
@@ -35,7 +35,7 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex] = generatePos(value);
+        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex] = generatePos(value);
         setAppState({entry: entryCopy});
     };
 
@@ -50,7 +50,7 @@ const PartOfSpeech = (props) => {
         if (posDef.multiChoice) {
 
         }
-        setSecondary(entryCopy.senses[senseIndex].partsOfSpeech[posIndex], type);
+        setSecondary(entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex], type);
         setAppState({entry:entryCopy});
     }
 
@@ -92,7 +92,7 @@ const PartOfSpeech = (props) => {
             {/* <fieldset className={`pos ${posShown ? "" : "hidden"}`}> */}
                 <div className="row-controls">
                     <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={addPos}></i>           
-                    <i className={`fas fa-minus${path.length === 1 ? " disabled" : ""}`} onClick={deletePos}></i>           
+                    <i className="fas fa-minus" onClick={deletePos}></i>           
 
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
@@ -124,7 +124,7 @@ const PartOfSpeech = (props) => {
                                 </div>
                                 {/* <div className="secondaryForms"> */}
                                 {path[posIndex].typeForms.map((a,i) => (
-                                        <PosForm key={i} abc={a} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} />
+                                        <PosForm key={i} abc={a} senseGroupIndex={senseGroupIndex} posIndex={posIndex} typeFormIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} />
                                     ))}
                                 {/* </div> */}
                             </div>

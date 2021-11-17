@@ -1,21 +1,20 @@
 import {clone, handleBlur, getIndent} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
+import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {appState, setAppState, pronunciationIndex, morphIndex, prevIndentLevel} = props;
-    const path = appState.entry.primary[morphIndex].pronunciations;
+    const {appState, setAppState, pronunciationIndex, morphIndex, prevIndentLevel, stringPath} = props;
+    // const path = appState.entry.primary[morphIndex].pronunciations;
 
-    // const handleChange = (e,field) => {
-    //     let entryCopy = clone(appState.entry);
-    //     entryCopy.primary[morphIndex].pronunciations[pronunciationIndex][field] = e.target.value;
-    //     setAppState({entry:entryCopy});
-    // }
-
+    let pathFrag = stringPath + ".pronunciations";
+    const path = _.get(appState, "entry." + pathFrag);
+    
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.primary[morphIndex].pronunciations[pronunciationIndex][field] = value;
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+            entryCopyPath[pronunciationIndex].pronunciation = value;
             setAppState({entry:entryCopy});    
         }
     }
@@ -26,18 +25,26 @@ const Pronunciation = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.primary[morphIndex].pronunciations.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+        entryCopyPath.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
         setAppState({entry: entryCopy});
     };
 
     const deletePronunciation = (e) => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+
         if (path.length === 1) {
-            entryCopy.primary[morphIndex].pronunciations = [clone(pronunciationDefault)];
+            // entryCopyPath = [clone(pronunciationDefault)];
+            // console.log(clone(pronunciationDefault)])
+            // console.log(entryCopyPath)
+            entryCopyPath.splice(0, 1, clone(pronunciationDefault));
         } else {
-            entryCopy.primary[morphIndex].pronunciations.splice(pronunciationIndex, 1);
+            entryCopyPath.splice(pronunciationIndex, 1);
         }
+        console.log(entryCopyPath)
+        console.log(entryCopy)
         setAppState({entry: entryCopy});
     };
 
@@ -48,8 +55,8 @@ const Pronunciation = (props) => {
                 <i className={`fas fa-minus${path.length === 1 && path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
-                <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} >Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label>
-                <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} type="text"
+                <label>Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label>
+                <input type="text"
                 value={path[pronunciationIndex].pronunciation}
                 onChange={e => handleChange(e.target.value, "pronunciation")}
                 onBlur={e => handleChange(handleBlur(e), "pronunciation")}

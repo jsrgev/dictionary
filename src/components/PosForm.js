@@ -4,16 +4,16 @@ import SecondaryForm from './SecondaryForm.js';
 
 const PosForm = (props) => {
 
-    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, prevIndentLevel} = props;
-    const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex];
+    const {appState, setAppState, senseGroupIndex, posIndex, typeFormIndex, prevIndentLevel} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex];
 
     const changeExists = () => {
         if (isBasic && path.typeForms[typeFormIndex].exists) {
             return;
         };
         let entryCopy = clone(appState.entry);
-        let existsCurrentValue = entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].exists;
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].exists = !existsCurrentValue;
+        let existsCurrentValue = entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].exists;
+        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].exists = !existsCurrentValue;
         setAppState({entry: entryCopy});
     };
 
@@ -22,8 +22,8 @@ const PosForm = (props) => {
             return;
         };
         let entryCopy = clone(appState.entry);
-        let isRegular = entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].regular;
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].regular = !isRegular;
+        let isRegular = entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].regular;
+        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].regular = !isRegular;
         setAppState({entry: entryCopy});
     };
 
@@ -46,7 +46,7 @@ const PosForm = (props) => {
                 {(exists && !isRegular) &&
                     <div className="row irregular">
                    { path.typeForms[typeFormIndex].forms.map((a,i) => (
-                        <SecondaryForm appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} />
+                        <SecondaryForm appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} />
                     ))}
                     </div>
                 }

@@ -2,13 +2,13 @@ import {clone, handleBlur} from '../utils.js';
 import { phraseDefault } from "../defaults";
 
 const Phrase = props => {
-    const {appState, setAppState, senseIndex, phraseIndex} = props;
-    const path = appState.entry.senses[senseIndex].phrases;
+    const {appState, setAppState, senseGroupIndex, phraseIndex} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].phrases;
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senses[senseIndex].phrases[phraseIndex][field] = value;
+            entryCopy.senseGroups[senseGroupIndex].phrases[phraseIndex][field] = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -17,9 +17,9 @@ const Phrase = props => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].phrases = [clone(phraseDefault)];
+            entryCopy.senseGroups[senseGroupIndex].phrases = [clone(phraseDefault)];
         } else {
-            entryCopy.senses[senseIndex].phrases.splice(phraseIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].phrases.splice(phraseIndex, 1);
         }
         setAppState({entry: entryCopy});
     }
@@ -30,7 +30,7 @@ const Phrase = props => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].phrases.splice(phraseIndex+1, 0, clone(phraseDefault));
+        entryCopy.senseGroups[senseGroupIndex].phrases.splice(phraseIndex+1, 0, clone(phraseDefault));
         setAppState({entry: entryCopy});
     }
 

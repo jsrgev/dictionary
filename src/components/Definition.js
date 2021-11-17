@@ -3,13 +3,13 @@ import {clone, getIndent, handleBlur} from '../utils.js';
 
 const Definition = props => {
 
-    const {appState, setAppState, senseIndex, prevIndentLevel, definitionIndex} = props;
-    const path = appState.entry.senses[senseIndex].definitions;
+    const {appState, setAppState, senseGroupIndex, prevIndentLevel, definitionIndex} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senses[senseIndex].definitions[definitionIndex][field] = value;
+            entryCopy.senseGroups[senseGroupIndex].definitions[definitionIndex][field] = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -20,7 +20,7 @@ const Definition = props => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].definitions.splice(definitionIndex+1, 0, clone(definitionDefault));
+        entryCopy.senseGroups[senseGroupIndex].definitions.splice(definitionIndex+1, 0, clone(definitionDefault));
         setAppState({entry: entryCopy});
     };
 
@@ -28,9 +28,9 @@ const Definition = props => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].definitions = [clone(definitionDefault)];
+            entryCopy.senseGroups[senseGroupIndex].definitions = [clone(definitionDefault)];
         } else {
-            entryCopy.senses[senseIndex].definitions.splice(definitionIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].definitions.splice(definitionIndex, 1);
         }
         setAppState({entry: entryCopy});
     }; 

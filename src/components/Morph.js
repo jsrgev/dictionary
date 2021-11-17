@@ -36,6 +36,8 @@ const Morph = props => {
         setAppState({entry: entryCopy});
     };    
 
+    let stringPath = `primary[${morphIndex}]`;
+
     return (
         <>
             <div className="row-controls">
@@ -53,7 +55,7 @@ const Morph = props => {
             </div>
             <div className="row">
                 {path.pronunciations.map((a,i) => (
-                    <Pronunciation appState={appState} setAppState={setAppState} key={i} pronunciationIndex={i} morphIndex={morphIndex} prevIndentLevel={0}
+                    <Pronunciation appState={appState} setAppState={setAppState} key={i} pronunciationIndex={i} morphIndex={morphIndex} prevIndentLevel={0} stringPath={stringPath}
                     />
                 ))}
             </div>

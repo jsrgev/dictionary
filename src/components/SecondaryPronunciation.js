@@ -3,13 +3,13 @@ import {pronunciationDefault} from '../defaults.js';
 
 const SecondaryPronunciation = (props) => {
 
-    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex, pronunciationIndex, prevIndentLevel} = props;
-    const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations;
+    const {appState, setAppState, senseGroupIndex, posIndex, typeFormIndex, secondaryFormIndex, pronunciationIndex, prevIndentLevel} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations;
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations[pronunciationIndex][field] = value;
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations[pronunciationIndex][field] = value;
             setAppState({entry:entryCopy});
         }
     }
@@ -20,7 +20,7 @@ const SecondaryPronunciation = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
+        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
         setAppState({entry: entryCopy});
     };
 
@@ -28,9 +28,9 @@ const SecondaryPronunciation = (props) => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations = [clone(pronunciationDefault)];
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations = [clone(pronunciationDefault)];
         } else {
-            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations.splice(pronunciationIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].pronunciations.splice(pronunciationIndex, 1);
         }
         setAppState({entry: entryCopy});
     };

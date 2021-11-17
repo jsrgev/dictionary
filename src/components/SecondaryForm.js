@@ -1,16 +1,16 @@
 import {clone, getIndent, getIndex, handleBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
-import SecondaryPronunciation from './SecondaryPronunciation';
+import Pronunciation from './Pronunciation';
 
 const SecondaryForm = (props) => {
 
-    const {appState, setAppState, senseIndex, posIndex, typeFormIndex, secondaryFormIndex, prevIndentLevel} = props;
-    const path = appState.entry.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms;
+    const {appState, setAppState, senseGroupIndex, posIndex, typeFormIndex, secondaryFormIndex, prevIndentLevel} = props;
+    const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms;
 
     const handleChange = (value) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].targetLang = value;
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex].targetLang = value;
             setAppState({entry:entryCopy});
         }
     }
@@ -21,7 +21,7 @@ const SecondaryForm = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms.splice(secondaryFormIndex+1, 0, clone(orthForm));
+        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms.splice(secondaryFormIndex+1, 0, clone(orthForm));
         setAppState({entry: entryCopy});
     };
 
@@ -29,13 +29,17 @@ const SecondaryForm = (props) => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms = [clone(orthForm)];
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms = [clone(orthForm)];
         } else {
-            entryCopy.senses[senseIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms.splice(secondaryFormIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms.splice(secondaryFormIndex, 1);
         }
         setAppState({entry: entryCopy});
-    };    
+    };
     
+    // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex].typeForms[typeFormIndex].forms[secondaryFormIndex];
+
+    let stringPath = `senseGroups[${senseGroupIndex}].partsOfSpeech[${posIndex}].typeForms[${typeFormIndex}].forms[${secondaryFormIndex}]`;
+
     return (
         <>
             <div className="row-controls">
@@ -48,7 +52,7 @@ const SecondaryForm = (props) => {
             </div>
             <div className="row">
                 {path[secondaryFormIndex].pronunciations.map((a,i) => (
-                    <SecondaryPronunciation appState={appState} setAppState={setAppState} senseIndex={senseIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={secondaryFormIndex} pronunciationIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} />
+                    <Pronunciation appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} posIndex={posIndex} typeFormIndex={typeFormIndex} secondaryFormIndex={secondaryFormIndex} pronunciationIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPath} />
                 ))}
             </div>
         </>
