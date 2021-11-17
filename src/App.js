@@ -75,6 +75,7 @@ const App = () => {
         let newEntry = clone(entryDefault);
         newEntry.primary = [clone(orthForm)];
         newEntry.senses.push(generateSense());
+        console.log(newEntry.senses)
         newEntry.etymology = "";
         setState({entry: newEntry});
     }, [setState])

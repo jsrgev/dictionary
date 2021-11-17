@@ -14,7 +14,7 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senses[senseIndex].partsOfSpeech.splice(posIndex+1, 0, generatePos());
+        entryCopy.senses[senseIndex].partsOfSpeech.splice(posIndex+1, 0, generatePos(availablePoses[0].name));
         setAppState({entry: entryCopy});
     };
 
@@ -22,7 +22,7 @@ const PartOfSpeech = (props) => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
-            entryCopy.senses[senseIndex].partsOfSpeech = [generatePos()];
+            entryCopy.senses[senseIndex].partsOfSpeech = [generatePos(availablePoses[0].name)];
         } else {
             entryCopy.senses[senseIndex].partsOfSpeech.splice(posIndex, 1);
         }
@@ -31,9 +31,7 @@ const PartOfSpeech = (props) => {
 
     const handlePOSClick = async e => {
         let value = e.target.getAttribute("value");
-        // console.log(value);
-        // console.log(isAlreadySelected(value));
-        if (value === path[posIndex].name || isAlreadySelected(value)) {
+        if (!isAvailable(value)) {
             return;
         }
         let entryCopy = clone(appState.entry);
@@ -67,9 +65,19 @@ const PartOfSpeech = (props) => {
     
     let areSecondaryForms = path[posIndex].typeForms.length > 0 ? true : false;
 
-    const isAlreadySelected = posName => {
-        // console.log(path[posIndex].name===posName)
-        return path.some(a => a.name === posName && path[posIndex].name !== posName) ;
+    const availablePoses = allPartsOfSpeech.filter(a => {
+        let alreadySelected = path.some(b => b.name === a.name);
+        if (!alreadySelected) {
+            return a;
+        }
+    })
+
+    const isAvailable = posName => {
+        return availablePoses.some(a => a.name === posName);
+    }
+
+    const isCurrentSelection = posName =>  {
+        return path[posIndex].name === posName;
     }
 
     return (
@@ -83,15 +91,15 @@ const PartOfSpeech = (props) => {
 
             {/* <fieldset className={`pos ${posShown ? "" : "hidden"}`}> */}
                 <div className="row-controls">
-                    <i className={`fas fa-plus${path[posIndex].name === "" ? " disabled" : ""}`} onClick={addPos}></i>           
-                    <i className={`fas fa-minus${path.length === 1 && path[posIndex].name === "" ? " disabled" : ""}`} onClick={deletePos}></i>           
+                    <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={addPos}></i>           
+                    <i className={`fas fa-minus${path.length === 1 ? " disabled" : ""}`} onClick={deletePos}></i>           
 
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
                         {allPartsOfSpeech.map((a,i) => (
-                            <li key={i} value={a.name} className={(path[posIndex].name===a.name ? "selected" : "") + (isAlreadySelected(a.name) ? "disabled" : "")} onClick={handlePOSClick}>{capitalize(a.name)}</li>
+                            <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={handlePOSClick}>{capitalize(a.name)}</li>
                         ))}
                     </ul>
                 </div>

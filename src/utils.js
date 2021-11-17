@@ -18,18 +18,8 @@ export const generateSense = posName => {
     return newSense;
 }
 
-export const getPosDef = posName => {
-    if (posName) {
-        return allPartsOfSpeech.find(a => a.name === posName );
-    } else {
-        return allPartsOfSpeech[0];
-        // return allPartsOfSpeech.find(a => a.default);
-    }
-};
-
-export const getDefaultPosType = posDef => {
-    return posDef.types[0];
-    // return posDef.types.find(a => a.default);
+export const getPosDef = (posName = allPartsOfSpeech[0].name) => {
+    return allPartsOfSpeech.find(a => a.name === posName);
 };
 
 export const getSecondaryFormValues = secondaryFormType => {
@@ -59,10 +49,9 @@ export const getAllTypes = pos => {
     return posDef.types;
 }
 
-export const setSecondary = (posObj, type) => {
-    let multiChoice = getPosDef(posObj.name).multiChoice;
+export const setSecondary = (posObj, typeDef) => {
     if (posObj.types) {
-        let matches = posObj.types[0] === type.name;
+        let matches = posObj.types[0] === typeDef.name;
         if (matches && posObj.types.length === 1) {
             return posObj;
         }
@@ -70,42 +59,32 @@ export const setSecondary = (posObj, type) => {
         posObj.types = [];
         posObj.typeForms = [];    
     }
-    // posObj.types = posObj.types ?? [];
-    // posObj.typeForms = posObj.typeForms ?? [];
-    if (type) {
-        if (multiChoice) {
-            let typeIndex = posObj.types.findIndex(a => a===type.name);
+    if (typeDef) {
+        let isMultiChoice = getPosDef(posObj.name).multiChoice;
+        if (isMultiChoice) {
+            let typeIndex = posObj.types.findIndex(a => a===typeDef.name);
             if (typeIndex >= 0) {
                 posObj.types.splice(typeIndex,1);
             } else {
-                posObj.types.push(type.name)
+                posObj.types.push(typeDef.name)
             }
         } else {
-            posObj.types = [type.name];
+            posObj.types = [typeDef.name];
         }
-        if (type.secondaryFormType) {
-            // posObj.basic = getBasicSecondary(type.secondaryFormType);
-            posObj.typeForms = getSecondaryFormValues(type.secondaryFormType);
-        } else {
-            // delete posObj.basic;
-            posObj.typeForms = [];    
-        }
+        posObj.typeForms = typeDef.secondaryFormType ? getSecondaryFormValues(typeDef.secondaryFormType) : [];
     }
-    return clone(posObj);
+    return posObj;
 }
-
 
 
 export const generatePos = posName => {
     let posDef = getPosDef(posName);
-    console.log(posDef)
-    let defaultType = getDefaultPosType(posDef);        
     let obj = {
         name: posDef.name,
     }
-    return setSecondary(obj,defaultType);
+    let typeDef = posDef.types[0];
+    return setSecondary(obj, typeDef);
 }
-
 
 
 export const handleBlur = e => {
@@ -119,9 +98,9 @@ export const handleBlur = e => {
         return;
     }
     let inputNode = e.target;
-    let {value} = e.target;
+    let {value} = inputNode;
 
-    let selectionStart = inputNode.selectionStart ?? value.length
+    let selectionStart = inputNode.selectionStart ?? value.length;
     let selectionEnd = inputNode.selectionEnd ?? value.length;
 
     const newValue = value.substring(0, selectionStart) + clickedItem.textContent + value.substring(selectionEnd);
