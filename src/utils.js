@@ -22,12 +22,14 @@ export const getPosDef = posName => {
     if (posName) {
         return allPartsOfSpeech.find(a => a.name === posName );
     } else {
-        return allPartsOfSpeech.find(a => a.default);
+        return allPartsOfSpeech[0];
+        // return allPartsOfSpeech.find(a => a.default);
     }
 };
 
 export const getDefaultPosType = posDef => {
-    return posDef.types.find(a => a.default);
+    return posDef.types[0];
+    // return posDef.types.find(a => a.default);
 };
 
 export const getSecondaryFormValues = secondaryFormType => {
@@ -96,6 +98,7 @@ export const setSecondary = (posObj, type) => {
 
 export const generatePos = posName => {
     let posDef = getPosDef(posName);
+    console.log(posDef)
     let defaultType = getDefaultPosType(posDef);        
     let obj = {
         name: posDef.name,

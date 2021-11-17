@@ -57,7 +57,7 @@ const Pronunciation = (props) => {
             </div>
             {/* <div></div> */}
             {/* <div></div> */}
-            <div className="row">
+            {/* <div className="row">
                 <div className="row-controls"></div>
                 <div className="row-content" style={getIndent(prevIndentLevel+1)} >
                     <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`}>Note</label>
@@ -67,7 +67,7 @@ const Pronunciation = (props) => {
                     onBlur={e => handleChange(handleBlur(e), "note")}
                     />
                 </div>
-            </div>
+            </div> */}
         </>
     )
 };

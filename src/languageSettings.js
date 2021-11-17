@@ -21,23 +21,23 @@ export const secondaryFormTypes = {
 
 export const allPartsOfSpeech = [
     {name: "adjective", abbr: "adj", types: [
-        {name: "general", abbr: "gen", default: true},
+        {name: "general", abbr: "gen"},
         {name: "singular-plural", abbr: "s-p", secondaryFormType: "singularPlural"},
     ]},
     {name: "adverb", abbr: "adv", types: [
-        {name: "general", abbr: "gen", default: true},
+        {name: "general", abbr: "gen"},
         {name: "singular-plural", abbr: "s-p", secondaryFormType: "singularPlural"},
     ]},
     {name: "determiner", abbr: "d", types: [
-        {name: "general", abbr: "gen", default: true},
+        {name: "general", abbr: "gen"},
         {name: "singular-plural", abbr: "s-p", secondaryFormType: "singularPlural"},
     ]},
     {name: "interjection", abbr: "i", types: [
-        {name: "general", abbr: "gen", default: true},
+        {name: "general", abbr: "gen"},
         {name: "singular-plural", abbr: "s-p", secondaryFormType: "singularPlural"},
     ]},
-    {name: "noun", abbr: "n", default: true, types: [
-        {name: "singular-plural", abbr: "s-p", default: true, secondaryFormType: "singularPluralNoun"},
+    {name: "noun", abbr: "n", types: [
+        {name: "singular-plural", abbr: "s-p", secondaryFormType: "singularPluralNoun"},
         {name: "collective-singulative", abbr: "c-s", secondaryFormType: "collectiveSingulativeNoun"},
     ]},
     {name: "number", abbr: "num", types: []},
@@ -45,7 +45,7 @@ export const allPartsOfSpeech = [
     {name: "verb", abbr: "v", multiChoice: true, types: [
         {name: "ablative", abbr: "ab"},
         {name: "allative", abbr: "al"},
-        {name: "intransitive", abbr: "i", default: true},
+        {name: "intransitive", abbr: "i"},
         {name: "locative", abbr: "l"},
         {name: "perlative", abbr: "p"},
         {name: "sentential", abbr: "s"},
