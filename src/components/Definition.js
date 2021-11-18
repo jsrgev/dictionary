@@ -36,7 +36,7 @@ const Definition = props => {
     return (
         <>
             <div className="row-controls">
-                <i className={`fas fa-plus${path[thisIndex].definition.trim() === "" ? " disabled" : ""}`}
+                <i className="fas fa-plus"
                 onClick={e => addDefinition(e, thisIndex)}
                 ></i>
                 <i

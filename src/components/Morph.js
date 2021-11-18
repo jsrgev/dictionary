@@ -69,18 +69,35 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
+    const getNumber = () => {
+        if (labels[0] === "Headword") {
+            if (thisIndex > 0) {
+                return ` ${thisIndex}`;
+            } else {
+                return "";
+            }
+        } else {
+            if (path.length>1) {
+                return ` ${thisIndex+1}`; 
+            } else {
+                return "";
+            }
+        }
+    }
+
+
+
     return (
         <>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} setAddPopupVisible={setAddPopupVisible} />
                 <i className="fas fa-plus"
-                // onClick={e => addMorph(e, thisIndex)}
                 onClick={setAddPopupVisibleHandler}
                 ></i>
                 <i className={`fas fa-minus${path.length === 1 && path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
-                <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}</label>
+                <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
                 <input id={`targetLang-${thisIndex}`} type="text"
                 value={path[thisIndex].targetLang}
                 onChange={e => handleChange(e.target.value)}
