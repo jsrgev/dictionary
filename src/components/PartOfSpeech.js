@@ -1,11 +1,15 @@
 import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef, getIndent} from '../utils';
 import {allPartsOfSpeech} from '../languageSettings.js';
-import PosForm from './PosForm';
+import ParadigmForm from './ParadigmForm';
 import {useState} from 'react';
+import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {appState, setAppState, senseGroupIndex, posIndex, prevIndentLevel} = props;
-    const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
+    const {appState, setAppState, senseGroupIndex, thisIndex, prevIndentLevel, stringPath} = props;
+    // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
+
+    let pathFrag = stringPath + ".partsOfSpeech";
+    const path = _.get(appState, "entry." + pathFrag);
 
 
     const addPos = e => {
@@ -14,17 +18,19 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech.splice(posIndex+1, 0, generatePos(availablePoses[0].name));
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+        entryCopyPath.splice(thisIndex+1, 0, generatePos(availablePoses[0].name));
         setAppState({entry: entryCopy});
     };
 
     const deletePos = (e) => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech = [generatePos()];
+            entryCopyPath = [generatePos()];
         } else {
-            entryCopy.senseGroups[senseGroupIndex].partsOfSpeech.splice(posIndex, 1);
+            entryCopyPath.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
     };
@@ -35,22 +41,26 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex] = generatePos(value);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+        entryCopyPath[thisIndex] = generatePos(value);
         setAppState({entry: entryCopy});
     };
 
     const handleTypeClick = e => {
         let value = e.target.getAttribute("value");
-        if (value === path[posIndex].type) {
+        if (value === path[thisIndex].type) {
             return;
         }
         let entryCopy = clone(appState.entry);
-        let type = getTypeDef(path[posIndex].name, value);
-        let posDef = getPosDef(path[posIndex].name);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let type = getTypeDef(entryCopyPath[thisIndex].name, value);
+        let posDef = getPosDef(entryCopyPath[thisIndex].name);
         if (posDef.multiChoice) {
 
         }
-        setSecondary(entryCopy.senseGroups[senseGroupIndex].partsOfSpeech[posIndex], type);
+        // console.log(senseGroupIndex)
+        // console.log(entryCopy.senseGroups);
+        setSecondary(entryCopyPath[thisIndex], type);
         setAppState({entry:entryCopy});
     }
 
@@ -63,7 +73,7 @@ const PartOfSpeech = (props) => {
     const [posShown, setPosShown] = useState(true);
     const [secondaryShown, setSecondaryShown] = useState(true);
     
-    let areSecondaryForms = path[posIndex].typeForms.length > 0 ? true : false;
+    let areSecondaryForms = path[thisIndex].typeForms.length > 0 ? true : false;
 
     const availablePoses = allPartsOfSpeech.filter(a => {
         let alreadySelected = path.some(b => b.name === a.name);
@@ -77,8 +87,11 @@ const PartOfSpeech = (props) => {
     }
 
     const isCurrentSelection = posName =>  {
-        return path[posIndex].name === posName;
+        return path[thisIndex].name === posName;
     }
+
+    const stringPathA = pathFrag + `[${thisIndex}]`;
+
 
     return (
         <>
@@ -103,30 +116,28 @@ const PartOfSpeech = (props) => {
                         ))}
                     </ul>
                 </div>
-                { path[posIndex].types.length>0 &&
+                { path[thisIndex].types.length>0 &&
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                             <span>Type</span>
                             <ul className="types-of-POS">
-                                { getAllTypes(path[posIndex].name).map((a,i) => (
-                                <li key={i} value={a.name} className={path[posIndex].types.find((b => b===a.name)) ? "selected" : ""} onClick={handleTypeClick}>{capitalize(a.name)}</li>
+                                { getAllTypes(path[thisIndex].name).map((a,i) => (
+                                <li key={i} value={a.name} className={path[thisIndex].types.find((b => b===a.name)) ? "selected" : ""} onClick={handleTypeClick}>{capitalize(a.name)}</li>
                                 )) }
                             </ul>
                         </div>
 
-                        { path[posIndex].typeForms.length>0 &&
+                        { path[thisIndex].typeForms.length>0 &&
                             <div className={`row ${secondaryShown ? "" : "hidden"}`}>
                                 <div className="row-controls"></div>
                                 <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                                     <div>Forms</div>
                                     <div></div>
                                 </div>
-                                {/* <div className="secondaryForms"> */}
-                                {path[posIndex].typeForms.map((a,i) => (
-                                        <PosForm key={i} abc={a} senseGroupIndex={senseGroupIndex} posIndex={posIndex} typeFormIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} />
+                                {path[thisIndex].typeForms.map((a,i) => (
+                                        <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} />
                                     ))}
-                                {/* </div> */}
                             </div>
                         }
 

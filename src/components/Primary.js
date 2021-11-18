@@ -1,11 +1,18 @@
 import {useSetState} from 'react-use';
 import Morph from "./Morph";
+import { clone } from '../utils';
 import {useState} from 'react';
+import _ from "lodash";
 
 const Primary = props => {
 
     const {appState, setAppState} = props;
     const [primaryShown, setPrimaryShown] = useState(true);
+
+    let stringPath = "primary"
+    let pathFrag = stringPath + "";
+    const path = _.get(appState, "entry." + pathFrag);
+
 
     const pronunciationDefault =  {
             pronunciation: "",

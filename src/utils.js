@@ -33,6 +33,7 @@ export const getSecondaryFormValues = secondaryFormType => {
 };
 
 export const getBasicForm = pos => {
+    console.log(pos);
     let posDef = allPartsOfSpeech.find(a => a.name===pos.name);
     let typeDef = posDef.types.find(a => a.name===pos.types[0]);
     let secondaryFormType = typeDef.secondaryFormType;

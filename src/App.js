@@ -92,17 +92,28 @@ const App = () => {
 
 	return (
         <>
-        <header>
-            <h1><a href="../">Josh Regev</a></h1>
-            <h1>{`${capitalize(languageData.languageName)}-English Dictionary Entry`}</h1>
-        </header>
+        {/* <header> */}
+            <nav>
+                <ul>
+                    <li id="site-title">Geriadur</li>
+                    <li>
+                    {`${capitalize(languageData.languageName)}-English`}
+                    </li>
+                    <li>Word entry</li>
+                    <li>Dictionary</li>
+                    <li>Settings</li>
+                    <li>About</li>
+                </ul>
+                </nav>           
+                 {/* <h1>{`${capitalize(languageData.languageName)}-English Dictionary Entry`}</h1> */}
+        {/* </header> */}
         <main>
             <div>
                 <form id="entryForm" onKeyDown={handleKeyDown}>
                 <Primary appState={state} setAppState={setState} />
                 {state.entry &&
                     state.entry.senseGroups.map((a,i) => (
-                        <SenseGroup appState={state} setAppState={setState} key={i} senseGroupIndex={i} />
+                        <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} />
                     ))
                 }
                 <Etymology />

@@ -6,9 +6,10 @@ const Pronunciation = (props) => {
 
     const {appState, setAppState, pronunciationIndex, prevIndentLevel, stringPath} = props;
     // const path = appState.entry.primary[morphIndex].pronunciations;
-    // console.log(stringPath)
+
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(appState, "entry." + pathFrag);
+    // console.log(stringPath)
     // console.log(pathFrag)
     const handleChange = (value, field) => {
         if (value !== undefined) {

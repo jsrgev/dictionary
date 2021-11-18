@@ -21,22 +21,25 @@ const Morph = props => {
         }
     }
 
-    const addMorph = e => {
-        e.preventDefault();
+    const addMorph = (e, index) => {
+        // index = index ?? appState.entry.senseGroups[senseGroupIndex].definitions.length-1;
+        // e.preventDefault();
         if (e.target.classList.contains("disabled")) {
             return;
         }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        entryCopyPath.splice(thisIndex+1, 0, clone(orthForm));
+        entryCopyPath.splice(index+1, 0, clone(orthForm));
         setAppState({entry: entryCopy});
     };
-
+    
     const deleteMorph = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        if (appState.entry.primary.length === 1) {
+        // console.log(appState.entry.primary.length)
+        // return;
+        if (entryCopyPath.length === 1) {
             entryCopyPath.splice(0, 1, clone(orthForm));
         } else {
             entryCopyPath.splice(thisIndex, 1);
@@ -49,7 +52,7 @@ const Morph = props => {
     return (
         <>
             <div className="row-controls">
-            <i className={`fas fa-plus${path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addMorph}></i>
+            <i className={`fas fa-plus${path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={e => addMorph(e, thisIndex)}></i>
              <i className={`fas fa-minus${appState.entry.primary.length === 1 && path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
 
             </div>

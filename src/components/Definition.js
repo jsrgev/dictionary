@@ -1,15 +1,22 @@
 import {definitionDefault} from '../defaults.js'
 import {clone, getIndent, handleInputBlur} from '../utils.js';
+import _ from 'lodash';
 
 const Definition = props => {
 
-    const {appState, setAppState, senseGroupIndex, prevIndentLevel, thisIndex, addDefinition} = props;
-    const path = appState.entry.senseGroups[senseGroupIndex].definitions;
+    const {appState, setAppState, prevIndentLevel, thisIndex, addDefinition, stringPath} = props;
+    // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
+
+    let pathFrag = stringPath + ".definitions";
+    const path = _.get(appState, "entry." + pathFrag);
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senseGroups[senseGroupIndex].definitions[thisIndex][field] = value;
+            let entryCopyPath = _.get(entryCopy, pathFrag);
+            // console.log(entryCopyPath)
+            // return;
+            entryCopyPath[thisIndex][field] = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -18,10 +25,11 @@ const Definition = props => {
     const deleteDefinition = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            entryCopy.senseGroups[senseGroupIndex].definitions = [clone(definitionDefault)];
+            entryCopyPath = [clone(definitionDefault)];
         } else {
-            entryCopy.senseGroups[senseGroupIndex].definitions.splice(thisIndex, 1);
+            entryCopyPath.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
     }; 

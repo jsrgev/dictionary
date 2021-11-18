@@ -3,13 +3,19 @@ import Phrase from './Phrase';
 import Example from './Example';
 import Definition from './Definition';
 import AddPopup from './AddPopup';
-import {generateSense, clone, getTypeDef, setSecondary, generateSenseGroup} from '../utils.js';
+import {clone, generateSenseGroup} from '../utils.js';
 import { definitionDefault } from '../defaults';
 import {useState} from 'react';
+import _ from 'lodash';
 
 const SenseGroup = props => {
-    const {appState, setAppState, senseGroupIndex} = props;
-    const path = appState.entry.senseGroups;
+    const {appState, setAppState, thisIndex} = props;
+    // const path = appState.entry.senseGroups;
+
+    const stringPath = 'senseGroups';
+    let pathFrag = stringPath;
+    const path = _.get(appState, "entry." + pathFrag);
+
 
     const [senseGroupShown, setSenseGroupShown] = useState(true);
     const [definitionShown, setDefinitionShown] = useState(true);
@@ -20,13 +26,13 @@ const SenseGroup = props => {
     const addSenseGroup = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
-        // let lastPosCopy = clone(path[senseGroupIndex].partsOfSpeech.at(-1));
+        // let lastPosCopy = clone(path[thisIndex].partsOfSpeech.at(-1));
         // let newSense = generateSense(lastPosCopy.name);
         // if (lastPosCopy.type)  {
             // let type = getTypeDef(lastPosCopy.name, lastPosCopy.type);
             // newSense.partsOfSpeech = [setSecondary(lastPosCopy, type)];
         // }
-        entryCopy.senseGroups.splice(senseGroupIndex+1, 0, generateSenseGroup());
+        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup());
         setAppState({entry: entryCopy});
     }
     
@@ -36,7 +42,7 @@ const SenseGroup = props => {
         if (appState.entry.senseGroups.length === 1) {
             entryCopy.senseGroups = [generateSenseGroup()];
         } else {
-            entryCopy.senseGroups.splice(senseGroupIndex, 1);
+            entryCopy.senseGroups.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
     }
@@ -50,17 +56,17 @@ const SenseGroup = props => {
         setSenseGroupShown(!senseGroupShown);
     }
 
-    // console.log(path[senseGroupIndex].definitions)
+    // console.log(path[thisIndex].definitions)
 
 
     const addDefinition = (e, index) => {
-        index = index ?? appState.entry.senseGroups[senseGroupIndex].definitions.length-1;
+        index = index ?? appState.entry.senseGroups[thisIndex].definitions.length-1;
         // e.preventDefault();
         if (e.target.classList.contains("disabled")) {
             return;
         }
         let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups[senseGroupIndex].definitions.splice(index+1, 0, clone(definitionDefault));
+        entryCopy.senseGroups[thisIndex].definitions.splice(index+1, 0, clone(definitionDefault));
         setAppState({entry: entryCopy});
     };
 
@@ -82,10 +88,14 @@ const SenseGroup = props => {
         }, 100)
     }
 
+    // senseGroupAvailablePoses
+
+    let stringPathA =  `senseGroups[${thisIndex}]`;
+
     return (
         <>
             {/* <div className="bar-senseGroup" onClick={handleClick}> */}
-                {/* <div>Sense {senseGroupIndex+1} <i className={senseGroupShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
+                {/* <div>Sense {thisIndex+1} <i className={senseGroupShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
             {/* </div> */}
             <div className="row">
                 <div className="row-controls">
@@ -97,19 +107,19 @@ const SenseGroup = props => {
                     <i className="fas fa-minus" onClick={deleteSenseGroup}></i>
                 </div>
                 <div className="row-content">
-                    Sense group{path.length>1 ? ` ${senseGroupIndex+1}` : ""}
+                    Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}
                 </div>
                 <div className="row">
                     {/* <div className={`row senseGroup${senseGroupShown ? "" : " hidden"}`}> */}
                     <div className="row">
-                        {path[senseGroupIndex].partsOfSpeech.map((a,i) => (
-                        <PartOfSpeech appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} posIndex={i} key={i} prevIndentLevel={0} />
+                        {path[thisIndex].partsOfSpeech.map((a,i) => (
+                        <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={thisIndex} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} />
                         ))}
                     </div>
                     {/* <div className={`row senseGroup${senseGroupShown ? "" : " hidden"}`}> */}
                     <div className="row">
-                        {path[senseGroupIndex].definitions.map((a,i) => (
-                        <Definition appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} thisIndex={i} key={i} prevIndentLevel={0} shown={definitionShown} addDefinition={addDefinition} />
+                        {path[thisIndex].definitions.map((a,i) => (
+                        <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} shown={definitionShown} addDefinition={addDefinition} stringPath={stringPathA} />
                         ))}
                     </div>
                 </div>
@@ -124,15 +134,15 @@ const SenseGroup = props => {
                     <div className="bar-examples" onClick={()=>setExamplesShown(!examplesShown)}>Examples <i className={examplesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
                 </div> */}
 
-                {/* <Definition appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} shown={definitionShown} />
+                {/* <Definition appState={appState} setAppState={setAppState} thisIndex={thisIndex} shown={definitionShown} />
                 <div className={`phrase${phrasesShown ? "" : " hidden"}`}>
                     {path.phrases.map((a,i) => (
-                        <Phrase appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} phraseIndex={i} key={i} />
+                        <Phrase appState={appState} setAppState={setAppState} thisIndex={thisIndex} phraseIndex={i} key={i} />
                     ))}
                 </div>
                 <div className={`example${examplesShown ? "" : " hidden"}`}>
                     {path.examples.map((a,i) => (
-                        <Example appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} exampleIndex={i} key={i} shown={examplesShown} />
+                        <Example appState={appState} setAppState={setAppState} thisIndex={thisIndex} exampleIndex={i} key={i} shown={examplesShown} />
                     )) }
                 </div> */}
 
