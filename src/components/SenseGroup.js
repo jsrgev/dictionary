@@ -26,12 +26,6 @@ const SenseGroup = props => {
     const addSenseGroup = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
-        // let lastPosCopy = clone(path[thisIndex].partsOfSpeech.at(-1));
-        // let newSense = generateSense(lastPosCopy.name);
-        // if (lastPosCopy.type)  {
-            // let type = getTypeDef(lastPosCopy.name, lastPosCopy.type);
-            // newSense.partsOfSpeech = [setSecondary(lastPosCopy, type)];
-        // }
         entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup());
         setAppState({entry: entryCopy});
     }
@@ -56,12 +50,8 @@ const SenseGroup = props => {
         setSenseGroupShown(!senseGroupShown);
     }
 
-    // console.log(path[thisIndex].definitions)
-
-
     const addDefinition = (e, index) => {
         index = index ?? appState.entry.senseGroups[thisIndex].definitions.length-1;
-        // e.preventDefault();
         if (e.target.classList.contains("disabled")) {
             return;
         }

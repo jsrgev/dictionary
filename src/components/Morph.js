@@ -1,7 +1,7 @@
 import Pronunciation from './Pronunciation';
 import AddPopup from './AddPopup';
 import {clone, getIndent, handleInputBlur} from '../utils.js';
-import {orthForm} from '../defaults.js';
+import {orthForm, pronunciationDefault} from '../defaults.js';
 import {useState} from 'react';
 import _ from "lodash";
 
@@ -15,7 +15,6 @@ const Morph = props => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-
     const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
@@ -26,8 +25,6 @@ const Morph = props => {
     }
 
     const addMorph = (e, index) => {
-        // index = index ?? appState.entry.senseGroups[senseGroupIndex].definitions.length-1;
-        // e.preventDefault();
         if (e.target.classList.contains("disabled")) {
             return;
         }
@@ -38,7 +35,6 @@ const Morph = props => {
     };
     
     const deleteMorph = e => {
-        e.preventDefault();
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         // console.log(appState.entry.primary.length)
@@ -63,29 +59,31 @@ const Morph = props => {
         }, 100)
     }
 
+    const addPronunciation = (e, index) => {
+        index = index ?? path[thisIndex].pronunciations.length-1;
+        if (e.target.classList.contains("disabled")) {
+            return;
+        }
+        let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+        entryCopyPath[thisIndex].pronunciations.splice(index+1, 0, clone(pronunciationDefault));
+        setAppState({entry: entryCopy});
+    };
+
     const popupItems = [
         ["Alternate form", addMorph],
+        ["Pronunciation", addPronunciation]
     ]
-
-    let stringPathA = `${stringPath}[${thisIndex}]`;
-
+    
     const getNumber = () => {
         if (labels[0] === "Headword") {
-            if (thisIndex > 0) {
-                return ` ${thisIndex}`;
-            } else {
-                return "";
-            }
+            if (path.length > 2 && thisIndex > 0) return ` ${thisIndex}`;
         } else {
-            if (path.length>1) {
-                return ` ${thisIndex+1}`; 
-            } else {
-                return "";
-            }
+            if (path.length > 1) return ` ${thisIndex+1}`; 
         }
     }
 
-
+    let stringPathA = `${stringPath}[${thisIndex}]`;
 
     return (
         <>
@@ -106,7 +104,7 @@ const Morph = props => {
             </div>
             <div className="row">
                 {path[thisIndex].pronunciations.map((a,i) => (
-                    <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA}
+                    <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation}
                     />
                 ))}
             </div>
