@@ -13,7 +13,6 @@ const Primary = props => {
     let pathFrag = stringPath + "";
     const path = _.get(appState, "entry." + pathFrag);
 
-
     const pronunciationDefault =  {
             pronunciation: "",
             note: ""
@@ -29,6 +28,7 @@ const Primary = props => {
         pronunciationDefault: JSON.stringify(pronunciationDefault),
         morphDefault: JSON.stringify(morphDefault)
     });
+
 
     return (
         <>

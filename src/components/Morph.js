@@ -1,6 +1,8 @@
 import Pronunciation from './Pronunciation';
+import AddPopup from './AddPopup';
 import {clone, getIndent, handleInputBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
+import {useState} from 'react';
 import _ from "lodash";
 
 const Morph = props => {
@@ -10,6 +12,8 @@ const Morph = props => {
     
     let pathFrag = stringPath + "";
     const path = _.get(appState, "entry." + pathFrag);
+
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
 
 
     const handleChange = value => {
@@ -47,14 +51,33 @@ const Morph = props => {
         setAppState({entry: entryCopy});
     };    
 
+    const closePopup = () => {
+        setAddPopupVisible(false)
+        window.removeEventListener("click", closePopup);
+    }
+
+    const setAddPopupVisibleHandler = () => {
+        setAddPopupVisible(!addPopupVisible);
+        setTimeout(() => {
+            window.addEventListener("click", closePopup);
+        }, 100)
+    }
+
+    const popupItems = [
+        ["Alternate form", addMorph],
+    ]
+
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
     return (
         <>
             <div className="row-controls">
-            <i className={`fas fa-plus${path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={e => addMorph(e, thisIndex)}></i>
-             <i className={`fas fa-minus${appState.entry.primary.length === 1 && path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
-
+                <AddPopup popupItems={popupItems} visible={addPopupVisible} setAddPopupVisible={setAddPopupVisible} />
+                <i className="fas fa-plus"
+                // onClick={e => addMorph(e, thisIndex)}
+                onClick={setAddPopupVisibleHandler}
+                ></i>
+                <i className={`fas fa-minus${path.length === 1 && path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
                 <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}</label>
@@ -66,7 +89,7 @@ const Morph = props => {
             </div>
             <div className="row">
                 {path[thisIndex].pronunciations.map((a,i) => (
-                    <Pronunciation appState={appState} setAppState={setAppState} key={i} pronunciationIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA}
+                    <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA}
                     />
                 ))}
             </div>

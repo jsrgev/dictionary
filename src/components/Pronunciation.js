@@ -4,7 +4,7 @@ import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {appState, setAppState, pronunciationIndex, prevIndentLevel, stringPath} = props;
+    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath} = props;
     // const path = appState.entry.primary[morphIndex].pronunciations;
 
     let pathFrag = stringPath + ".pronunciations";
@@ -15,7 +15,7 @@ const Pronunciation = (props) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
-            entryCopyPath[pronunciationIndex].pronunciation = value;
+            entryCopyPath[thisIndex].pronunciation = value;
             setAppState({entry:entryCopy});    
         }
     }
@@ -27,7 +27,7 @@ const Pronunciation = (props) => {
         }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        entryCopyPath.splice(pronunciationIndex+1, 0, clone(pronunciationDefault));
+        entryCopyPath.splice(thisIndex+1, 0, clone(pronunciationDefault));
         setAppState({entry: entryCopy});
     };
 
@@ -42,23 +42,26 @@ const Pronunciation = (props) => {
             // console.log(entryCopyPath)
             entryCopyPath.splice(0, 1, clone(pronunciationDefault));
         } else {
-            entryCopyPath.splice(pronunciationIndex, 1);
+            entryCopyPath.splice(thisIndex, 1);
         }
         console.log(entryCopyPath)
         console.log(entryCopy)
         setAppState({entry: entryCopy});
     };
 
+    console.log(path.length);
+    console.log(path[thisIndex])
+
     return (
         <>
             <div className="row-controls">
-                <i className={`fas fa-plus${path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={addPronunciation}></i>           
-                <i className={`fas fa-minus${path.length === 1 && path[pronunciationIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
+                <i className="fas fa-plus" onClick={addPronunciation}></i>           
+                <i className={`fas fa-minus${path.length === 1 && path[thisIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
-                <label>Pronunciation{path.length>1 && ` ${pronunciationIndex+1}`}</label>
+                <label>Pronunciation{path.length>1 && ` ${thisIndex+1}`}</label>
                 <input type="text"
-                value={path[pronunciationIndex].pronunciation}
+                value={path[thisIndex].pronunciation}
                 onChange={e => handleChange(e.target.value, "pronunciation")}
                 onBlur={e => handleChange(handleInputBlur(e), "pronunciation")}
                 />
@@ -68,9 +71,9 @@ const Pronunciation = (props) => {
             {/* <div className="row">
                 <div className="row-controls"></div>
                 <div className="row-content" style={getIndent(prevIndentLevel+1)} >
-                    <label forhtml={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`}>Note</label>
-                    <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`} type="text"
-                    value={path[pronunciationIndex].note}
+                    <label forhtml={`morph-${morphIndex}-pronunciation-${thisIndex}-note`}>Note</label>
+                    <input id={`morph-${morphIndex}-pronunciation-${thisIndex}-note`} type="text"
+                    value={path[thisIndex].note}
                     onChange={e => handleChange(e.target.value, "note")}
                     onBlur={e => handleChange(handleInputBlur(e), "note")}
                     />

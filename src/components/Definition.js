@@ -14,8 +14,6 @@ const Definition = props => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            // console.log(entryCopyPath)
-            // return;
             entryCopyPath[thisIndex][field] = value;
             setAppState({entry:entryCopy});
         }
@@ -27,16 +25,13 @@ const Definition = props => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            entryCopyPath = [clone(definitionDefault)];
+            entryCopyPath.splice(0, 1, clone(definitionDefault));
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
     }; 
 
-
-
-    // console.log(thisIndex)
 
     return (
         <>
