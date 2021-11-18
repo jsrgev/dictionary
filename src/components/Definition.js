@@ -1,28 +1,19 @@
 import {definitionDefault} from '../defaults.js'
-import {clone, getIndent, handleBlur} from '../utils.js';
+import {clone, getIndent, handleInputBlur} from '../utils.js';
 
 const Definition = props => {
 
-    const {appState, setAppState, senseGroupIndex, prevIndentLevel, definitionIndex} = props;
+    const {appState, setAppState, senseGroupIndex, prevIndentLevel, thisIndex, addDefinition} = props;
     const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senseGroups[senseGroupIndex].definitions[definitionIndex][field] = value;
+            entryCopy.senseGroups[senseGroupIndex].definitions[thisIndex][field] = value;
             setAppState({entry:entryCopy});
         }
     };
 
-    const addDefinition = e => {
-        e.preventDefault();
-        if (e.target.classList.contains("disabled")) {
-            return;
-        }
-        let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups[senseGroupIndex].definitions.splice(definitionIndex+1, 0, clone(definitionDefault));
-        setAppState({entry: entryCopy});
-    };
 
     const deleteDefinition = e => {
         e.preventDefault();
@@ -30,23 +21,23 @@ const Definition = props => {
         if (path.length === 1) {
             entryCopy.senseGroups[senseGroupIndex].definitions = [clone(definitionDefault)];
         } else {
-            entryCopy.senseGroups[senseGroupIndex].definitions.splice(definitionIndex, 1);
+            entryCopy.senseGroups[senseGroupIndex].definitions.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
     }; 
 
 
 
-    // console.log(definitionIndex)
+    // console.log(thisIndex)
 
     return (
         <>
             <div className="row-controls">
-                <i className={`fas fa-plus${path[definitionIndex].definition.trim() === "" ? " disabled" : ""}`}
-                onClick={addDefinition}
+                <i className={`fas fa-plus${path[thisIndex].definition.trim() === "" ? " disabled" : ""}`}
+                onClick={e => addDefinition(e, thisIndex)}
                 ></i>
                 <i
-                className={`fas fa-minus${path.length === 1 && path[definitionIndex].definition.trim() === "" ? " disabled" : ""}`}
+                className={`fas fa-minus${path.length === 1 && path[thisIndex].definition.trim() === "" ? " disabled" : ""}`}
                 onClick={deleteDefinition}
                 ></i>           
 
@@ -58,15 +49,15 @@ const Definition = props => {
                 {/* <div></div> */}
                 <div>Definition</div>
                 <input type="text"
-                value={path[definitionIndex].definition}
+                value={path[thisIndex].definition}
                 onChange={e => handleChange(e.target.value, "definition")}
-                onBlur={e => handleChange(handleBlur(e), "definition")}
+                onBlur={e => handleChange(handleInputBlur(e), "definition")}
                 />
                 {/* <div>Note</div> */}
                 {/* <input type="text"
                 value={path.note}
                 onChange={e => handleChange(e.target.value, "note")}
-                onBlur={e => handleChange(handleBlur(e), "note")}
+                onBlur={e => handleChange(handleInputBlur(e), "note")}
                 /> */}
             </div>
         </>

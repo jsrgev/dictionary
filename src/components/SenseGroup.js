@@ -2,7 +2,9 @@ import PartOfSpeech from './PartOfSpeech';
 import Phrase from './Phrase';
 import Example from './Example';
 import Definition from './Definition';
+import AddPopup from './AddPopup';
 import {generateSense, clone, getTypeDef, setSecondary, generateSenseGroup} from '../utils.js';
+import { definitionDefault } from '../defaults';
 import {useState} from 'react';
 
 const SenseGroup = props => {
@@ -13,7 +15,8 @@ const SenseGroup = props => {
     const [definitionShown, setDefinitionShown] = useState(true);
     const [phrasesShown, setPhrasesShown] = useState(true);
     const [examplesShown, setExamplesShown] = useState(true);
-        
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
+
     const addSenseGroup = e => {
         e.preventDefault();
         let entryCopy = clone(appState.entry);
@@ -49,6 +52,36 @@ const SenseGroup = props => {
 
     // console.log(path[senseGroupIndex].definitions)
 
+
+    const addDefinition = (e, index) => {
+        index = index ?? appState.entry.senseGroups[senseGroupIndex].definitions.length-1;
+        // e.preventDefault();
+        if (e.target.classList.contains("disabled")) {
+            return;
+        }
+        let entryCopy = clone(appState.entry);
+        entryCopy.senseGroups[senseGroupIndex].definitions.splice(index+1, 0, clone(definitionDefault));
+        setAppState({entry: entryCopy});
+    };
+
+
+    const popupItems = [
+        ["Sense group", addSenseGroup],
+        ["Definition", addDefinition]
+    ]
+
+    const closePopup = () => {
+        setAddPopupVisible(false)
+        window.removeEventListener("click", closePopup);
+    }
+
+    const setAddPopupVisibleHandler = () => {
+        setAddPopupVisible(!addPopupVisible);
+        setTimeout(() => {
+            window.addEventListener("click", closePopup);
+        }, 100)
+    }
+
     return (
         <>
             {/* <div className="bar-senseGroup" onClick={handleClick}> */}
@@ -56,7 +89,11 @@ const SenseGroup = props => {
             {/* </div> */}
             <div className="row">
                 <div className="row-controls">
-                    <i className="fas fa-plus" onClick={addSenseGroup}></i>
+                <AddPopup popupItems={popupItems} visible={addPopupVisible} setAddPopupVisible={setAddPopupVisible} />
+                <i className="fas fa-plus"
+                // onClick={() => setAddPopupVisible(!addPopupVisible)}
+                onClick={setAddPopupVisibleHandler}
+                ></i>
                     <i className="fas fa-minus" onClick={deleteSenseGroup}></i>
                 </div>
                 <div className="row-content">
@@ -72,7 +109,7 @@ const SenseGroup = props => {
                     {/* <div className={`row senseGroup${senseGroupShown ? "" : " hidden"}`}> */}
                     <div className="row">
                         {path[senseGroupIndex].definitions.map((a,i) => (
-                        <Definition appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} definitionIndex={i} key={i} prevIndentLevel={0} shown={definitionShown} />
+                        <Definition appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} thisIndex={i} key={i} prevIndentLevel={0} shown={definitionShown} addDefinition={addDefinition} />
                         ))}
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import Pronunciation from './Pronunciation';
-import {clone, getIndent, handleBlur} from '../utils.js';
+import {clone, getIndent, handleInputBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
 import _ from "lodash";
 
@@ -58,7 +58,7 @@ const Morph = props => {
                 <input id={`targetLang-${thisIndex}`} type="text"
                 value={path[thisIndex].targetLang}
                 onChange={e => handleChange(e.target.value)}
-                onBlur={e => handleChange(handleBlur(e))}
+                onBlur={e => handleChange(handleInputBlur(e))}
                 />
             </div>
             <div className="row">

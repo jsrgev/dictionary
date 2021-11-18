@@ -20,14 +20,20 @@ main > div:last-child {
     border: none;
 }
 
-body, input {
+body, input, add-popup {
 	font-size: .7rem;
 }
 
-input {	
+body, input {	
 	font-family:"dejavu_sans", "Lucida Grande", sans-serif;
 	line-height:1.4;
 	-webkit-text-size-adjust: 100%;
+}
+
+input {	
+	/* font-family:"dejavu_sans", "Lucida Grande", sans-serif; */
+	/* line-height:1.4; */
+	/* -webkit-text-size-adjust: 100%; */
 	outline: none;
 	border: none;
 	/* border-bottom: 1px solid black; */
@@ -70,7 +76,7 @@ fieldset {
 	display: grid;
 	gap: 1rem;
 	grid-template-columns: 1rem 1rem;
-	/* position: absolute; */
+	position: relative;
 	/* left: 1rem; */
 	/* top: 0; */
 }
@@ -358,4 +364,41 @@ ul.parts-of-speech, ul.types-of-POS {
 
 .other {
 	background: var(--light-purple);
+}
+
+
+
+/* Popup */
+
+.add-popup {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: max-content;
+	position: absolute;
+	bottom: 1rem;
+	border: 2px solid var(--mango);
+    border-radius: .6rem;
+    backdrop-filter: blur(1.5px);
+	width: max-content;
+	z-index: 100;
+}
+
+
+.add-popup div {
+	background: #ffffffe0;
+	padding: .2rem .5rem;
+	border-right: 2px solid var(--mango);
+	position: relative;
+}
+
+
+.add-popup div:first-child {
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+}
+
+.add-popup div:last-child {
+	border: none;
+    border-top-right-radius: .5rem;
+    border-bottom-right-radius: .5rem;
 }

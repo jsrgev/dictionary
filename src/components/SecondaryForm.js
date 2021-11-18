@@ -1,4 +1,4 @@
-import {clone, getIndent, handleBlur} from '../utils.js';
+import {clone, getIndent, handleInputBlur} from '../utils.js';
 import {orthForm} from '../defaults.js';
 import Pronunciation from './Pronunciation';
 
@@ -48,7 +48,7 @@ const SecondaryForm = (props) => {
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
                 <label>Form</label>
-                <input value={path[secondaryFormIndex].targetLang} onChange={e => handleChange(e.target.value)} onBlur={e => handleChange(handleBlur(e), "note")} />
+                <input value={path[secondaryFormIndex].targetLang} onChange={e => handleChange(e.target.value)} onBlur={e => handleChange(handleInputBlur(e), "note")} />
             </div>
             <div className="row">
                 {path[secondaryFormIndex].pronunciations.map((a,i) => (

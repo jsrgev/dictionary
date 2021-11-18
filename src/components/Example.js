@@ -1,4 +1,4 @@
-import {clone, handleBlur} from '../utils.js';
+import {clone, handleInputBlur} from '../utils.js';
 import { exampleDefault } from "../defaults";
 
 const Example = props => {
@@ -42,13 +42,13 @@ const Example = props => {
             <input type="text"
             value={path[exampleIndex].targetLang}
             onChange={e => handleChange(e.target.value, "targetLang")}
-            onBlur={e => handleChange(handleBlur(e), "targetLang")}
+            onBlur={e => handleChange(handleInputBlur(e), "targetLang")}
             />
             <div>Meaning</div>
             <input type="text"
             value={path[exampleIndex].meaning}
             onChange={e => handleChange(e.target.value, "meaning")}
-            onBlur={e => handleChange(handleBlur(e), "meaning")}
+            onBlur={e => handleChange(handleInputBlur(e), "meaning")}
             />
         </>
     )

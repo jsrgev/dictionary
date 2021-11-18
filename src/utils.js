@@ -87,7 +87,7 @@ export const generatePos = posName => {
 }
 
 
-export const handleBlur = e => {
+export const handleInputBlur = e => {
     let hoverItems = document.querySelectorAll( ":hover" );
     let clickedItem = hoverItems[hoverItems.length-1];
     if (clickedItem === undefined || !clickedItem.closest("#ipa")) {

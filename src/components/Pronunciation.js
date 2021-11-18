@@ -1,4 +1,4 @@
-import {clone, handleBlur, getIndent} from '../utils.js';
+import {clone, handleInputBlur, getIndent} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 import _ from "lodash";
 
@@ -6,7 +6,7 @@ const Pronunciation = (props) => {
 
     const {appState, setAppState, pronunciationIndex, prevIndentLevel, stringPath} = props;
     // const path = appState.entry.primary[morphIndex].pronunciations;
-    console.log(stringPath)
+    // console.log(stringPath)
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(appState, "entry." + pathFrag);
     // console.log(pathFrag)
@@ -59,7 +59,7 @@ const Pronunciation = (props) => {
                 <input type="text"
                 value={path[pronunciationIndex].pronunciation}
                 onChange={e => handleChange(e.target.value, "pronunciation")}
-                onBlur={e => handleChange(handleBlur(e), "pronunciation")}
+                onBlur={e => handleChange(handleInputBlur(e), "pronunciation")}
                 />
             </div>
             {/* <div></div> */}
@@ -71,7 +71,7 @@ const Pronunciation = (props) => {
                     <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`} type="text"
                     value={path[pronunciationIndex].note}
                     onChange={e => handleChange(e.target.value, "note")}
-                    onBlur={e => handleChange(handleBlur(e), "note")}
+                    onBlur={e => handleChange(handleInputBlur(e), "note")}
                     />
                 </div>
             </div> */}

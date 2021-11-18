@@ -1,4 +1,4 @@
-import {clone, getIndent, handleBlur} from '../utils.js';
+import {clone, getIndent, handleInputBlur} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 
 const SecondaryPronunciation = (props) => {
@@ -48,7 +48,7 @@ const SecondaryPronunciation = (props) => {
                 <input type="text"
                 value={path[pronunciationIndex].pronunciation}
                 onChange={e => handleChange(e.target.value, "pronunciation")}
-                onBlur={e => handleChange(handleBlur(e), "pronunciation")}
+                onBlur={e => handleChange(handleInputBlur(e), "pronunciation")}
                 />
             </div>
             {/* <div></div> */}
@@ -60,7 +60,7 @@ const SecondaryPronunciation = (props) => {
                     <input type="text"
                     value={path[pronunciationIndex].note}
                     onChange={e => handleChange(e.target.value, "note")}
-                    onBlur={e => handleChange(handleBlur(e), "note")}
+                    onBlur={e => handleChange(handleInputBlur(e), "note")}
                     />
                 </div>
             </div> */}
@@ -76,7 +76,7 @@ const SecondaryPronunciation = (props) => {
                 <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}`} type="text"
                 value={path[pronunciationIndex].pronunciation}
                 onChange={e => handleChange(e.target.value, "pronunciation")}
-                onBlur={e => handleChange(handleBlur(e), "pronunciation")}
+                onBlur={e => handleChange(handleInputBlur(e), "pronunciation")}
                 />
             </div>
             <div></div>
@@ -88,7 +88,7 @@ const SecondaryPronunciation = (props) => {
                     <input id={`morph-${morphIndex}-pronunciation-${pronunciationIndex}-note`} type="text"
                     value={path[pronunciationIndex].note}
                     onChange={e => handleChange(e.target.value, "note")}
-                    onBlur={e => handleChange(handleBlur(e), "note")}
+                    onBlur={e => handleChange(handleInputBlur(e), "note")}
                     />
                 </div>
             </div>
