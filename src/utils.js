@@ -4,11 +4,9 @@ import {secondaryFormTypes, allPartsOfSpeech} from './languageSettings.js';
 export const getIndent = (prevIndentLevel = 0) => {
     const indentAmount = 2;
     return {marginLeft: (prevIndentLevel+1)*indentAmount + "rem"} ;
-}
+};
 
-export const capitalize = string => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
 
 export const clone = a => JSON.parse(JSON.stringify(a));
 
@@ -16,7 +14,7 @@ export const generateSenseGroup = posName => {
     let newSenseGroup = clone(senseGroupDefault);
     newSenseGroup.partsOfSpeech.push(generatePos(posName));
     return newSenseGroup;
-}
+};
 
 export const getPosDef = (posName = allPartsOfSpeech[0].name) => {
     return allPartsOfSpeech.find(a => a.name === posName);
@@ -33,22 +31,21 @@ export const getSecondaryFormValues = secondaryFormType => {
 };
 
 export const getBasicForm = pos => {
-    console.log(pos);
     let posDef = allPartsOfSpeech.find(a => a.name===pos.name);
     let typeDef = posDef.types.find(a => a.name===pos.types[0]);
     let secondaryFormType = typeDef.secondaryFormType;
     return secondaryFormTypes[secondaryFormType].basic
-}
+};
 
 export const getTypeDef = (posName, typeName) =>  {
     let posDef = getPosDef(posName);
     return posDef.types.find(a => a.name === typeName);
-}
+};
 
 export const getAllTypes = pos => {
     let posDef = allPartsOfSpeech.find(a => a.name === pos);
     return posDef.types;
-}
+};
 
 export const setSecondary = (posObj, typeDef) => {
     if (posObj.types) {
@@ -75,7 +72,7 @@ export const setSecondary = (posObj, typeDef) => {
         posObj.typeForms = typeDef.secondaryFormType ? getSecondaryFormValues(typeDef.secondaryFormType) : [];
     }
     return posObj;
-}
+};
 
 
 export const generatePos = posName => {
@@ -85,7 +82,7 @@ export const generatePos = posName => {
     }
     let typeDef = posDef.types[0];
     return setSecondary(obj, typeDef);
-}
+};
 
 
 export const handleInputBlur = e => {
@@ -106,4 +103,17 @@ export const handleInputBlur = e => {
 
     const newValue = value.substring(0, selectionStart) + clickedItem.textContent + value.substring(selectionEnd);
     return newValue;
-}
+};
+
+const closePopup = (setAddPopupVisible) => {
+    setAddPopupVisible(false)
+};
+
+export const addPopupHandler = (addPopupVisible, setAddPopupVisible) => {
+    setAddPopupVisible(!addPopupVisible);
+    if (!addPopupVisible) {
+        setTimeout(() => {
+            window.addEventListener("click", () => closePopup(setAddPopupVisible), {once: true});
+        }, 100)
+    }
+};

@@ -1,45 +1,47 @@
-import {useSetState} from 'react-use';
+// import {useSetState} from 'react-use';
 import Morph from "./Morph";
-import { clone } from '../utils';
+import AddPopup from "./AddPopup";
+import { addPopupHandler } from '../utils';
+// import { morphDefault } from '../defaults';
+import _ from 'lodash';
 import {useState} from 'react';
-import _ from "lodash";
+// import _ from "lodash";
 
 const Primary = props => {
 
-    const {appState, setAppState} = props;
-    const [primaryShown, setPrimaryShown] = useState(true);
+    const {appState, setAppState, addFunctions} = props;
+    let {addMorph} =  addFunctions;
+    const [headwordOpen, setHeadwordOpen] = useState(true);
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     let stringPath = "primary"
     let pathFrag = stringPath + "";
     const path = _.get(appState, "entry." + pathFrag);
 
-    const pronunciationDefault =  {
-            pronunciation: "",
-            note: ""
-    };
+    let pathFragA = pathFrag;
 
-    const morphDefault = {
-            targetLang: "",
-            pronunciations: [{...pronunciationDefault}]
-    };
-
-    const [state, setState] = useSetState({
-        morphs: [{...morphDefault}],
-        pronunciationDefault: JSON.stringify(pronunciationDefault),
-        morphDefault: JSON.stringify(morphDefault)
-    });
-
+    const popupItems =[
+        ["Alternate form", () => addMorph(path.length-1, pathFrag)]
+    ]
 
     return (
         <>
-            {/* <div className="bar-primary" onClick={()=>setPrimaryShown(!primaryShown)}>Basic Form <i className={primaryShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
-            <div className={`row primaryForm${primaryShown ? "" : " hidden"}`}>
-            {appState.entry &&
-            appState.entry.primary.map((a,i) => (
-                <Morph appState={appState} setAppState={setAppState} thisIndex={i} state={state} setState={setState} key={i} stringPath="primary" prevIndentLevel={-1} labels={["Headword", "Alternate"]} />
-            ))
-            }
-        </div>
+            <div className={`row${headwordOpen ? "" : " closed"}`}>
+                <div className="row-controls">
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
+                    <i></i>
+                    <i className={`fas fa-chevron-${headwordOpen ? "up" : "down"}`} onClick={() => setHeadwordOpen(!headwordOpen)}></i>
+                </div>
+                <div className="row-content">
+                    Headword
+                </div>
+                {appState.entry &&
+                appState.entry.primary.map((a,i) => (
+                    <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} />
+                ))
+                }
+            </div>
         </>
     )
 };

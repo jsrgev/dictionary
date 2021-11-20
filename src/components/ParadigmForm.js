@@ -1,18 +1,21 @@
-import {capitalize, clone, getBasicForm, getIndent} from '../utils.js';
+import {capitalize, clone, getBasicForm, getIndent, addPopupHandler} from '../utils.js';
 // import {allPartsOfSpeech, secondaryFormTypes} from '../languageSettings';
 import Morph from './Morph.js';
+import AddPopup from './AddPopup';
+import {useState} from 'react';
 import _ from 'lodash';
 
 const ParadigmForm = (props) => {
 
-    const {appState, setAppState, senseGroupIndex, thisIndex, prevIndentLevel, stringPath} = props;
+    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions} = props;
+    const {addMorph} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex];
 
     let pathFrag = stringPath + ".typeForms";
-    // pathFrag = `senseGroups[0].partsOfSpeech[${thisIndex}].typeForms`;
     const path = _.get(appState, "entry." + pathFrag);
-    console.log(pathFrag);
-    console.log(path)
+
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
+    const [formOpen, setFormOpen] = useState(true);
 
     const changeExists = () => {
         if (isBasic && path[thisIndex].exists) {
@@ -41,14 +44,21 @@ const ParadigmForm = (props) => {
     let exists = path[thisIndex].exists;
     let isRegular = path[thisIndex].regular;
 
-    let stringPathA = pathFrag + `[${thisIndex}].forms`;
+    const popupItems = [
+        ["Alternate form", () => addMorph(path.length-1, pathFrag+`[${thisIndex}].forms`)],
+    ];
 
-    
+    let stringPathA = pathFrag + `[${thisIndex}].forms`;
 
     return (
         <>
-            <div className="row">
-                <div className="row-controls"></div>
+            <div className={`row${formOpen ? "" : " closed"}`}>
+                <div className="row-controls">
+                <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                <i className={isRegular ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
+                <i></i>
+                <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
+                </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <div className={exists ? "" : "struck"} onClick={changeExists}>
                         {capitalize(path[thisIndex].typeForm)}
@@ -58,11 +68,9 @@ const ParadigmForm = (props) => {
                     </div>
                 </div>
                 {(exists && !isRegular) &&
-                    <div className="row irregular">
-                   { path[thisIndex].forms.map((a,i) => (
-                        <Morph appState={appState} setAppState={setAppState} senseGroupIndex={senseGroupIndex} thisIndex={thisIndex} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} />
-                    ))}
-                    </div>
+                   path[thisIndex].forms.map((a,i) => (
+                        <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} />
+                    ))
                 }
             </div>
         </>

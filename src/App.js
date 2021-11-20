@@ -8,8 +8,8 @@ import {useEffect, useCallback} from 'react';
 import {useSetState} from 'react-use';
 import {capitalize, generateSenseGroup, clone} from './utils.js';
 import {languageData} from './languageSettings.js';
-import {entryDefault, orthForm} from './defaults.js';
-
+import {entryDefault, morphDefault, definitionDefault, phraseDefault, noteDefault} from './defaults.js';
+import _  from 'lodash';
 
 // const API_BASE = "http://localhost:3001";
 
@@ -73,7 +73,7 @@ const App = () => {
 
     const initializeEntry = useCallback(() => {
         let newEntry = clone(entryDefault);
-        newEntry.primary = [clone(orthForm)];
+        newEntry.primary = [clone(morphDefault)];
         newEntry.senseGroups.push(generateSenseGroup());
         // console.log(newEntry.senseGroups)
         newEntry.etymology = "";
@@ -90,6 +90,59 @@ const App = () => {
         }
     }
 
+    const addFunctions = {
+        addMorph: (index, pathFrag) => {
+            console.log(pathFrag)
+            let entryCopy = clone(state.entry);
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+            entryCopyPath.splice(index+1, 0, clone(morphDefault));
+            setState({entry: entryCopy});
+        },
+        addDefinition: (index, pathFrag) => {
+            let entryCopy = clone(state.entry);
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+            // console.log(index)
+            // console.log(pathFrag)
+            // console.log(entryCopyPath)
+            // return;
+            if (entryCopyPath.definitions) {
+                entryCopyPath.definitions.splice(index+1, 0, clone(definitionDefault));
+            } else {
+                entryCopyPath.definitions = [clone(definitionDefault)];
+            }
+            // console.log(entryCopy);
+            setState({entry: entryCopy});
+            // console.log(state.entry);
+        },
+        addPhrase: (index, pathFrag) => {
+            let entryCopy = clone(state.entry);
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+            if (entryCopyPath.phrases) {
+                entryCopyPath.phrases.splice(index+1, 0, clone(phraseDefault));
+            } else {
+                entryCopyPath.phrases = [clone(phraseDefault)];
+            }
+            setState({entry: entryCopy});
+        },
+        addNote: (index, pathFrag) => {
+            // console.log(pathFrag)
+            // console.log(index)
+            // return;
+            let entryCopy = clone(state.entry);
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+
+            if (entryCopyPath.notes) {
+                entryCopyPath.notes.splice(index+1, 0, clone(noteDefault));
+            } else {
+                entryCopyPath.notes = [clone(noteDefault)];
+            }
+            // entryCopyPath[index].note = clone(noteDefault);
+            // console.log(entryCopyPath);
+            setState({entry: entryCopy});
+            // console.log(state.entry)
+        }
+    };
+    
 	return (
         <>
         {/* <header> */}
@@ -108,22 +161,25 @@ const App = () => {
                  {/* <h1>{`${capitalize(languageData.languageName)}-English Dictionary Entry`}</h1> */}
         {/* </header> */}
         <main>
-            <div>
-                <form id="entryForm" onKeyDown={handleKeyDown}>
-                <Primary appState={state} setAppState={setState} />
+            <div id="wordlist">
+                <p>Entries</p>
+            </div>
+            <div id="entryForm" onKeyDown={handleKeyDown}>
+                <Primary appState={state} setAppState={setState} addFunctions={addFunctions} />
                 {state.entry &&
                     state.entry.senseGroups.map((a,i) => (
-                        <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} />
+                        <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} />
                     ))
                 }
                 <Etymology />
-                {state.entry &&
-                    <Preview appState={state} setAppState={setState} />
-                }
                 <fieldset id="submit">
                     <input id="submitInput" type="submit" value="Save to Dictionary" />
                 </fieldset>
-                </form>
+            </div>
+            <div id="preview">
+                {state.entry &&
+                    <Preview appState={state} setAppState={setState} />
+                }
             </div>
         </main>
         <Ipa />

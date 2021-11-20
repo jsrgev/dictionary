@@ -1,11 +1,19 @@
-import {orthForm} from '../defaults.js';
+import {morphDefault} from '../defaults.js';
 import {clone} from '../utils.js';
-import {useState} from 'react';
+// import {useState} from 'react';
 
 const Preview = (props) => {
 
     const {appState} = props;
-    const [previewShown, setPreviewShown] = useState(true);
+    // const [previewShown, setPreviewShown] = useState(true);
+
+    const noteDisplay = note => {
+        let display = "";
+        if (note.trim() !== "") {
+            display = ` (${note.trim()})`;
+        }
+        return display;
+    }
 
     const alphaSortSet = set => {
         return set.sort((a,b) => {
@@ -19,7 +27,8 @@ const Preview = (props) => {
         array.forEach((morph,i) => {
             let filteredPronunciations = morph.pronunciations.filter(a => a.pronunciation.trim() !== "");
             let pronunciationArray = filteredPronunciations.map(a => {
-                return `/${a.pronunciation.trim()}/` + ((a.note.trim() !== "") ? ` (${a.note.trim()})` : "");
+                let note = a.note ? noteDisplay(a.note) : "";
+                return `/${a.pronunciation.trim()}/` + note;
             })
             let head = i===0 ? true : false;
             let targetLang = morph.targetLang;
@@ -45,7 +54,7 @@ const Preview = (props) => {
     const preview = () => {
         let filteredMorphs = appState.entry.primary.filter(a => a.targetLang.trim() !== "");
         if (filteredMorphs.length === 0) {
-            filteredMorphs = [clone(orthForm)];
+            filteredMorphs = [clone(morphDefault)];
         }
         let set = fillOutSet(filteredMorphs);
         let altString = getAlts(set);
@@ -62,10 +71,11 @@ const Preview = (props) => {
 
     return(
         <>
+        <p>Preview</p>
             {/* <div className="bar-preview" onClick={()=>setPreviewShown(!previewShown)}>Preview <i className={previewShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
-            <div className={`preview${previewShown ? "" : " hidden"}`}>
+            {/* <div className={`preview${previewShown ? "" : " hidden"}`}> */}
                 {preview()}
-            </div>
+            {/* </div> */}
         </>
     )
     

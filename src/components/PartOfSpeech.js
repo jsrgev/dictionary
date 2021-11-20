@@ -5,15 +5,16 @@ import {useState} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {appState, setAppState, senseGroupIndex, thisIndex, prevIndentLevel, stringPath} = props;
+    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions} = props;
     // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
 
     let pathFrag = stringPath + ".partsOfSpeech";
     const path = _.get(appState, "entry." + pathFrag);
 
+    const [posOpen, setPosOpen] = useState(true);
+    const [formsOpen, setFormsOpen] = useState(false);
 
     const addPos = e => {
-        e.preventDefault();
         if (e.target.classList.contains("disabled")) {
             return;
         }
@@ -24,7 +25,6 @@ const PartOfSpeech = (props) => {
     };
 
     const deletePos = (e) => {
-        e.preventDefault();
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
@@ -58,28 +58,14 @@ const PartOfSpeech = (props) => {
         if (posDef.multiChoice) {
 
         }
-        // console.log(senseGroupIndex)
-        // console.log(entryCopy.senseGroups);
         setSecondary(entryCopyPath[thisIndex], type);
         setAppState({entry:entryCopy});
     }
 
-    const handleBarClick = e => {
-        if (!e.target.classList.contains("no-secondary")) {
-            setSecondaryShown(!secondaryShown);
-        }
-    }
-
-    const [posShown, setPosShown] = useState(true);
-    const [secondaryShown, setSecondaryShown] = useState(true);
-    
-    let areSecondaryForms = path[thisIndex].typeForms.length > 0 ? true : false;
 
     const availablePoses = allPartsOfSpeech.filter(a => {
         let alreadySelected = path.some(b => b.name === a.name);
-        if (!alreadySelected) {
-            return a;
-        }
+        return !alreadySelected && a;
     })
 
     const isAvailable = posName => {
@@ -95,18 +81,11 @@ const PartOfSpeech = (props) => {
 
     return (
         <>
-            {/* <div className="bar">
-                <div className="bar-pos" onClick={() => setPosShown(!posShown)}>Part of speech <i className={posShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-                <div className={`bar-secondary${areSecondaryForms ? "" : " no-secondary"}`} onClick={handleBarClick}>
-                    Secondary Forms {areSecondaryForms && <i className={secondaryShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>}
-                    </div>
-            </div> */}
-
-            {/* <fieldset className={`pos ${posShown ? "" : "hidden"}`}> */}
+            <div className={`row${posOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={addPos}></i>           
                     <i className="fas fa-minus" onClick={deletePos}></i>           
-
+                    <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <span>Part of speech</span>
@@ -129,14 +108,17 @@ const PartOfSpeech = (props) => {
                         </div>
 
                         { path[thisIndex].typeForms.length>0 &&
-                            <div className={`row ${secondaryShown ? "" : "hidden"}`}>
-                                <div className="row-controls"></div>
+                            <div className={`row${formsOpen ? "" : " closed"}`}>
+                                <div className="row-controls">
+                                    <i></i>
+                                    <i></i>
+                                    <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
+                                </div>
                                 <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                                     <div>Forms</div>
-                                    <div></div>
                                 </div>
                                 {path[thisIndex].typeForms.map((a,i) => (
-                                        <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} />
+                                        <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
                                     ))}
                             </div>
                         }
@@ -144,8 +126,7 @@ const PartOfSpeech = (props) => {
 
                     </div>
                 }
-            {/* </fieldset> */}
-
+            </div>
     </>
     )
 };

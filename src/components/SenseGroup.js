@@ -1,15 +1,15 @@
 import PartOfSpeech from './PartOfSpeech';
 import Phrase from './Phrase';
-import Example from './Example';
+// import Example from './Example';
 import Definition from './Definition';
 import AddPopup from './AddPopup';
-import {clone, generateSenseGroup} from '../utils.js';
-import { definitionDefault } from '../defaults';
+import {clone, generateSenseGroup, addPopupHandler} from '../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
 const SenseGroup = props => {
-    const {appState, setAppState, thisIndex} = props;
+    const {appState, setAppState, thisIndex, addFunctions} = props;
+    const {addDefinition, addPhrase} = addFunctions;
     // const path = appState.entry.senseGroups;
 
     const stringPath = 'senseGroups';
@@ -17,21 +17,16 @@ const SenseGroup = props => {
     const path = _.get(appState, "entry." + pathFrag);
 
 
-    const [senseGroupShown, setSenseGroupShown] = useState(true);
-    const [definitionShown, setDefinitionShown] = useState(true);
-    const [phrasesShown, setPhrasesShown] = useState(true);
-    const [examplesShown, setExamplesShown] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
+    const [senseGroupOpen, setSenseGroupOpen] = useState(true);
 
     const addSenseGroup = e => {
-        e.preventDefault();
         let entryCopy = clone(appState.entry);
         entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup());
         setAppState({entry: entryCopy});
     }
     
     const deleteSenseGroup = e => {
-        e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (appState.entry.senseGroups.length === 1) {
             entryCopy.senseGroups = [generateSenseGroup()];
@@ -40,43 +35,20 @@ const SenseGroup = props => {
         }
         setAppState({entry: entryCopy});
     }
-
-    const  handleClick = e => {
-        let hoverItems = document.querySelectorAll( ":hover" );
-        let clickedItem = hoverItems[hoverItems.length-1];
-        if (clickedItem.classList.contains("fa-plus") || clickedItem.classList.contains("fa-minus")) {
-            return;
-        }
-        setSenseGroupShown(!senseGroupShown);
-    }
-
-    const addDefinition = (e, index) => {
-        index = index ?? appState.entry.senseGroups[thisIndex].definitions.length-1;
-        if (e.target.classList.contains("disabled")) {
-            return;
-        }
-        let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups[thisIndex].definitions.splice(index+1, 0, clone(definitionDefault));
-        setAppState({entry: entryCopy});
-    };
-
-
+    
     const popupItems = [
         ["Sense group", addSenseGroup],
-        ["Definition", addDefinition]
+        ["Definition", () => {
+            let index = (path[thisIndex].definitions) ? path[thisIndex].definitions.length-1 : 0;
+            addDefinition(index, pathFrag+`[${thisIndex}]`);
+            }
+        ],
+        ["Phrase", () => {
+            let index = (path[thisIndex].phrases) ? path[thisIndex].phrases.length-1 : 0;
+            addPhrase(index, pathFrag+`[${thisIndex}]`);
+            }
+        ]
     ]
-
-    const closePopup = () => {
-        setAddPopupVisible(false)
-        window.removeEventListener("click", closePopup);
-    }
-
-    const setAddPopupVisibleHandler = () => {
-        setAddPopupVisible(!addPopupVisible);
-        setTimeout(() => {
-            window.addEventListener("click", closePopup);
-        }, 100)
-    }
 
     // senseGroupAvailablePoses
 
@@ -84,56 +56,30 @@ const SenseGroup = props => {
 
     return (
         <>
-            {/* <div className="bar-senseGroup" onClick={handleClick}> */}
-                {/* <div>Sense {thisIndex+1} <i className={senseGroupShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
-            {/* </div> */}
-            <div className="row">
-                <div className="row-controls">
-                <AddPopup popupItems={popupItems} visible={addPopupVisible} setAddPopupVisible={setAddPopupVisible} />
-                <i className="fas fa-plus"
-                // onClick={() => setAddPopupVisible(!addPopupVisible)}
-                onClick={setAddPopupVisibleHandler}
-                ></i>
+            <div className={`row${senseGroupOpen ? "" : " closed"}`}>
+                <div className="row-controls">  
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                     <i className="fas fa-minus" onClick={deleteSenseGroup}></i>
-                </div>
+                    <i className={`fas fa-chevron-${senseGroupOpen ? "up" : "down"}`} onClick={() => setSenseGroupOpen(!senseGroupOpen)}></i>
+               </div>
                 <div className="row-content">
                     Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}
                 </div>
-                <div className="row">
-                    {/* <div className={`row senseGroup${senseGroupShown ? "" : " hidden"}`}> */}
-                    <div className="row">
-                        {path[thisIndex].partsOfSpeech.map((a,i) => (
-                        <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={thisIndex} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} />
-                        ))}
-                    </div>
-                    {/* <div className={`row senseGroup${senseGroupShown ? "" : " hidden"}`}> */}
-                    <div className="row">
-                        {path[thisIndex].definitions.map((a,i) => (
-                        <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} shown={definitionShown} addDefinition={addDefinition} stringPath={stringPathA} />
-                        ))}
-                    </div>
-                </div>
+                    {path[thisIndex].partsOfSpeech.map((a,i) => (
+                    <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} />
+                    ))}
+                    {path[thisIndex].definitions &&
+                    path[thisIndex].definitions.map((a,i) => (
+                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} />
+                    ))}
+                    {path[thisIndex].phrases &&
+                    path[thisIndex].phrases.map((a,i) => (
+                    <Phrase appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} />
+                    ))}
             </div>
          </>
     )
 }
-
-{/* <div className="bar">
-                    <div className="bar-definition" onClick={()=>setDefinitionShown(!definitionShown)}>Definition <i className={definitionShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-                    <div className="bar-phrases" onClick={()=>setPhrasesShown(!phrasesShown)}>Phrases <i className={phrasesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-                    <div className="bar-examples" onClick={()=>setExamplesShown(!examplesShown)}>Examples <i className={examplesShown? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div>
-                </div> */}
-
-                {/* <Definition appState={appState} setAppState={setAppState} thisIndex={thisIndex} shown={definitionShown} />
-                <div className={`phrase${phrasesShown ? "" : " hidden"}`}>
-                    {path.phrases.map((a,i) => (
-                        <Phrase appState={appState} setAppState={setAppState} thisIndex={thisIndex} phraseIndex={i} key={i} />
-                    ))}
-                </div>
-                <div className={`example${examplesShown ? "" : " hidden"}`}>
-                    {path.examples.map((a,i) => (
-                        <Example appState={appState} setAppState={setAppState} thisIndex={thisIndex} exampleIndex={i} key={i} shown={examplesShown} />
-                    )) }
-                </div> */}
 
 export default SenseGroup;

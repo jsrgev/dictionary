@@ -13,28 +13,24 @@ export const entryDefault = {
 
 export const exampleDefault = {
     targetLang: "",
-    meaning: ""
+    definitions: [JSON.parse(JSON.stringify(definitionDefault))],
 };
 
 export const phraseDefault = {
     targetLang: "",
-    meaning: ""
+    definitions: [JSON.parse(JSON.stringify(definitionDefault))],
 };
 
 export const senseGroupDefault = {
     partsOfSpeech: [],
     definitions: [JSON.parse(JSON.stringify(definitionDefault))],
-    note: "",
-    examples: [JSON.parse(JSON.stringify(exampleDefault))],
-    phrases: [JSON.parse(JSON.stringify(phraseDefault))]
 };
 
 export const pronunciationDefault =  {
     pronunciation: "",
-    note: ""
 };
 
-export const orthForm = {
+export const morphDefault = {
     targetLang: "",
     pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
 }
@@ -43,7 +39,7 @@ export const secondaryFormDetailsDefault = {
     typeForm: "",
     exists: true,
     regular: true,
-    forms: [JSON.parse(JSON.stringify(orthForm))],
+    forms: [JSON.parse(JSON.stringify(morphDefault))],
     // targetLang: "",
     // pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
 };

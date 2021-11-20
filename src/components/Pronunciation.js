@@ -1,4 +1,5 @@
-import AddPopup from './AddPopup.js';
+import AddPopup from './AddPopup';
+import Note from './Note';
 import {clone, handleInputBlur, getIndent} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 import {useState} from 'react';
@@ -6,10 +7,9 @@ import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addPronunciation} = props;
+    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, addPronunciation} = props;
+    const {addNote} = addFunctions;
     // const path = appState.entry.primary[morphIndex].pronunciations;
-
-    // console.log(addPronunciation)
 
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(appState, "entry." + pathFrag);
@@ -34,8 +34,8 @@ const Pronunciation = (props) => {
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
-        console.log(entryCopyPath)
-        console.log(entryCopy)
+        // console.log(entryCopyPath)
+        // console.log(entryCopy)
         setAppState({entry: entryCopy});
     };
 
@@ -44,7 +44,7 @@ const Pronunciation = (props) => {
         window.removeEventListener("click", closePopup);
     }
 
-    const setAddPopupVisibleHandler = () => {
+    const addPopupHandler = () => {
         setAddPopupVisible(!addPopupVisible);
         setTimeout(() => {
             window.addEventListener("click", closePopup);
@@ -52,17 +52,26 @@ const Pronunciation = (props) => {
     }
 
     const popupItems = [
-        ["Pronunciation", e => addPronunciation(e, thisIndex)]
+        ["Pronunciation", e => addPronunciation(e, thisIndex)],
+        // ["Note", e => addNote(path[thisIndex].notes.length-1, pathFrag+`[${thisIndex}]`)]
+
+        ["Note", () => {
+            let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;
+            addNote(index, pathFrag+`[${thisIndex}]`);
+            }
+        ]
     ]
 
-    // console.log(path.length);
+    // console.log(path[]);
     // console.log(path[thisIndex])
+
+    let stringPathA  = pathFrag + `[${thisIndex}]`;
 
     return (
         <>
             <div className="row-controls">
-                <AddPopup popupItems={popupItems} visible={addPopupVisible} setAddPopupVisible={setAddPopupVisible} />
-                <i className="fas fa-plus" onClick={setAddPopupVisibleHandler}></i>           
+                <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                <i className="fas fa-plus" onClick={addPopupHandler}></i>           
                 <i className={`fas fa-minus${path.length === 1 && path[thisIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
@@ -73,8 +82,12 @@ const Pronunciation = (props) => {
                 onBlur={e => handleChange(handleInputBlur(e), "pronunciation")}
                 />
             </div>
-            {/* <div></div> */}
-            {/* <div></div> */}
+            {path[thisIndex].notes &&
+            path[thisIndex].notes.map((a,i) => (
+                <Note appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
+
+            ))
+            }
             {/* <div className="row">
                 <div className="row-controls"></div>
                 <div className="row-content" style={getIndent(prevIndentLevel+1)} >

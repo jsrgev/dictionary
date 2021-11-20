@@ -14,7 +14,6 @@ const Example = props => {
     };
 
     const deleteExample = e => {
-        e.preventDefault();
         let entryCopy = clone(appState.entry);
         if (path.length === 1) {
             entryCopy.senseGroups[senseGroupIndex].examples = [clone(exampleDefault)];
@@ -25,7 +24,6 @@ const Example = props => {
     }
 
     const addExample = e => {
-        e.preventDefault();
         if (e.target.classList.contains("disabled")) {
             return;
         }
