@@ -6,7 +6,7 @@ import Preview from './components/Preview';
 import Ipa from './components/Ipa';
 import {useEffect, useCallback} from 'react';
 import {useSetState} from 'react-use';
-import {capitalize, generateSenseGroup, clone} from './utils.js';
+import {capitalize, clone, generateSenseGroup, generatePos} from './utils.js';
 import {languageData} from './languageSettings.js';
 import {entryDefault, morphDefault, definitionDefault, phraseDefault, noteDefault} from './defaults.js';
 import _  from 'lodash';
@@ -101,18 +101,12 @@ const App = () => {
         addDefinition: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
-            // console.log(index)
-            // console.log(pathFrag)
-            // console.log(entryCopyPath)
-            // return;
             if (entryCopyPath.definitions) {
                 entryCopyPath.definitions.splice(index+1, 0, clone(definitionDefault));
             } else {
                 entryCopyPath.definitions = [clone(definitionDefault)];
             }
-            // console.log(entryCopy);
             setState({entry: entryCopy});
-            // console.log(state.entry);
         },
         addPhrase: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
@@ -125,9 +119,6 @@ const App = () => {
             setState({entry: entryCopy});
         },
         addNote: (index, pathFrag) => {
-            // console.log(pathFrag)
-            // console.log(index)
-            // return;
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
 
@@ -136,11 +127,18 @@ const App = () => {
             } else {
                 entryCopyPath.notes = [clone(noteDefault)];
             }
-            // entryCopyPath[index].note = clone(noteDefault);
-            // console.log(entryCopyPath);
             setState({entry: entryCopy});
-            // console.log(state.entry)
-        }
+        },
+        addPos: (index, pathFrag, availablePoses) => {
+            // if (e.target.classList.contains("disabled")) {
+            //     return;
+            // }
+            // console.log(index)
+            let entryCopy = clone(state.entry);
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].name));
+            setState({entry: entryCopy});
+        },
     };
     
 	return (

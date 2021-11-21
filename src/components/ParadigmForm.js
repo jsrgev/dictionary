@@ -11,7 +11,7 @@ const ParadigmForm = (props) => {
     const {addMorph} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex];
 
-    let pathFrag = stringPath + ".typeForms";
+    let pathFrag = stringPath + ".paradigmForms";
     const path = _.get(appState, "entry." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);

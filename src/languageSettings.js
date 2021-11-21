@@ -1,5 +1,5 @@
 export const languageData = {
-    languageName: "melfem",
+    languageName: "language",
     creator: "josh regev",
     creatorEmail: ""
 }

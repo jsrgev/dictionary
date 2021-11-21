@@ -3,13 +3,14 @@ import Phrase from './Phrase';
 // import Example from './Example';
 import Definition from './Definition';
 import AddPopup from './AddPopup';
+import {allPartsOfSpeech} from '../languageSettings.js';
 import {clone, generateSenseGroup, addPopupHandler} from '../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
 const SenseGroup = props => {
     const {appState, setAppState, thisIndex, addFunctions} = props;
-    const {addDefinition, addPhrase} = addFunctions;
+    const {addDefinition, addPhrase, addPos} = addFunctions;
     // const path = appState.entry.senseGroups;
 
     const stringPath = 'senseGroups';
@@ -36,6 +37,11 @@ const SenseGroup = props => {
         setAppState({entry: entryCopy});
     }
     
+    const availablePoses = allPartsOfSpeech.filter(a => {
+        let alreadySelected = path[thisIndex].partsOfSpeech.some(b => b.name === a.name);
+        return !alreadySelected && a;
+    })
+
     const popupItems = [
         ["Sense group", addSenseGroup],
         ["Definition", () => {
@@ -47,8 +53,10 @@ const SenseGroup = props => {
             let index = (path[thisIndex].phrases) ? path[thisIndex].phrases.length-1 : 0;
             addPhrase(index, pathFrag+`[${thisIndex}]`);
             }
-        ]
+        ],
+        ["Part of Speech", () => addPos(path[thisIndex].partsOfSpeech.length-1, pathFrag+`[${thisIndex}].partsOfSpeech`, availablePoses)],
     ]
+
 
     // senseGroupAvailablePoses
 
@@ -67,7 +75,7 @@ const SenseGroup = props => {
                     Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}
                 </div>
                     {path[thisIndex].partsOfSpeech.map((a,i) => (
-                    <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} />
+                    <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} />
                     ))}
                     {path[thisIndex].definitions &&
                     path[thisIndex].definitions.map((a,i) => (

@@ -54,7 +54,8 @@ const Preview = (props) => {
     const preview = () => {
         let filteredMorphs = appState.entry.headword.morphs.filter(a => a.targetLang.trim() !== "");
         if (filteredMorphs.length === 0) {
-            filteredMorphs = [clone(morphDefault)];
+            return "";
+            // filteredMorphs = [clone(morphDefault)];
         }
         let set = fillOutSet(filteredMorphs);
         let altString = getAlts(set);

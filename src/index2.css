@@ -410,7 +410,7 @@ ul.parts-of-speech, ul.types-of-POS {
 	grid-auto-flow: column;
 	grid-auto-columns: max-content;
 	position: absolute;
-	bottom: 1rem;
+	top: -1.5rem;
 	border: 2px solid var(--mango);
     border-radius: .6rem;
     backdrop-filter: blur(1.5px);

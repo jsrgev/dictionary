@@ -22,12 +22,12 @@ export const getPosDef = (posName = allPartsOfSpeech[0].name) => {
 
 export const getSecondaryFormValues = secondaryFormType => {
     let secondaryFormValues = secondaryFormTypes[secondaryFormType].forms;
-    let typeForms = secondaryFormValues.map(a => {
+    let paradigmForms = secondaryFormValues.map(a => {
         let item = clone(secondaryFormDetailsDefault);
         item.typeForm = a;
         return item;
     });
-    return typeForms; 
+    return paradigmForms; 
 };
 
 export const getBasicForm = pos => {
@@ -55,7 +55,7 @@ export const setSecondary = (posObj, typeDef) => {
         }
     } else {
         posObj.types = [];
-        posObj.typeForms = [];    
+        posObj.paradigmForms = [];    
     }
     if (typeDef) {
         let isMultiChoice = getPosDef(posObj.name).multiChoice;
@@ -69,7 +69,7 @@ export const setSecondary = (posObj, typeDef) => {
         } else {
             posObj.types = [typeDef.name];
         }
-        posObj.typeForms = typeDef.secondaryFormType ? getSecondaryFormValues(typeDef.secondaryFormType) : [];
+        posObj.paradigmForms = typeDef.secondaryFormType ? getSecondaryFormValues(typeDef.secondaryFormType) : [];
     }
     return posObj;
 };

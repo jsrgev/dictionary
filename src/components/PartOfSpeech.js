@@ -1,11 +1,13 @@
-import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef, getIndent} from '../utils';
+import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef, getIndent, addPopupHandler} from '../utils';
+import AddPopup from './AddPopup';
 import {allPartsOfSpeech} from '../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
 import {useState} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions} = props;
+    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses} = props;
+    const {addPos} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
 
     let pathFrag = stringPath + ".partsOfSpeech";
@@ -13,22 +15,13 @@ const PartOfSpeech = (props) => {
 
     const [posOpen, setPosOpen] = useState(true);
     const [formsOpen, setFormsOpen] = useState(false);
-
-    const addPos = e => {
-        if (e.target.classList.contains("disabled")) {
-            return;
-        }
-        let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
-        entryCopyPath.splice(thisIndex+1, 0, generatePos(availablePoses[0].name));
-        setAppState({entry: entryCopy});
-    };
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const deletePos = (e) => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            entryCopyPath = [generatePos()];
+            entryCopyPath.splice(0, 1, generatePos());
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
@@ -63,10 +56,10 @@ const PartOfSpeech = (props) => {
     }
 
 
-    const availablePoses = allPartsOfSpeech.filter(a => {
-        let alreadySelected = path.some(b => b.name === a.name);
-        return !alreadySelected && a;
-    })
+    // const availablePoses = allPartsOfSpeech.filter(a => {
+    //     let alreadySelected = path.some(b => b.name === a.name);
+    //     return !alreadySelected && a;
+    // })
 
     const isAvailable = posName => {
         return availablePoses.some(a => a.name === posName);
@@ -76,6 +69,11 @@ const PartOfSpeech = (props) => {
         return path[thisIndex].name === posName;
     }
 
+    const popupItems = [
+        ["Part of Speech", () => addPos(thisIndex, pathFrag, availablePoses)],
+        // ["Note", e => addNote(path[thisIndex].notes.length-1, pathFrag+`[${thisIndex}]`)]
+    ]
+
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
 
@@ -83,7 +81,8 @@ const PartOfSpeech = (props) => {
         <>
             <div className={`row${posOpen ? "" : " closed"}`}>
                 <div className="row-controls">
-                    <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={addPos}></i>           
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deletePos}></i>           
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                 </div>
@@ -107,7 +106,7 @@ const PartOfSpeech = (props) => {
                             </ul>
                         </div>
 
-                        { path[thisIndex].typeForms.length>0 &&
+                        { path[thisIndex].paradigmForms.length>0 &&
                             <div className={`row${formsOpen ? "" : " closed"}`}>
                                 <div className="row-controls">
                                     <i></i>
@@ -117,7 +116,7 @@ const PartOfSpeech = (props) => {
                                 <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                                     <div>Forms</div>
                                 </div>
-                                {path[thisIndex].typeForms.map((a,i) => (
+                                {path[thisIndex].paradigmForms.map((a,i) => (
                                         <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
                                     ))}
                             </div>
