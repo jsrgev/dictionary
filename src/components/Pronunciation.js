@@ -9,7 +9,7 @@ const Pronunciation = (props) => {
 
     const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, addPronunciation} = props;
     const {addNote} = addFunctions;
-    // const path = appState.entry.primary[morphIndex].pronunciations;
+    // const path = appState.entry.headword[morphIndex].pronunciations;
 
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(appState, "entry." + pathFrag);

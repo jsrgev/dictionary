@@ -9,7 +9,7 @@ const Morph = props => {
 
     const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions} = props;
     const {addMorph} = addFunctions;
-    // const path = appState.entry.primary[thisIndex];
+    // const path = appState.entry.headword[thisIndex];
 
     let pathFrag = stringPath + "";
     const path = _.get(appState, "entry." + pathFrag);

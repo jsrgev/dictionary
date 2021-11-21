@@ -1,5 +1,6 @@
 // import {useSetState} from 'react-use';
 import Morph from "./Morph";
+import Note from "./Note";
 import AddPopup from "./AddPopup";
 import { addPopupHandler } from '../utils';
 // import { morphDefault } from '../defaults';
@@ -7,22 +8,30 @@ import _ from 'lodash';
 import {useState} from 'react';
 // import _ from "lodash";
 
-const Primary = props => {
+const Headword = props => {
 
     const {appState, setAppState, addFunctions} = props;
-    let {addMorph} =  addFunctions;
+    let {addMorph, addNote} =  addFunctions;
     const [headwordOpen, setHeadwordOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    let stringPath = "primary"
+    let stringPath = "headword"
     let pathFrag = stringPath + "";
     const path = _.get(appState, "entry." + pathFrag);
 
-    let pathFragA = pathFrag;
+    let pathFragA = pathFrag+".morphs";
 
     const popupItems =[
-        ["Alternate form", () => addMorph(path.length-1, pathFrag)]
-    ]
+        ["Alternate form", () => addMorph(path.morphs.length-1, pathFrag)],
+        ["Note", () => {
+            let index = (path.notes) ? path.notes.length-1 : 0;
+            addNote(index, pathFrag);
+            // console.log(appState.entry)
+            }
+        ]
+    ];
+
+    // console.log(path);
 
     return (
         <>
@@ -37,8 +46,15 @@ const Primary = props => {
                     Headword
                 </div>
                 {appState.entry &&
-                appState.entry.primary.map((a,i) => (
+                appState.entry.headword.morphs.map((a,i) => (
                     <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} />
+                ))
+                }
+                {appState.entry &&
+                path.notes &&
+                // <div>{path.notes[0].content</div>
+                path.notes.map((a,i) => (
+                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFrag} prevIndentLevel={0} addFunctions={addFunctions} />
                 ))
                 }
             </div>
@@ -46,4 +62,4 @@ const Primary = props => {
     )
 };
 
-export default Primary;
+export default Headword;

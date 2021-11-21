@@ -1,5 +1,5 @@
 // import {useEffect, useState, useRef} from 'react';
-import Primary from './components/Primary';
+import Headword from './components/Headword';
 import SenseGroup from './components/SenseGroup';
 import Etymology from './components/Etymology';
 import Preview from './components/Preview';
@@ -73,7 +73,7 @@ const App = () => {
 
     const initializeEntry = useCallback(() => {
         let newEntry = clone(entryDefault);
-        newEntry.primary = [clone(morphDefault)];
+        // newEntry.headword = [clone(headwordDefault)];
         newEntry.senseGroups.push(generateSenseGroup());
         // console.log(newEntry.senseGroups)
         newEntry.etymology = "";
@@ -165,7 +165,7 @@ const App = () => {
                 <p>Entries</p>
             </div>
             <div id="entryForm" onKeyDown={handleKeyDown}>
-                <Primary appState={state} setAppState={setState} addFunctions={addFunctions} />
+                <Headword appState={state} setAppState={setState} addFunctions={addFunctions} />
                 {state.entry &&
                     state.entry.senseGroups.map((a,i) => (
                         <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} />

@@ -45,10 +45,10 @@ const ParadigmForm = (props) => {
     let isRegular = path[thisIndex].regular;
 
     const popupItems = [
-        ["Alternate form", () => addMorph(path.length-1, pathFrag+`[${thisIndex}].forms`)],
+        ["Alternate form", () => addMorph(path.length-1, pathFrag+`[${thisIndex}].morphs`)],
     ];
 
-    let stringPathA = pathFrag + `[${thisIndex}].forms`;
+    let stringPathA = pathFrag + `[${thisIndex}].morphs`;
 
     return (
         <>
@@ -68,7 +68,7 @@ const ParadigmForm = (props) => {
                     </div>
                 </div>
                 {(exists && !isRegular) &&
-                   path[thisIndex].forms.map((a,i) => (
+                   path[thisIndex].morphs.map((a,i) => (
                         <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} />
                     ))
                 }

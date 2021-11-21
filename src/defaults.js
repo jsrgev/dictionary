@@ -7,7 +7,19 @@ export const definitionDefault = {
     definition: "",
 };
 
+export const pronunciationDefault =  {
+    pronunciation: "",
+};
+
+export const morphDefault = {
+    targetLang: "",
+    pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
+};
+
 export const entryDefault = {
+    headword: {
+        morphs: [JSON.parse(JSON.stringify(morphDefault))],
+    },
     senseGroups: [],
 };
 
@@ -26,20 +38,11 @@ export const senseGroupDefault = {
     definitions: [JSON.parse(JSON.stringify(definitionDefault))],
 };
 
-export const pronunciationDefault =  {
-    pronunciation: "",
-};
-
-export const morphDefault = {
-    targetLang: "",
-    pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
-}
-
 export const secondaryFormDetailsDefault = {
     typeForm: "",
     exists: true,
     regular: true,
-    forms: [JSON.parse(JSON.stringify(morphDefault))],
+    morphs: [JSON.parse(JSON.stringify(morphDefault))],
     // targetLang: "",
     // pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
 };

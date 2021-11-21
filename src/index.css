@@ -51,7 +51,7 @@ fieldset {
     align-items: start;
 }
 
-.primaryForm {
+.headwordForm {
 	display: grid;
 	gap: 1rem;
 	grid-template-columns: 6rem 1fr 1rem 1rem 6rem 1fr 6rem 1fr 1rem 1rem;
@@ -81,7 +81,7 @@ fieldset {
 	gap: 1rem;
 }
 
-.bar-primary {
+.bar-headword {
 	background-color: var(--blue);
 	text-align: center;
 	font-size: .9rem;
