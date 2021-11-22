@@ -3,7 +3,6 @@ import Morph from "./Morph";
 import Note from "./Note";
 import AddPopup from "./AddPopup";
 import { addPopupHandler } from '../utils';
-// import { morphDefault } from '../defaults';
 import _ from 'lodash';
 import {useState} from 'react';
 // import _ from "lodash";
@@ -26,7 +25,6 @@ const Headword = props => {
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag);
-            // console.log(appState.entry)
             }
         ]
     ];
@@ -52,9 +50,8 @@ const Headword = props => {
                 }
                 {appState.entry &&
                 path.notes &&
-                // <div>{path.notes[0].content</div>
                 path.notes.map((a,i) => (
-                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFrag} prevIndentLevel={0} addFunctions={addFunctions} />
+                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} addFunctions={addFunctions} />
                 ))
                 }
             </div>

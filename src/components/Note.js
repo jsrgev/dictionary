@@ -1,18 +1,20 @@
-import AddPopup from './AddPopup';
+// import AddPopup from './AddPopup';
 // import {definitionDefault} from '../defaults.js'
-import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
+import {clone, getIndent, handleInputBlur, 
+    // addPopupHandler
+} from '../utils.js';
 // import {useState} from 'react';
 import _ from 'lodash';
 
 const Note = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
+    const {appState, setAppState, prevIndentLevel, thisIndex, stringPath} = props;
     // const {addDefinition} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
     let pathFrag = stringPath + ".notes";
     const path = _.get(appState, "entry." + pathFrag);
-    const upPath = _.get(appState, "entry." + stringPath);
+    // const upPath = _.get(appState, "entry." + stringPath);
 
     // const [addPopupVisible, setAddPopupVisible] = useState(false);
 
@@ -20,6 +22,9 @@ const Note = props => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
+            console.log(entryCopy);
+            console.log(pathFrag)
+            // return;
             entryCopyPath[thisIndex][field] = value;
             setAppState({entry:entryCopy});
         }
@@ -29,8 +34,6 @@ const Note = props => {
     const deleteNote = e => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        // console.log(path)
-        // return;
         if (path.length === 1) {
             console.log("a")
             let entryCopyUpPath = _.get(entryCopy, stringPath);
@@ -42,30 +45,32 @@ const Note = props => {
         setAppState({entry: entryCopy});
     }; 
 
-    const popupItems = [
+    // const popupItems = [
         // ["Definition", () => addDefinition(thisIndex, stringPath)]
-    ];
+    // ];
 
 
-    // console.log(path);
+    console.log(appState);
 
     return (
         <>
-            <div className="row-controls">
-                {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
-                {/* <i className="fas fa-plus"
-                onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
-                ></i> */}
-                <i></i>
-                <i className="fas fa-minus" onClick={deleteNote}></i>           
-            </div>
-            <div className="row-content" style={getIndent(prevIndentLevel)}>
-                <div>Note</div>
-                <input type="text"
-                value={path[thisIndex].content}
-                onChange={e => handleChange(e.target.value, "content")}
-                onBlur={e => handleChange(handleInputBlur(e), "content")}
-                />
+            <div className="row">
+                <div className="row-controls">
+                    {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
+                    {/* <i className="fas fa-plus"
+                    onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
+                    ></i> */}
+                    <i></i>
+                    <i className="fas fa-minus" onClick={deleteNote}></i>           
+                </div>
+                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                    <div>Note</div>
+                    <input type="text"
+                    value={path[thisIndex].content}
+                    onChange={e => handleChange(e.target.value, "content")}
+                    onBlur={e => handleChange(handleInputBlur(e), "content")}
+                    />
+                </div>
             </div>
         </>
     )

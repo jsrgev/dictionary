@@ -4,6 +4,7 @@ import SenseGroup from './components/SenseGroup';
 import Etymology from './components/Etymology';
 import Preview from './components/Preview';
 import Ipa from './components/Ipa';
+import Settings from './components/Settings';
 import {useEffect, useCallback} from 'react';
 import {useSetState} from 'react-use';
 import {capitalize, clone, generateSenseGroup, generatePos} from './utils.js';
@@ -73,9 +74,7 @@ const App = () => {
 
     const initializeEntry = useCallback(() => {
         let newEntry = clone(entryDefault);
-        // newEntry.headword = [clone(headwordDefault)];
         newEntry.senseGroups.push(generateSenseGroup());
-        // console.log(newEntry.senseGroups)
         newEntry.etymology = "";
         setState({entry: newEntry});
     }, [setState])
@@ -130,10 +129,6 @@ const App = () => {
             setState({entry: entryCopy});
         },
         addPos: (index, pathFrag, availablePoses) => {
-            // if (e.target.classList.contains("disabled")) {
-            //     return;
-            // }
-            // console.log(index)
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
             entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].name));
@@ -143,21 +138,18 @@ const App = () => {
     
 	return (
         <>
-        {/* <header> */}
-            <nav>
-                <ul>
-                    <li id="site-title">Geriadur</li>
-                    <li>
-                    {`${capitalize(languageData.languageName)}-English`}
-                    </li>
-                    <li>Word entry</li>
-                    <li>Dictionary</li>
-                    <li>Settings</li>
-                    <li>About</li>
-                </ul>
-                </nav>           
-                 {/* <h1>{`${capitalize(languageData.languageName)}-English Dictionary Entry`}</h1> */}
-        {/* </header> */}
+        <nav>
+            <ul>
+                <li id="site-title">Geriadur</li>
+                <li>
+                {`${capitalize(languageData.languageName)}-English`}
+                </li>
+                <li>Word entry</li>
+                <li>Dictionary</li>
+                <li>Setup</li>
+                <li>About</li>
+            </ul>
+            </nav>           
         <main>
             <div id="wordlist">
                 <p>Entries</p>

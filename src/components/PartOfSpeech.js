@@ -55,12 +55,6 @@ const PartOfSpeech = (props) => {
         setAppState({entry:entryCopy});
     }
 
-
-    // const availablePoses = allPartsOfSpeech.filter(a => {
-    //     let alreadySelected = path.some(b => b.name === a.name);
-    //     return !alreadySelected && a;
-    // })
-
     const isAvailable = posName => {
         return availablePoses.some(a => a.name === posName);
     }

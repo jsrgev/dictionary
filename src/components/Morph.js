@@ -1,5 +1,6 @@
 import Pronunciation from './Pronunciation';
 import AddPopup from './AddPopup';
+import Note from './Note';
 import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
 import {morphDefault, pronunciationDefault} from '../defaults.js';
 import {useState} from 'react';
@@ -8,7 +9,7 @@ import _ from "lodash";
 const Morph = props => {
 
     const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions} = props;
-    const {addMorph} = addFunctions;
+    const {addMorph, addNote} = addFunctions;
     // const path = appState.entry.headword[thisIndex];
 
     let pathFrag = stringPath + "";
@@ -47,7 +48,12 @@ const Morph = props => {
 
     const popupItems = [
         ["Alternate form", () => addMorph(thisIndex, pathFrag)],
-        ["Pronunciation", addPronunciation]
+        ["Pronunciation", addPronunciation],
+        ["Note", () => {
+            let index = (path.notes) ? path.notes.length-1 : 0;
+            addNote(index, pathFrag+`[${thisIndex}]`);
+            }
+        ]
     ];
     
     const getNumber = () => {
@@ -59,6 +65,8 @@ const Morph = props => {
     };
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
+
+    // console.log(path[thisIndex])
 
     return (
         <>
@@ -82,6 +90,12 @@ const Morph = props => {
                         <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions}
                         />
                     ))}
+                    {appState.entry &&
+                    path[thisIndex].notes &&
+                    path[thisIndex].notes.map((a,i) => (
+                        <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={0} addFunctions={addFunctions} />
+                    ))
+                    }
                 </div>
             </div>
         </>
