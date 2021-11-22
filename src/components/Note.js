@@ -1,22 +1,20 @@
-// import AddPopup from './AddPopup';
+import AddPopup from './AddPopup';
 // import {definitionDefault} from '../defaults.js'
-import {clone, getIndent, handleInputBlur, 
-    // addPopupHandler
-} from '../utils.js';
-// import {useState} from 'react';
+import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
+import {useState} from 'react';
 import _ from 'lodash';
 
 const Note = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, stringPath} = props;
-    // const {addDefinition} = addFunctions;
+    const {appState, setAppState, prevIndentLevel, thisIndex, stringPath, addFunctions} = props;
+    const {addNote} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
     let pathFrag = stringPath + ".notes";
     const path = _.get(appState, "entry." + pathFrag);
     // const upPath = _.get(appState, "entry." + stringPath);
 
-    // const [addPopupVisible, setAddPopupVisible] = useState(false);
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
         if (value !== undefined) {
@@ -45,9 +43,11 @@ const Note = props => {
         setAppState({entry: entryCopy});
     }; 
 
-    // const popupItems = [
-        // ["Definition", () => addDefinition(thisIndex, stringPath)]
-    // ];
+    const popupItems = [
+        ["Note", () => {
+            addNote(thisIndex, stringPath);
+        }]
+    ];
 
 
     console.log(appState);
@@ -56,10 +56,10 @@ const Note = props => {
         <>
             <div className="row">
                 <div className="row-controls">
-                    {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
-                    {/* <i className="fas fa-plus"
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className="fas fa-plus"
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
-                    ></i> */}
+                    ></i>
                     <i></i>
                     <i className="fas fa-minus" onClick={deleteNote}></i>           
                 </div>

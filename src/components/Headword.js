@@ -25,8 +25,7 @@ const Headword = props => {
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag);
-            }
-        ]
+        }]
     ];
 
     // console.log(path);
@@ -51,7 +50,7 @@ const Headword = props => {
                 {appState.entry &&
                 path.notes &&
                 path.notes.map((a,i) => (
-                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} addFunctions={addFunctions} />
+                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPath} prevIndentLevel={0} addFunctions={addFunctions} />
                 ))
                 }
             </div>

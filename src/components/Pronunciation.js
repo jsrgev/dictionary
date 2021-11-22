@@ -58,8 +58,7 @@ const Pronunciation = (props) => {
         ["Note", () => {
             let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;
             addNote(index, pathFrag+`[${thisIndex}]`);
-            }
-        ]
+        }]
     ]
 
     // console.log(path[]);

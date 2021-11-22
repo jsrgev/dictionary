@@ -52,8 +52,7 @@ const Morph = props => {
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag+`[${thisIndex}]`);
-            }
-        ]
+        }]
     ];
     
     const getNumber = () => {

@@ -120,7 +120,6 @@ const App = () => {
         addNote: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
-
             if (entryCopyPath.notes) {
                 entryCopyPath.notes.splice(index+1, 0, clone(noteDefault));
             } else {
