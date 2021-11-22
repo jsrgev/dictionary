@@ -1,5 +1,6 @@
+import {allPartsOfSpeech} from "../languageSettings";
 // import {morphDefault} from '../defaults.js';
-// import {clone} from '../utils.js';
+import {getPosDef} from '../utils.js';
 // import {useState} from 'react';
 
 const Preview = (props) => {
@@ -13,7 +14,7 @@ const Preview = (props) => {
             display = ` (${note.trim()})`;
         }
         return display;
-    }
+    };
 
     const alphaSortSet = set => {
         return set.sort((a,b) => {
@@ -49,9 +50,9 @@ const Preview = (props) => {
             }
         }
         return altString;
-    }
+    };
 
-    const preview = () => {
+    const getHeadword = () => {
         let filteredMorphs = appState.entry.headword.morphs.filter(a => a.targetLang.trim() !== "");
         if (filteredMorphs.length === 0) {
             return "";
@@ -62,21 +63,68 @@ const Preview = (props) => {
         set[0].line = <><p><span className="hw">{set[0].targetLang.trim()}</span> {set[0].pronunciationsDisplay}{altString}</p></>;
 
         let alphaSet = alphaSortSet(set);
-
+        // console.log(alphaSet)
         let finalString = "";
         alphaSet.forEach(a => {
             finalString = <>{finalString}{a.line}</>
         })
+        // console.dir(finalString)
         return finalString;
+    };
+
+    // const getPosAbbr = (posName) => {
+    //     return getPosDef(posName).abbr;
+    // };
+
+    const getTypeAbbr = (posDef, type) => {
+        // console.log(posDef);
+        // console.log(type)
+        let typeDef = posDef.types.find(a => a.name === type);
+        // console.log(typeDef);
+        // return  "";
+        return typeDef.unmarked ? "" : typeDef.abbr;
+    };
+    
+    const getPosDisplay = (posDetails) => {
+        let posDef = getPosDef(posDetails.name);
+        let posAbbr = posDef.abbr;
+        // console.log(posDetails.types)
+        // let posTypes = posDetails.types.map(a => a.name);
+        // console.log(posTypes);
+        let posTypeAbbrs = posDetails.types.map(type => getTypeAbbr(posDef, type));
+        let typesString = posTypeAbbrs.join(", ");
+        if (typesString.length>0) {
+            typesString = '-' + typesString;
+        }
+        let string = `${posAbbr}${typesString}.`;
+        return string;
     }
 
+    const getSenseGroupDisplay = (senseGroup) => {
+        let poses = senseGroup.partsOfSpeech.map(a => {
+            let posDisplay = getPosDisplay(a);
+            return posDisplay;
+
+        });
+        return poses.join(" / ");
+    };
+
+    const getSenseGroups = () => {
+        let senseGroupsDisplay = appState.entry.senseGroups.map(a => getSenseGroupDisplay(a));
+        return senseGroupsDisplay;
+    }
+
+
+    // const getPreview = () => {
+    //     let display = {getHeadword() + getSenseGroups();
+    //     return display;
+    // };
+    
     return(
         <>
-        <p>Preview</p>
-            {/* <div className="bar-preview" onClick={()=>setPreviewShown(!previewShown)}>Preview <i className={previewShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
-            {/* <div className={`preview${previewShown ? "" : " hidden"}`}> */}
-                {preview()}
-            {/* </div> */}
+            <p>Preview</p>
+            {getHeadword()}
+            {getSenseGroups()}
         </>
     )
     

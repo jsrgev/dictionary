@@ -64,7 +64,7 @@ const PartOfSpeech = (props) => {
     }
 
     const popupItems = [
-        ["Part of Speech", () => addPos(thisIndex, pathFrag, availablePoses)],
+        ["Part of speech", () => addPos(thisIndex, pathFrag, availablePoses)],
         // ["Note", e => addNote(path[thisIndex].notes.length-1, pathFrag+`[${thisIndex}]`)]
     ]
 

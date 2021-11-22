@@ -54,7 +54,7 @@ const SenseGroup = props => {
             addPhrase(index, pathFrag+`[${thisIndex}]`);
             }
         ],
-        ["Part of Speech", () => addPos(path[thisIndex].partsOfSpeech.length-1, pathFrag+`[${thisIndex}].partsOfSpeech`, availablePoses)],
+        ["Part of speech", () => addPos(path[thisIndex].partsOfSpeech.length-1, pathFrag+`[${thisIndex}].partsOfSpeech`, availablePoses)],
     ]
 
 

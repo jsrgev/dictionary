@@ -8,11 +8,9 @@ const Note = props => {
 
     const {appState, setAppState, prevIndentLevel, thisIndex, stringPath, addFunctions} = props;
     const {addNote} = addFunctions;
-    // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
     let pathFrag = stringPath + ".notes";
     const path = _.get(appState, "entry." + pathFrag);
-    // const upPath = _.get(appState, "entry." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
@@ -20,9 +18,6 @@ const Note = props => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            console.log(entryCopy);
-            console.log(pathFrag)
-            // return;
             entryCopyPath[thisIndex][field] = value;
             setAppState({entry:entryCopy});
         }
@@ -49,7 +44,6 @@ const Note = props => {
         }]
     ];
 
-
     console.log(appState);
 
     return (
@@ -60,7 +54,6 @@ const Note = props => {
                     <i className="fas fa-plus"
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
-                    <i></i>
                     <i className="fas fa-minus" onClick={deleteNote}></i>           
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>

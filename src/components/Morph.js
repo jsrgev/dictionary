@@ -92,7 +92,7 @@ const Morph = props => {
                     {appState.entry &&
                     path[thisIndex].notes &&
                     path[thisIndex].notes.map((a,i) => (
-                        <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={0} addFunctions={addFunctions} />
+                        <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
                     ))
                     }
                 </div>
