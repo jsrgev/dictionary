@@ -17,11 +17,11 @@ const Phrase = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [phraseOpen, setPhraseOpen] = useState(true);
 
-    const handleChange = (value, field) => {
+    const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath[thisIndex][field] = value;
+            entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -42,7 +42,6 @@ const Phrase = props => {
         setAppState({entry: entryCopy});
     }; 
 
-    // console.log(path[thisIndex].definitions.length-1)
     const popupItems = [
         ["Phrase", () => addPhrase(thisIndex, stringPath)],
         ["Definition", () => addDefinition(path[thisIndex].definitions.length-1, stringPath+`.phrases[${thisIndex}]`)]
@@ -59,7 +58,7 @@ const Phrase = props => {
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
                     <i
-                    className={`fas fa-minus${path.length === 1 && path[thisIndex].targetLang.trim() === "" && !upPath.definitions ? " disabled" : ""}`}
+                    className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.definitions ? " disabled" : ""}`}
                     onClick={deletePhrase}
                     ></i>            
                     <i className={`fas fa-chevron-${phraseOpen ? "up" : "down"}`} onClick={() => setPhraseOpen(!phraseOpen)}></i>
@@ -67,9 +66,9 @@ const Phrase = props => {
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <div>Phrase</div>
                     <input type="text"
-                    value={path[thisIndex].targetLang}
-                    onChange={e => handleChange(e.target.value, "targetLang")}
-                    onBlur={e => handleChange(handleInputBlur(e), "targetLang")}
+                    value={path[thisIndex].content}
+                    onChange={e => handleChange(e.target.value)}
+                    onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
                 {path[thisIndex].definitions &&

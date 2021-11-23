@@ -18,21 +18,25 @@ const Preview = (props) => {
 
     const alphaSortSet = set => {
         return set.sort((a,b) => {
-            return ( a.targetLang < b.targetLang ) ? -1 : ( a.targetLang > b.targetLang ) ? 1 : 0;
+            return ( a.content < b.content ) ? -1 : ( a.content > b.content ) ? 1 : 0;
           }
         );
     };
 
+    const filterOutBlanks = set => {
+        return set.filter(a => a.content.trim() !== "");
+    }
+
     const fillOutSet = array => {
         let set = [];
         array.forEach((morph,i) => {
-            let filteredPronunciations = morph.pronunciations.filter(a => a.pronunciation.trim() !== "");
+            let filteredPronunciations = filterOutBlanks(morph.pronunciations);
             let pronunciationArray = filteredPronunciations.map(a => {
                 let note = a.note ? noteDisplay(a.note) : "";
-                return `/${a.pronunciation.trim()}/` + note;
+                return `/${a.content.trim()}/` + note;
             })
             let head = i===0 ? true : false;
-            let targetLang = morph.targetLang;
+            let targetLang = morph.content;
             let pronunciationsDisplay = pronunciationArray.join(" or ");
             set.push({targetLang,pronunciationsDisplay, head});
         })
@@ -52,8 +56,10 @@ const Preview = (props) => {
         return altString;
     };
 
+    let filteredMorphs = [];
+
     const getHeadword = () => {
-        let filteredMorphs = appState.entry.headword.morphs.filter(a => a.targetLang.trim() !== "");
+        filteredMorphs = filterOutBlanks(appState.entry.headword.morphs);
         if (filteredMorphs.length === 0) {
             return "";
             // filteredMorphs = [clone(morphDefault)];

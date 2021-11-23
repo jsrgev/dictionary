@@ -14,11 +14,11 @@ const Note = props => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    const handleChange = (value, field) => {
+    const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath[thisIndex][field] = value;
+            entryCopyPath[thisIndex] = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -60,8 +60,8 @@ const Note = props => {
                     <div>Note</div>
                     <input type="text"
                     value={path[thisIndex].content}
-                    onChange={e => handleChange(e.target.value, "content")}
-                    onBlur={e => handleChange(handleInputBlur(e), "content")}
+                    onChange={e => handleChange(e.target.value)}
+                    onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
             </div>

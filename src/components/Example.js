@@ -5,10 +5,10 @@ const Example = props => {
     const {appState, setAppState, senseGroupIndex, exampleIndex} = props;
     const path = appState.entry.senseGroups[senseGroupIndex].examples;
 
-    const handleChange = (value, field) => {
+    const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senseGroups[senseGroupIndex].examples[exampleIndex][field] = value;
+            entryCopy.senseGroups[senseGroupIndex].examples[exampleIndex].content = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -34,19 +34,13 @@ const Example = props => {
 
     return (
         <>
-            <i className={`fas fa-plus${path[exampleIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={addExample}></i>
-            <i className={`fas fa-minus${path.length === 1 && path[exampleIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteExample}></i>           
+            <i className={`fas fa-plus${path[exampleIndex].content.trim() === "" ? " disabled" : ""}`} onClick={addExample}></i>
+            <i className={`fas fa-minus${path.length === 1 && path[exampleIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deleteExample}></i>           
             <div>Example</div>
             <input type="text"
-            value={path[exampleIndex].targetLang}
-            onChange={e => handleChange(e.target.value, "targetLang")}
-            onBlur={e => handleChange(handleInputBlur(e), "targetLang")}
-            />
-            <div>Meaning</div>
-            <input type="text"
-            value={path[exampleIndex].meaning}
-            onChange={e => handleChange(e.target.value, "meaning")}
-            onBlur={e => handleChange(handleInputBlur(e), "meaning")}
+            value={path[exampleIndex].content}
+            onChange={e => handleChange(e.target.value)}
+            onBlur={e => handleChange(handleInputBlur(e))}
             />
         </>
     )

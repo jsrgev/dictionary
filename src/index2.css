@@ -214,12 +214,6 @@ li {
 	display: none;
 }
 
-.definition, .phrase, .example {
-	display: grid;
-	grid-template-columns: 1rem 1rem 6rem 1fr 6rem 1fr;
-	gap: 1rem;
-
-}
 
 
 .struck {

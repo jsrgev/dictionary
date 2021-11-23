@@ -22,7 +22,7 @@ const Morph = props => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
-            entryCopyPath[thisIndex].targetLang = value;
+            entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});
         }
     }
@@ -65,7 +65,6 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
-    // console.log(path[thisIndex])
 
     return (
         <>
@@ -73,13 +72,13 @@ const Morph = props => {
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
-                    <i className={`fas fa-minus${path.length === 1 && path[thisIndex].targetLang.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
+                    <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
                     <i className={`fas fa-chevron-${morphOpen ? "up" : "down"}`} onClick={() => setMorphOpen(!morphOpen)}></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
                     <input id={`targetLang-${thisIndex}`} type="text"
-                    value={path[thisIndex].targetLang}
+                    value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />

@@ -16,16 +16,16 @@ const Pronunciation = (props) => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    const handleChange = (value, field) => {
+    const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag)
-            entryCopyPath[thisIndex].pronunciation = value;
+            entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});    
         }
     }
 
-    const deletePronunciation = (e) => {
+    const deletePronunciation = e => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
 
@@ -61,9 +61,6 @@ const Pronunciation = (props) => {
         }]
     ]
 
-    // console.log(path[]);
-    // console.log(path[thisIndex])
-
     let stringPathA  = pathFrag + `[${thisIndex}]`;
 
     return (
@@ -71,33 +68,20 @@ const Pronunciation = (props) => {
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={addPopupHandler}></i>           
-                <i className={`fas fa-minus${path.length === 1 && path[thisIndex].pronunciation.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
+                <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>
                 <label>Pronunciation{path.length>1 && ` ${thisIndex+1}`}</label>
                 <input type="text"
-                value={path[thisIndex].pronunciation}
-                onChange={e => handleChange(e.target.value, "pronunciation")}
-                onBlur={e => handleChange(handleInputBlur(e), "pronunciation")}
+                value={path[thisIndex].content}
+                onChange={e => handleChange(e.target.value)}
+                onBlur={e => handleChange(handleInputBlur(e))}
                 />
             </div>
             {path[thisIndex].notes &&
             path[thisIndex].notes.map((a,i) => (
                 <Note appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
-
-            ))
-            }
-            {/* <div className="row">
-                <div className="row-controls"></div>
-                <div className="row-content" style={getIndent(prevIndentLevel+1)} >
-                    <label forhtml={`morph-${morphIndex}-pronunciation-${thisIndex}-note`}>Note</label>
-                    <input id={`morph-${morphIndex}-pronunciation-${thisIndex}-note`} type="text"
-                    value={path[thisIndex].note}
-                    onChange={e => handleChange(e.target.value, "note")}
-                    onBlur={e => handleChange(handleInputBlur(e), "note")}
-                    />
-                </div>
-            </div> */}
+            ))}
         </>
     )
 };

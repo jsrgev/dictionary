@@ -4,15 +4,15 @@ export const noteDefault = {
 };
 
 export const definitionDefault = {
-    definition: "",
+    content: "",
 };
 
 export const pronunciationDefault =  {
-    pronunciation: "",
+    content: "",
 };
 
 export const morphDefault = {
-    targetLang: "",
+    content: "",
     pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
 };
 
@@ -24,12 +24,12 @@ export const entryDefault = {
 };
 
 export const exampleDefault = {
-    targetLang: "",
+    content: "",
     definitions: [JSON.parse(JSON.stringify(definitionDefault))],
 };
 
 export const phraseDefault = {
-    targetLang: "",
+    content: "~",
     definitions: [JSON.parse(JSON.stringify(definitionDefault))],
 };
 
@@ -43,6 +43,4 @@ export const secondaryFormDetailsDefault = {
     exists: true,
     regular: true,
     morphs: [JSON.parse(JSON.stringify(morphDefault))],
-    // targetLang: "",
-    // pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
 };

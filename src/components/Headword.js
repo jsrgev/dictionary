@@ -21,7 +21,7 @@ const Headword = props => {
     let pathFragA = pathFrag+".morphs";
 
     const popupItems =[
-        ["Alternate form", () => addMorph(path.morphs.length-1, pathFrag)],
+        ["Alternate form", () => addMorph(path.morphs.length-1, pathFrag+".morphs")],
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag);

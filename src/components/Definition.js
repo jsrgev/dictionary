@@ -16,11 +16,11 @@ const Definition = props => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    const handleChange = (value, field) => {
+    const handleChange = (value) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath[thisIndex][field] = value;
+            entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -55,16 +55,16 @@ const Definition = props => {
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
                     <i
-                    className={`fas fa-minus${path.length === 1 && path[thisIndex].definition.trim() === "" && !upPath.phrases ? " disabled" : ""}`}
+                    className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.phrases ? " disabled" : ""}`}
                     onClick={deleteDefinition}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <div>Definition</div>
                     <input type="text"
-                    value={path[thisIndex].definition}
-                    onChange={e => handleChange(e.target.value, "definition")}
-                    onBlur={e => handleChange(handleInputBlur(e), "definition")}
+                    value={path[thisIndex].content}
+                    onChange={e => handleChange(e.target.value)}
+                    onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
             </div>
