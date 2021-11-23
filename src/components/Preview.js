@@ -24,8 +24,11 @@ const Preview = (props) => {
     };
 
     const filterOutBlanks = set => {
+        // console.log(set);
         return set.filter(a => a.content.trim() !== "");
     }
+
+    let mainEntry = {};
 
     const fillOutSet = array => {
         let set = [];
@@ -38,7 +41,7 @@ const Preview = (props) => {
             let head = i===0 ? true : false;
             let targetLang = morph.content;
             let pronunciationsDisplay = pronunciationArray.join(" or ");
-            set.push({targetLang,pronunciationsDisplay, head});
+            set.push({targetLang, pronunciationsDisplay, head});
         })
         return set;
     };
@@ -50,29 +53,50 @@ const Preview = (props) => {
             for (let i=1; i<set.length; i++) {
                 let string = <>{altString} or <span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay}</>;
                 altString = string;
-                set[i].line = <>{altLines}<p><span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay} see <span className="for">{set[0].targetLang.trim()}</span></p></>;
+                set[i].line = <>{altLines}<span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay} see <span className="for">{set[0].targetLang.trim()}</span></>;
             }
         }
         return altString;
     };
 
-    let filteredMorphs = [];
+    const getNotesDisplay = arr => {
+        let filteredArr = filterOutBlanks(arr);
+        let newArr = filteredArr.map(a => `(${a.content})`);
+        let string = newArr.join(" ");
+        return ` ${string}`;
+    };
+
+    const gePronunciationsDisplay = arr => {
+        let filteredArr = filterOutBlanks(arr);
+        let newArr = filteredArr.map(a => {
+            let pronunciation = `/${a.content}/`;
+            let notes = a.notes ? getNotesDisplay(a.notes) : "";
+            return pronunciation + notes;
+        });
+        let string = newArr.join(" or ");
+        return string;
+    };
+
+    let abc = appState.entry.headword.morphs[0].pronunciations;
+    // console.log(abc);
+
+    console.log(gePronunciationsDisplay(abc));
 
     const getHeadword = () => {
-        filteredMorphs = filterOutBlanks(appState.entry.headword.morphs);
+        let filteredMorphs = filterOutBlanks(appState.entry.headword.morphs);
         if (filteredMorphs.length === 0) {
             return "";
             // filteredMorphs = [clone(morphDefault)];
         }
         let set = fillOutSet(filteredMorphs);
         let altString = getAlts(set);
-        set[0].line = <><p><span className="hw">{set[0].targetLang.trim()}</span> {set[0].pronunciationsDisplay}{altString}</p></>;
-
+        set[0].line = <><span className="hw">{set[0].targetLang.trim()}</span> {set[0].pronunciationsDisplay}{altString}</>;
+        console.log(set);
         let alphaSet = alphaSortSet(set);
         // console.log(alphaSet)
         let finalString = "";
         alphaSet.forEach(a => {
-            finalString = <>{finalString}{a.line}</>
+            finalString = <>{finalString}<p>{a.line}</p></>
         })
         // console.dir(finalString)
         return finalString;
@@ -106,18 +130,39 @@ const Preview = (props) => {
         return string;
     }
 
+    const getDefinitions = definitionsArray => {
+
+        return "";
+    }
+
     const getSenseGroupDisplay = (senseGroup) => {
         let poses = senseGroup.partsOfSpeech.map(a => {
             let posDisplay = getPosDisplay(a);
             return posDisplay;
-
         });
-        return poses.join(" / ");
+        // let jointPosDisplay = poses.join(" / ");
+        let obj = {
+            jointPosDisplay: poses.join(" / "),
+        };
+        // if (senseGroup.definitions) {
+        //     obj.definitions = getDefinitions(senseGroup.definitions);
+        // }
+        // if (senseGroup.phrases) {
+        //     obj.phrases = getPhrases(senseGroup.phrases);
+        // }
+
+        console.log(obj);
+        return obj;
+
     };
 
     const getSenseGroups = () => {
-        let senseGroupsDisplay = appState.entry.senseGroups.map(a => getSenseGroupDisplay(a));
-        return senseGroupsDisplay;
+        let senseGroupsArray = appState.entry.senseGroups.map(a => getSenseGroupDisplay(a));
+        // console.log(senseGroupsArray);
+        // appState.entry.senseGroups.forEach(a => {
+        //     let definitions
+        // })
+        return "";
     }
 
 
@@ -130,7 +175,7 @@ const Preview = (props) => {
         <>
             <p>Preview</p>
             {getHeadword()}
-            {getSenseGroups()}
+            {/* {getSenseGroups()} */}
         </>
     )
     

@@ -18,7 +18,7 @@ const Note = props => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath[thisIndex] = value;
+            entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});
         }
     };
@@ -28,11 +28,9 @@ const Note = props => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            console.log("a")
             let entryCopyUpPath = _.get(entryCopy, stringPath);
             delete entryCopyUpPath.notes;
         } else {
-            console.log("b")
             entryCopyPath.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
@@ -44,7 +42,7 @@ const Note = props => {
         }]
     ];
 
-    console.log(appState);
+    // console.log(appState);
 
     return (
         <>
