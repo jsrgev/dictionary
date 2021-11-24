@@ -38,7 +38,7 @@ const Preview = (props) => {
             let pronunciationArray = filteredPronunciations.map(a => {
                 let note = a.note ? noteDisplay(a.note) : "";
                 return `/${a.content.trim()}/` + note;
-            })
+            })  
             let head = i===0 ? true : false;
             let targetLang = morph.content;
             let pronunciationsDisplay = pronunciationArray.join(" or ");
@@ -97,7 +97,7 @@ const Preview = (props) => {
             let morph = <span className={morphClass}>{a.content}</span>;
             let pronunciations = getPronunciationsDisplay(a.pronunciations);
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
-            return <React.Fragment key={i} >{morph}{pronunciations}{notes}{divider}</React.Fragment>;
+            return <React.Fragment key={i}>{morph}{pronunciations}{notes}{divider}</React.Fragment>;
         });
         return newArr;
 
@@ -127,25 +127,15 @@ const Preview = (props) => {
         // return finalString;
     };
 
-    // const getPosAbbr = (posName) => {
-    //     return getPosDef(posName).abbr;
-    // };
 
     const getTypeAbbr = (posDef, type) => {
-        // console.log(posDef);
-        // console.log(type)
         let typeDef = posDef.types.find(a => a.name === type);
-        // console.log(typeDef);
-        // return  "";
         return typeDef.unmarked ? "" : typeDef.abbr;
     };
     
     const getPosDisplay = (posDetails) => {
         let posDef = getPosDef(posDetails.name);
         let posAbbr = posDef.abbr;
-        // console.log(posDetails.types)
-        // let posTypes = posDetails.types.map(a => a.name);
-        // console.log(posTypes);
         let posTypeAbbrs = posDetails.types.map(type => getTypeAbbr(posDef, type));
         let typesString = posTypeAbbrs.join(", ");
         if (typesString.length>0) {
@@ -161,46 +151,32 @@ const Preview = (props) => {
     }
 
     const getSenseGroupDisplay = (senseGroup) => {
-        let poses = senseGroup.partsOfSpeech.map(a => {
+        let poses = senseGroup.partsOfSpeech.map((a, i, arr) => {
+            let divider = i < arr.length-1 ? <> / </> : "";
             let posDisplay = getPosDisplay(a);
-            return posDisplay;
+            return <React.Fragment key={i}><em>{posDisplay}</em>{divider}</React.Fragment>;
         });
-        // let jointPosDisplay = poses.join(" / ");
-        let obj = {
-            jointPosDisplay: poses.join(" / "),
-        };
-        // if (senseGroup.definitions) {
-        //     obj.definitions = getDefinitions(senseGroup.definitions);
-        // }
-        // if (senseGroup.phrases) {
-        //     obj.phrases = getPhrases(senseGroup.phrases);
-        // }
-
-        console.log(obj);
-        return <> <em>{obj.jointPosDisplay}</em></>;
-
+        return <> {poses}</>;
     };
 
-    const getSenseGroups = () => {
-        let senseGroupsArray = appState.entry.senseGroups.map(a => getSenseGroupDisplay(a));
+    // const getSenseGroups = () => {
+    //     let senseGroupsArray = appState.entry.senseGroups.map(a => getSenseGroupDisplay(a));
         // console.log(senseGroupsArray);
         // appState.entry.senseGroups.forEach(a => {
         //     let definitions
         // })
-        return senseGroupsArray;
-    }
+        // return senseGroupsArray;
+    // }
 
 
-    // const getPreview = () => {
-    //     let display = {getHeadword() + getSenseGroups();
-    //     return display;
-    // };
-    
+
     return(
         <>
             <p>Preview</p>
             {getHeadword()}
-            {getSenseGroups ()}
+            {appState.entry.senseGroups.map((a,i) => (
+                <React.Fragment key={i}>{getSenseGroupDisplay(a)}</React.Fragment>
+            ))}
         </>
     )
     

@@ -1,4 +1,5 @@
 import AddPopup from './AddPopup';
+import Example from './Example';
 import {definitionDefault} from '../defaults.js'
 import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
 import {useState} from 'react';
@@ -7,7 +8,7 @@ import _ from 'lodash';
 const Definition = props => {
 
     const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
-    const {addDefinition} = addFunctions;
+    const {addDefinition, addExample} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
     let pathFrag = stringPath + ".definitions";
@@ -43,8 +44,21 @@ const Definition = props => {
     }; 
 
     const popupItems = [
-        ["Definition", () => addDefinition(thisIndex, stringPath)]
+        ["Definition", () => addDefinition(thisIndex, stringPath)],
+        ["Example", () => {
+            let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
+            addExample(index, pathFrag+`[${thisIndex}]`);
+        }],
     ];
+
+    let stringPathA =  pathFrag + `[${thisIndex}]`;
+
+
+    // console.log(popupItems)
+    // console.log(path[thisIndex])
+    console.log(path[thisIndex].examples)
+    // console.log(pathFrag+`[${thisIndex}]`)
+    
 
     return (
         <>
@@ -67,6 +81,11 @@ const Definition = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
+                {path[thisIndex].examples &&
+                    path[thisIndex].examples.map((a,i) => (
+                        <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
+                    ))
+                }
             </div>
         </>
     )

@@ -9,7 +9,7 @@ import {useEffect, useCallback} from 'react';
 import {useSetState} from 'react-use';
 import {capitalize, clone, generateSenseGroup, generatePos} from './utils.js';
 import {languageData} from './languageSettings.js';
-import {entryDefault, morphDefault, definitionDefault, phraseDefault, noteDefault} from './defaults.js';
+import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from './defaults.js';
 import _  from 'lodash';
 
 // const API_BASE = "http://localhost:3001";
@@ -93,7 +93,7 @@ const App = () => {
         addMorph: (index, pathFrag) => {
             console.log(pathFrag)
             let entryCopy = clone(state.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath.splice(index+1, 0, clone(morphDefault));
             setState({entry: entryCopy});
         },
@@ -114,6 +114,16 @@ const App = () => {
                 entryCopyPath.phrases.splice(index+1, 0, clone(phraseDefault));
             } else {
                 entryCopyPath.phrases = [clone(phraseDefault)];
+            }
+            setState({entry: entryCopy});
+        },
+        addExample: (index, pathFrag) => {
+            let entryCopy = clone(state.entry);
+            let entryCopyPath = _.get(entryCopy, pathFrag)
+            if (entryCopyPath.examples) {
+                entryCopyPath.examples.splice(index+1, 0, clone(exampleDefault));
+            } else {
+                entryCopyPath.examples = [clone(exampleDefault)];
             }
             setState({entry: entryCopy});
         },

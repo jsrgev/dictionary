@@ -1,50 +1,87 @@
-import {clone, handleInputBlur} from '../utils.js';
-import { exampleDefault } from "../defaults";
+import AddPopup from './AddPopup';
+import Definition from './Definition';
+import {exampleDefault} from '../defaults.js'
+import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
+import {useState} from 'react';
+import _ from 'lodash';
 
 const Example = props => {
-    const {appState, setAppState, senseGroupIndex, exampleIndex} = props;
-    const path = appState.entry.senseGroups[senseGroupIndex].examples;
+
+    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
+    const {addDefinition, addExample} = addFunctions;
+
+    let pathFrag = stringPath + ".examples";
+    const path = _.get(appState, "entry." + pathFrag);
+    const upPath = _.get(appState, "entry." + stringPath);
+
+    console.log(path)
+
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
+    const [exampleOpen, setExampleOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            entryCopy.senseGroups[senseGroupIndex].examples[exampleIndex].content = value;
+            let entryCopyPath = _.get(entryCopy, pathFrag);
+            entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});
         }
     };
 
     const deleteExample = e => {
         let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            entryCopy.senseGroups[senseGroupIndex].examples = [clone(exampleDefault)];
+            // if (!upPath.definitions) {
+            //     entryCopyPath.splice(0, 1, clone(exampleDefault));
+            // } else {
+                let entryCopyUpPath = _.get(entryCopy, stringPath);
+                delete entryCopyUpPath.examples;
+            // }
         } else {
-            entryCopy.senseGroups[senseGroupIndex].examples.splice(exampleIndex, 1);
+            entryCopyPath.splice(thisIndex, 1);
         }
         setAppState({entry: entryCopy});
-    }
+    }; 
 
-    const addExample = e => {
-        if (e.target.classList.contains("disabled")) {
-            return;
-        }
-        let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups[senseGroupIndex].examples.splice(exampleIndex+1, 0, clone(exampleDefault));
-        setAppState({entry: entryCopy});
-    }
+    const popupItems = [
+        ["Example", () => addExample(thisIndex, stringPath)],
+        ["Definition", () => addDefinition(path[thisIndex].definitions.length-1, stringPath+`.examples[${thisIndex}]`)]
+    ];
+
+    let stringPathA =  pathFrag + `[${thisIndex}]`;
 
     return (
         <>
-            <i className={`fas fa-plus${path[exampleIndex].content.trim() === "" ? " disabled" : ""}`} onClick={addExample}></i>
-            <i className={`fas fa-minus${path.length === 1 && path[exampleIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deleteExample}></i>           
-            <div>Example</div>
-            <input type="text"
-            value={path[exampleIndex].content}
-            onChange={e => handleChange(e.target.value)}
-            onBlur={e => handleChange(handleInputBlur(e))}
-            />
+            <div className={`row${exampleOpen ? "" : " closed"}`}>
+                <div className="row-controls">
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className="fas fa-plus"
+                    onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
+                    ></i>
+                    <i
+                    className="fas fa-minus"
+                    onClick={deleteExample}
+                    ></i>            
+                    <i className={`fas fa-chevron-${exampleOpen ? "up" : "down"}`} onClick={() => setExampleOpen(!exampleOpen)}></i>
+                </div>
+                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                    <div>Example</div>
+                    <input type="text"
+                    value={path[thisIndex].content}
+                    onChange={e => handleChange(e.target.value)}
+                    onBlur={e => handleChange(handleInputBlur(e))}
+                    />
+                </div>
+                {path[thisIndex].definitions.map((a,i) => (
+                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
+                ))
+                    
+                }
+            </div>
         </>
     )
-}
 
+};
 
 export default Example;
