@@ -66,7 +66,7 @@ const Example = props => {
                     <i className={`fas fa-chevron-${exampleOpen ? "up" : "down"}`} onClick={() => setExampleOpen(!exampleOpen)}></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <div>Example</div>
+                    <label>Example{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}

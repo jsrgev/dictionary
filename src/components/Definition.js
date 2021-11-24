@@ -16,6 +16,7 @@ const Definition = props => {
     const upPath = _.get(appState, "entry." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
+    const [definitionOpen, setDefinitionOpen] = useState(true);
 
     const handleChange = (value) => {
         if (value !== undefined) {
@@ -25,7 +26,6 @@ const Definition = props => {
             setAppState({entry:entryCopy});
         }
     };
-
 
     const deleteDefinition = e => {
         let entryCopy = clone(appState.entry);
@@ -45,20 +45,18 @@ const Definition = props => {
 
     const popupItems = [
         ["Definition", () => addDefinition(thisIndex, stringPath)],
-        ["Example", () => {
-            let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
-            addExample(index, pathFrag+`[${thisIndex}]`);
-        }],
     ];
 
+    if (stringPath === "senseGroups[0]") {
+        popupItems.push(
+            ["Example", () => {
+                let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
+                addExample(index, pathFrag+`[${thisIndex}]`);
+            }]
+        );
+    }
+
     let stringPathA =  pathFrag + `[${thisIndex}]`;
-
-
-    // console.log(popupItems)
-    // console.log(path[thisIndex])
-    console.log(path[thisIndex].examples)
-    // console.log(pathFrag+`[${thisIndex}]`)
-    
 
     return (
         <>
@@ -72,9 +70,10 @@ const Definition = props => {
                     className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.phrases ? " disabled" : ""}`}
                     onClick={deleteDefinition}
                     ></i>
+                    <i className={`fas fa-chevron-${definitionOpen ? "up" : "down"}`} onClick={() => setDefinitionOpen(!definitionOpen)}></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <div>Definition</div>
+                    <label>Definition{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}

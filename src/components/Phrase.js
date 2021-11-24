@@ -71,7 +71,7 @@ const Phrase = props => {
                     <i className={`fas fa-chevron-${phraseOpen ? "up" : "down"}`} onClick={() => setPhraseOpen(!phraseOpen)}></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <div>Phrase</div>
+                    <label>Phrase{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
