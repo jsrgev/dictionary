@@ -1,3 +1,4 @@
+import React from "react";
 import {allPartsOfSpeech} from "../languageSettings";
 // import {morphDefault} from '../defaults.js';
 import {getPosDef} from '../utils.js';
@@ -66,40 +67,64 @@ const Preview = (props) => {
         return ` ${string}`;
     };
 
-    const gePronunciationsDisplay = arr => {
+    const getPronunciationsDisplay = arr => {
         let filteredArr = filterOutBlanks(arr);
+        if (filteredArr.length === 0) return "";
         let newArr = filteredArr.map(a => {
             let pronunciation = `/${a.content}/`;
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
             return pronunciation + notes;
         });
         let string = newArr.join(" or ");
-        return string;
+        return ` ${string}`;
     };
 
-    let abc = appState.entry.headword.morphs[0].pronunciations;
+    const getMorphsDisplay = (arr, type) => {
+        let morphClass = type === "headword" ? "hw" : "for";
+        let filteredArr = filterOutBlanks(arr);
+        if (filteredArr.length === 0) return "";
+            // console.log(filteredArr);
+        // return "";
+        // let newArr = "";
+        // filteredArr.forEach(a => {
+        //     let morph = <span className={morphClass}>{a.content}</span>;
+        //     let pronunciations = getPronunciationsDisplay(a.pronunciations);
+        //     let notes = a.notes ? getNotesDisplay(a.notes) : "";
+        //     newArr += <>{morph}{pronunciations}{notes}</>;
+        // });
+        let newArr = filteredArr.map((a, i) => {
+            let divider = i<filteredArr.length-1 ? <> or </> : "";
+            let morph = <span className={morphClass}>{a.content}</span>;
+            let pronunciations = getPronunciationsDisplay(a.pronunciations);
+            let notes = a.notes ? getNotesDisplay(a.notes) : "";
+            return <React.Fragment key={i} >{morph}{pronunciations}{notes}{divider}</React.Fragment>;
+        });
+        return newArr;
+
+    }
+
+    let abc = appState.entry.headword.morphs;
     // console.log(abc);
 
-    console.log(gePronunciationsDisplay(abc));
+    // console.log(getMorphsDisplay(abc));
 
     const getHeadword = () => {
-        let filteredMorphs = filterOutBlanks(appState.entry.headword.morphs);
-        if (filteredMorphs.length === 0) {
-            return "";
+        let primary = getMorphsDisplay(appState.entry.headword.morphs);
+        return primary;
+        // let filteredMorphs = filterOutBlanks(appState.entry.headword.morphs);
+        // if (filteredMorphs.length === 0) {
+            // return "";
             // filteredMorphs = [clone(morphDefault)];
-        }
-        let set = fillOutSet(filteredMorphs);
-        let altString = getAlts(set);
-        set[0].line = <><span className="hw">{set[0].targetLang.trim()}</span> {set[0].pronunciationsDisplay}{altString}</>;
-        console.log(set);
-        let alphaSet = alphaSortSet(set);
-        // console.log(alphaSet)
-        let finalString = "";
-        alphaSet.forEach(a => {
-            finalString = <>{finalString}<p>{a.line}</p></>
-        })
-        // console.dir(finalString)
-        return finalString;
+        // }
+        // let set = fillOutSet(filteredMorphs);
+        // let altString = getAlts(set);
+        // set[0].line = <><span className="hw">{set[0].targetLang.trim()}</span> {set[0].pronunciationsDisplay}{altString}</>;
+        // let alphaSet = alphaSortSet(set);
+        // let finalString = "";
+        // alphaSet.forEach(a => {
+        //     finalString = <>{finalString}<p>{a.line}</p></>
+        // })
+        // return finalString;
     };
 
     // const getPosAbbr = (posName) => {
@@ -152,7 +177,7 @@ const Preview = (props) => {
         // }
 
         console.log(obj);
-        return obj;
+        return <> <em>{obj.jointPosDisplay}</em></>;
 
     };
 
@@ -162,7 +187,7 @@ const Preview = (props) => {
         // appState.entry.senseGroups.forEach(a => {
         //     let definitions
         // })
-        return "";
+        return senseGroupsArray;
     }
 
 
@@ -175,7 +200,7 @@ const Preview = (props) => {
         <>
             <p>Preview</p>
             {getHeadword()}
-            {/* {getSenseGroups()} */}
+            {getSenseGroups ()}
         </>
     )
     
