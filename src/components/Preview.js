@@ -1,12 +1,8 @@
 import React from "react";
-import {allPartsOfSpeech} from "../languageSettings";
-// import {morphDefault} from '../defaults.js';
-import {getPosDef} from '../utils.js';
-// import {useState} from 'react';
+import {clone, getPosDef} from '../utils.js';
 
 const Preview = (props) => {
 
-    let lineSplit = false;
 
     const {appState} = props;
     // const [previewShown, setPreviewShown] = useState(true);
@@ -20,47 +16,45 @@ const Preview = (props) => {
     };
 
     const alphaSortSet = set => {
-        return set.sort((a,b) => {
+        let setClone = clone(set);
+        return setClone.sort((a,b) => {
             return ( a.content < b.content ) ? -1 : ( a.content > b.content ) ? 1 : 0;
           }
         );
     };
 
     const filterOutBlanks = set => {
-        // console.log(set);
         return set.filter(a => a.content.trim() !== "");
     }
 
-    let mainEntry = {};
+    // const fillOutSet = array => {
+    //     let set = [];
+    //     array.forEach((morph,i) => {
+    //         let filteredPronunciations = filterOutBlanks(morph.pronunciations);
+    //         let pronunciationArray = filteredPronunciations.map(a => {
+    //             let note = a.note ? noteDisplay(a.note) : "";
+    //             return `/${a.content.trim()}/` + note;
+    //         })  
+    //         let head = i===0 ? true : false;
+    //         let targetLang = morph.content;
+    //         let pronunciationsDisplay = pronunciationArray.join(" or ");
+    //         set.push({targetLang, pronunciationsDisplay, head});
+    //     })
+    //     return set;
+    // };
 
-    const fillOutSet = array => {
-        let set = [];
-        array.forEach((morph,i) => {
-            let filteredPronunciations = filterOutBlanks(morph.pronunciations);
-            let pronunciationArray = filteredPronunciations.map(a => {
-                let note = a.note ? noteDisplay(a.note) : "";
-                return `/${a.content.trim()}/` + note;
-            })  
-            let head = i===0 ? true : false;
-            let targetLang = morph.content;
-            let pronunciationsDisplay = pronunciationArray.join(" or ");
-            set.push({targetLang, pronunciationsDisplay, head});
-        })
-        return set;
-    };
-
-    const getAlts = set => {
-        let altString = "";
-        let altLines = "";
-        if (set.length > 1) {
-            for (let i=1; i<set.length; i++) {
-                let string = <>{altString} or <span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay}</>;
-                altString = string;
-                set[i].line = <>{altLines}<span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay} see <span className="for">{set[0].targetLang.trim()}</span></>;
-            }
-        }
-        return altString;
-    };
+    // const getAlts = set => {
+    //     let altString = "";
+    //     let altLines = "";
+    //     if (set.length > 1) {
+    //         for (let i=1; i<set.length; i++) {
+    //             let string = <>{altString} or <span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay}</>;
+    //             altString = string;
+    //             set[i].line = <>{altLines}<span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay} see <span className="for">{set[0].targetLang.trim()}</span></>;
+    //         }
+    //     }
+    //     return altString;
+    // };
 
     const getNotesDisplay = arr => {
         let filteredArr = filterOutBlanks(arr);
@@ -81,48 +75,63 @@ const Preview = (props) => {
         return ` ${string}`;
     };
 
-    const getMorphsDisplay = (arr, type) => {
-        let morphClass = type === "headword" ? "hw" : "for";
-        let filteredArr = filterOutBlanks(arr);
-        if (filteredArr.length === 0) return "";
-            // console.log(filteredArr);
-        // return "";
-        // let newArr = "";
-        // filteredArr.forEach(a => {
-        //     let morph = <span className={morphClass}>{a.content}</span>;
-        //     let pronunciations = getPronunciationsDisplay(a.pronunciations);
-        //     let notes = a.notes ? getNotesDisplay(a.notes) : "";
-        //     newArr += <>{morph}{pronunciations}{notes}</>;
-        // });
-        let newArr = filteredArr.map((a, i) => {
-            let divider = i<filteredArr.length-1 ? <> or </> : "";
+    const getAltDisplayForHeadword = () => {
+        return altDisplayForHeadword.map((a,i) => {
+            return <React.Fragment key={i}> or {a}</React.Fragment>
+        })
+    };
+
+    const getMorphsDisplay = (arr, headword) => {
+        let morphClass = headword ? "hw" : "for";
+            let newArr = arr.map((a, i) => {
             let morph = <span className={morphClass}>{a.content}</span>;
             let pronunciations = getPronunciationsDisplay(a.pronunciations);
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
-            return <React.Fragment key={i}>{morph}{pronunciations}{notes}{divider}</React.Fragment>;
+            let alts = a.headword ? getAltDisplayForHeadword() : "";
+            return <React.Fragment key={i}>
+                    {morph}
+                    {pronunciations}
+                    {notes}
+                    {alts}
+                </React.Fragment>;
         });
         return newArr;
+    };
+    let allDisplay = [];
+    let headwordOrder;
 
-    }
+    let altDisplayForHeadword = [];
 
+    const getPreview = () => {
+        let morphs = [...appState.entry.headword.morphs];
+        let filteredArr = filterOutBlanks(morphs);
+        if (filteredArr.length === 0) return "";
 
-    const getHeadword = () => {
-        let primary = getMorphsDisplay(appState.entry.headword.morphs);
-        return primary;
-        // let filteredMorphs = filterOutBlanks(appState.entry.headword.morphs);
-        // if (filteredMorphs.length === 0) {
-            // return "";
-            // filteredMorphs = [clone(morphDefault)];
-        // }
-        // let set = fillOutSet(filteredMorphs);
-        // let altString = getAlts(set);
-        // set[0].line = <><span className="hw">{set[0].targetLang.trim()}</span> {set[0].pronunciationsDisplay}{altString}</>;
-        // let alphaSet = alphaSortSet(set);
-        // let finalString = "";
-        // alphaSet.forEach(a => {
-        //     finalString = <>{finalString}<p>{a.line}</p></>
-        // })
-        // return finalString;
+        // mark first morph as headword so it will be treated so after sorting
+        filteredArr[0].headword = true;
+
+        let sortedMorphs = alphaSortSet(filteredArr);
+        for (let i=0; i<sortedMorphs.length; i++) {
+            sortedMorphs[i].order = i;
+        }
+        sortedMorphs.forEach((a,i) => {
+            if (!a.headword) {
+                let display = 
+                    <p>
+                        <span className="for">{a.content}</span> see <span className="for">{morphs[0].content}</span>
+                    </p>;
+                allDisplay[i] = (display);
+                let fullDisplay = getMorphsDisplay([a]);
+                altDisplayForHeadword.push(fullDisplay);
+            }
+        });
+
+        headwordOrder = sortedMorphs.find(a => a.headword).order;
+
+        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true);
+        let senseGroupDisplay = getSenseGroups();
+        allDisplay[headwordOrder] = <p>{morphsDisplay}{senseGroupDisplay}</p>;
+        return allDisplay;
     };
 
 
@@ -239,14 +248,15 @@ const Preview = (props) => {
 
     }
 
-
+    let abc = getPreview();
 
     return(
         <>
             <p>Preview</p>
-            {getHeadword()}
-            {getSenseGroups()}
-            {/* {getExamples(abc)} */}
+            {abc &&
+            abc.map((a, i) => (
+                <React.Fragment key={i}>{a}</React.Fragment>
+            ))}
         </>
     )
     
