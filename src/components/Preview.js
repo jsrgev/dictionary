@@ -6,6 +6,8 @@ import {getPosDef} from '../utils.js';
 
 const Preview = (props) => {
 
+    let lineSplit = false;
+
     const {appState} = props;
     // const [previewShown, setPreviewShown] = useState(true);
 
@@ -103,10 +105,6 @@ const Preview = (props) => {
 
     }
 
-    let abc = appState.entry.headword.morphs;
-    // console.log(abc);
-
-    // console.log(getMorphsDisplay(abc));
 
     const getHeadword = () => {
         let primary = getMorphsDisplay(appState.entry.headword.morphs);
@@ -145,10 +143,25 @@ const Preview = (props) => {
         return string;
     }
 
-    const getDefinitions = definitionsArray => {
-
-        return "";
+    const getDefinitions = arr => {
+        let filteredArr = filterOutBlanks(arr);
+        if (filteredArr.length === 0) return "";
+        let newArr = filteredArr.map((a, i, arr) => {
+            let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
+            let num = arr.length === 1 ? "" : `${i+1}. `;
+            let notes = a.notes ? getNotesDisplay(a.notes) : "";
+            let def = <React.Fragment key={i}>{num}{a.content}{notes}{divider}</React.Fragment>;
+            return def;
+        });
+        // console.log(newArr)
+        return newArr;
     }
+
+    let abc = appState.entry.senseGroups[0].definitions;
+    // console.log(abc);
+
+    // console.log(getDefinitions(abc));
+
 
     const getSenseGroupDisplay = (senseGroup) => {
         let poses = senseGroup.partsOfSpeech.map((a, i, arr) => {
@@ -156,17 +169,22 @@ const Preview = (props) => {
             let posDisplay = getPosDisplay(a);
             return <React.Fragment key={i}><em>{posDisplay}</em>{divider}</React.Fragment>;
         });
-        return <> {poses}</>;
+        // console.log(senseGroup);
+        let definitionsDisplay = getDefinitions(senseGroup.definitions);
+
+        return <> {poses} {definitionsDisplay}</>;
     };
 
-    // const getSenseGroups = () => {
-    //     let senseGroupsArray = appState.entry.senseGroups.map(a => getSenseGroupDisplay(a));
-        // console.log(senseGroupsArray);
-        // appState.entry.senseGroups.forEach(a => {
-        //     let definitions
-        // })
-        // return senseGroupsArray;
-    // }
+    const getSenseGroups = () => {
+
+        let senseGroupsDisplay = appState.entry.senseGroups.map((a,i,arr) => {
+            let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
+            let display = getSenseGroupDisplay(a);
+            return <React.Fragment key={i}>{display}{divider}</React.Fragment>;
+        })
+        return senseGroupsDisplay;
+
+    }
 
 
 
@@ -174,9 +192,11 @@ const Preview = (props) => {
         <>
             <p>Preview</p>
             {getHeadword()}
-            {appState.entry.senseGroups.map((a,i) => (
+            {getSenseGroups()}
+            {/* {appState.entry.senseGroups.map((a,i) => (
                 <React.Fragment key={i}>{getSenseGroupDisplay(a)}</React.Fragment>
-            ))}
+            ))} */}
+            {/* {getDefinitions(abc)} */}
         </>
     )
     

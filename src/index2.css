@@ -242,6 +242,7 @@ li {
 	gap: 1rem;
     border-radius: .6rem;
     backdrop-filter: blur(1.5px);
+	display: none;
 }
 
 #show-ipa  {

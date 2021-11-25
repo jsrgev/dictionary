@@ -1,6 +1,6 @@
 import AddPopup from './AddPopup';
 import Definition from './Definition';
-import {exampleDefault} from '../defaults.js'
+import Note from './Note';
 import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
@@ -8,11 +8,11 @@ import _ from 'lodash';
 const Example = props => {
 
     const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
-    const {addDefinition, addExample} = addFunctions;
+    const {addDefinition, addExample, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".examples";
     const path = _.get(appState, "entry." + pathFrag);
-    const upPath = _.get(appState, "entry." + stringPath);
+    // const upPath = _.get(appState, "entry." + stringPath);
 
     console.log(path)
 
@@ -46,7 +46,11 @@ const Example = props => {
 
     const popupItems = [
         ["Example", () => addExample(thisIndex, stringPath)],
-        ["Definition", () => addDefinition(path[thisIndex].definitions.length-1, stringPath+`.examples[${thisIndex}]`)]
+        ["Definition", () => addDefinition(path[thisIndex].definitions.length-1, stringPath+`.examples[${thisIndex}]`)],
+        ["Note", () => {
+            let index = (path.notes) ? path.notes.length-1 : 0;
+            addNote(index, pathFrag+`[${thisIndex}]`);
+        }],
     ];
 
     let stringPathA =  pathFrag + `[${thisIndex}]`;
@@ -73,11 +77,12 @@ const Example = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
+                {path[thisIndex].notes?.map((a,i) => (
+                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                ))  }
                 {path[thisIndex].definitions.map((a,i) => (
                     <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
-                ))
-                    
-                }
+                ))}
             </div>
         </>
     )

@@ -42,14 +42,12 @@ const Headword = props => {
                 <div className="row-content">
                     Headword
                 </div>
-                {appState.entry &&
-                appState.entry.headword.morphs.map((a,i) => (
+                {appState.entry?.headword?.morphs.map((a,i) => (
                     <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} />
                 ))
                 }
-                {appState.entry &&
-                path.notes &&
-                path.notes.map((a,i) => (
+                {appState.entry?.headword?.morphs.notes?.map((a,i) => (
+                    // path.notes?.map((a,i) => (
                     <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPath} prevIndentLevel={0} addFunctions={addFunctions} />
                 ))
                 }

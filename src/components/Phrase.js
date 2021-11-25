@@ -1,6 +1,7 @@
 import AddPopup from './AddPopup';
 import Definition from './Definition';
 import Example from './Example';
+import Note from './Note';
 import {phraseDefault} from '../defaults.js'
 import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
 import {useState} from 'react';
@@ -9,7 +10,7 @@ import _ from 'lodash';
 const Phrase = props => {
 
     const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
-    const {addDefinition, addPhrase, addExample} = addFunctions;
+    const {addDefinition, addPhrase, addExample, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".phrases";
     const path = _.get(appState, "entry." + pathFrag);
@@ -52,6 +53,10 @@ const Phrase = props => {
             let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
             addExample(index, pathFrag+`[${thisIndex}]`);
         }],
+        ["Note", () => {
+            let index = (path.notes) ? path.notes.length-1 : 0;
+            addNote(index, pathFrag+`[${thisIndex}]`);
+        }],
     ];
 
     let stringPathA =  pathFrag + `[${thisIndex}]`;
@@ -78,13 +83,16 @@ const Phrase = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
+                {path[thisIndex].notes?.map((a,i) => (
+                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                ))
+                }
                 {path[thisIndex].definitions.map((a,i) => (
                     <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
                 ))
                 }
-                {path[thisIndex].examples &&
-                    path[thisIndex].examples.map((a,i) => (
-                        <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
+                {path[thisIndex].examples?.map((a,i) => (
+                    <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
                     ))
                 }
             </div>

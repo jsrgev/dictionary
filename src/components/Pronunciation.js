@@ -78,8 +78,7 @@ const Pronunciation = (props) => {
                 onBlur={e => handleChange(handleInputBlur(e))}
                 />
             </div>
-            {path[thisIndex].notes &&
-            path[thisIndex].notes.map((a,i) => (
+            {path[thisIndex].notes?.map((a,i) => (
                 <Note appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
             ))}
         </>
