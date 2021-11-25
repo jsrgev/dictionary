@@ -49,10 +49,10 @@ const Phrase = props => {
     const popupItems = [
         ["Phrase", () => addPhrase(thisIndex, stringPath)],
         ["Definition", () => addDefinition(path[thisIndex].definitions.length-1, stringPath+`.phrases[${thisIndex}]`)],
-        ["Example", () => {
-            let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
-            addExample(index, pathFrag+`[${thisIndex}]`);
-        }],
+        // ["Example", () => {
+        //     let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
+        //     addExample(index, pathFrag+`[${thisIndex}]`);
+        // }],
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag+`[${thisIndex}]`);

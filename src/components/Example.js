@@ -14,8 +14,6 @@ const Example = props => {
     const path = _.get(appState, "entry." + pathFrag);
     // const upPath = _.get(appState, "entry." + stringPath);
 
-    console.log(path)
-
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [exampleOpen, setExampleOpen] = useState(true);
 

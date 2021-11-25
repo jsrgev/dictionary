@@ -143,24 +143,28 @@ const Preview = (props) => {
         return string;
     }
 
-    const getDefinitions = arr => {
+    const getDefinitions = (arr, example) => {
         let filteredArr = filterOutBlanks(arr);
         if (filteredArr.length === 0) return "";
         let newArr = filteredArr.map((a, i, arr) => {
-            let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
-            let num = arr.length === 1 ? "" : `${i+1}. `;
+            let divider = ((arr.length > 1) && (i < arr.length-1) ) ?
+                (example ? " / " : "; ") : "";
+            let num = (arr.length === 1 || example) ? "" : `${i+1}. `;
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
+            let examplesDisplay = a.examples ? getExamples(a.examples) : "";
+            let wrapper = example ? ["‘","’"] : ["",""];
             let def =
                 <React.Fragment key={i}>
                     {num}
-                    {a.content}
+                    {wrapper[0]}{a.content}{wrapper[1]}
                     {notes}
+                    {examplesDisplay}
                     {divider}
                 </React.Fragment>;
             return def;
         });
         return <> {newArr}</>;
-    }
+    };
 
     const getPhrases = arr => {
         let filteredArr = filterOutBlanks(arr);
@@ -169,24 +173,43 @@ const Preview = (props) => {
             let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
             let definitionsDisplay = getDefinitions(a.definitions);
+            // let examplesDisplay = a.examples ? getExamples(a.examples) : "";
             let phrase =
                 <React.Fragment key={i}>
                     <span className="hw">{a.content}</span>
+                    {definitionsDisplay}
+                    {notes}
+                    {/* {examplesDisplay} */}
+                    {divider}
+                </React.Fragment>;
+            return phrase;
+        });
+        return <> {newArr}</>;
+    };
+
+    const getExamples = arr => {
+        let filteredArr = filterOutBlanks(arr);
+        if (filteredArr.length === 0) return "";
+        let newArr = filteredArr.map((a, i, arr) => {
+            let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
+            let notes = a.notes ? getNotesDisplay(a.notes) : "";
+            let definitionsDisplay = getDefinitions(a.definitions, true);
+            let phrase =
+                <React.Fragment key={i}>
+                    <span className="for">{a.content}</span>
                     {definitionsDisplay}
                     {notes}
                     {divider}
                 </React.Fragment>;
             return phrase;
         });
-        return <> {newArr}</>;
-    }
+        return <>: {newArr}</>;
+    };
 
-
-
-    let abc = appState.entry.senseGroups[0].phrases;
+    // let abc = appState.entry.senseGroups[0].definitions[0]?.examples;
     // console.log(abc);
 
-    // console.log(getPhrases(abc));
+    // console.log(getExamples(abc));
 
 
     const getSenseGroupDisplay = (senseGroup) => {
@@ -195,11 +218,13 @@ const Preview = (props) => {
             let posDisplay = getPosDisplay(a);
             return <React.Fragment key={i}><em>{posDisplay}</em>{divider}</React.Fragment>;
         });
-        // console.log(senseGroup);
-        let definitionsDisplay = senseGroup.definitions ? getDefinitions(senseGroup.definitions): "";
-        let phrasesDisplay = senseGroup.phrases ? getPhrases(senseGroup.phrases) : "";
-        let divider = (definitionsDisplay === <> </> || definitionsDisplay === "") ? "" : "; ";
-        // console.log(definitionsDisplay === <> </>)
+        let {definitions, phrases} = senseGroup;
+        let filteredDefinitions = definitions ? filterOutBlanks(definitions) : "";
+        let filteredPhrases = phrases ? filterOutBlanks(phrases) : "";
+
+        let definitionsDisplay = filteredDefinitions ? getDefinitions(filteredDefinitions): "";
+        let phrasesDisplay = filteredPhrases ? getPhrases(filteredPhrases) : "";
+        let divider = (definitionsDisplay !== "" && phrasesDisplay !== "") ? "; " : "";
         return <> {poses}{definitionsDisplay}{divider}{phrasesDisplay}</>;
     };
 
@@ -221,11 +246,7 @@ const Preview = (props) => {
             <p>Preview</p>
             {getHeadword()}
             {getSenseGroups()}
-            {/* {getPhrases(abc)} */}
-            {/* {appState.entry.senseGroups.map((a,i) => (
-                <React.Fragment key={i}>{getSenseGroupDisplay(a)}</React.Fragment>
-            ))} */}
-            {/* {getDefinitions(abc)} */}
+            {/* {getExamples(abc)} */}
         </>
     )
     

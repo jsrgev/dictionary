@@ -52,7 +52,10 @@ const Definition = props => {
         }]
     ];
 
-    if (stringPath === "senseGroups[0]") {
+    // to test if parent is example  - if so, disallow further example underneath
+    const pattern = /examples\[\d+?\]/;
+
+    if (!pattern.test(stringPath)) {
         popupItems.push(
             ["Example", () => {
                 let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
@@ -75,7 +78,9 @@ const Definition = props => {
                     className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.phrases ? " disabled" : ""}`}
                     onClick={deleteDefinition}
                     ></i>
+                    {(path[thisIndex].notes || path[thisIndex].examples) &&
                     <i className={`fas fa-chevron-${definitionOpen ? "up" : "down"}`} onClick={() => setDefinitionOpen(!definitionOpen)}></i>
+                    }
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label>Definition{path.length>1 && ` ${thisIndex+1}`}</label>
