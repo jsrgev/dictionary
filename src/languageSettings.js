@@ -12,15 +12,23 @@ export const ipa = {
     other: ["ˈ","ˌ","."],
 }
 
+export const typeFormAbbrs = {
+    singular: "sg",
+    plural: "pl",
+    collective: "col",
+    singulative: "sv",
+    definite: "def",
+}
+
 export const secondaryFormTypes = {
     "singularPlural": {forms: [ "singular","plural"], basic: "singular"},
     "collectiveSingulative": {forms: ["collective","singulative"], basic: "collective"},
-    "singularPluralNoun": {forms: ["singular","singular definite", "plural","plural definite"], basic: "singular"},
+    "singularPluralNoun": {forms: ["singular","singular definite","plural","plural definite"], basic: "singular"},
     "collectiveSingulativeNoun": {forms: ["collective","collective definite","singulative","singulative definite"], basic: "collective"},
 };
 
 export const allPartsOfSpeech = [
-    {name: "adjective", abbr: "adj", types: [
+    {name: "adjective", abbr: "a", types: [
         {name: "general", abbr: "gen", unmarked: true},
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},

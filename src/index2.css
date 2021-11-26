@@ -239,7 +239,7 @@ li {
 	display: grid;
 	grid-auto-flow: column;
     align-items: end;
-	gap: 1rem;
+	/* gap: 1rem; */
     border-radius: .6rem;
     backdrop-filter: blur(1.5px);
 	/* display: none; */

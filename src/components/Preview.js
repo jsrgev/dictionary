@@ -1,5 +1,6 @@
 import React from "react";
 import {clone, getPosDef} from '../utils.js';
+import {typeFormAbbrs} from '../languageSettings';
 
 const Preview = (props) => {
 
@@ -26,35 +27,6 @@ const Preview = (props) => {
     const filterOutBlanks = set => {
         return set.filter(a => a.content.trim() !== "");
     }
-
-    // const fillOutSet = array => {
-    //     let set = [];
-    //     array.forEach((morph,i) => {
-    //         let filteredPronunciations = filterOutBlanks(morph.pronunciations);
-    //         let pronunciationArray = filteredPronunciations.map(a => {
-    //             let note = a.note ? noteDisplay(a.note) : "";
-    //             return `/${a.content.trim()}/` + note;
-    //         })  
-    //         let head = i===0 ? true : false;
-    //         let targetLang = morph.content;
-    //         let pronunciationsDisplay = pronunciationArray.join(" or ");
-    //         set.push({targetLang, pronunciationsDisplay, head});
-    //     })
-    //     return set;
-    // };
-
-    // const getAlts = set => {
-    //     let altString = "";
-    //     let altLines = "";
-    //     if (set.length > 1) {
-    //         for (let i=1; i<set.length; i++) {
-    //             let string = <>{altString} or <span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay}</>;
-    //             altString = string;
-    //             set[i].line = <>{altLines}<span className="for">{set[i].targetLang.trim()}</span> {set[i].pronunciationsDisplay} see <span className="for">{set[0].targetLang.trim()}</span></>;
-    //         }
-    //     }
-    //     return altString;
-    // };
 
     const getNotesDisplay = arr => {
         let filteredArr = filterOutBlanks(arr);
@@ -97,10 +69,10 @@ const Preview = (props) => {
         });
         return newArr;
     };
-    let allDisplay = [];
-    let headwordOrder;
 
+    let allDisplay = [];
     let altDisplayForHeadword = [];
+    let headwordOrder;
 
     const getPreview = () => {
         let morphs = [...appState.entry.headword.morphs];
@@ -140,6 +112,43 @@ const Preview = (props) => {
         return typeDef.unmarked ? "" : typeDef.abbr;
     };
     
+    const getTypeFormAbbr = typeFormName => {
+        let arr = typeFormName.split(" ");
+        let abbrs = arr.map(a => typeFormAbbrs[a] + ".");
+        return abbrs.join(" ");
+    };
+
+
+    const getParadigmFormsDisplay = paradigmForms => {
+        if (paradigmForms.length === 0) {
+            return ""
+        }
+        // console.log(paradigmForms);
+        let items = [];
+        for (let item of paradigmForms) {
+            let abbr =  getTypeFormAbbr(item.typeForm);
+            breakMe: if (!item.exists) {
+                items.push(<>no <em>{abbr}</em></>);
+            } else if (!item.regular && item.morphs.length > 0)  {
+                let filteredArr = filterOutBlanks(item.morphs);
+                if (filteredArr.length === 0) break breakMe;
+                let morphs = getMorphsDisplay(item.morphs);
+                console.log(morphs);
+                let morphsDisplay = morphs.map((a, i, arr) => {
+                    let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
+                    return <React.Fragment key={i}>{a}{divider}</React.Fragment>
+                })
+                items.push(<><em>{abbr}</em> {morphsDisplay}</>);
+            }
+        }
+        if (items.length === 0) return "";
+        let display = items.map((a, i, arr) => {
+            let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
+            return <React.Fragment key={i}>{a}{divider}</React.Fragment>
+        })
+        return <> ({display})</>
+    };
+
     const getPosDisplay = (posDetails) => {
         let posDef = getPosDef(posDetails.name);
         let posAbbr = posDef.abbr;
@@ -149,8 +158,9 @@ const Preview = (props) => {
             typesString = '-' + typesString;
         }
         let string = `${posAbbr}${typesString}.`;
-        return string;
-    }
+        let paradigmFormsDisplay = getParadigmFormsDisplay(posDetails.paradigmForms);
+        return <><em>{string}</em>{paradigmFormsDisplay}</>;
+    };
 
     const getDefinitions = (arr, example) => {
         let filteredArr = filterOutBlanks(arr);
@@ -182,13 +192,11 @@ const Preview = (props) => {
             let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
             let definitionsDisplay = getDefinitions(a.definitions);
-            // let examplesDisplay = a.examples ? getExamples(a.examples) : "";
             let phrase =
                 <React.Fragment key={i}>
                     <span className="hw">{a.content}</span>
                     {definitionsDisplay}
                     {notes}
-                    {/* {examplesDisplay} */}
                     {divider}
                 </React.Fragment>;
             return phrase;
@@ -215,17 +223,11 @@ const Preview = (props) => {
         return <>: {newArr}</>;
     };
 
-    // let abc = appState.entry.senseGroups[0].definitions[0]?.examples;
-    // console.log(abc);
-
-    // console.log(getExamples(abc));
-
-
     const getSenseGroupDisplay = (senseGroup) => {
         let poses = senseGroup.partsOfSpeech.map((a, i, arr) => {
             let divider = i < arr.length-1 ? <> / </> : "";
             let posDisplay = getPosDisplay(a);
-            return <React.Fragment key={i}><em>{posDisplay}</em>{divider}</React.Fragment>;
+            return <React.Fragment key={i}>{posDisplay}{divider}</React.Fragment>;
         });
         let {definitions, phrases} = senseGroup;
         let filteredDefinitions = definitions ? filterOutBlanks(definitions) : "";
@@ -245,21 +247,19 @@ const Preview = (props) => {
             return <React.Fragment key={i}>{display}{divider}</React.Fragment>;
         })
         return senseGroupsDisplay;
+    };
 
-    }
-
-    let abc = getPreview();
+    let entryPreview = getPreview();
 
     return(
         <>
             <p>Preview</p>
-            {abc &&
-            abc.map((a, i) => (
+            {entryPreview &&
+            entryPreview.map((a, i) => (
                 <React.Fragment key={i}>{a}</React.Fragment>
             ))}
         </>
     )
-    
 };
 
 export default Preview;
