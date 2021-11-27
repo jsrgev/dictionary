@@ -1,6 +1,6 @@
 import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef, getIndent, addPopupHandler} from '../utils';
 import AddPopup from './AddPopup';
-import {allPartsOfSpeech} from '../languageSettings.js';
+import {partsOfSpeechDefs} from '../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
 import {useState} from 'react';
 import _ from 'lodash';
@@ -83,7 +83,7 @@ const PartOfSpeech = (props) => {
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
-                        {allPartsOfSpeech.map((a,i) => (
+                        {partsOfSpeechDefs.map((a,i) => (
                             <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={handlePOSClick}>{capitalize(a.name)}</li>
                         ))}
                     </ul>

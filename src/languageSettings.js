@@ -1,7 +1,5 @@
 export const languageData = {
     languageName: "language",
-    creator: "josh regev",
-    creatorEmail: ""
 }
 
 export const ipa = {
@@ -27,29 +25,29 @@ export const secondaryFormTypes = {
     "collectiveSingulativeNoun": {forms: ["collective","collective definite","singulative","singulative definite"], basic: "collective"},
 };
 
-export const allPartsOfSpeech = [
-    {name: "adjective", abbr: "a", types: [
+export const partsOfSpeechDefs = [
+    {name: "adjective", abbr: "a", multiChoice: false, types: [
         {name: "general", abbr: "gen", unmarked: true},
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},
-    {name: "adverb", abbr: "adv", types: [
+    {name: "adverb", abbr: "adv", multiChoice: false, types: [
         {name: "general", abbr: "gen", unmarked: true},
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},
-    {name: "determiner", abbr: "d", types: [
+    {name: "determiner", abbr: "d", multiChoice: false, types: [
         {name: "general", abbr: "gen", unmarked: true},
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},
-    {name: "interjection", abbr: "i", types: [
+    {name: "interjection", abbr: "i", multiChoice: false, types: [
         {name: "general", abbr: "gen", unmarked: true},
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},
-    {name: "noun", abbr: "n", types: [
+    {name: "noun", abbr: "n", multiChoice: false, types: [
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPluralNoun", unmarked: true},
         {name: "collective-singulative", abbr: "cs", secondaryFormType: "collectiveSingulativeNoun"},
     ]},
-    {name: "number", abbr: "num", types: []},
-    {name: "preposition", abbr: "pre", types: []},
+    {name: "number", abbr: "num", multiChoice: false, types: []},
+    {name: "preposition", abbr: "pre", multiChoice: false, types: []},
     {name: "verb", abbr: "v", multiChoice: true, types: [
         {name: "ablative", abbr: "ab"},
         {name: "allative", abbr: "al"},
@@ -60,5 +58,5 @@ export const allPartsOfSpeech = [
         {name: "transitive", abbr: "t"},
         {name: "verbal", abbr: "v"},
     ]},
-    {name: "pronoun", abbr: "pro", types: []},
+    {name: "pronoun", abbr: "pro", multiChoice: false, types: []},
 ];

@@ -1,0 +1,15 @@
+.span2  {
+    grid-column: span 2;
+}
+
+.row {
+    grid-column: span 2;
+}
+
+.row-controls {
+    grid-template-columns: repeat(5, 1rem);
+}
+
+#partsOfSpeechDefs .row-content {
+    grid-template-columns: 6rem 1fr 6rem 1fr 6rem 1fr;
+}

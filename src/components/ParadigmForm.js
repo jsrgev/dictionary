@@ -1,5 +1,5 @@
 import {capitalize, clone, getBasicForm, getIndent, addPopupHandler} from '../utils.js';
-// import {allPartsOfSpeech, secondaryFormTypes} from '../languageSettings';
+// import {partsOfSpeechDefs, secondaryFormTypes} from '../languageSettings';
 import Morph from './Morph.js';
 import AddPopup from './AddPopup';
 import {useState} from 'react';
@@ -17,23 +17,41 @@ const ParadigmForm = (props) => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [formOpen, setFormOpen] = useState(true);
 
+    const changeBasic = () => {
+        // if (isBasic && path[thisIndex].exists) {
+            // return;
+        // };
+        let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag);
+        for (let form of entryCopyPath) {
+            form.basic = false;
+        }
+        let formExists = entryCopyPath[thisIndex].exists;
+        entryCopyPath[thisIndex].basic = true;
+        if (!formExists) {
+            entryCopyPath[thisIndex].exists = true;
+        }
+        setAppState({entry: entryCopy});
+        console.log(path[thisIndex].basic)
+    };
+
     const changeExists = () => {
-        if (isBasic && path[thisIndex].exists) {
+        if (path[thisIndex].basic) {
             return;
         };  
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
-        let formExists = entryCopyPath[thisIndex].exists
+        let entryCopyPath = _.get(entryCopy, pathFrag);
+        let formExists = entryCopyPath[thisIndex].exists;
         entryCopyPath[thisIndex].exists = !formExists;
         setAppState({entry: entryCopy});
     };
 
     const changeRegular = () => {
-        if (isBasic && path[thisIndex].exists) {
+        if (path[thisIndex].basic) {
             return;
         };
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         let isRegular = entryCopyPath[thisIndex].regular;
         entryCopyPath[thisIndex].regular = !isRegular;
         setAppState({entry: entryCopy});
@@ -43,6 +61,8 @@ const ParadigmForm = (props) => {
     let isBasic = path[thisIndex].typeForm === getBasicForm(posPath);
     let exists = path[thisIndex].exists;
     let isRegular = path[thisIndex].regular;
+
+    console.log()
 
     const popupItems = [
         ["Alternate form", () => addMorph(path.length-1, pathFrag+`[${thisIndex}].morphs`)],
@@ -59,12 +79,15 @@ const ParadigmForm = (props) => {
                 <i></i>
                 <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content paradigmForms" style={getIndent(prevIndentLevel)}>
                     <div className={exists ? "" : "struck"} onClick={changeExists}>
                         {capitalize(path[thisIndex].typeForm)}
                     </div>
-                    <div className={isBasic ? "disabled" : ""} onClick={changeRegular}>
-                        {isBasic ? "Basic" : !exists ? "" : isRegular ? "Regular" : "Irregular"}
+                    <div onClick={changeBasic}>
+                        {path[thisIndex].basic ? "Citation form" : ""}
+                    </div>
+                    <div onClick={changeRegular}>
+                        {path[thisIndex].basic ? "" : !exists ? "" : isRegular ? "Regular" : "Irregular"}
                     </div>
                 </div>
                 {(exists && !isRegular) &&

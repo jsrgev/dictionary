@@ -1,6 +1,6 @@
 import AddPopup from './AddPopup';
 import Note from './Note';
-import {clone, handleInputBlur, getIndent} from '../utils.js';
+import {clone, handleInputBlur, getIndent, addPopupHandler} from '../utils.js';
 import {pronunciationDefault} from '../defaults.js';
 import {useState} from 'react';
 import _ from "lodash";
@@ -23,7 +23,7 @@ const Pronunciation = (props) => {
             entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});    
         }
-    }
+    };
 
     const deletePronunciation = e => {
         let entryCopy = clone(appState.entry);
@@ -42,24 +42,15 @@ const Pronunciation = (props) => {
     const closePopup = () => {
         setAddPopupVisible(false)
         window.removeEventListener("click", closePopup);
-    }
-
-    const addPopupHandler = () => {
-        setAddPopupVisible(!addPopupVisible);
-        setTimeout(() => {
-            window.addEventListener("click", closePopup);
-        }, 100)
-    }
+    };
 
     const popupItems = [
         ["Pronunciation", e => addPronunciation(e, thisIndex)],
-        // ["Note", e => addNote(path[thisIndex].notes.length-1, pathFrag+`[${thisIndex}]`)]
-
         ["Note", () => {
             let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;
             addNote(index, pathFrag+`[${thisIndex}]`);
         }]
-    ]
+    ];
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
 
@@ -67,7 +58,7 @@ const Pronunciation = (props) => {
         <>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                <i className="fas fa-plus" onClick={addPopupHandler}></i>           
+                <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>           
             </div>
             <div className="row-content" style={getIndent(prevIndentLevel)}>

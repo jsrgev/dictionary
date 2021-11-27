@@ -3,7 +3,7 @@ import Phrase from './Phrase';
 // import Example from './Example';
 import Definition from './Definition';
 import AddPopup from './AddPopup';
-import {allPartsOfSpeech} from '../languageSettings.js';
+import {partsOfSpeechDefs} from '../languageSettings.js';
 import {clone, generateSenseGroup, addPopupHandler} from '../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
@@ -37,7 +37,7 @@ const SenseGroup = props => {
         setAppState({entry: entryCopy});
     }
     
-    const availablePoses = allPartsOfSpeech.filter(a => {
+    const availablePoses = partsOfSpeechDefs.filter(a => {
         let alreadySelected = path[thisIndex].partsOfSpeech.some(b => b.name === a.name);
         return !alreadySelected && a;
     })

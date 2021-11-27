@@ -1,5 +1,5 @@
 import {senseGroupDefault, secondaryFormDetailsDefault} from './defaults.js';
-import {secondaryFormTypes, allPartsOfSpeech} from './languageSettings.js';
+import {secondaryFormTypes, partsOfSpeechDefs} from './languageSettings.js';
 
 export const getIndent = (prevIndentLevel = 0) => {
     const indentAmount = 2;
@@ -16,8 +16,8 @@ export const generateSenseGroup = posName => {
     return newSenseGroup;
 };
 
-export const getPosDef = (posName = allPartsOfSpeech[0].name) => {
-    return allPartsOfSpeech.find(a => a.name === posName);
+export const getPosDef = (posName = partsOfSpeechDefs[0].name) => {
+    return partsOfSpeechDefs.find(a => a.name === posName);
 };
 
 export const getSecondaryFormValues = secondaryFormType => {
@@ -31,7 +31,7 @@ export const getSecondaryFormValues = secondaryFormType => {
 };
 
 export const getBasicForm = pos => {
-    let posDef = allPartsOfSpeech.find(a => a.name===pos.name);
+    let posDef = partsOfSpeechDefs.find(a => a.name===pos.name);
     let typeDef = posDef.types.find(a => a.name===pos.types[0]);
     let secondaryFormType = typeDef.secondaryFormType;
     return secondaryFormTypes[secondaryFormType].basic
@@ -43,7 +43,7 @@ export const getTypeDef = (posName, typeName) =>  {
 };
 
 export const getAllTypes = pos => {
-    let posDef = allPartsOfSpeech.find(a => a.name === pos);
+    let posDef = partsOfSpeechDefs.find(a => a.name === pos);
     return posDef.types;
 };
 

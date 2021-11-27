@@ -10,7 +10,7 @@ import _ from 'lodash';
 const Phrase = props => {
 
     const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
-    const {addDefinition, addPhrase, addExample, addNote} = addFunctions;
+    const {addDefinition, addPhrase, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".phrases";
     const path = _.get(appState, "entry." + pathFrag);

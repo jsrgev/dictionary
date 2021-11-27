@@ -8,13 +8,13 @@ const Preview = (props) => {
     const {appState} = props;
     // const [previewShown, setPreviewShown] = useState(true);
 
-    const noteDisplay = note => {
-        let display = "";
-        if (note.trim() !== "") {
-            display = ` (${note.trim()})`;
-        }
-        return display;
-    };
+    // const noteDisplay = note => {
+    //     let display = "";
+    //     if (note.trim() !== "") {
+    //         display = ` (${note.trim()})`;
+    //     }
+    //     return display;
+    // };
 
     const alphaSortSet = set => {
         let setClone = clone(set);
@@ -38,13 +38,13 @@ const Preview = (props) => {
     const getPronunciationsDisplay = arr => {
         let filteredArr = filterOutBlanks(arr);
         if (filteredArr.length === 0) return "";
-        let newArr = filteredArr.map(a => {
-            let pronunciation = `/${a.content}/`;
+        let newArr = filteredArr.map((a, i, arr) => {
+            let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
+            let pronunciation = <span className="phonetic">/{a.content}/</span>;
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
-            return pronunciation + notes;
+            return <React.Fragment key={i}>{pronunciation}{notes}{divider}</React.Fragment>;
         });
-        let string = newArr.join(" or ");
-        return ` ${string}`;
+        return <> {newArr}</>;
     };
 
     const getAltDisplayForHeadword = () => {
@@ -123,22 +123,22 @@ const Preview = (props) => {
         if (paradigmForms.length === 0) {
             return ""
         }
-        // console.log(paradigmForms);
         let items = [];
         for (let item of paradigmForms) {
             let abbr =  getTypeFormAbbr(item.typeForm);
-            breakMe: if (!item.exists) {
+            if (!item.exists) {
                 items.push(<>no <em>{abbr}</em></>);
             } else if (!item.regular && item.morphs.length > 0)  {
                 let filteredArr = filterOutBlanks(item.morphs);
-                if (filteredArr.length === 0) break breakMe;
-                let morphs = getMorphsDisplay(item.morphs);
-                console.log(morphs);
-                let morphsDisplay = morphs.map((a, i, arr) => {
-                    let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
-                    return <React.Fragment key={i}>{a}{divider}</React.Fragment>
-                })
-                items.push(<><em>{abbr}</em> {morphsDisplay}</>);
+                if (filteredArr.length > 0) {
+                    let morphs = getMorphsDisplay(item.morphs);
+                    console.log(morphs);
+                    let morphsDisplay = morphs.map((a, i, arr) => {
+                        let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
+                        return <React.Fragment key={i}>{a}{divider}</React.Fragment>
+                    })
+                    items.push(<><em>{abbr}</em> {morphsDisplay}</>);                        
+                }
             }
         }
         if (items.length === 0) return "";
