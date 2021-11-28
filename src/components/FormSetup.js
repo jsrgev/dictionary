@@ -99,7 +99,7 @@ const FormSetup = props => {
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
-                    <div onClick={changeBasic}>{path[thisIndex].basic ? "Basic" : "Not basic"}</div>
+                    <div onClick={changeBasic}>{path[thisIndex].basic ? "Citation form" : ""}</div>
                     <div onClick={changeMayBeMissing}>{path[thisIndex].mayBeMissing ? "May be missing" : "May not be missing"}</div>
                     {/* { path[thisIndex].types?.length>0 &&
                         <>

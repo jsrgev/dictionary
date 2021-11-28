@@ -67,7 +67,6 @@ const TypeSetup = props => {
                     <i className={`fas fa-chevron-${typeOpen ? "up" : "down"}`} onClick={() => setTypeOpen(!typeOpen)}></i>
                     : <i></i>
                 }
-
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, true)}
@@ -76,7 +75,6 @@ const TypeSetup = props => {
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                 ></i>
-
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label>Type</label>

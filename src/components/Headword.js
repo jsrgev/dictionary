@@ -9,7 +9,7 @@ import {useState} from 'react';
 
 const Headword = props => {
 
-    const {appState, setAppState, addFunctions} = props;
+    const {appState, setAppState, addFunctions, moveItem} = props;
     let {addMorph, addNote} =  addFunctions;
     const [headwordOpen, setHeadwordOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -28,6 +28,7 @@ const Headword = props => {
         }]
     ];
 
+    
     // console.log(path);
 
     return (

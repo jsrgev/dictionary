@@ -103,7 +103,8 @@ fieldset {
 .row-controls {
 	display: grid;
 	gap: .5rem;
-	grid-template-columns: 1rem 1rem 1rem;
+	/* grid-template-columns: 1rem 1rem 1rem; */
+	grid-template-columns: repeat(5, 1rem);
 	position: relative;
 }
 

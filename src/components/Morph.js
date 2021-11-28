@@ -8,7 +8,7 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions} = props;
+    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions, moveItem} = props;
     const {addMorph, addNote} = addFunctions;
     // const path = appState.entry.headword[thisIndex];
 
@@ -63,6 +63,9 @@ const Morph = props => {
         }
     };
 
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
+
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
 
@@ -74,6 +77,14 @@ const Morph = props => {
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                     <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
                     <i className={`fas fa-chevron-${morphOpen ? "up" : "down"}`} onClick={() => setMorphOpen(!morphOpen)}></i>
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                ></i>
+                <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>

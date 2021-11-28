@@ -88,6 +88,16 @@ const Entry = () => {
         },
     };
 
+    const moveItem = (e, index, pathFrag, up) => {
+        if (e.target.classList.contains("disabled")) return;
+        let position = up ? index-1 : index+1;
+        let entryCopy = clone(state.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let thisItemCopy = clone(entryCopyPath[index]);
+        entryCopyPath.splice(index, 1);
+        entryCopyPath.splice(position, 0, thisItemCopy);
+        setState({entry: entryCopy});
+    };
 
 
 
@@ -100,7 +110,7 @@ const Entry = () => {
             <Headword appState={state} setAppState={setState} addFunctions={addFunctions} />
             {state.entry &&
                 state.entry.senseGroups.map((a,i) => (
-                    <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} />
+                    <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
                 ))
             }
             <Etymology />
