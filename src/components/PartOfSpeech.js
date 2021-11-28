@@ -6,7 +6,7 @@ import {useState} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses} = props;
+    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses, moveItem} = props;
     const {addPos} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
 
@@ -68,6 +68,9 @@ const PartOfSpeech = (props) => {
         // ["Note", e => addNote(path[thisIndex].notes.length-1, pathFrag+`[${thisIndex}]`)]
     ]
 
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
+
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
 
@@ -79,6 +82,14 @@ const PartOfSpeech = (props) => {
                     <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deletePos}></i>           
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <span>Part of speech</span>

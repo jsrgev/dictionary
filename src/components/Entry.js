@@ -89,6 +89,10 @@ const Entry = () => {
     };
 
     const moveItem = (e, index, pathFrag, up) => {
+        // console.log(e);
+        // console.log(index);
+        // console.log(pathFrag);
+        // console.log(up);
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
         let entryCopy = clone(state.entry);
@@ -107,7 +111,7 @@ const Entry = () => {
             <p>Entries</p>
             </div>
             <div id="entryForm" onKeyDown={handleKeyDown}>
-            <Headword appState={state} setAppState={setState} addFunctions={addFunctions} />
+            <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
             {state.entry &&
                 state.entry.senseGroups.map((a,i) => (
                     <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />

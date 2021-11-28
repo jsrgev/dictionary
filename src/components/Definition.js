@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const Definition = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
+    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
     const {addDefinition, addExample, addNote} = addFunctions;
     // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
@@ -64,6 +64,9 @@ const Definition = props => {
         );
     }
 
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
+
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
     return (
@@ -78,9 +81,18 @@ const Definition = props => {
                     className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.phrases ? " disabled" : ""}`}
                     onClick={deleteDefinition}
                     ></i>
-                    {(path[thisIndex].notes || path[thisIndex].examples) &&
-                    <i className={`fas fa-chevron-${definitionOpen ? "up" : "down"}`} onClick={() => setDefinitionOpen(!definitionOpen)}></i>
+                    {(path[thisIndex].notes || path[thisIndex].examples) ?
+                    <i className={`fas fa-chevron-${definitionOpen ? "up" : "down"}`} onClick={() => setDefinitionOpen(!definitionOpen)}></i> :
+                    <i></i>
                     }
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label>Definition{path.length>1 && ` ${thisIndex+1}`}</label>
@@ -95,7 +107,7 @@ const Definition = props => {
                 ))
                 }
                 {path[thisIndex].examples?.map((a,i) => (
-                    <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
+                    <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))
                 }
             </div>

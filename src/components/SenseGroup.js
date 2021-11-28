@@ -9,7 +9,7 @@ import {useState} from 'react';
 import _ from 'lodash';
 
 const SenseGroup = props => {
-    const {appState, setAppState, thisIndex, addFunctions} = props;
+    const {appState, setAppState, thisIndex, addFunctions, moveItem} = props;
     const {addDefinition, addPhrase, addPos} = addFunctions;
     // const path = appState.entry.senseGroups;
 
@@ -57,6 +57,8 @@ const SenseGroup = props => {
         ["Part of speech", () => addPos(path[thisIndex].partsOfSpeech.length-1, pathFrag+`[${thisIndex}].partsOfSpeech`, availablePoses)],
     ]
 
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
 
     // senseGroupAvailablePoses
 
@@ -70,20 +72,28 @@ const SenseGroup = props => {
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                     <i className="fas fa-minus" onClick={deleteSenseGroup}></i>
                     <i className={`fas fa-chevron-${senseGroupOpen ? "up" : "down"}`} onClick={() => setSenseGroupOpen(!senseGroupOpen)}></i>
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
                </div>
                 <div className="row-content">
                     Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}
                 </div>
                     {path[thisIndex].partsOfSpeech.map((a,i) => (
-                    <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} />
+                    <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveItem={moveItem} />
                     ))}
                     {path[thisIndex].definitions &&
                     path[thisIndex].definitions.map((a,i) => (
-                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} />
+                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                     ))}
                     {path[thisIndex].phrases &&
                     path[thisIndex].phrases.map((a,i) => (
-                    <Phrase appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} />
+                    <Phrase appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                     ))}
             </div>
          </>

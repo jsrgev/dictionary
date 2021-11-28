@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 const Phrase = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
+    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
     const {addDefinition, addPhrase, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".phrases";
@@ -59,6 +59,9 @@ const Phrase = props => {
         }],
     ];
 
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
+
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
     return (
@@ -74,6 +77,14 @@ const Phrase = props => {
                     onClick={deletePhrase}
                     ></i>            
                     <i className={`fas fa-chevron-${phraseOpen ? "up" : "down"}`} onClick={() => setPhraseOpen(!phraseOpen)}></i>
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label>Phrase{path.length>1 && ` ${thisIndex+1}`}</label>
@@ -88,12 +99,8 @@ const Phrase = props => {
                 ))
                 }
                 {path[thisIndex].definitions.map((a,i) => (
-                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
+                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))
-                }
-                {path[thisIndex].examples?.map((a,i) => (
-                    <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
-                    ))
                 }
             </div>
         </>

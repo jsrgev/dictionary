@@ -31,7 +31,7 @@ export const partsOfSpeechDefs = [
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},
     {name: "adverb", abbr: "adv", multiChoice: false, types: [
-        {name: "general", abbr: "gen", unmarked: true},
+        {name: "general", abbr: "gen", unmarked: true},     
         {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
     ]},
     {name: "determiner", abbr: "d", multiChoice: false, types: [

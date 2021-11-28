@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const Example = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath} = props;
+    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
     const {addDefinition, addExample, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".examples";
@@ -51,6 +51,9 @@ const Example = props => {
         }],
     ];
 
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
+
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
     return (
@@ -66,6 +69,14 @@ const Example = props => {
                     onClick={deleteExample}
                     ></i>            
                     <i className={`fas fa-chevron-${exampleOpen ? "up" : "down"}`} onClick={() => setExampleOpen(!exampleOpen)}></i>
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label>Example{path.length>1 && ` ${thisIndex+1}`}</label>
@@ -79,7 +90,7 @@ const Example = props => {
                     <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
                 ))  }
                 {path[thisIndex].definitions.map((a,i) => (
-                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} />
+                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))}
             </div>
         </>

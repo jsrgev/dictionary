@@ -80,11 +80,11 @@ const Morph = props => {
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, true)}
-                ></i>
-                <i
+                    ></i>
+                    <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
-                ></i>
+                    ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
@@ -96,7 +96,7 @@ const Morph = props => {
                 </div>
                 <div className="row">
                     {path[thisIndex].pronunciations.map((a,i) => (
-                        <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions}
+                        <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
                         />
                     ))}
                     {appState.entry &&
