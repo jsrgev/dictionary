@@ -13,3 +13,17 @@
 #partsOfSpeechDefs .row-content {
     grid-template-columns: 6rem 1fr 6rem 1fr 6rem 1fr;
 }
+
+#ipaSetup .row-content {
+    grid-template-columns: 6rem 6rem max-content 1rem 6rem 1fr;
+}
+
+#ipaSetup .row-content input:last-child {
+    /* grid-column: span 3; */
+}
+
+input[type="color" i] {
+    height: auto;
+    padding: 0;
+    background: transparent;
+}

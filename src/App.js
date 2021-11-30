@@ -26,7 +26,23 @@ const App = () => {
                 {name: "verb", abbr: "v", multichoice: false, types: []},
                 {name: "pronoun", abbr: "pro", multichoice: false, types: []},
             ],
-            ipa: "",
+            ipa: [
+                {
+                    group: "consonants",
+                    characters: "",
+                    color: "",
+                },
+                {
+                    group: "vowel",
+                    characters: "",
+                    color: "",
+                },
+                {
+                    group: "diphthongs",
+                    characters: "",
+                    color: "",
+                },
+            ],
             secondaryFormTypes: [],
             typeFormAbbrs: [],    
         },

@@ -1,5 +1,6 @@
 import '../setup.css';
 import PosSetup from './PosSetup';
+import IpaSetup from './IpaSetup';
 // import { useSetState } from "react-use";
 import { useState }  from 'react';
 import {clone} from '../utils.js';
@@ -30,6 +31,8 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
+console.log(setup)
+
     return (
         <main id="setup">
             <div>
@@ -54,6 +57,14 @@ const Setup = props => {
                 <div className="row">
                     {setup.partsOfSpeechDefs.map((a,i) => (
                         <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                    ))}
+                </div>
+            </div>
+            <div id="ipaSetup">
+                <h3 className="span2">IPA</h3>
+                <div className="row">
+                    {setup.ipa.map((a,i) => (
+                        <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
                     ))}
                 </div>
             </div>

@@ -12,6 +12,13 @@
 	--light-blue: #9ac0ffff;
 }
 
+a.active {
+	cursor: default;
+	color: #000;
+}
+
+
+
 header {
 	display: block;
 }

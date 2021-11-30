@@ -94,7 +94,7 @@ const Morph = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
-                <div className="row">
+                {/* <div className="row"> */}
                     {path[thisIndex].pronunciations.map((a,i) => (
                         <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
                         />
@@ -104,7 +104,7 @@ const Morph = props => {
                         <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
                     ))
                     }
-                </div>
+                {/* </div> */}
             </div>
         </>
     )

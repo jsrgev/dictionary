@@ -14,6 +14,7 @@ const Pronunciation = (props) => {
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(appState, "entry." + pathFrag);
 
+    const [pronunciationOpen, setPronunciationOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
@@ -59,30 +60,38 @@ const Pronunciation = (props) => {
 
     return (
         <>
-            <div className="row-controls">
-                <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>
-                <i
-                className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                onClick={e => moveItem(e, thisIndex, pathFrag, true)}
-                ></i>
-                <i
-                className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                onClick={e => moveItem(e, thisIndex, pathFrag, false)}
-                ></i>
-            </div>
-            <div className="row-content" style={getIndent(prevIndentLevel)}>
-                <label>Pronunciation{path.length>1 && ` ${thisIndex+1}`}</label>
-                <input type="text"
-                value={path[thisIndex].content}
-                onChange={e => handleChange(e.target.value)}
-                onBlur={e => handleChange(handleInputBlur(e))}
-                />
-            </div>
-            {path[thisIndex].notes?.map((a,i) => (
-                <Note appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
-            ))}
+            <div className={`row${pronunciationOpen ? "" : " closed"}`}>
+                <div className="row-controls">
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
+                    <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>
+                    {path[thisIndex].notes ?
+                        <i className={`fas fa-chevron-${pronunciationOpen ? "up" : "down"}`} onClick={() => setPronunciationOpen(!pronunciationOpen)}></i>
+                        :
+                        <i></i>
+                    }
+
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
+                </div>
+                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                    <label>Pronunciation{path.length>1 && ` ${thisIndex+1}`}</label>
+                    <input type="text"
+                    value={path[thisIndex].content}
+                    onChange={e => handleChange(e.target.value)}
+                    onBlur={e => handleChange(handleInputBlur(e))}
+                    />
+                </div>
+                {path[thisIndex].notes?.map((a,i) => (
+                    <Note appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
+                ))}
+                </div>
         </>
     )
 };
