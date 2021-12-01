@@ -13,7 +13,7 @@ const IpaSetup = props => {
     // let pathFrag = stringPath + ".ipa";
     // const path = _.get(appState, "setup." + pathFrag);
 
-    console.log(stringPath)
+    // console.log(stringPath)
 
 
     const [ipaOpen, setIpaOpen] = useState(true);
@@ -100,7 +100,7 @@ const IpaSetup = props => {
                 ></i>
 
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content ipa" style={getIndent(prevIndentLevel)}>
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
 

@@ -15,7 +15,11 @@
 }
 
 #ipaSetup .row-content {
-    grid-template-columns: 6rem 6rem max-content 1rem 6rem 1fr;
+    grid-template-columns: 6rem 1fr 6rem 1rem;
+}
+
+#ipaSetup .row-content input:last-child {
+    grid-column: span 3;
 }
 
 #ipaSetup .row-content input:last-child {
@@ -27,3 +31,8 @@ input[type="color" i] {
     padding: 0;
     background: transparent;
 }
+
+.setting {
+    grid-template-columns: 12rem 1rem;
+}
+

@@ -20,6 +20,14 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
+    const changeCheck = field => {
+        let value = setup[field];
+        // console.log(value);
+        const setupCopy = clone(setup);
+        setupCopy[field] = !value;
+        setAppState({setup: setupCopy});
+    }
+
     const moveItem = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
@@ -31,7 +39,7 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
-console.log(setup)
+// console.log(setup)
 
     return (
         <main id="setup">
@@ -59,6 +67,18 @@ console.log(setup)
                         <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
                     ))}
                 </div>
+            </div>
+            <div>
+            <h3>Phonetics</h3>
+                <div className="row setting">
+                <label>Include pronunciation in entries</label>
+                <input type="checkbox" checked={setup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
+                </div>
+                <div className="row setting">
+                <label>Show IPA palette</label>
+                <input type="checkbox" checked={setup.showIpaPalette ? true : false} onChange={e => changeCheck("showIpaPalette")} />
+                </div>
+
             </div>
             <div id="ipaSetup">
                 <h3 className="span2">IPA</h3>

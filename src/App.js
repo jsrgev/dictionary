@@ -30,21 +30,34 @@ const App = () => {
                 {
                     group: "consonants",
                     characters: "",
-                    color: "",
+                    color: "#9ac0ff",
                 },
                 {
                     group: "vowel",
                     characters: "",
-                    color: "",
+                    color: "#ff7db5",
                 },
                 {
-                    group: "diphthongs",
+                    group: "rising diphthongs",
                     characters: "",
-                    color: "",
+                    color: "#ffbe0b",
+                },
+                {
+                    group: "falling diphthongs",
+                    characters: "",
+                    color: "#fda981",
+                },
+                {
+                    group: "other",
+                    characters: "ˈ ˌ ː",
+                    color: "#bf99f5",
                 },
             ],
             secondaryFormTypes: [],
-            typeFormAbbrs: [],    
+            typeFormAbbrs: [],
+            showPronunciation: true,
+            showIpaPalette: true,
+            showOrthographyPalette: false,
         },
     });
 

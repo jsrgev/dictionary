@@ -1,15 +1,15 @@
 :root {
 	font-size: 16px;
-	--mango: #ffbe0bff;
-	--orange: #fb5607ff;
-	--pink: #ff006eff;
-	--purple: #8338ecff;
-	--blue: #3a86ffff;
-	--light-mango: #ffde82ff;
-	--light-orange: #fda981ff;
-	--light-pink: #ff7db5ff;
-	--light-purple: #bf99f5ff;
-	--light-blue: #9ac0ffff;
+	--mango: #ffbe0b;
+	--orange: #fb5607;
+	--pink: #ff006e;
+	--purple: #8338ec;
+	--blue: #3a86ff;
+	--light-mango: #ffde82;
+	--light-orange: #fda981;
+	--light-pink: #ff7db5;
+	--light-purple: #bf99f5;
+	--light-blue: #9ac0ff;
 }
 
 a.active {
@@ -71,7 +71,7 @@ body, input {
 	-webkit-text-size-adjust: 100%;
 }
 
-input {	
+input {
 	outline: none;
 	border: none;
 	background-color: #e7e7e7;
@@ -117,7 +117,7 @@ fieldset {
 
 .row-content {
 	display: grid;
-	gap: 1rem;
+	gap: .5rem 1rem;
 	grid-template-columns: 6rem 1fr;
 }
 
