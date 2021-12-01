@@ -10,11 +10,14 @@ import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDef
 import _  from 'lodash';
 
 
-const Entry = () => {
+const Entry = props => {
 
-    const [state, setState] = useSetState({
-        entry: undefined
-    });
+
+    const {state, setState} = props;
+
+    // const [state, setState] = useSetState({
+    //     entry: undefined
+    // });
 
     const initializeEntry = useCallback(() => {
         let newEntry = clone(entryDefault);
@@ -128,7 +131,7 @@ const Entry = () => {
                 <Preview appState={state} setAppState={setState} />
             }
             </div>
-            <Ipa />
+            <Ipa appState={state} />
         </main>
     )
 }

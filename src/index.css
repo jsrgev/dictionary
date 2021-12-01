@@ -310,23 +310,23 @@ li {
 
 
 .consonant {
-	background: var(--light-blue);
+	/* background: var(--light-blue); */
 }
 
 .vowel {
-	background: var(--light-pink);
+	/* background: var(--light-pink); */
 }
 
 .risingDiphthong {
-	background: var(--light-mango);
+	/* background: var(--light-mango); */
 }
 
 .fallingDiphthong {
-	background: var(--light-orange);
+	/* background: var(--light-orange); */
 }
 
 .other {
-	background: var(--light-purple);
+	/* background: var(--light-purple); */
 }
 
 

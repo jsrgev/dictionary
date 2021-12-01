@@ -26,6 +26,13 @@ const IpaSetup = props => {
         setAppState({setup: setupCopy});
     };
 
+    const changeCharacters = value => {
+        const setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag)
+        setupCopyPath[thisIndex].characters = value.split(" ");
+        setAppState({setup: setupCopy});
+    };
+
     // const posDefault = {name: "", abbr: ""};
     // const typeDefault = {name: "", abbr: ""};
     const formDefault = {name: "", abbr: ""};
@@ -108,7 +115,7 @@ const IpaSetup = props => {
                     <input type="color" value={path[thisIndex].color} onChange={e => handleChange(e.target.value, "color")} />
 
                     <label>Characters</label>
-                    <input type="text" value={path[thisIndex].characters} onChange={e => handleChange(e.target.value, "characters")} />
+                    <input type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
 
                     {/* <div onClick={changeBasic}>{path[thisIndex].basic ? "Citation form" : ""}</div> */}
                     {/* <div onClick={changeMayBeMissing}>{path[thisIndex].mayBeMissing ? "May be missing" : "May not be missing"}</div> */}

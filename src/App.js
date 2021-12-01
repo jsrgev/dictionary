@@ -14,6 +14,7 @@ import {useSetState} from 'react-use';
 const App = () => {
 
     const [state, setState] = useSetState({
+        entry: undefined,
         setup: {
             languageName: "",
             partsOfSpeechDefs: [
@@ -29,29 +30,29 @@ const App = () => {
             ipa: [
                 {
                     group: "consonants",
-                    characters: "",
+                    characters: ["p","b","t","k","m","n","ɸ","θ","ð","s","ɬ","ʃ","χ","w","l","j","w","ɾ"],
                     color: "#9ac0ff",
                 },
                 {
                     group: "vowel",
-                    characters: "",
+                    characters: ["i","u","o","ə̥","ɛ","ɔ","a"],
                     color: "#ff7db5",
                 },
                 {
                     group: "rising diphthongs",
-                    characters: "",
+                    characters: ["o̯͡ɛ", "o̯͡a", "o̯͡ɔ"],
                     color: "#ffbe0b",
                 },
                 {
                     group: "falling diphthongs",
-                    characters: "",
+                    characters: ["i͡ə̯", "ə͡a̯", "a͡ɪ̯", "a͡ə̯", "u͡a̯", "u͡o̯"],
                     color: "#fda981",
                 },
                 {
                     group: "other",
-                    characters: "ˈ ˌ ː",
+                    characters: ["ˈ","ˌ","."],
                     color: "#bf99f5",
-                },
+                },      
             ],
             secondaryFormTypes: [],
             typeFormAbbrs: [],
@@ -119,7 +120,7 @@ const App = () => {
             <NavBar />
         </header>
         <Routes>
-            <Route exact path="/" element={<Entry />} />
+            <Route exact path="/" element={<Entry state={state} setState={setState} />} />
             <Route exact path="/setup" element={<Setup appState={state} setAppState={setState} />} />
             {/* <Route exact path="/entry" component={Home} /> */}
         </Routes>
