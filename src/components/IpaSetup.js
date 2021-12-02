@@ -18,7 +18,8 @@ const IpaSetup = props => {
     let groupDefault = {
         group: "",
         characters: [],
-        color: "#9ac0ff"
+        bgColor: "#9ac0ff",
+        textColor: "#000",
     }
 
 
@@ -89,8 +90,11 @@ const IpaSetup = props => {
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
 
-                    <label>Color</label>
-                    <input type="color" value={path[thisIndex].color} onChange={e => handleChange(e.target.value, "color")} />
+                    <label>Background color</label>
+                    <input type="color" value={path[thisIndex].bgColor} onChange={e => handleChange(e.target.value, "bgColor")} />
+
+                    <label>Text color</label>
+                    <input type="color" value={path[thisIndex].textColor} onChange={e => handleChange(e.target.value, "textColor")} />
 
                     <label>Characters</label>
                     <input type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />

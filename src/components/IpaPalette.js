@@ -23,7 +23,7 @@ const IpaPalette = props => {
                     {a.characters.map((b, j) => {
                         if (b === "") return null;
                         const gridColumnValue = (setup.groupSeparator === "line" && j === 0) ? 1 : "auto";
-                        return <span key={j} style={{background: a.color, gridColumn: gridColumnValue}}>{b}</span>
+                        return <span key={j} style={{background: a.bgColor, color: a.textColor, gridColumn: gridColumnValue}}>{b}</span>
                     })}
                 </React.Fragment>
                 ))
