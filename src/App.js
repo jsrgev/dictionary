@@ -58,6 +58,7 @@ const App = () => {
             typeFormAbbrs: [],
             showPronunciation: true,
             showIpaPalette: true,
+            groupSeparator: "none",
             showOrthographyPalette: false,
         },
     });

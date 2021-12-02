@@ -33,6 +33,6 @@ input[type="color" i] {
 }
 
 .setting {
-    grid-template-columns: 12rem 1rem;
+    grid-template-columns: 9rem 1fr;
 }
 

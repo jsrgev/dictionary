@@ -28,6 +28,15 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     }
 
+    const changeSeparator = value => {
+        // let value = setup[field];
+        // console.log(value);
+        const setupCopy = clone(setup);
+        setupCopy.groupSeparator = value;
+        setAppState({setup: setupCopy});
+    }
+
+
     const moveItem = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
@@ -71,22 +80,33 @@ const Setup = props => {
             <div>
             <h3>Phonetics</h3>
                 <div className="row setting">
-                <label>Include pronunciation in entries</label>
+                <label>Include pronunciation</label>
                 <input type="checkbox" checked={setup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
-                </div>
-                <div className="row setting">
-                <label>Show IPA palette</label>
-                <input type="checkbox" checked={setup.showIpaPalette ? true : false} onChange={e => changeCheck("showIpaPalette")} />
                 </div>
 
             </div>
             <div id="ipaSetup">
                 <h3 className="span2">IPA</h3>
-                <div className="row">
-                    {setup.ipa.map((a,i) => (
-                        <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
-                    ))}
+                <div className="row setting">
+                    <label>Show IPA palette</label>
+                    <input type="checkbox" checked={setup.showIpaPalette ? true : false} onChange={e => changeCheck("showIpaPalette")} />
+                    <div className="row setting">
+                    <label>Group separator</label>
+                    <ul>
+                        <li className={setup.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("none")}>None</li>
+                        <li className={setup.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("line")}>Line</li>
+                        <li className={setup.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("space")}>Space</li>
+                    </ul>
                 </div>
+                </div>
+                { setup.showIpaPalette &&
+                <div className="row">
+                {setup.ipa.map((a,i) => (
+                    <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                ))}
+            </div>
+
+                }
             </div>
             </main>
     )

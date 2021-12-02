@@ -78,6 +78,10 @@ input {
 	width: 100%;
 }
 
+input[type="checkbox"] {
+	width: auto;
+}
+
 input, label {
 	padding: 1px 2px;
 }
@@ -187,7 +191,7 @@ fieldset {
 
 
 
-ul.parts-of-speech, ul.types-of-POS {
+.row ul {
 	list-style-type: none;
 	display: flex;
 	gap: .5rem .3rem;
@@ -306,27 +310,6 @@ li {
 
 .ipa-chars-hidden #ipa-chars {
 	display: none;
-}
-
-
-.consonant {
-	/* background: var(--light-blue); */
-}
-
-.vowel {
-	/* background: var(--light-pink); */
-}
-
-.risingDiphthong {
-	/* background: var(--light-mango); */
-}
-
-.fallingDiphthong {
-	/* background: var(--light-orange); */
-}
-
-.other {
-	/* background: var(--light-purple); */
 }
 
 

@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const IpaSetup = props => {
 
-    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addForm} = props;
+    const {appState, setAppState, thisIndex, stringPath, moveItem, addForm} = props;
 
     let pathFrag = "ipa";
     const path = _.get(appState, "setup." + pathFrag);
@@ -107,7 +107,7 @@ const IpaSetup = props => {
                 ></i>
 
                 </div>
-                <div className="row-content ipa" style={getIndent(prevIndentLevel)}>
+                <div className="row-content ipa">
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
 
