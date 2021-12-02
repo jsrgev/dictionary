@@ -120,7 +120,7 @@ const PosSetup = props => {
                </div>
                { path[thisIndex].types.length>0 &&
                 path[thisIndex].types.map((a, i) => (
-                    <TypeSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={0} moveItem={moveItem} addType={addType} />
+                    <TypeSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={-1} moveItem={moveItem} addType={addType} />
                 ))
                }
             </div>

@@ -1,6 +1,5 @@
 import AddPopup from './AddPopup';
 import Definition from './Definition';
-import Example from './Example';
 import Note from './Note';
 import {phraseDefault} from '../defaults.js'
 import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';

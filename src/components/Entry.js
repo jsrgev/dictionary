@@ -2,7 +2,7 @@ import Headword from './Headword';
 import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
-import Ipa from './Ipa';
+import IpaPalette from './IpaPalette';
 import {useEffect, useCallback} from 'react';
 import {useSetState} from 'react-use';
 import {clone, generateSenseGroup, generatePos} from '../utils.js';
@@ -131,7 +131,7 @@ const Entry = props => {
                 <Preview appState={state} setAppState={setState} />
             }
             </div>
-            <Ipa appState={state} />
+            <IpaPalette appState={state} />
         </main>
     )
 }

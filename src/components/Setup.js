@@ -1,6 +1,7 @@
 import '../setup.css';
 import PosSetup from './PosSetup';
 import IpaSetup from './IpaSetup';
+import IpaPalette from './IpaPalette';
 // import { useSetState } from "react-use";
 import { useState }  from 'react';
 import {clone} from '../utils.js';
@@ -29,8 +30,6 @@ const Setup = props => {
     }
 
     const changeSeparator = value => {
-        // let value = setup[field];
-        // console.log(value);
         const setupCopy = clone(setup);
         setupCopy.groupSeparator = value;
         setAppState({setup: setupCopy});
@@ -108,6 +107,7 @@ const Setup = props => {
 
                 }
             </div>
+            <IpaPalette appState={appState} />
             </main>
     )
 };
