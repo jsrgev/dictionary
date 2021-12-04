@@ -1,8 +1,8 @@
 // import {useSetState} from 'react-use';
 import Morph from "./Morph";
 import Note from "./Note";
-import AddPopup from "./AddPopup";
-import { addPopupHandler } from '../utils';
+import AddPopup from "../AddPopup";
+import { addPopupHandler } from '../../utils';
 import _ from 'lodash';
 import {useState} from 'react';
 // import _ from "lodash";

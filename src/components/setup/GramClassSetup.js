@@ -1,17 +1,17 @@
-import AddPopup from './AddPopup.js';
-import FormSetup from './FormSetup.js';
-import { clone, addPopupHandler, getIndent } from '../utils.js';
+import AddPopup from '../AddPopup.js';
+// import GramFormSetup from './GramFormSetup.js';
+import { clone, addPopupHandler, getIndent } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
-const TypeSetup = props => {
+const GramClassSetup = props => {
 
-    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addType} = props;
+    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addGramClass} = props;
 
-    let pathFrag = stringPath + ".types";
+    let pathFrag = stringPath + ".gramClasses";
     const path = _.get(appState, "setup." + pathFrag);
 
-    const [typeOpen, setTypeOpen] = useState(true);
+    const [gramClassOpen, setGramClassOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -21,25 +21,16 @@ const TypeSetup = props => {
         setAppState({setup: setupCopy});
     };
 
-    // const posDefault = {name: "", abbr: ""};
-    // const typeDefault = {name: "", abbr: ""};
-    const formDefault = {name: "", abbr: "", basic: false, mayBeMissing: true};
+    const gramFormDefault = {name: "", abbr: "", basic: false, mayBeMissing: true};
 
-    // addMorph: (index, pathFrag) => {
-    //     let entryCopy = clone(state.entry);
-    //     let entryCopyPath = _.get(entryCopy, pathFrag);
-    //     entryCopyPath.splice(index+1, 0, clone(morphDefault));
-    //     setState({entry: entryCopy});
-    // },
-
-    const addForm = index => {
+    const addGramForm = index => {
         const setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].forms.splice(index+1, 0, clone(formDefault));
+        setupCopyPath[thisIndex].gramForms.splice(index+1, 0, clone(gramFormDefault));
         setAppState({setup: setupCopy});
     };
     
-    const deleteType = () => {
+    const deleteGramClass = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
             setupCopyPath.splice(thisIndex, 1);
@@ -47,8 +38,8 @@ const TypeSetup = props => {
     };
 
     const popupItems = [
-        ["Type", () => addType(thisIndex)],
-        ["Form", () => addForm(path[thisIndex].forms.length-1)],
+        ["GramClass", () => addGramClass(thisIndex)],
+        ["Form", () => addGramForm(path[thisIndex].gramForms.length-1)],
     ];
 
     const isFirst = thisIndex === 0;
@@ -56,15 +47,17 @@ const TypeSetup = props => {
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
     
+console.log(path[thisIndex]);
+
     return(
         <>
-            <div className={`row${typeOpen ? "" : " closed"}`}>
+            <div className={`row${gramClassOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                <i className="fas fa-minus" onClick={deleteType}></i>
-                { path[thisIndex].forms.length>0 ?
-                    <i className={`fas fa-chevron-${typeOpen ? "up" : "down"}`} onClick={() => setTypeOpen(!typeOpen)}></i>
+                <i className="fas fa-minus" onClick={deleteGramClass}></i>
+                { path[thisIndex].gramForms.length>0 ?
+                    <i className={`fas fa-chevron-${gramClassOpen ? "up" : "down"}`} onClick={() => setGramClassOpen(!gramClassOpen)}></i>
                     : <i></i>
                 }
                 <i
@@ -77,20 +70,20 @@ const TypeSetup = props => {
                 ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <label>Type</label>
+                    <label>Class</label>
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                </div>
-               { path[thisIndex].forms.length>0 &&
-                path[thisIndex].forms.map((a, i) => (
-                    <FormSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} moveItem={moveItem} addForm={addForm} />
+               {/* { path[thisIndex].gramForms.length>0 &&
+                path[thisIndex].gramForms.map((a, i) => (
+                    <GramFormSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} moveItem={moveItem} addGramForm={addGramForm} />
                 ))
 
-               }
+               } */}
             </div>
         </>
     )
 };
 
-export default TypeSetup;
+export default GramClassSetup;

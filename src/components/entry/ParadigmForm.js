@@ -1,7 +1,6 @@
-import {capitalize, clone, getBasicForm, getIndent, addPopupHandler} from '../utils.js';
-// import {partsOfSpeechDefs, secondaryFormTypes} from '../languageSettings';
+import {capitalize, clone, getIndent, addPopupHandler} from '../../utils.js';
 import Morph from './Morph.js';
-import AddPopup from './AddPopup';
+import AddPopup from '../AddPopup';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -9,7 +8,6 @@ const ParadigmForm = (props) => {
 
     const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions} = props;
     const {addMorph} = addFunctions;
-    // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech[posIndex];
 
     let pathFrag = stringPath + ".paradigmForms";
     const path = _.get(appState, "entry." + pathFrag);
@@ -18,9 +16,6 @@ const ParadigmForm = (props) => {
     const [formOpen, setFormOpen] = useState(true);
 
     const changeBasic = () => {
-        // if (isBasic && path[thisIndex].exists) {
-            // return;
-        // };
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         for (let form of entryCopyPath) {
@@ -57,8 +52,8 @@ const ParadigmForm = (props) => {
         setAppState({entry: entryCopy});
     };
 
-    let posPath =  _.get(appState, "entry." + stringPath);
-    let isBasic = path[thisIndex].typeForm === getBasicForm(posPath);
+    // let posPath =  _.get(appState, "entry." + stringPath);
+    // let isBasic = path[thisIndex].gramForm === getBasicForm(posPath);
     let exists = path[thisIndex].exists;
     let isRegular = path[thisIndex].regular;
 
@@ -80,8 +75,8 @@ const ParadigmForm = (props) => {
                 <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndentLevel)}>
-                    <div className={exists ? "" : "struck"} onClick={changeExists}>
-                        {capitalize(path[thisIndex].typeForm)}
+                    <div className={exists ? "" : "missing-form"} onClick={changeExists}>
+                        {capitalize(path[thisIndex].gramForm)}
                     </div>
                     <div onClick={changeBasic}>
                         {path[thisIndex].basic ? "Citation form" : ""}

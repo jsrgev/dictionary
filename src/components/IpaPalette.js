@@ -1,4 +1,3 @@
-import {ipa} from '../languageSettings.js';
 import React from 'react';
 import {useState} from 'react';
 

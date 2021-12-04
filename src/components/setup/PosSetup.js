@@ -1,7 +1,6 @@
-import {clone} from '../utils.js';
-import TypeSetup from './TypeSetup';
-import AddPopup from './AddPopup.js';
-import { addPopupHandler } from '../utils.js';
+// import GramClassSetup from './GramClassSetup';
+import AddPopup from '../AddPopup.js';
+import { clone, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -11,8 +10,6 @@ const PosSetup = props => {
 
     let pathFrag = "partsOfSpeechDefs";
     const path = _.get(appState, "setup." + pathFrag);
-
-    // const path = appState.setup.partsOfSpeechDefs;
 
     const [posOpen, setPosOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -31,8 +28,8 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     }
 
-    const posDefault = {name: "", abbr: "", multiChoice: false, types: []};
-    const typeDefault = {name: "", abbr: "", forms: []};
+    const posDefault = {name: "", abbr: "", multiChoice: false, gramClasses: []};
+    const gramClassDefault = {name: "", abbr: "", gramForms: []};
 
     const addPos = () => {
         let setupCopy = clone(appState.setup);
@@ -42,22 +39,11 @@ const PosSetup = props => {
     };
 
 
-    const addType = index => {
+    const addGramClass = index => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
-        setupCopyPath[thisIndex].types.splice(index+1, 0, clone(typeDefault));
+        setupCopyPath[thisIndex].gramClasses.splice(index+1, 0, clone(gramClassDefault));
         setAppState({setup: setupCopy});
-    };
-
-    // addMorph: (index, pathFrag) => {
-    //     let entryCopy = clone(state.entry);
-    //     let entryCopyPath = _.get(entryCopy, pathFrag);
-    //     entryCopyPath.splice(index+1, 0, clone(morphDefault));
-    //     setState({entry: entryCopy});
-    // },
-
-    const addForms = () => {
-        
     };
     
     const deletePos = () => {
@@ -73,7 +59,7 @@ const PosSetup = props => {
 
     const popupItems = [
         ["Part of speech", addPos],
-        ["Type", () => addType(path[thisIndex].types.length-1)],
+        ["Class", () => addGramClass(path[thisIndex].gramClasses.length-1)],
     ];
 
     
@@ -90,7 +76,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].types.length>0 ?
+                { path[thisIndex].gramClasses.length>0 ?
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     : <i></i>
                 }
@@ -108,21 +94,21 @@ const PosSetup = props => {
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
-                    { path[thisIndex].types.length>1 &&
+                    { path[thisIndex].gramClasses.length>1 &&
                         <>
-                            <label>Types Allowed</label>
-                            <ul className="types-of-POS">
+                            <label>Classes Allowed</label>
+                            <ul>
                                 <li className={path[thisIndex].multiChoice ? "" : "selected"} onClick={() => changeMultichoice(false)}>One</li>
                                 <li className={path[thisIndex].multiChoice ? "selected" : ""} onClick={() => changeMultichoice(true)}>Multiple</li>
                             </ul>
                         </>
                     }
                </div>
-               { path[thisIndex].types.length>0 &&
-                path[thisIndex].types.map((a, i) => (
-                    <TypeSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={-1} moveItem={moveItem} addType={addType} />
+               {/* { path[thisIndex].gramClasses.length>0 &&
+                path[thisIndex].gramClasses.map((a, i) => (
+                    <GramClassSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={0} moveItem={moveItem} addGramClass={addGramClass} />
                 ))
-               }
+               } */}
             </div>
         </>
     )

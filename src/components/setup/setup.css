@@ -10,7 +10,7 @@
     grid-template-columns: repeat(5, 1rem);
 } */
 
-#partsOfSpeechDefs .row-content {
+#partsOfSpeechSetup .row-content {
     grid-template-columns: 6rem 1fr 6rem 1fr 6rem 1fr;
 }
 

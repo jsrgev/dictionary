@@ -38,8 +38,8 @@ export const senseGroupDefault = {
     definitions: [JSON.parse(JSON.stringify(definitionDefault))],
 };
 
-export const secondaryFormDetailsDefault = {
-    typeForm: "",
+export const gramFormDefault = {
+    gramForm: "",
     exists: true,
     regular: true,
     morphs: [JSON.parse(JSON.stringify(morphDefault))],

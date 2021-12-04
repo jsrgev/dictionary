@@ -1,5 +1,5 @@
-import AddPopup from './AddPopup.js';
-import { clone, addPopupHandler } from '../utils.js';
+import AddPopup from '../AddPopup.js';
+import { clone, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -9,11 +9,6 @@ const IpaSetup = props => {
 
     let pathFrag = "ipa";
     const path = _.get(appState, "setup." + pathFrag);
-
-    // let pathFrag = stringPath + ".ipa";
-    // const path = _.get(appState, "setup." + pathFrag);
-
-    // console.log(stringPath)
 
     let groupDefault = {
         group: "",
@@ -61,8 +56,6 @@ const IpaSetup = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-
-    // console.log(path[thisIndex])
     
     return(
         <>
@@ -71,7 +64,7 @@ const IpaSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deleteGroup}></i>
-                { path[thisIndex].forms?.length>0 ?
+                { path[thisIndex].gramForms?.length>0 ?
                     <i className={`fas fa-chevron-${ipaOpen ? "up" : "down"}`} onClick={() => setIpaOpen(!ipaOpen)}></i>
                     : <i></i>
                 }
@@ -98,18 +91,6 @@ const IpaSetup = props => {
 
                     <label>Characters</label>
                     <input type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
-
-                    {/* <div onClick={changeBasic}>{path[thisIndex].basic ? "Citation form" : ""}</div> */}
-                    {/* <div onClick={changeMayBeMissing}>{path[thisIndex].mayBeMissing ? "May be missing" : "May not be missing"}</div> */}
-                    {/* { path[thisIndex].types?.length>0 &&
-                        <>
-                            <label>Types Allowed</label>
-                            <ul className="types-of-POS">
-                                <li>One</li>
-                                <li>Multiple</li>
-                            </ul>
-                        </>
-                    } */}
                </div>
             </div>
         </>

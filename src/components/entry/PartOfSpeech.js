@@ -1,6 +1,6 @@
-import {capitalize, clone, generatePos, getAllTypes, setSecondary, getTypeDef, getPosDef, getIndent, addPopupHandler} from '../utils';
-import AddPopup from './AddPopup';
-import {partsOfSpeechDefs} from '../languageSettings.js';
+import {capitalize, clone, generatePos, getAllGramClasses, setGramForms, getGramClassDef, getPosDef, getIndent, addPopupHandler} from '../../utils';
+import AddPopup from '../AddPopup';
+// import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
 import {useState} from 'react';
 import _ from 'lodash';
@@ -8,7 +8,6 @@ import _ from 'lodash';
 const PartOfSpeech = (props) => {
     const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses, moveItem} = props;
     const {addPos} = addFunctions;
-    // const path = appState.entry.senseGroups[senseGroupIndex].partsOfSpeech;
 
     let pathFrag = stringPath + ".partsOfSpeech";
     const path = _.get(appState, "entry." + pathFrag);
@@ -21,7 +20,7 @@ const PartOfSpeech = (props) => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            entryCopyPath.splice(0, 1, generatePos());
+            entryCopyPath.splice(0, 1, generatePos(appState.setup.partsOfSpeechDefs[0].name));
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
@@ -39,19 +38,19 @@ const PartOfSpeech = (props) => {
         setAppState({entry: entryCopy});
     };
 
-    const handleTypeClick = e => {
+    const handleGramClassClick = e => {
         let value = e.target.getAttribute("value");
-        if (value === path[thisIndex].type) {
+        if (value === path[thisIndex].class) {
             return;
         }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        let type = getTypeDef(entryCopyPath[thisIndex].name, value);
+        let gramClass = getGramClassDef(entryCopyPath[thisIndex].name, value);
         let posDef = getPosDef(entryCopyPath[thisIndex].name);
         if (posDef.multiChoice) {
 
         }
-        setSecondary(entryCopyPath[thisIndex], type);
+        setGramForms(entryCopyPath[thisIndex], gramClass);
         setAppState({entry:entryCopy});
     }
 
@@ -65,7 +64,6 @@ const PartOfSpeech = (props) => {
 
     const popupItems = [
         ["Part of speech", () => addPos(thisIndex, pathFrag, availablePoses)],
-        // ["Note", e => addNote(path[thisIndex].notes.length-1, pathFrag+`[${thisIndex}]`)]
     ]
 
     const isFirst = thisIndex === 0;
@@ -94,19 +92,19 @@ const PartOfSpeech = (props) => {
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
-                        {partsOfSpeechDefs.map((a,i) => (
+                        {appState.setup.partsOfSpeechDefs.map((a,i) => (
                             <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={handlePOSClick}>{capitalize(a.name)}</li>
                         ))}
                     </ul>
                 </div>
-                { path[thisIndex].types.length>0 &&
+                { path[thisIndex].gramClasses.length>0 &&
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content" style={getIndent(prevIndentLevel+1)}>
-                            <span>Type</span>
-                            <ul className="types-of-POS">
-                                { getAllTypes(path[thisIndex].name).map((a,i) => (
-                                <li key={i} value={a.name} className={path[thisIndex].types.find((b => b===a.name)) ? "selected" : ""} onClick={handleTypeClick}>{capitalize(a.name)}</li>
+                            <span>Class</span>
+                            <ul>
+                                { getAllGramClasses(path[thisIndex].name).map((a,i) => (
+                                <li key={i} value={a.name} className={path[thisIndex].gramClasses.find((b => b===a.name)) ? "selected" : ""} onClick={handleGramClassClick}>{capitalize(a.name)}</li>
                                 )) }
                             </ul>
                         </div>

@@ -1,5 +1,5 @@
-import {senseGroupDefault, secondaryFormDetailsDefault} from './defaults.js';
-import {secondaryFormTypes, partsOfSpeechDefs} from './languageSettings.js';
+import {senseGroupDefault, gramFormDefault} from './defaults.js';
+import {gramFormSets, partsOfSpeechDefs} from './languageSettings.js';
 
 export const getIndent = (prevIndentLevel = 0) => {
     const indentAmount = 2;
@@ -16,15 +16,15 @@ export const generateSenseGroup = posName => {
     return newSenseGroup;
 };
 
-export const getPosDef = (posName = partsOfSpeechDefs[0].name) => {
+export const getPosDef = posName => {
     return partsOfSpeechDefs.find(a => a.name === posName);
 };
 
-export const getSecondaryFormValues = secondaryFormType => {
-    let secondaryFormValues = secondaryFormTypes[secondaryFormType].forms;
-    let paradigmForms = secondaryFormValues.map(a => {
-        let item = clone(secondaryFormDetailsDefault);
-        item.typeForm = a;
+export const getGramForms = gramFormSet => {
+    let gramForms = gramFormSets[gramFormSet].gramForms;
+    let paradigmForms = gramForms.map(a => {
+        let item = clone(gramFormDefault);
+        item.gramForm = a;
         return item;
     });
     return paradigmForms; 
@@ -32,44 +32,44 @@ export const getSecondaryFormValues = secondaryFormType => {
 
 export const getBasicForm = pos => {
     let posDef = partsOfSpeechDefs.find(a => a.name===pos.name);
-    let typeDef = posDef.types.find(a => a.name===pos.types[0]);
-    let secondaryFormType = typeDef.secondaryFormType;
-    return secondaryFormTypes[secondaryFormType].basic
+    let gramClassDef = posDef.gramClasses.find(a => a.name===pos.gramClasses[0]);
+    let gramFormSet = gramClassDef.gramFormSet;
+    return gramFormSets[gramFormSet].basic
 };
 
-export const getTypeDef = (posName, typeName) =>  {
+export const getGramClassDef = (posName, className) =>  {
     let posDef = getPosDef(posName);
-    return posDef.types.find(a => a.name === typeName);
+    return posDef.gramClasses.find(a => a.name === className);
 };
 
-export const getAllTypes = pos => {
+export const getAllGramClasses = pos => {
     let posDef = partsOfSpeechDefs.find(a => a.name === pos);
-    return posDef.types;
+    return posDef.gramClasses;
 };
 
-export const setSecondary = (posObj, typeDef) => {
-    if (posObj.types) {
-        let matches = posObj.types[0] === typeDef.name;
-        if (matches && posObj.types.length === 1) {
+export const setGramForms = (posObj, gramClassDef) => {
+    if (posObj.gramClasses) {
+        let matches = posObj.gramClasses[0] === gramClassDef.name;
+        if (matches && posObj.gramClasses.length === 1) {
             return posObj;
         }
     } else {
-        posObj.types = [];
+        posObj.gramClasses = [];
         posObj.paradigmForms = [];    
     }
-    if (typeDef) {
+    if (gramClassDef) {
         let isMultiChoice = getPosDef(posObj.name).multiChoice;
         if (isMultiChoice) {
-            let typeIndex = posObj.types.findIndex(a => a===typeDef.name);
-            if (typeIndex >= 0) {
-                posObj.types.splice(typeIndex,1);
+            let classIndex = posObj.gramClasses.findIndex(a => a===gramClassDef.name);
+            if (classIndex >= 0) {
+                posObj.gramClasses.splice(classIndex,1);
             } else {
-                posObj.types.push(typeDef.name)
+                posObj.gramClasses.push(gramClassDef.name)
             }
         } else {
-            posObj.types = [typeDef.name];
+            posObj.gramClasses = [gramClassDef.name];
         }
-        posObj.paradigmForms = typeDef.secondaryFormType ? getSecondaryFormValues(typeDef.secondaryFormType) : [];
+        posObj.paradigmForms = gramClassDef.gramFormSet ? getGramForms(gramClassDef.gramFormSet) : [];
     }
     return posObj;
 };
@@ -80,8 +80,8 @@ export const generatePos = posName => {
     let obj = {
         name: posDef.name,
     }
-    let typeDef = posDef.types[0];
-    return setSecondary(obj, typeDef);
+    let gramClassDef = posDef.gramClasses[0];
+    return setGramForms(obj, gramClassDef);
 };
 
 

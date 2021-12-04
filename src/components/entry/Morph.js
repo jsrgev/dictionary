@@ -1,8 +1,8 @@
 import Pronunciation from './Pronunciation';
-import AddPopup from './AddPopup';
+import AddPopup from '../AddPopup';
 import Note from './Note';
-import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
-import {morphDefault, pronunciationDefault} from '../defaults.js';
+import {clone, getIndent, handleInputBlur, addPopupHandler} from '../../utils.js';
+import {morphDefault, pronunciationDefault} from '../../defaults.js';
 import {useState} from 'react';
 import _ from "lodash";
 

@@ -2,11 +2,9 @@ import Headword from './Headword';
 import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
-import IpaPalette from './IpaPalette';
-import {useEffect, useCallback} from 'react';
-import {useSetState} from 'react-use';
-import {clone, generateSenseGroup, generatePos} from '../utils.js';
-import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../defaults.js';
+import IpaPalette from '../IpaPalette';
+import {clone, generatePos} from '../../utils.js';
+import {morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
 import _  from 'lodash';
 
 
@@ -15,26 +13,11 @@ const Entry = props => {
 
     const {state, setState} = props;
 
-    // const [state, setState] = useSetState({
-    //     entry: undefined
-    // });
-
-    const initializeEntry = useCallback(() => {
-        let newEntry = clone(entryDefault);
-        newEntry.senseGroups.push(generateSenseGroup());
-        newEntry.etymology = "";
-        setState({entry: newEntry});
-    }, [setState])
-
-    useEffect(() => {
-        initializeEntry();
-    },[initializeEntry])
-
     const handleKeyDown = e => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
-    }
+    };
 
     const addFunctions = {
         addMorph: (index, pathFrag) => {
@@ -92,10 +75,6 @@ const Entry = props => {
     };
 
     const moveItem = (e, index, pathFrag, up) => {
-        // console.log(e);
-        // console.log(index);
-        // console.log(pathFrag);
-        // console.log(up);
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
         let entryCopy = clone(state.entry);
@@ -105,7 +84,6 @@ const Entry = props => {
         entryCopyPath.splice(position, 0, thisItemCopy);
         setState({entry: entryCopy});
     };
-
 
 
     return (
@@ -131,9 +109,11 @@ const Entry = props => {
                 <Preview appState={state} setAppState={setState} />
             }
             </div>
-            <IpaPalette appState={state} />
+            { state.setup.showIpaPalette &&
+                <IpaPalette appState={state} />
+            }
         </main>
     )
-}
+};
 
 export default Entry;

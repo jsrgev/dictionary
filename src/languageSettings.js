@@ -10,7 +10,7 @@ export const ipa = {
     other: ["ˈ","ˌ","."],
 }
 
-export const typeFormAbbrs = {
+export const gramFormAbbrs = {
     singular: "sg",
     plural: "pl",
     collective: "col",
@@ -18,37 +18,37 @@ export const typeFormAbbrs = {
     definite: "def",
 }
 
-export const secondaryFormTypes = {
-    "singularPlural": {forms: [ "singular","plural"], basic: "singular"},
-    "collectiveSingulative": {forms: ["collective","singulative"], basic: "collective"},
-    "singularPluralNoun": {forms: ["singular","singular definite","plural","plural definite"], basic: "singular"},
-    "collectiveSingulativeNoun": {forms: ["collective","collective definite","singulative","singulative definite"], basic: "collective"},
+export const gramFormSets = {
+    "singularPlural": {gramForms: [ "singular","plural"], basic: "singular"},
+    "collectiveSingulative": {gramForms: ["collective","singulative"], basic: "collective"},
+    "singularPluralNoun": {gramForms: ["singular","singular definite","plural","plural definite"], basic: "singular"},
+    "collectiveSingulativeNoun": {gramForms: ["collective","collective definite","singulative","singulative definite"], basic: "collective"},
 };
 
 export const partsOfSpeechDefs = [
-    {name: "adjective", abbr: "a", multiChoice: false, types: [
+    {name: "adjective", abbr: "a", multiChoice: false, gramClasses: [
         {name: "general", abbr: "gen", unmarked: true},
-        {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
+        {name: "singular-plural", abbr: "sp", gramFormSet: "singularPlural"},
     ]},
-    {name: "adverb", abbr: "adv", multiChoice: false, types: [
+    {name: "adverb", abbr: "adv", multiChoice: false, gramClasses: [
         {name: "general", abbr: "gen", unmarked: true},     
-        {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
+        {name: "singular-plural", abbr: "sp", gramFormSet: "singularPlural"},
     ]},
-    {name: "determiner", abbr: "d", multiChoice: false, types: [
+    {name: "determiner", abbr: "d", multiChoice: false, gramClasses: [
         {name: "general", abbr: "gen", unmarked: true},
-        {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
+        {name: "singular-plural", abbr: "sp", gramFormSet: "singularPlural"},
     ]},
-    {name: "interjection", abbr: "i", multiChoice: false, types: [
+    {name: "interjection", abbr: "i", multiChoice: false, gramClasses: [
         {name: "general", abbr: "gen", unmarked: true},
-        {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPlural"},
+        {name: "singular-plural", abbr: "sp", gramFormSet: "singularPlural"},
     ]},
-    {name: "noun", abbr: "n", multiChoice: false, types: [
-        {name: "singular-plural", abbr: "sp", secondaryFormType: "singularPluralNoun", unmarked: true},
-        {name: "collective-singulative", abbr: "cs", secondaryFormType: "collectiveSingulativeNoun"},
+    {name: "noun", abbr: "n", multiChoice: false, gramClasses: [
+        {name: "singular-plural", abbr: "sp", gramFormSet: "singularPluralNoun", unmarked: true},
+        {name: "collective-singulative", abbr: "cs", gramFormSet: "collectiveSingulativeNoun"},
     ]},
-    {name: "number", abbr: "num", multiChoice: false, types: []},
-    {name: "preposition", abbr: "pre", multiChoice: false, types: []},
-    {name: "verb", abbr: "v", multiChoice: true, types: [
+    {name: "number", abbr: "num", multiChoice: false, gramClasses: []},
+    {name: "preposition", abbr: "pre", multiChoice: false, gramClasses: []},
+    {name: "verb", abbr: "v", multiChoice: true, gramClasses: [
         {name: "ablative", abbr: "ab"},
         {name: "allative", abbr: "al"},
         {name: "intransitive", abbr: "i"},
@@ -58,5 +58,5 @@ export const partsOfSpeechDefs = [
         {name: "transitive", abbr: "t"},
         {name: "verbal", abbr: "v"},
     ]},
-    {name: "pronoun", abbr: "pro", multiChoice: false, types: []},
+    {name: "pronoun", abbr: "pro", multiChoice: false, gramClasses: []},
 ];

@@ -1,15 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 // import {capitalize} from './utils.js';
 // import {languageData} from './languageSettings.js';
-import Entry from "./components/Entry.js";
+import Entry from "./components/entry/Entry.js";
 import NavBar from "./components/NavBar.js";
-import Setup from './components/Setup';
+import Setup from './components/setup/Setup';
+import Dictionary from './components/Dictionary';
+import About from './components/About';
 import {useSetState} from 'react-use';
 
-// const API_BASE = "http://localhost:3001";
+import {useEffect, useCallback} from 'react';
+import {clone, generateSenseGroup} from './utils.js';
+import {entryDefault} from './defaults.js';
 
-// const Details = () => {
-// };
+
+// const API_BASE = "http://localhost:3001";
 
 const App = () => {
 
@@ -18,14 +22,14 @@ const App = () => {
         setup: {
             languageName: "",
             partsOfSpeechDefs: [
-                {name: "adjective", abbr: "a", multichoice: false, types: []},
-                {name: "adverb", abbr: "adv", multichoice: false, types: []},
-                {name: "determiner", abbr: "d", multichoice: false, types: []},
-                {name: "interjection", abbr: "i", multichoice: false, types: []},
-                {name: "noun", abbr: "n", multichoice: false, types: []},
-                {name: "preposition", abbr: "pre", multichoice: false, types: []},
-                {name: "verb", abbr: "v", multichoice: false, types: []},
-                {name: "pronoun", abbr: "pro", multichoice: false, types: []},
+                {name: "noun", abbr: "n", multichoice: false, gramClasses: []},
+                {name: "verb", abbr: "v", multichoice: false, gramClasses: []},
+                {name: "adjective", abbr: "a", multichoice: false, gramClasses: []},
+                {name: "adverb", abbr: "adv", multichoice: false, gramClasses: []},
+                {name: "preposition", abbr: "pre", multichoice: false, gramClasses: []},
+                {name: "interjection", abbr: "i", multichoice: false, gramClasses: []},
+                {name: "determiner", abbr: "d", multichoice: false, gramClasses: []},
+                {name: "pronoun", abbr: "pro", multichoice: false, gramClasses: []},
             ],
             ipa: [
                 {
@@ -38,35 +42,77 @@ const App = () => {
                     group: "vowel",
                     characters: ["i","u","o","ə̥","ɛ","ɔ","a"],
                     bgColor: "#ff7db5",
-                    textColor: "#000",
+                    textColor: "#000000",
                 },
                 {
                     group: "rising diphthongs",
                     characters: ["o̯͡ɛ", "o̯͡a", "o̯͡ɔ"],
                     bgColor: "#ffbe0b",
-                    textColor: "#000",
+                    textColor: "#000000",
                 },
                 {
                     group: "falling diphthongs",
                     characters: ["i͡ə̯", "ə͡a̯", "a͡ɪ̯", "a͡ə̯", "u͡a̯", "u͡o̯"],
                     bgColor: "#fda981",
-                    textColor: "#000",
+                    textColor: "#000000",
                 },
                 {
                     group: "other",
                     characters: ["ˈ","ˌ","."],
                     bgColor: "#bf99f5",
-                    textColor: "#000",
+                    textColor: "#000000",
                 },      
             ],
-            secondaryFormTypes: [],
-            typeFormAbbrs: [],
+            gramClasses: [],
+            gramFormSets: [],
+            gramForms: [
+                {
+                    group: "number",
+                    content: [
+                        {
+                            name: "singular",
+                            abbr: "sg",
+                        },
+                        {
+                            name: "plural",
+                            abbr: "pl",
+                        },
+                    ],
+                },
+                {
+                    group: "case",
+                    content: [
+                        {
+                            name: "singular",
+                            abbr: "sg",
+                        },
+                        {
+                            name: "plural",
+                            abbr: "pl",
+                        },
+                    ],
+                },
+            ],
+            // gramFormAbbrs: [],
             showPronunciation: true,
             showIpaPalette: true,
             groupSeparator: "none",
             showOrthographyPalette: false,
         },
     });
+
+    const initializeEntry = useCallback(() => {
+        console.log("initializing");
+        let newEntry = clone(entryDefault);
+        newEntry.senseGroups.push(generateSenseGroup(state.setup.partsOfSpeechDefs[0].name));
+        newEntry.etymology = "";
+        setState({entry: newEntry});
+    }, [setState, state.setup.partsOfSpeechDefs]);
+
+    useEffect(() => {
+        initializeEntry();
+    },[initializeEntry]);
+
 
     // const [todos, setTodos] = useState([]);
     // const [popupActive, setPopupActive] = useState(false);
@@ -128,6 +174,8 @@ const App = () => {
         <Routes>
             <Route exact path="/" element={<Entry state={state} setState={setState} />} />
             <Route exact path="/setup" element={<Setup appState={state} setAppState={setState} />} />
+            <Route exact path="/dictionary" element={<Dictionary />} />
+            <Route exact path="/about" element={<About />} />
             {/* <Route exact path="/entry" component={Home} /> */}
         </Routes>
         </>

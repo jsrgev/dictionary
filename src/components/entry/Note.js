@@ -1,6 +1,6 @@
-import AddPopup from './AddPopup';
+import AddPopup from '../AddPopup';
 // import {definitionDefault} from '../defaults.js'
-import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
+import {clone, getIndent, handleInputBlur, addPopupHandler} from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 

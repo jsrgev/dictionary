@@ -1,6 +1,6 @@
 import React from "react";
-import {clone, getPosDef} from '../utils.js';
-import {typeFormAbbrs} from '../languageSettings';
+import {clone, getPosDef} from '../../utils.js';
+import {gramFormAbbrs} from '../../languageSettings';
 
 const Preview = (props) => {
 
@@ -54,9 +54,9 @@ const Preview = (props) => {
     };
 
     const getMorphsDisplay = (arr, headword) => {
-        let morphClass = headword ? "hw" : "for";
+        let morphType = headword ? "hw" : "for";
             let newArr = arr.map((a, i) => {
-            let morph = <span className={morphClass}>{a.content}</span>;
+            let morph = <span className={morphType}>{a.content}</span>;
             let pronunciations = getPronunciationsDisplay(a.pronunciations);
             let notes = a.notes ? getNotesDisplay(a.notes) : "";
             let alts = a.headword ? getAltDisplayForHeadword() : "";
@@ -107,14 +107,14 @@ const Preview = (props) => {
     };
 
 
-    const getTypeAbbr = (posDef, type) => {
-        let typeDef = posDef.types.find(a => a.name === type);
-        return typeDef.unmarked ? "" : typeDef.abbr;
+    const getGramClassAbbr = (posDef, gramClass) => {
+        let gramClassDef = posDef.gramClasses.find(a => a.name === gramClass);
+        return gramClassDef.unmarked ? "" : gramClassDef.abbr;
     };
     
-    const getTypeFormAbbr = typeFormName => {
-        let arr = typeFormName.split(" ");
-        let abbrs = arr.map(a => typeFormAbbrs[a] + ".");
+    const getGramFormAbbr = gramFormName => {
+        let arr = gramFormName.split(" ");
+        let abbrs = arr.map(a => gramFormAbbrs[a] + ".");
         return abbrs.join(" ");
     };
 
@@ -125,7 +125,7 @@ const Preview = (props) => {
         }
         let items = [];
         for (let item of paradigmForms) {
-            let abbr =  getTypeFormAbbr(item.typeForm);
+            let abbr =  getGramFormAbbr(item.gramForm);
             if (!item.exists) {
                 items.push(<>no <em>{abbr}</em></>);
             } else if (!item.regular && item.morphs.length > 0)  {
@@ -152,12 +152,12 @@ const Preview = (props) => {
     const getPosDisplay = (posDetails) => {
         let posDef = getPosDef(posDetails.name);
         let posAbbr = posDef.abbr;
-        let posTypeAbbrs = posDetails.types.map(type => getTypeAbbr(posDef, type));
-        let typesString = posTypeAbbrs.join(", ");
-        if (typesString.length>0) {
-            typesString = '-' + typesString;
+        let posGramClassAbbrs = posDetails.gramClasses.map(gramClass => getGramClassAbbr(posDef, gramClass));
+        let gramClassesString = posGramClassAbbrs.join(", ");
+        if (gramClassesString.length>0) {
+            gramClassesString = '-' + gramClassesString;
         }
-        let string = `${posAbbr}${typesString}.`;
+        let string = `${posAbbr}${gramClassesString}.`;
         let paradigmFormsDisplay = getParadigmFormsDisplay(posDetails.paradigmForms);
         return <><em>{string}</em>{paradigmFormsDisplay}</>;
     };

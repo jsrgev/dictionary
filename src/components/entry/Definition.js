@@ -1,24 +1,25 @@
-import AddPopup from './AddPopup';
-import Definition from './Definition';
+import AddPopup from '../AddPopup';
+import Example from './Example';
 import Note from './Note';
-import {phraseDefault} from '../defaults.js'
-import {clone, getIndent, handleInputBlur, addPopupHandler} from '../utils.js';
+import {definitionDefault} from '../../defaults.js'
+import {clone, getIndent, handleInputBlur, addPopupHandler} from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
-const Phrase = props => {
+const Definition = props => {
 
     const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
-    const {addDefinition, addPhrase, addNote} = addFunctions;
+    const {addDefinition, addExample, addNote} = addFunctions;
+    // const path = appState.entry.senseGroups[senseGroupIndex].definitions;
 
-    let pathFrag = stringPath + ".phrases";
+    let pathFrag = stringPath + ".definitions";
     const path = _.get(appState, "entry." + pathFrag);
     const upPath = _.get(appState, "entry." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [phraseOpen, setPhraseOpen] = useState(true);
+    const [definitionOpen, setDefinitionOpen] = useState(true);
 
-    const handleChange = value => {
+    const handleChange = (value) => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
@@ -27,15 +28,15 @@ const Phrase = props => {
         }
     };
 
-    const deletePhrase = e => {
+    const deleteDefinition = e => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         if (path.length === 1) {
-            if (!upPath.definitions) {
-                entryCopyPath.splice(0, 1, clone(phraseDefault));
+            if (!upPath.phrases) {
+                entryCopyPath.splice(0, 1, clone(definitionDefault));
             } else {
                 let entryCopyUpPath = _.get(entryCopy, stringPath);
-                delete entryCopyUpPath.phrases;
+                delete entryCopyUpPath.definitions;
             }
         } else {
             entryCopyPath.splice(thisIndex, 1);
@@ -43,20 +44,25 @@ const Phrase = props => {
         setAppState({entry: entryCopy});
     }; 
 
-    // console.log(path[thisIndex])
-
     const popupItems = [
-        ["Phrase", () => addPhrase(thisIndex, stringPath)],
-        ["Definition", () => addDefinition(path[thisIndex].definitions.length-1, stringPath+`.phrases[${thisIndex}]`)],
-        // ["Example", () => {
-        //     let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
-        //     addExample(index, pathFrag+`[${thisIndex}]`);
-        // }],
+        ["Definition", () => addDefinition(thisIndex, stringPath)],
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag+`[${thisIndex}]`);
-        }],
+        }]
     ];
+
+    // to test if parent is example  - if so, disallow further example underneath
+    const pattern = /examples\[\d+?\]/;
+
+    if (!pattern.test(stringPath)) {
+        popupItems.push(
+            ["Example", () => {
+                let index = (path[thisIndex].examples) ? path[thisIndex].examples.length-1 : 0;
+                addExample(index, pathFrag+`[${thisIndex}]`);
+            }]
+        );
+    }
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
@@ -65,17 +71,20 @@ const Phrase = props => {
 
     return (
         <>
-            <div className={`row${phraseOpen ? "" : " closed"}`}>
+            <div className={`row${definitionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus"
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
                     <i
-                    className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.definitions ? " disabled" : ""}`}
-                    onClick={deletePhrase}
-                    ></i>            
-                    <i className={`fas fa-chevron-${phraseOpen ? "up" : "down"}`} onClick={() => setPhraseOpen(!phraseOpen)}></i>
+                    className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.phrases ? " disabled" : ""}`}
+                    onClick={deleteDefinition}
+                    ></i>
+                    {(path[thisIndex].notes || path[thisIndex].examples) ?
+                    <i className={`fas fa-chevron-${definitionOpen ? "up" : "down"}`} onClick={() => setDefinitionOpen(!definitionOpen)}></i> :
+                    <i></i>
+                    }
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, true)}
@@ -86,7 +95,7 @@ const Phrase = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <label>Phrase{path.length>1 && ` ${thisIndex+1}`}</label>
+                    <label>Definition{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
@@ -97,8 +106,8 @@ const Phrase = props => {
                     <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
                 ))
                 }
-                {path[thisIndex].definitions.map((a,i) => (
-                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                {path[thisIndex].examples?.map((a,i) => (
+                    <Example appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))
                 }
             </div>
@@ -107,4 +116,4 @@ const Phrase = props => {
 
 };
 
-export default Phrase;
+export default Definition;

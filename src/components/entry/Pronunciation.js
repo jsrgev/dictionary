@@ -1,7 +1,7 @@
-import AddPopup from './AddPopup';
+import AddPopup from '../AddPopup';
 import Note from './Note';
-import {clone, handleInputBlur, getIndent, addPopupHandler} from '../utils.js';
-import {pronunciationDefault} from '../defaults.js';
+import {clone, handleInputBlur, getIndent, addPopupHandler} from '../../utils.js';
+import {pronunciationDefault} from '../../defaults.js';
 import {useState} from 'react';
 import _ from "lodash";
 
@@ -35,15 +35,9 @@ const Pronunciation = (props) => {
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
-        // console.log(entryCopyPath)
-        // console.log(entryCopy)
         setAppState({entry: entryCopy});
     };
 
-    const closePopup = () => {
-        setAddPopupVisible(false)
-        window.removeEventListener("click", closePopup);
-    };
 
     const popupItems = [
         ["Pronunciation", e => addPronunciation(e, thisIndex)],

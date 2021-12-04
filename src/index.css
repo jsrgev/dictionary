@@ -133,14 +133,7 @@ fieldset {
 	grid-template-columns: 6rem 6rem 6rem;
 }
 
-/* .secondaryForms .row {
-	grid-column: span 2;
-} */
 
-
-#altForms {
-	margin-left: 3rem;
-}
 
 .pronunciations {
 	padding: 0;
@@ -211,14 +204,6 @@ li {
 	background-color: var(--blue);
 }
 
-.secondaryForms {
-	list-style-type: none;
-	display: grid;
-	grid-template-columns: repeat(2, 6rem);
-	gap: 1rem;
-	justify-content: start;
-	cursor: pointer;
-}
 
 .disabled {
 	color: lightgray;
@@ -238,16 +223,9 @@ li {
 }
 
 
-
-.struck {
+.missing-form {
 	text-decoration: line-through;
 }
-
-.no-secondary {
-	background-color: var(--light-blue);
-	text-decoration: line-through;
-}
-
 
 .phonetic {
 	white-space: nowrap;

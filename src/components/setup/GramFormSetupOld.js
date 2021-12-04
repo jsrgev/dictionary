@@ -1,16 +1,16 @@
-import AddPopup from './AddPopup.js';
-import { clone, addPopupHandler, getIndent } from '../utils.js';
+import AddPopup from '../AddPopup.js';
+import { clone, addPopupHandler, getIndent } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
-const FormSetup = props => {
+const GramFormSetup = props => {
 
-    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addForm} = props;
+    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addGramForm} = props;
 
-    let pathFrag = stringPath + ".forms";
+    let pathFrag = stringPath + ".gramForms";
     const path = _.get(appState, "setup." + pathFrag);
 
-    const [typeOpen, setTypeOpen] = useState(true);
+    const [gramClassOpen, setGramClassOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -22,7 +22,7 @@ const FormSetup = props => {
 
     // const posDefault = {name: "", abbr: ""};
     // const typeDefault = {name: "", abbr: ""};
-    const formDefault = {name: "", abbr: ""};
+    // const gramFormDefault = {name: "", abbr: ""};
 
     // addMorph: (index, pathFrag) => {
     //     let entryCopy = clone(state.entry);
@@ -31,7 +31,7 @@ const FormSetup = props => {
     //     setState({entry: entryCopy});
     // },
     
-    const deleteType = () => {
+    const deleteGramClass = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
             setupCopyPath.splice(thisIndex, 1);
@@ -64,7 +64,7 @@ const FormSetup = props => {
     }
     
     const popupItems = [
-        ["Form", () => addForm(thisIndex)],
+        ["Form", () => addGramForm(thisIndex)],
     ];
 
     const isFirst = thisIndex === 0;
@@ -78,9 +78,9 @@ const FormSetup = props => {
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                <i className="fas fa-minus" onClick={deleteType}></i>
-                { path[thisIndex].forms?.length>0 ?
-                    <i className={`fas fa-chevron-${typeOpen ? "up" : "down"}`} onClick={() => setTypeOpen(!typeOpen)}></i>
+                <i className="fas fa-minus" onClick={deleteGramClass}></i>
+                { path[thisIndex].gramForms?.length>0 ?
+                    <i className={`fas fa-chevron-${gramClassOpen ? "up" : "down"}`} onClick={() => setGramClassOpen(!gramClassOpen)}></i>
                     : <i></i>
                 }
 
@@ -116,4 +116,4 @@ const FormSetup = props => {
     )
 };
 
-export default FormSetup;
+export default GramFormSetup;

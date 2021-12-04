@@ -1,11 +1,11 @@
-import '../setup.css';
+import './setup.css';
 import PosSetup from './PosSetup';
 import IpaSetup from './IpaSetup';
-import IpaPalette from './IpaPalette';
-// import { useSetState } from "react-use";
-import { useState }  from 'react';
-import {clone} from '../utils.js';
+import IpaPalette from '../IpaPalette';
+// import { useState }  from 'react';
+import {clone} from '../../utils.js';
 import _ from 'lodash';
+import GramFormSetup from './GramFormSetup';
 
 const Setup = props => {
 
@@ -13,7 +13,7 @@ const Setup = props => {
 
     const setup = appState.setup;
 
-    const [posOpen, setPosOpen] = useState(true);
+    // const [posOpen, setPosOpen] = useState(true);
 
     const handleChange = value => {
         const setupCopy = clone(setup);
@@ -23,7 +23,6 @@ const Setup = props => {
 
     const changeCheck = field => {
         let value = setup[field];
-        // console.log(value);
         const setupCopy = clone(setup);
         setupCopy[field] = !value;
         setAppState({setup: setupCopy});
@@ -54,7 +53,7 @@ const Setup = props => {
             <div>
                 <h3 className="span2">Language</h3>
                 <div className="row">
-                    <div className={`row${posOpen ? "" : " closed"}`}>
+                    <div className="row">
                         <div className="row-controls">
                             {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
                             {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
@@ -68,11 +67,26 @@ const Setup = props => {
                     </div>
                 </div>
             </div>
-            <div id="partsOfSpeechDefs">
+            <div id="partsOfSpeechSetup">
                 <h3 className="span2">Parts of speech</h3>
                 <div className="row">
                     {setup.partsOfSpeechDefs.map((a,i) => (
                         <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                    ))}
+                </div>
+            </div>
+            <div id="gramClassSetup">
+                <h3 className="span2">Classes</h3>
+                <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
+                <div className="row">
+                </div>
+            </div>
+            <div id="gramFormSetup">
+                <h3 className="span2">Forms</h3>
+                <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
+                <div className="row">
+                    { setup.gramForms.map((a, i) => (
+                    <GramFormSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                     ))}
                 </div>
             </div>
@@ -82,32 +96,34 @@ const Setup = props => {
                 <label>Include pronunciation</label>
                 <input type="checkbox" checked={setup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                 </div>
-
             </div>
             <div id="ipaSetup">
                 <h3 className="span2">IPA</h3>
                 <div className="row setting">
                     <label>Show IPA palette</label>
                     <input type="checkbox" checked={setup.showIpaPalette ? true : false} onChange={e => changeCheck("showIpaPalette")} />
-                    <div className="row setting">
-                    <label>Group separator</label>
-                    <ul>
-                        <li className={setup.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("none")}>None</li>
-                        <li className={setup.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("line")}>Line</li>
-                        <li className={setup.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("space")}>Space</li>
-                    </ul>
-                </div>
                 </div>
                 { setup.showIpaPalette &&
-                <div className="row">
-                {setup.ipa.map((a,i) => (
-                    <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
-                ))}
-            </div>
-
+                <>
+                    <div className="row setting">
+                        <label>Group separator</label>
+                        <ul>
+                            <li className={setup.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("none")}>None</li>
+                            <li className={setup.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("space")}>Space</li>
+                            <li className={setup.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("line")}>Line</li>
+                        </ul>
+                    </div>
+                    <div className="row">
+                        {setup.ipa.map((a,i) => (
+                            <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                        ))}
+                    </div>
+                </>
                 }
             </div>
-            <IpaPalette appState={appState} />
+            { setup.showIpaPalette &&
+                <IpaPalette appState={appState} />
+            }
             </main>
     )
 };
