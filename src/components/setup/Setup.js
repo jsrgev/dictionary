@@ -5,7 +5,7 @@ import IpaPalette from '../IpaPalette';
 // import { useState }  from 'react';
 import {clone} from '../../utils.js';
 import _ from 'lodash';
-import GramFormSetup from './GramFormSetup';
+import GramFormGroupSetup from './GramFormGroupSetup';
 
 const Setup = props => {
 
@@ -85,8 +85,8 @@ const Setup = props => {
                 <h3 className="span2">Forms</h3>
                 <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                 <div className="row">
-                    { setup.gramForms.map((a, i) => (
-                    <GramFormSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                    { setup.gramFormGroups.map((a, i) => (
+                    <GramFormGroupSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                     ))}
                 </div>
             </div>

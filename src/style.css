@@ -113,7 +113,7 @@ sub {top:.8ex;}
 .stress {text-decoration:underline;}
 
 .norm, .for th {
-  color:#000;
+  color:#000000;
   font-weight:400;}
 .for, .th-for th, div.txt, .hw {color:#ff8000;}
 
@@ -197,7 +197,7 @@ main > div:last-child {border-bottom-style:solid;}
 .photo-grid img {
   display:block;
   margin:auto;
-  border:1px solid #000;}
+  border:1px solid #000000;}
 .panoramic-2 {grid-column:span 2;}
 .panoramic-3 {grid-column:span 3;}
 
@@ -315,7 +315,7 @@ div.line {
 div.phrase + div.phrase {margin-left:40px;}
 div.txt {margin-right:1em;}
 div.txt>span {display:block;}
-div.txt>span:last-child {color:#000;}
+div.txt>span:last-child {color:#000000;}
 .txt + p {
   margin:0;
   clear:both;}
@@ -409,7 +409,7 @@ ol ol {list-style-type:lower-alpha;}
   border:2px solid #FFE66D;
   border-radius:15px;
   bottom:26px;
-  color:#000;
+  color:#000000;
   font-size:12px;
   content:attr(tooltip);
   left:40px;

@@ -36,7 +36,7 @@ const App = () => {
                     group: "consonants",
                     characters: ["p","b","t","k","m","n","ɸ","θ","ð","s","ɬ","ʃ","χ","w","l","j","w","ɾ"],
                     bgColor: "#9ac0ff",
-                    textColor: "#000",
+                    textColor: "#000000",
                 },
                 {
                     group: "vowel",
@@ -65,10 +65,10 @@ const App = () => {
             ],
             gramClasses: [],
             gramFormSets: [],
-            gramForms: [
+            gramFormGroups: [
                 {
-                    group: "number",
-                    content: [
+                    name: "number",
+                    gramForms: [
                         {
                             name: "singular",
                             abbr: "sg",
@@ -80,8 +80,8 @@ const App = () => {
                     ],
                 },
                 {
-                    group: "case",
-                    content: [
+                    name: "case",
+                    gramForms: [
                         {
                             name: "singular",
                             abbr: "sg",
@@ -107,7 +107,8 @@ const App = () => {
         newEntry.senseGroups.push(generateSenseGroup(state.setup.partsOfSpeechDefs[0].name));
         newEntry.etymology = "";
         setState({entry: newEntry});
-    }, [setState, state.setup.partsOfSpeechDefs]);
+    }, [setState]);
+// }, [setState, state.setup.partsOfSpeechDefs]);
 
     useEffect(() => {
         initializeEntry();

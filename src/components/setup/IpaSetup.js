@@ -14,7 +14,7 @@ const IpaSetup = props => {
         group: "",
         characters: [],
         bgColor: "#9ac0ff",
-        textColor: "#000",
+        textColor: "#000000",
     }
 
 
