@@ -1,6 +1,6 @@
 // import GramClassSetup from './GramClassSetup';
 import AddPopup from '../AddPopup.js';
-import { clone, addPopupHandler } from '../../utils.js';
+import { clone, capitalize, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -27,6 +27,11 @@ const PosSetup = props => {
         setupCopyPath[thisIndex].multiChoice = value;
         setAppState({setup: setupCopy});
     }
+
+    const selectClassSet = () => {
+        console.log("select");
+    }
+    
 
     const posDefault = {name: "", abbr: "", multiChoice: false, gramClasses: []};
     const gramClassDefault = {name: "", abbr: "", gramForms: []};
@@ -62,12 +67,25 @@ const PosSetup = props => {
         ["Class", () => addGramClass(path[thisIndex].gramClasses.length-1)],
     ];
 
+    const isAvailable = (a) => {
+        return true;
+    };
     
+    const isCurrentSelection = posName =>  {
+        console.log(path[thisIndex].gramClassSets);
+        console.log(posName);
+        return false;
+        // return path[thisIndex].name === posName;
+    };
+
+
+
     // const stringPathA = pathFrag + `[${thisIndex}]`;
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
+    // console.log(appState.setup.gramClassSets);
 
     return(
         <>
@@ -76,7 +94,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClasses.length>0 ?
+                { path[thisIndex].gramClassSets.length>0 ?
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     : <i></i>
                 }
@@ -89,12 +107,26 @@ const PosSetup = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
                 </i>
                 </div>
-                <div className="row-content">
+                <div className="row-content partsOfSpeechSetup">
                     <label>Part of Speech</label>
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
-                    { path[thisIndex].gramClasses.length>1 &&
+                    </div>
+                    <div className="row">
+                        <div className="row-controls">
+                        </div>
+                        <div className="row-content">
+                            <div>Class group</div>
+                            <ul>
+                                {
+                                    appState.setup.gramClassSets.map((a, i) => (
+                                        <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={selectClassSet}>{capitalize(a.name)}</li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    {/* { path[thisIndex].gramClasses.length>1 &&
                         <>
                             <label>Classes Allowed</label>
                             <ul>
@@ -102,7 +134,7 @@ const PosSetup = props => {
                                 <li className={path[thisIndex].multiChoice ? "selected" : ""} onClick={() => changeMultichoice(true)}>Multiple</li>
                             </ul>
                         </>
-                    }
+                    } */}
                </div>
                {/* { path[thisIndex].gramClasses.length>0 &&
                 path[thisIndex].gramClasses.map((a, i) => (

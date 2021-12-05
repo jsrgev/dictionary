@@ -10,7 +10,7 @@
     grid-template-columns: repeat(5, 1rem);
 } */
 
-#partsOfSpeechSetup .row-content {
+.partsOfSpeechSetup {
     grid-template-columns: 6rem 1fr 6rem 1fr 6rem 1fr;
 }
 
@@ -36,6 +36,6 @@ input[type="color" i] {
     grid-template-columns: 9rem 1fr;
 }
 
-.gram-form-setup {
+.gram-class-setup, .gram-form-setup {
     grid-template-columns: 6rem 1fr 6rem 1fr;
 }

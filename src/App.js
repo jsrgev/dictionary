@@ -22,14 +22,14 @@ const App = () => {
         setup: {
             languageName: "",
             partsOfSpeechDefs: [
-                {name: "noun", abbr: "n", multichoice: false, gramClasses: []},
-                {name: "verb", abbr: "v", multichoice: false, gramClasses: []},
-                {name: "adjective", abbr: "a", multichoice: false, gramClasses: []},
-                {name: "adverb", abbr: "adv", multichoice: false, gramClasses: []},
-                {name: "preposition", abbr: "pre", multichoice: false, gramClasses: []},
-                {name: "interjection", abbr: "i", multichoice: false, gramClasses: []},
-                {name: "determiner", abbr: "d", multichoice: false, gramClasses: []},
-                {name: "pronoun", abbr: "pro", multichoice: false, gramClasses: []},
+                {name: "noun", abbr: "n", multichoice: false, gramClassSets: []},
+                {name: "verb", abbr: "v", multichoice: false, gramClassSets: []},
+                {name: "adjective", abbr: "a", multichoice: false, gramClassSets: []},
+                {name: "adverb", abbr: "adv", multichoice: false, gramClassSets: []},
+                {name: "preposition", abbr: "pre", multichoice: false, gramClassSets: []},
+                {name: "interjection", abbr: "i", multichoice: false, gramClassSets: []},
+                {name: "determiner", abbr: "d", multichoice: false, gramClassSets: []},
+                {name: "pronoun", abbr: "pro", multichoice: false, gramClassSets: []},
             ],
             ipa: [
                 {
@@ -63,8 +63,50 @@ const App = () => {
                     textColor: "#000000",
                 },      
             ],
-            gramClasses: [],
-            gramFormSets: [],
+            gramClasses: [
+                
+            ],
+            gramClassSets: [
+                {
+                    name: "gender",
+                    gramForms: [
+                        {
+                            name: "masculine",
+                            abbr: "m",
+                        },
+                        {
+                            name: "feminine",
+                            abbr: "f",
+                        },
+                    ],
+                },
+                {
+                    name: "number system",
+                    gramForms: [
+                        {
+                            name: "singular-plural",
+                            abbr: "sp",
+                        },
+                        {
+                            name: "collective-singulative",
+                            abbr: "cs",
+                        },
+                    ],
+                },
+                {
+                    name: "transitivity",
+                    gramForms: [
+                        {
+                            name: "intrasitive",
+                            abbr: "i",
+                        },
+                        {
+                            name: "trasitive",
+                            abbr: "tr",
+                        },
+                    ],
+                },
+            ],
             gramFormGroups: [
                 {
                     name: "number",
@@ -76,6 +118,14 @@ const App = () => {
                         {
                             name: "plural",
                             abbr: "pl",
+                        },
+                        {
+                            name: "collective",
+                            abbr: "col",
+                        },
+                        {
+                            name: "singulative",
+                            abbr: "sv",
                         },
                     ],
                 },

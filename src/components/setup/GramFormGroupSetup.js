@@ -8,8 +8,8 @@ const GramFormGroupSetup = props => {
 
     const {appState, setAppState, thisIndex, moveItem} = props;
 
-    let pathFrag = "gramFormGroups";
-    const path = _.get(appState, "setup." + pathFrag);
+    let pathFrag = ".gramFormGroups";
+    const path = _.get(appState, "setup" + pathFrag);
 
     const groupDefault = {
         name: "",
@@ -84,19 +84,19 @@ const GramFormGroupSetup = props => {
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                 </div>
-                <div className="row">
-                    <div className="row-controls">
-                    </div>
-                    <div className="row-content" style={getIndent(0)}>
-                        <label>Forms</label>
+                {/* <div className="row"> */}
+                    {/* <div className="row-controls"> */}
+                    {/* </div> */}
+                    {/* <div className="row-content" style={getIndent(0)}> */}
+                        {/* <label>Forms</label> */}
                         </div>
-                            {
+                            {/* {
                                 path[thisIndex].gramForms.map((a, i) => (
                                     <GramFormSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} />
                                 ))
-                            }
-                    </div>
-            </div>
+                            } */}
+                    {/* </div> */}
+            {/* </div> */}
         </>
     )
 };

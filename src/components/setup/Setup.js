@@ -2,10 +2,11 @@ import './setup.css';
 import PosSetup from './PosSetup';
 import IpaSetup from './IpaSetup';
 import IpaPalette from '../IpaPalette';
+import GramClassSetup from './GramClassSetup';
+import GramFormGroupSetup from './GramFormGroupSetup';
 // import { useState }  from 'react';
 import {clone} from '../../utils.js';
 import _ from 'lodash';
-import GramFormGroupSetup from './GramFormGroupSetup';
 
 const Setup = props => {
 
@@ -67,7 +68,7 @@ const Setup = props => {
                     </div>
                 </div>
             </div>
-            <div id="partsOfSpeechSetup">
+            <div>
                 <h3 className="span2">Parts of speech</h3>
                 <div className="row">
                     {setup.partsOfSpeechDefs.map((a,i) => (
@@ -79,6 +80,9 @@ const Setup = props => {
                 <h3 className="span2">Classes</h3>
                 <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
                 <div className="row">
+                    { setup.gramClassSets.map((a, i) => (
+                        <GramClassSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                    ))}
                 </div>
             </div>
             <div id="gramFormSetup">
@@ -86,7 +90,7 @@ const Setup = props => {
                 <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                 <div className="row">
                     { setup.gramFormGroups.map((a, i) => (
-                    <GramFormGroupSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                        <GramFormGroupSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                     ))}
                 </div>
             </div>

@@ -54,7 +54,7 @@ const GramFormSetup = props => {
     const isLast = thisIndex === path.length-1;
     
 
-// console.log(path[thisIndex]);
+console.log(path);
 
     return(
         <>
@@ -76,7 +76,7 @@ const GramFormSetup = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content gram-form-setup" style={getIndent(1)}>
+                <div className="row-content gram-form-setup" style={getIndent(0)}>
                     {
                                 <>
                                     <label>Form</label>
