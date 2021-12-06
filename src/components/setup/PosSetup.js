@@ -1,6 +1,6 @@
 // import GramClassSetup from './GramClassSetup';
 import AddPopup from '../AddPopup.js';
-import { clone, capitalize, addPopupHandler } from '../../utils.js';
+import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -11,7 +11,7 @@ const PosSetup = props => {
     let pathFrag = "partsOfSpeechDefs";
     const path = _.get(appState, "setup." + pathFrag);
 
-    const [posOpen, setPosOpen] = useState(true);
+    const [posOpen, setPosOpen] = useState(false);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -31,18 +31,18 @@ const PosSetup = props => {
     const selectGramClass = gramClassName => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        let index = path[thisIndex].gramClassSets.findIndex(a => a == gramClassName);
+        let index = path[thisIndex].gramClassGroups.findIndex(a => a === gramClassName);
         console.log(index);
         if (index < 0) {
-            setupCopyPath[thisIndex].gramClassSets.push(gramClassName);
-            // console.log(setupCopyPath[thisIndex].gramClassSets)
+            setupCopyPath[thisIndex].gramClassGroups.push(gramClassName);
+            // console.log(setupCopyPath[thisIndex].gramClassGroups)
         } else {
-            setupCopyPath[thisIndex].gramClassSets.splice(index, 1);
-            // console.log(setupCopyPath[thisIndex].gramClassSets)
+            setupCopyPath[thisIndex].gramClassGroups.splice(index, 1);
+            // console.log(setupCopyPath[thisIndex].gramClassGroups)
         }
         // return;
 
-        // setupCopyPath[thisIndex].gramClassSets = value;
+        // setupCopyPath[thisIndex].gramClassGroups = value;
         setAppState({setup: setupCopy});
     }
     
@@ -71,10 +71,10 @@ const PosSetup = props => {
     const addClassSet = index => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
-        setupCopyPath[thisIndex].gramClassSets.splice(index+1, 0, clone(gramClassSetDefault));
+        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, clone(gramClassSetDefault));
         setAppState({setup: setupCopy});
     };
-        // console.log(path[thisIndex].gramClassSets);
+        // console.log(path[thisIndex].gramClassGroups);
 
     const addGramClass = index => {
         let setupCopy = clone(appState.setup);
@@ -96,7 +96,7 @@ const PosSetup = props => {
 
     const popupItems = [
         ["Part of speech", addPos],
-        ["Class set", () => addClassSet(path[thisIndex].gramClassSets.length-1)],
+        ["Class set", () => addClassSet(path[thisIndex].gramClassGroups.length-1)],
     ];
 
     const isAvailable = (a) => {
@@ -104,7 +104,7 @@ const PosSetup = props => {
     };
     
     const isSelected = gramClassName =>  {
-        return path[thisIndex].gramClassSets.some(a => a == gramClassName);
+        return path[thisIndex].gramClassGroups.some(a => a === gramClassName);
     };
 
 
@@ -123,7 +123,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClassSets.length>0 ?
+                { appState.setup.gramClassGroups.length>0 ?
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     : <i></i>
                 }
@@ -142,16 +142,16 @@ const PosSetup = props => {
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
-                {/* { path[thisIndex].gramClassSets.length > 0 && */}
-                    {/* path[thisIndex].gramClassSets.map((a, i) => ( */}
+                {/* { path[thisIndex].gramClassGroups.length > 0 && */}
+                    {/* path[thisIndex].gramClassGroups.map((a, i) => ( */}
 
                     {/* <> */}
                 <div className="row">
                     <div className="row-controls"></div>
-                    <div className="row-content">
+                    <div className="row-content" style={getIndent(0)}>
                         <div>Class options</div>
                         <ul>
-                            {appState.setup.gramClassSets.map((a, i) => (
+                            {appState.setup.gramClassGroups.map((a, i) => (
                                 <li key={i} value={a.name} className={ isSelected(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => selectGramClass(a.name)}>{capitalize(a.name)}</li>
                             ))}
                         </ul>

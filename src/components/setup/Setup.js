@@ -2,7 +2,7 @@ import './setup.css';
 import PosSetup from './PosSetup';
 import IpaSetup from './IpaSetup';
 import IpaPalette from '../IpaPalette';
-import GramClassSetup from './GramClassSetup';
+import GramClassGroupSetup from './GramClassGroupSetup';
 import GramFormGroupSetup from './GramFormGroupSetup';
 // import { useState }  from 'react';
 import {clone} from '../../utils.js';
@@ -80,8 +80,8 @@ const Setup = props => {
                 <h3 className="span2">Classes</h3>
                 <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
                 <div className="row">
-                    { setup.gramClassSets.map((a, i) => (
-                        <GramClassSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                    { setup.gramClassGroups.map((a, i) => (
+                        <GramClassGroupSetup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                     ))}
                 </div>
             </div>

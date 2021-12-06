@@ -22,14 +22,14 @@ const App = () => {
         setup: {
             languageName: "",
             partsOfSpeechDefs: [
-                {name: "noun", abbr: "n", multichoice: false, gramClassSets: []},
-                {name: "verb", abbr: "v", multichoice: false, gramClassSets: []},
-                {name: "adjective", abbr: "a", multichoice: false, gramClassSets: []},
-                {name: "adverb", abbr: "adv", multichoice: false, gramClassSets: []},
-                {name: "preposition", abbr: "pre", multichoice: false, gramClassSets: []},
-                {name: "interjection", abbr: "i", multichoice: false, gramClassSets: []},
-                {name: "determiner", abbr: "d", multichoice: false, gramClassSets: []},
-                {name: "pronoun", abbr: "pro", multichoice: false, gramClassSets: []},
+                {name: "noun", abbr: "n", multichoice: false, gramClassGroups: []},
+                {name: "verb", abbr: "v", multichoice: false, gramClassGroups: []},
+                {name: "adjective", abbr: "a", multichoice: false, gramClassGroups: []},
+                {name: "adverb", abbr: "adv", multichoice: false, gramClassGroups: []},
+                {name: "preposition", abbr: "pre", multichoice: false, gramClassGroups: []},
+                {name: "interjection", abbr: "i", multichoice: false, gramClassGroups: []},
+                {name: "determiner", abbr: "d", multichoice: false, gramClassGroups: []},
+                {name: "pronoun", abbr: "pro", multichoice: false, gramClassGroups: []},
             ],
             ipa: [
                 {
@@ -66,7 +66,7 @@ const App = () => {
             gramClasses: [
                 
             ],
-            gramClassSets: [
+            gramClassGroups: [
                 {
                     name: "gender",
                     gramForms: [
@@ -101,11 +101,11 @@ const App = () => {
                     name: "transitivity",
                     gramForms: [
                         {
-                            name: "intrasitive",
+                            name: "intransitive",
                             abbr: "i",
                         },
                         {
-                            name: "trasitive",
+                            name: "transitive",
                             abbr: "tr",
                         },
                     ],
@@ -137,12 +137,16 @@ const App = () => {
                     name: "case",
                     gramForms: [
                         {
-                            name: "singular",
-                            abbr: "sg",
+                            name: "nominative",
+                            abbr: "nom",
                         },
                         {
-                            name: "plural",
-                            abbr: "pl",
+                            name: "absolutive",
+                            abbr: "abs",
+                        },
+                        {
+                            name: "ergative",
+                            abbr: "erg",
                         },
                     ],
                 },

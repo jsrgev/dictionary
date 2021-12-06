@@ -8,8 +8,10 @@ const GramFormGroupSetup = props => {
 
     const {appState, setAppState, thisIndex, moveItem} = props;
 
-    let pathFrag = ".gramFormGroups";
-    const path = _.get(appState, "setup" + pathFrag);
+    let pathFrag = "gramFormGroups";
+    const path = _.get(appState, "setup." + pathFrag);
+
+    console.log(path)
 
     const groupDefault = {
         name: "",
@@ -25,6 +27,13 @@ const GramFormGroupSetup = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
+        const setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag)
+        setupCopyPath[thisIndex][field] = value;
+        setAppState({setup: setupCopy});
+    };
+
+    const handleGramFormChange = (value, field) => {
         const setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex][field] = value;
@@ -60,6 +69,8 @@ const GramFormGroupSetup = props => {
     
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
+    // console.log(path)
+
     return(
         <>
             <div className="row">
@@ -84,19 +95,39 @@ const GramFormGroupSetup = props => {
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                 </div>
+                { path[thisIndex].gramForms &&
+                    path[thisIndex].gramForms.map((a, i) => (
+
+                        <GramFormSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} />
+
+
+                        // <div className="row" key={i}>
+                        //     <div className="row-controls">
+                        //     </div>
+                        //     <div className="row-content gram-form-setup" style={getIndent(0)}>
+                        //         <label>Form</label>
+                        //         <input value={a.name} onChange={handleGramFormChange} />
+                        //         <label>Abbreviation</label>
+                        //         <input value={a.abbr} onChange={handleGramFormChange} />
+                        //     </div>
+                        // </div>
+                    ))
+                }
+
                 {/* <div className="row"> */}
                     {/* <div className="row-controls"> */}
                     {/* </div> */}
                     {/* <div className="row-content" style={getIndent(0)}> */}
-                        {/* <label>Forms</label> */}
-                        </div>
-                            {/* {
-                                path[thisIndex].gramForms.map((a, i) => (
-                                    <GramFormSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} />
-                                ))
-                            } */}
+                        {/* <label>Form</label> */}
+                        {/* </div> */}
+                        {/* {
+                            path[thisIndex].gramForms.map((a, i) => (
+                                <GramFormSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} />
+                            ))
+                        } */}
                     {/* </div> */}
-            {/* </div> */}
+                {/* </div> */}
+            </div>
         </>
     )
 };

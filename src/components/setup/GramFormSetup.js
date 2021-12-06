@@ -7,6 +7,8 @@ const GramFormSetup = props => {
 
     const {appState, setAppState, thisIndex, moveItem, stringPath} = props;
 
+    // console.log(stringPath);
+
     let pathFrag = stringPath + ".gramForms";
     const path = _.get(appState, "setup." + pathFrag);
     // const upPath = _.get(appState, "setup." + pathFrag);
@@ -54,7 +56,7 @@ const GramFormSetup = props => {
     const isLast = thisIndex === path.length-1;
     
 
-console.log(path);
+// console.log(path);
 
     return(
         <>
@@ -78,12 +80,12 @@ console.log(path);
                 </div>
                 <div className="row-content gram-form-setup" style={getIndent(0)}>
                     {
-                                <>
-                                    <label>Form</label>
-                                    <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
-                                    <label>Abbreviation</label>
-                                    <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
-                                </>
+                        <>
+                            <label>Form</label>
+                            <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
+                            <label>Abbreviation</label>
+                            <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
+                        </>
                     }
                 </div>
             </div>
