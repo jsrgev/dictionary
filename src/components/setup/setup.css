@@ -39,3 +39,7 @@ input[type="color" i] {
 .gram-class-setup, .gram-form-setup {
     grid-template-columns: 6rem 1fr 6rem 1fr;
 }
+
+.pos-options {
+    grid-template-columns: 7rem 1fr;
+}

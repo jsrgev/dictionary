@@ -11,7 +11,7 @@ const GramFormGroupSetup = props => {
     let pathFrag = "gramFormGroups";
     const path = _.get(appState, "setup." + pathFrag);
 
-    console.log(path)
+    // console.log(path)
 
     const groupDefault = {
         name: "",

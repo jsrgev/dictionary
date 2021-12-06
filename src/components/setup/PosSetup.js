@@ -11,7 +11,9 @@ const PosSetup = props => {
     let pathFrag = "partsOfSpeechDefs";
     const path = _.get(appState, "setup." + pathFrag);
 
-    const [posOpen, setPosOpen] = useState(false);
+    const areClassGroupsSelected = (path[thisIndex].gramClassGroups.length > 0) ? true : false;
+
+    const [posOpen, setPosOpen] = useState(areClassGroupsSelected);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -28,36 +30,35 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     }
 
-    const selectGramClass = gramClassName => {
+    const handleClick = (gramClassName, field) => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        let index = path[thisIndex].gramClassGroups.findIndex(a => a === gramClassName);
-        console.log(index);
-        if (index < 0) {
-            setupCopyPath[thisIndex].gramClassGroups.push(gramClassName);
-            // console.log(setupCopyPath[thisIndex].gramClassGroups)
-        } else {
-            setupCopyPath[thisIndex].gramClassGroups.splice(index, 1);
-            // console.log(setupCopyPath[thisIndex].gramClassGroups)
-        }
+        // console.log(setupCopyPath);
+        // console.log(field);
         // return;
-
-        // setupCopyPath[thisIndex].gramClassGroups = value;
+        let index = path[thisIndex][field].findIndex(a => a === gramClassName);
+        if (index < 0) {
+            setupCopyPath[thisIndex][field].push(gramClassName);
+        } else {
+            setupCopyPath[thisIndex][field].splice(index, 1);
+        }
         setAppState({setup: setupCopy});
     }
     
 
-    const posDefault = {name: "", abbr: "", multiChoice: false, gramClasses: []};
+    const posDefault = {name: "", abbr: "", multiChoice: false, gramClassGroups: [], agrGramFormGroups: [], intGramFormGroups: [] };
     const gramClassDefault = {name: "", abbr: "", gramForms: []};
 
     const gramClassSetDefault = {
         name: "",
-        gramForms: [
+        gramClassGroups: [
             {
                 name: "",
                 abbr: "",
             }
         ],
+        agrGramFormGroups: [],
+        intrGramFormGroups: []
     };
 
     const addPos = () => {
@@ -103,8 +104,10 @@ const PosSetup = props => {
         return true;
     };
     
-    const isSelected = gramClassName =>  {
-        return path[thisIndex].gramClassGroups.some(a => a === gramClassName);
+    const isSelected = (gramClassName, field) =>  {
+        console.log(field)
+        console.log(path[thisIndex][field])
+        return path[thisIndex][field].some(a => a === gramClassName);
     };
 
 
@@ -148,11 +151,36 @@ const PosSetup = props => {
                     {/* <> */}
                 <div className="row">
                     <div className="row-controls"></div>
-                    <div className="row-content" style={getIndent(0)}>
+                    <div className="row-content pos-options" style={getIndent(0)}>
                         <div>Class options</div>
                         <ul>
                             {appState.setup.gramClassGroups.map((a, i) => (
-                                <li key={i} value={a.name} className={ isSelected(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => selectGramClass(a.name)}>{capitalize(a.name)}</li>
+                                <li key={i} value={a.name} className={ isSelected(a.name, "gramClassGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => handleClick(a.name, "gramClassGroups")}>{capitalize(a.name)}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="row-controls"></div>
+                    <div className="row-content pos-options" style={getIndent(0)}>
+                        <div>Agreement forms</div>
+                        <ul>
+                            {appState.setup.gramClassGroups.map((a, i) => (
+                                <li key={i} value={a.name} className={ isSelected(a.name, "agrGramFormGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => handleClick(a.name, "agrGramFormGroups")}>{capitalize(a.name)}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="row-controls"></div>
+                    <div className="row-content pos-options" style={getIndent(0)}>
+                        <div>Intrinsic forms</div>
+                        <ul>
+                            {appState.setup.gramFormGroups.map((a, i) => (
+                                <li key={i} value={a.name} 
+                                   className={ isSelected(a.name, "intrGramFormGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" }
+                                // className={ isSelected(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" }
+                                 onClick={() => handleClick(a.name, "intrGramFormGroups")}>{capitalize(a.name)}</li>
                             ))}
                         </ul>
                     </div>
