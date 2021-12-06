@@ -189,14 +189,14 @@ fieldset {
 	display: flex;
 	gap: .5rem .3rem;
 	padding: 0;
-	cursor: pointer;
 	margin: 0;
 	flex-wrap: wrap;
 }
 
-li {
+.row li {
 	padding: 0.1rem .3rem;
 	border-radius: .5rem;
+	cursor: pointer;
 }
 
 .selected {

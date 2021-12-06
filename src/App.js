@@ -91,6 +91,10 @@ const App = () => {
                             name: "collective-singulative",
                             abbr: "cs",
                         },
+                        {
+                            name: "none",
+                            abbr: "none",
+                        },
                     ],
                 },
                 {

@@ -16,20 +16,34 @@ const PosSetup = props => {
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({setup: setupCopy});
     };
 
     const changeMultichoice = value => {
         let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].multiChoice = value;
         setAppState({setup: setupCopy});
     }
 
-    const selectClassSet = () => {
-        console.log("select");
+    const selectGramClass = gramClassName => {
+        let setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        let index = path[thisIndex].gramClassSets.findIndex(a => a == gramClassName);
+        console.log(index);
+        if (index < 0) {
+            setupCopyPath[thisIndex].gramClassSets.push(gramClassName);
+            // console.log(setupCopyPath[thisIndex].gramClassSets)
+        } else {
+            setupCopyPath[thisIndex].gramClassSets.splice(index, 1);
+            // console.log(setupCopyPath[thisIndex].gramClassSets)
+        }
+        // return;
+
+        // setupCopyPath[thisIndex].gramClassSets = value;
+        setAppState({setup: setupCopy});
     }
     
 
@@ -59,8 +73,8 @@ const PosSetup = props => {
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex].gramClassSets.splice(index+1, 0, clone(gramClassSetDefault));
         setAppState({setup: setupCopy});
-        console.log(path[thisIndex].gramClassSets);
     };
+        // console.log(path[thisIndex].gramClassSets);
 
     const addGramClass = index => {
         let setupCopy = clone(appState.setup);
@@ -89,11 +103,8 @@ const PosSetup = props => {
         return true;
     };
     
-    const isCurrentSelection = (posName, i) =>  {
-        // console.log(path[thisIndex].gramClassSets[i]);
-        // console.log(posName);
-        return false;
-        // return path[thisIndex].name === posName;
+    const isSelected = gramClassName =>  {
+        return path[thisIndex].gramClassSets.some(a => a == gramClassName);
     };
 
 
@@ -131,23 +142,23 @@ const PosSetup = props => {
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
-                { path[thisIndex].gramClassSets.length > 0 &&
-                    <>
-                        <div className="row">
-                            <div className="row-controls"></div>
-                            <div className="row-content">
-                                <div>Class group</div>
-                                <ul>
-                                    {
-                                        path[thisIndex].gramClassSets.map((a, i) => (
-                                            <li key={i} value={a.name} className={ isCurrentSelection(a.name, i) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={selectClassSet}>{capitalize(a.name)}</li>
-                                        ))
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </>
-                }
+                {/* { path[thisIndex].gramClassSets.length > 0 && */}
+                    {/* path[thisIndex].gramClassSets.map((a, i) => ( */}
+
+                    {/* <> */}
+                <div className="row">
+                    <div className="row-controls"></div>
+                    <div className="row-content">
+                        <div>Class options</div>
+                        <ul>
+                            {appState.setup.gramClassSets.map((a, i) => (
+                                <li key={i} value={a.name} className={ isSelected(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => selectGramClass(a.name)}>{capitalize(a.name)}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                    {/* </> */}
+                    {/* ))} */}
                     {/* { path[thisIndex].gramClasses.length>1 &&
                         <>
                             <label>Classes Allowed</label>
