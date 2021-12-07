@@ -1,5 +1,6 @@
 import AddPopup from '../AddPopup.js';
-import ClassSelect from './ClassSelect.js';
+import GramClassSelect from './GramClassSelect.js';
+import GramFormSelect from './GramFormSelect.js';
 import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
 import {posDefault} from './defaults.js';
 import {useState} from 'react';
@@ -54,11 +55,19 @@ const PosSetup = props => {
     const addGramClassOption = index => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, {name: availableClassGroups[0].name, gramClasses: []});
+        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, {name: availableGramClassGroups[0].name, gramClasses: []});
         // console.log(setupCopyPath);
         setAppState({setup: setupCopy});
     };
-    
+
+    const addGramFormOption = index => {
+        let setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        setupCopyPath[thisIndex].gramFormGroups.splice(index+1, 0, {name: availableGramClassAndFormGroups[0].name, gramForms: []});
+        // console.log(setupCopyPath);
+        setAppState({setup: setupCopy});
+    };
+
     const deletePos = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
@@ -70,38 +79,37 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     };
 
-    const availableClassGroups = appState.setup.gramClassGroups.filter(a => {
+    const availableGramClassGroups = appState.setup.gramClassGroups.filter(a => {
         let alreadySelected = path[thisIndex].gramClassGroups.some(b => b.name === a.name);
         return !alreadySelected && a;
     })
 
+    const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
+
+    const availableGramClassAndFormGroups = gramClassAndFormGroups.filter(a => {
+        let alreadySelected = path[thisIndex].gramFormGroups.some(b => b.name === a.name);
+        return !alreadySelected && a;
+    })
+
+    // console.log(availableGramClassAndFormGroups);
+
     const popupItems = [
         ["Part of speech", addPos],
-        // ["Form option", () => addClassOption(path[thisIndex].gramClassGroups.length-1)],
     ];
 
-    if (availableClassGroups.length > 0) {
+    if (availableGramClassGroups.length > 0) {
         popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups.length-1)])
     };
 
-    // const isAvailable = (a) => {
-    //     return true;
-    // };
-    
-
-    // const isSelected = (gramClassName, field) =>  {
-    //     return false;
-    //     // return path[thisIndex][field].some(a => a === gramClassName);
-    // };
-
-
+    if (availableGramClassAndFormGroups.length > 0) {
+        popupItems.push(["Form group", () => addGramFormOption(path[thisIndex].gramFormGroups.length-1)])
+    };
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
     // console.log(gramClassAndFormGroups);
 
 
@@ -112,7 +120,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClassGroups.length>0 ?
+                { path[thisIndex].gramClassGroups.length>0 || path[thisIndex].gramFormGroups.length>0 ?
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     : <i></i>
                 }
@@ -131,10 +139,12 @@ const PosSetup = props => {
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
-                { path[thisIndex].gramClassGroups.length > 0 &&
-                    path[thisIndex].gramClassGroups.map((a, i) => (
-                        <ClassSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableClassGroups={availableClassGroups} />
-                    ))}
+                { path[thisIndex].gramClassGroups.map((a, i) => (
+                    <GramClassSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} />))
+                }
+                { path[thisIndex].gramFormGroups.map((a, i) => (
+                    <GramFormSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramFormOption={addGramFormOption} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} />))
+                }
             </div>
         </>
     )

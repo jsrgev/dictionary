@@ -4,9 +4,9 @@ import {useState} from 'react';
 import _ from 'lodash';
 import Limitations from './Limitations.js';
 
-const ClassSelect = props => {
+const GramClassSelect = props => {
 
-    const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClassOption, availableClassGroups} = props;
+    const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClassOption, availableGramClassGroups} = props;
 
     let pathFrag = stringPath + ".gramClassGroups";
     const path = _.get(appState, "setup." + pathFrag);
@@ -64,17 +64,17 @@ const ClassSelect = props => {
     const popupItems = [];
 
 
-    if (availableClassGroups.length > 0) {
+    if (availableGramClassGroups.length > 0) {
         popupItems.push(["Class option", () => addGramClassOption(thisIndex)]);
     };
 
-    const isAvailable = gramClassGroup => {
-        return availableClassGroups.some(a => a.name === gramClassGroup);
+    const isAvailable = gramClassGroupName => {
+        return availableGramClassGroups.some(a => a.name === gramClassGroupName);
     };
     
 
-    const isCurrentSelection = gramClassGroup =>  {
-        return path[thisIndex].name === gramClassGroup;
+    const isCurrentSelection = gramClassGroupName =>  {
+        return path[thisIndex].name === gramClassGroupName;
     }
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
@@ -103,7 +103,7 @@ const ClassSelect = props => {
                 </i>
                 </div>
                 <div className="row-content pos-options" style={getIndent(0)}>
-                    <div>Class options</div>
+                    <div>Class group</div>
                     <ul>
                         {appState.setup.gramClassGroups.map((a, i) => (
                             <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={e => handleClick(e, i)}>{capitalize(a.name)}</li>
@@ -116,4 +116,4 @@ const ClassSelect = props => {
     )
 };
 
-export default ClassSelect;
+export default GramClassSelect;
