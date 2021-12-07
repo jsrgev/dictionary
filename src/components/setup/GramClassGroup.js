@@ -1,10 +1,11 @@
 import AddPopup from '../AddPopup.js';
-// import GramFormSetup from './GramFormSetup.js';
-import { clone, addPopupHandler, getIndent } from '../../utils.js';
+import GramClass from './GramClass.js';
+import { clone, addPopupHandler } from '../../utils.js';
+import {gramClassGroupDefault, gramClassDefault} from './defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 
-const GramClassGroupSetup = props => {
+const GramClassGroup = props => {
 
     // const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addGramClass} = props;
     const {appState, setAppState, thisIndex, moveItem} = props;
@@ -12,46 +13,46 @@ const GramClassGroupSetup = props => {
     let pathFrag = "gramClassGroups";
     const path = _.get(appState, "setup." + pathFrag);
 
-    const [gramClassOpen, setGramClassOpen] = useState(true);
+    const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({setup: setupCopy});
     };
 
-    const gramClassGroupDefault = {
-        name: "",
-        gramForms: [
-            {
-                name: "",
-                abbr: "",
-            }
-        ]
-    }
-
-    const addGramClassGroup = index => {
+    const addGroup = index => {
         const setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        // console.log(setupCopyPath)
         setupCopyPath.splice(index+1, 0, clone(gramClassGroupDefault));
         setAppState({setup: setupCopy});
     };
-    
+
+    const addGramClass = (index, pathFrag) => {
+        let setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        setupCopyPath.splice(index+1, 0, clone(gramClassDefault));
+        setAppState({setup: setupCopy});
+    };
+
+
     const deleteGramClassGroup = () => {
         let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
-        // console.log(setupCopyPath);
-        // return;
-        setupCopyPath.splice(thisIndex, 1);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        if (setupCopyPath.length === 1) {
+            console.log(setupCopyPath)
+            setupCopyPath.splice(0, 1, clone(gramClassGroupDefault));
+        } else {
+            setupCopyPath.splice(thisIndex, 1);
+        }
         setAppState({setup: setupCopy});
     };
 
     const popupItems = [
-        ["Class Group", () => addGramClassGroup(thisIndex)],
-        // ["Form", () => addGramForm(path[thisIndex].gramForms.length-1)],
+        ["Group", () => addGroup(thisIndex)],
+        ["Class", () => addGramClass(path[thisIndex].gramClasses.length-1, pathFrag+`[${thisIndex}].gramClasses`)],
     ];
 
 
@@ -63,20 +64,20 @@ const GramClassGroupSetup = props => {
 
     return (
         <>
-            <div className={`row${gramClassOpen ? "" : " closed"}`}>
+            <div className={`row${groupOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGramClassGroup}></i>
                     { 
-                        <i className={`fas fa-chevron-${gramClassOpen ? "up" : "down"}`} onClick={() => setGramClassOpen(!gramClassOpen)}></i>
+                        <i className={`fas fa-chevron-${groupOpen ? "up" : "down"}`} onClick={() => setGroupOpen(!groupOpen)}></i>
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                         onClick={e => moveItem(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
-                        // className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                        className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
@@ -84,24 +85,14 @@ const GramClassGroupSetup = props => {
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                </div>
-               { path[thisIndex].gramForms.length>0 &&
-                path[thisIndex].gramForms.map((a, i) => (
-                    <div className="row" key={i}>
-                        <div className="row-controls">
-                        </div>
-                        <div className="row-content gram-class-setup" style={getIndent(0)} >
-                                <label>Form</label>
-                                <input type="text" value={a.name} onChange={e => handleChange(e.target.value, "name")} />
-                                <label>Abbreviation</label>
-                                <input type="text" value={a.abbr} onChange={e => handleChange(e.target.value, "abbr")} />
-                        </div>
-                    </div>
-                ))
-
-               }
+               { path[thisIndex].gramClasses &&
+                    path[thisIndex].gramClasses.map((a, i) => (
+                        <GramClass key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClass={addGramClass} />
+                    ))
+                }
             </div>
         </>
     )
 };
 
-export default GramClassGroupSetup;
+export default GramClassGroup;

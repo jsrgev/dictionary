@@ -33,9 +33,6 @@ const PosSetup = props => {
     const handleClick = (gramClassName, field) => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        // console.log(setupCopyPath);
-        // console.log(field);
-        // return;
         let index = path[thisIndex][field].findIndex(a => a === gramClassName);
         if (index < 0) {
             setupCopyPath[thisIndex][field].push(gramClassName);
@@ -105,8 +102,6 @@ const PosSetup = props => {
     };
     
     const isSelected = (gramClassName, field) =>  {
-        console.log(field)
-        console.log(path[thisIndex][field])
         return path[thisIndex][field].some(a => a === gramClassName);
     };
 

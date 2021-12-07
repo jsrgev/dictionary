@@ -69,7 +69,7 @@ const App = () => {
             gramClassGroups: [
                 {
                     name: "gender",
-                    gramForms: [
+                    gramClasses: [
                         {
                             name: "masculine",
                             abbr: "m",
@@ -82,7 +82,7 @@ const App = () => {
                 },
                 {
                     name: "number system",
-                    gramForms: [
+                    gramClasses: [
                         {
                             name: "singular-plural",
                             abbr: "sp",
@@ -99,7 +99,7 @@ const App = () => {
                 },
                 {
                     name: "transitivity",
-                    gramForms: [
+                    gramClasses: [
                         {
                             name: "intransitive",
                             abbr: "i",
@@ -134,21 +134,17 @@ const App = () => {
                     ],
                 },
                 {
-                    name: "case",
+                    name: "definiteness",
                     gramForms: [
                         {
-                            name: "nominative",
-                            abbr: "nom",
+                            name: "indefinite",
+                            abbr: "ind",
                         },
                         {
-                            name: "absolutive",
-                            abbr: "abs",
+                            name: "definite",
+                            abbr: "def",
                         },
-                        {
-                            name: "ergative",
-                            abbr: "erg",
-                        },
-                    ],
+                        ],
                 },
             ],
             // gramFormAbbrs: [],

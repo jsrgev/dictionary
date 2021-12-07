@@ -1,29 +1,18 @@
 import AddPopup from '../AddPopup.js';
-import GramFormSetup from './GramFormSetup.js';
-import { clone, addPopupHandler, getIndent } from '../../utils.js';
+import GramForm from './GramForm.js';
+import { clone, addPopupHandler } from '../../utils.js';
+import {gramFormDefault, gramFormGroupDefault} from './defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 
-const GramFormGroupSetup = props => {
+const GramFormGroup = props => {
 
     const {appState, setAppState, thisIndex, moveItem} = props;
 
     let pathFrag = "gramFormGroups";
     const path = _.get(appState, "setup." + pathFrag);
 
-    // console.log(path)
-
-    const groupDefault = {
-        name: "",
-        gramForms: [
-            {
-                name: "",
-                abbr: "",
-            },
-        ],
-    };
-
-    const [formGroupOpen, setFormGroupOpen] = useState(true);
+    const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -33,26 +22,26 @@ const GramFormGroupSetup = props => {
         setAppState({setup: setupCopy});
     };
 
-    const handleGramFormChange = (value, field) => {
-        const setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
-        setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
-    };
-
     const addGroup = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath.splice(thisIndex+1, 0, clone(groupDefault));
+        setupCopyPath.splice(thisIndex+1, 0, clone(gramFormGroupDefault));
         setAppState({setup: setupCopy});
     };
-    
+
+    const addGramForm = (index, pathFrag) => {
+        let setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        setupCopyPath.splice(index+1, 0, clone(gramFormDefault));
+        setAppState({setup: setupCopy});
+    };
+
     const deleteGroup = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
         if (setupCopyPath.length === 1) {
             console.log(setupCopyPath)
-            setupCopyPath.splice(0, 1, clone(groupDefault));
+            setupCopyPath.splice(0, 1, clone(gramFormGroupDefault));
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
@@ -62,6 +51,7 @@ const GramFormGroupSetup = props => {
     
     const popupItems = [
         ["Group", () => addGroup()],
+        ["Form", () => addGramForm(path[thisIndex].gramForms.length-1, pathFrag+`[${thisIndex}].gramForms`)],
     ];
 
     const isFirst = thisIndex === 0;
@@ -69,17 +59,16 @@ const GramFormGroupSetup = props => {
     
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
-    // console.log(path)
 
     return(
         <>
-            <div className="row">
+            <div className={`row${groupOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGroup}></i>
                     { path[thisIndex].gramForms?.length>0 ?
-                        <i className={`fas fa-chevron-${formGroupOpen ? "up" : "down"}`} onClick={() => setFormGroupOpen(!formGroupOpen)}></i>
+                        <i className={`fas fa-chevron-${groupOpen ? "up" : "down"}`} onClick={() => setGroupOpen(!groupOpen)}></i>
                         : <i></i>
                     }
                     <i
@@ -97,39 +86,12 @@ const GramFormGroupSetup = props => {
                 </div>
                 { path[thisIndex].gramForms &&
                     path[thisIndex].gramForms.map((a, i) => (
-
-                        <GramFormSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} />
-
-
-                        // <div className="row" key={i}>
-                        //     <div className="row-controls">
-                        //     </div>
-                        //     <div className="row-content gram-form-setup" style={getIndent(0)}>
-                        //         <label>Form</label>
-                        //         <input value={a.name} onChange={handleGramFormChange} />
-                        //         <label>Abbreviation</label>
-                        //         <input value={a.abbr} onChange={handleGramFormChange} />
-                        //     </div>
-                        // </div>
+                        <GramForm key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramForm={addGramForm} />
                     ))
                 }
-
-                {/* <div className="row"> */}
-                    {/* <div className="row-controls"> */}
-                    {/* </div> */}
-                    {/* <div className="row-content" style={getIndent(0)}> */}
-                        {/* <label>Form</label> */}
-                        {/* </div> */}
-                        {/* {
-                            path[thisIndex].gramForms.map((a, i) => (
-                                <GramFormSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} />
-                            ))
-                        } */}
-                    {/* </div> */}
-                {/* </div> */}
             </div>
         </>
     )
 };
 
-export default GramFormGroupSetup;
+export default GramFormGroup;
