@@ -40,6 +40,6 @@ input[type="color" i] {
     grid-template-columns: 6rem 1fr 6rem 1fr;
 }
 
-.pos-options {
+/* .pos-options {
     grid-template-columns: 7rem 1fr;
-}
+} */

@@ -11,6 +11,7 @@ export const gramFormGroupDefault = {
 export const gramClassDefault = {
     name: "",
     abbr: "",
+    // enabled: true,
 };
 
 export const gramClassGroupDefault = {
