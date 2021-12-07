@@ -1,7 +1,7 @@
 import AddPopup from '../AddPopup.js';
 import ClassSelect from './ClassSelect.js';
 import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
-// import {gramClassGroupDefault} from './defaults.js';
+import {posDefault} from './defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -43,8 +43,6 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     };
 
-    const posDefault = {name: "", abbr: "", multiChoice: false, gramClassGroups: [], agrGramFormGroups: [], intGramFormGroups: [] };
-    // const gramClassDefault = {name: "", abbr: "", gramForms: []};
 
     const addPos = () => {
         let setupCopy = clone(appState.setup);
@@ -57,16 +55,9 @@ const PosSetup = props => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, {name: availableClassGroups[0].name, gramClasses: []});
-        console.log(setupCopyPath);
+        // console.log(setupCopyPath);
         setAppState({setup: setupCopy});
     };
-
-    // const addGramClass = index => {
-    //     let setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag)
-    //     setupCopyPath[thisIndex].gramClasses.splice(index+1, 0, clone(gramClassDefault));
-    //     setAppState({setup: setupCopy});
-    // };
     
     const deletePos = () => {
         let setupCopy = clone(appState.setup);
@@ -80,9 +71,7 @@ const PosSetup = props => {
     };
 
     const availableClassGroups = appState.setup.gramClassGroups.filter(a => {
-        // console.log(a);
         let alreadySelected = path[thisIndex].gramClassGroups.some(b => b.name === a.name);
-        // console.log(!alreadySelected && a)
         return !alreadySelected && a;
     })
 
@@ -95,15 +84,15 @@ const PosSetup = props => {
         popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups.length-1)])
     };
 
-    const isAvailable = (a) => {
-        return true;
-    };
+    // const isAvailable = (a) => {
+    //     return true;
+    // };
     
 
-    const isSelected = (gramClassName, field) =>  {
-        return false;
-        // return path[thisIndex][field].some(a => a === gramClassName);
-    };
+    // const isSelected = (gramClassName, field) =>  {
+    //     return false;
+    //     // return path[thisIndex][field].some(a => a === gramClassName);
+    // };
 
 
 
@@ -111,8 +100,6 @@ const PosSetup = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-
-    // console.log(path[thisIndex].length);
 
     const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
     // console.log(gramClassAndFormGroups);
@@ -148,61 +135,6 @@ const PosSetup = props => {
                     path[thisIndex].gramClassGroups.map((a, i) => (
                         <ClassSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableClassGroups={availableClassGroups} />
                     ))}
-
-                {/* <div className="row">
-                    <div className="row-controls"></div>
-                    <div className="row-content pos-options" style={getIndent(0)}>
-                        <div>Class option</div>
-                        <ul>
-                            {appState.setup.gramClassGroups.map((a, i) => (
-                                <li key={i} value={a.name} className={ isSelected(a.name, "gramClassGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => handleClick(a.name, "gramClassGroups")}>{capitalize(a.name)}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div> */}
-
-                {/* <div className="row">
-                    <div className="row-controls"></div>
-                    <div className="row-content pos-options" style={getIndent(0)}>
-                        <div>Forms</div>
-                        <ul>
-                            {gramClassAndFormGroups.map((a, i) => (
-                                <li key={i} value={a.name} className={ isSelected(a.name, "agrGramFormGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => handleClick(a.name, "agrGramFormGroups")}>{capitalize(a.name)}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div> */}
-                {/* <div className="row">
-                    <div className="row-controls"></div>
-                    <div className="row-content pos-options" style={getIndent(0)}>
-                        <div>Intrinsic forms</div>
-                        <ul>
-                            {appState.setup.gramFormGroups.map((a, i) => (
-                                <li key={i} value={a.name} 
-                                   className={ isSelected(a.name, "intrGramFormGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" }
-                                // className={ isSelected(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" }
-                                 onClick={() => handleClick(a.name, "intrGramFormGroups")}>{capitalize(a.name)}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div> */}
-                    {/* </> */}
-                    {/* ))} */}
-                    {/* { path[thisIndex].gramClasses.length>1 &&
-                        <>
-                            <label>Classes Allowed</label>
-                            <ul>
-                                <li className={path[thisIndex].multiChoice ? "" : "selected"} onClick={() => changeMultichoice(false)}>One</li>
-                                <li className={path[thisIndex].multiChoice ? "selected" : ""} onClick={() => changeMultichoice(true)}>Multiple</li>
-                            </ul>
-                        </>
-                    } */}
-               {/* </div> */}
-               {/* { path[thisIndex].gramClasses.length>0 &&
-                path[thisIndex].gramClasses.map((a, i) => (
-                    <GramClassSetup appState={appState} setAppState={setAppState} key={i} thisIndex={i} stringPath={stringPathA} prevIndentLevel={0} moveItem={moveItem} addGramClass={addGramClass} />
-                ))
-               } */}
             </div>
         </>
     )

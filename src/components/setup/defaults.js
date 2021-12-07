@@ -29,3 +29,11 @@ export const partsOfSpeechDefsDefault = [
     {name: "determiner", abbr: "d", multichoice: false, gramClassGroups: [], gramFormGroups: []},
     {name: "pronoun", abbr: "pro", multichoice: false, gramClassGroups: [], gramFormGroups: []},
 ];
+
+export const posDefault = {
+    name: "",
+    abbr: "",
+    multiChoice: false,
+    gramClassGroups: [],
+    gramFormGroups: [],
+};

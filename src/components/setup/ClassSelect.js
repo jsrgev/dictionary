@@ -1,4 +1,3 @@
-// import GramClassSetup from './GramClassSetup';
 import AddPopup from '../AddPopup.js';
 import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
@@ -11,7 +10,6 @@ const ClassSelect = props => {
 
     let pathFrag = stringPath + ".gramClassGroups";
     const path = _.get(appState, "setup." + pathFrag);
-    // console.log(path);
 
     const [classSelectOpen, setClassSelectOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -63,10 +61,7 @@ const ClassSelect = props => {
 
 
 
-    const popupItems = [
-        // ["Part of speech", addPos],
-        // ["Limitation", addLimitations],
-    ];
+    const popupItems = [];
 
 
     if (availableClassGroups.length > 0) {
@@ -87,11 +82,8 @@ const ClassSelect = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    // console.log(path[thisIndex]);
 
     const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
-    // console.log(gramClassAndFormGroups);
-
 
     return(
         <>
@@ -100,10 +92,7 @@ const ClassSelect = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                {/* { path[thisIndex].limitation ? */}
-                    <i className={`fas fa-chevron-${classSelectOpen ? "up" : "down"}`} onClick={() => setClassSelectOpen(!classSelectOpen)}></i>
-                    {/* : <i></i> */}
-                {/* } */}
+                <i className={`fas fa-chevron-${classSelectOpen ? "up" : "down"}`} onClick={() => setClassSelectOpen(!classSelectOpen)}></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, true)}
@@ -121,9 +110,7 @@ const ClassSelect = props => {
                         ))}
                     </ul>
                 </div>
-                {/* { path[thisIndex].limitation && */}
-                    <Limitations appState={appState} setAppState={setAppState} stringPath={stringPathA} />
-                {/* } */}
+                <Limitations appState={appState} setAppState={setAppState} stringPath={stringPathA} />
             </div>
         </>
     )
