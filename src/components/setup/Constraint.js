@@ -4,7 +4,7 @@ import {gramFormDefault} from './defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 
-const GramForm = props => {
+const Constraint = props => {
 
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramForm} = props;
 
@@ -19,6 +19,8 @@ const GramForm = props => {
         setupCopyPath[thisIndex][field] = value;
         setAppState({setup: setupCopy});
     };
+
+
     
     const deleteGroup = () => {
         let setupCopy = clone(appState.setup);
@@ -31,16 +33,9 @@ const GramForm = props => {
         setAppState({setup: setupCopy});
     };
 
-    const addConstraint = () => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        console.log(setupCopyPath);
-    }
-
     
     const popupItems = [
         ["Form", () => addGramForm(thisIndex, pathFrag)],
-        ["Constraint", () => addConstraint(thisIndex, pathFrag)],
     ];
 
     const isFirst = thisIndex === 0;
@@ -82,4 +77,4 @@ const GramForm = props => {
     )
 };
 
-export default GramForm;
+export default Constraint;

@@ -1,6 +1,7 @@
-// import GramClassSetup from './GramClassSetup';
 import AddPopup from '../AddPopup.js';
+import ClassSelect from './ClassSelect.js';
 import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
+import {gramClassGroupDefault} from './defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -44,19 +45,7 @@ const PosSetup = props => {
     
 
     const posDefault = {name: "", abbr: "", multiChoice: false, gramClassGroups: [], agrGramFormGroups: [], intGramFormGroups: [] };
-    const gramClassDefault = {name: "", abbr: "", gramForms: []};
-
-    const gramClassSetDefault = {
-        name: "",
-        gramClassGroups: [
-            {
-                name: "",
-                abbr: "",
-            }
-        ],
-        agrGramFormGroups: [],
-        intrGramFormGroups: []
-    };
+    // const gramClassDefault = {name: "", abbr: "", gramForms: []};
 
     const addPos = () => {
         let setupCopy = clone(appState.setup);
@@ -66,20 +55,21 @@ const PosSetup = props => {
     };
 
 
-    const addClassSet = index => {
+    const addGramClassOption = index => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
-        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, clone(gramClassSetDefault));
+        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, clone(availableClassGroups[0]));
+        console.log(setupCopyPath)
         setAppState({setup: setupCopy});
     };
         // console.log(path[thisIndex].gramClassGroups);
 
-    const addGramClass = index => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
-        setupCopyPath[thisIndex].gramClasses.splice(index+1, 0, clone(gramClassDefault));
-        setAppState({setup: setupCopy});
-    };
+    // const addGramClass = index => {
+    //     let setupCopy = clone(appState.setup);
+    //     let setupCopyPath = _.get(setupCopy, pathFrag)
+    //     setupCopyPath[thisIndex].gramClasses.splice(index+1, 0, clone(gramClassDefault));
+    //     setAppState({setup: setupCopy});
+    // };
     
     const deletePos = () => {
         let setupCopy = clone(appState.setup);
@@ -92,27 +82,45 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     };
 
+    const availableClassGroups = appState.setup.gramClassGroups.filter(a => {
+        // console.log(a);
+        let alreadySelected = path[thisIndex].gramClassGroups.some(b => b.name === a.name);
+        // console.log(!alreadySelected && a)
+        return !alreadySelected && a;
+    })
+
     const popupItems = [
         ["Part of speech", addPos],
-        ["Class set", () => addClassSet(path[thisIndex].gramClassGroups.length-1)],
+        // ["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups.length-1)],
+        // ["Form option", () => addClassOption(path[thisIndex].gramClassGroups.length-1)],
     ];
+
+    if (availableClassGroups.length > 0) {
+        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups.length-1)])
+    };
 
     const isAvailable = (a) => {
         return true;
     };
     
+
     const isSelected = (gramClassName, field) =>  {
-        return path[thisIndex][field].some(a => a === gramClassName);
+        return false;
+        // return path[thisIndex][field].some(a => a === gramClassName);
     };
 
 
 
-    // const stringPathA = pathFrag + `[${thisIndex}]`;
+    const stringPathA = pathFrag + `[${thisIndex}]`;
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
     // console.log(path[thisIndex]);
+
+    const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
+    // console.log(gramClassAndFormGroups);
+
 
     return(
         <>
@@ -141,32 +149,35 @@ const PosSetup = props => {
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
                 {/* { path[thisIndex].gramClassGroups.length > 0 && */}
-                    {/* path[thisIndex].gramClassGroups.map((a, i) => ( */}
+                    {path[thisIndex].gramClassGroups.map((a, i) => (
+                        <ClassSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableClassGroups={availableClassGroups} />
+                    ))}
 
                     {/* <> */}
-                <div className="row">
+                {/* <div className="row">
                     <div className="row-controls"></div>
                     <div className="row-content pos-options" style={getIndent(0)}>
-                        <div>Class options</div>
+                        <div>Class option</div>
                         <ul>
                             {appState.setup.gramClassGroups.map((a, i) => (
                                 <li key={i} value={a.name} className={ isSelected(a.name, "gramClassGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => handleClick(a.name, "gramClassGroups")}>{capitalize(a.name)}</li>
                             ))}
                         </ul>
                     </div>
-                </div>
+                </div> */}
+
                 <div className="row">
                     <div className="row-controls"></div>
                     <div className="row-content pos-options" style={getIndent(0)}>
-                        <div>Agreement forms</div>
+                        <div>Forms</div>
                         <ul>
-                            {appState.setup.gramClassGroups.map((a, i) => (
+                            {gramClassAndFormGroups.map((a, i) => (
                                 <li key={i} value={a.name} className={ isSelected(a.name, "agrGramFormGroups") ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={() => handleClick(a.name, "agrGramFormGroups")}>{capitalize(a.name)}</li>
                             ))}
                         </ul>
                     </div>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                     <div className="row-controls"></div>
                     <div className="row-content pos-options" style={getIndent(0)}>
                         <div>Intrinsic forms</div>
@@ -179,7 +190,7 @@ const PosSetup = props => {
                             ))}
                         </ul>
                     </div>
-                </div>
+                </div> */}
                     {/* </> */}
                     {/* ))} */}
                     {/* { path[thisIndex].gramClasses.length>1 &&

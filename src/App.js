@@ -11,6 +11,7 @@ import {useSetState} from 'react-use';
 import {useEffect, useCallback} from 'react';
 import {clone, generateSenseGroup} from './utils.js';
 import {entryDefault} from './defaults.js';
+import {partsOfSpeechDefsDefault} from './components/setup/defaults.js';
 
 
 // const API_BASE = "http://localhost:3001";
@@ -21,16 +22,17 @@ const App = () => {
         entry: undefined,
         setup: {
             languageName: "",
-            partsOfSpeechDefs: [
-                {name: "noun", abbr: "n", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "verb", abbr: "v", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "adjective", abbr: "a", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "adverb", abbr: "adv", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "preposition", abbr: "pre", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "interjection", abbr: "i", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "determiner", abbr: "d", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-                {name: "pronoun", abbr: "pro", multichoice: false, gramClassGroups: [], agrGramFormGroups: [], intrGramFormGroups: []},
-            ],
+            partsOfSpeechDefs: partsOfSpeechDefsDefault,
+            // partsOfSpeechDefs: [
+            //     {name: "noun", abbr: "n", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "verb", abbr: "v", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "adjective", abbr: "a", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "adverb", abbr: "adv", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "preposition", abbr: "pre", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "interjection", abbr: "i", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "determiner", abbr: "d", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            //     {name: "pronoun", abbr: "pro", multichoice: false, gramClassGroups: [], gramformGroups: []},
+            // ],
             ipa: [
                 {
                     group: "consonants",
