@@ -27,15 +27,6 @@ const IpaPalette = props => {
                 </React.Fragment>
                 ))
             }
-
-            {/* { arr.map((a,i) => (
-                <React.Fragment key={i}>
-                    {arr[i][1].map((b,j) => (
-                        <span key={j} className={arr[i][0]}>{b}</span>
-                    ))}
-                </React.Fragment>
-                ))
-            } */}
             </div>
         </div>
     )

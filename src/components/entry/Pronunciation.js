@@ -26,7 +26,7 @@ const Pronunciation = (props) => {
         }
     };
 
-    const deletePronunciation = e => {
+    const deletePronunciation = () => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
 

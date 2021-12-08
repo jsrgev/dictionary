@@ -74,7 +74,6 @@ export const setGramForms = (posObj, gramClassDef) => {
     return posObj;
 };
 
-
 export const generatePos = posName => {
     let posDef = getPosDef(posName);
     let obj = {
@@ -83,7 +82,6 @@ export const generatePos = posName => {
     let gramClassDef = posDef.gramClasses[0];
     return setGramForms(obj, gramClassDef);
 };
-
 
 export const handleInputBlur = e => {
     let hoverItems = document.querySelectorAll( ":hover" );

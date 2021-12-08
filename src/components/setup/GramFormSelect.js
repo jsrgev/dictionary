@@ -2,7 +2,7 @@ import AddPopup from '../AddPopup.js';
 import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
-import Limitations from './Limitations.js';
+import GramFormLimitations from './GramFormLimitations.js';
 
 const GramFormSelect = props => {
 
@@ -30,8 +30,8 @@ const GramFormSelect = props => {
         }
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        let groupToClone = definition.gramClasses || definition.gramForms;
-        setupCopyPath[thisIndex] = {name: definition.name, gramForms: clone(groupToClone)};
+        let gramFormsToClone = definition.gramClasses || definition.gramForms;
+        setupCopyPath[thisIndex] = {name: definition.name, gramForms: clone(gramFormsToClone)};
         setAppState({setup: setupCopy});
     };
 
@@ -114,7 +114,7 @@ const GramFormSelect = props => {
                         ))}
                     </ul>
                 </div>
-                {/* <Limitations appState={appState} setAppState={setAppState} stringPath={stringPathA} /> */}
+                <GramFormLimitations appState={appState} setAppState={setAppState} stringPath={stringPathA} />
             </div>
         </>
     )

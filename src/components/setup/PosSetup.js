@@ -32,17 +32,17 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     }
 
-    const handleClick = (gramClassName, field) => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        let index = path[thisIndex][field].findIndex(a => a === gramClassName);
-        if (index < 0) {
-            setupCopyPath[thisIndex][field].push(gramClassName);
-        } else {
-            setupCopyPath[thisIndex][field].splice(index, 1);
-        }
-        setAppState({setup: setupCopy});
-    };
+    // const handleClick = (gramClassName, field) => {
+    //     let setupCopy = clone(appState.setup);
+    //     let setupCopyPath = _.get(setupCopy, pathFrag);
+    //     let index = path[thisIndex][field].findIndex(a => a === gramClassName);
+    //     if (index < 0) {
+    //         setupCopyPath[thisIndex][field].push(gramClassName);
+    //     } else {
+    //         setupCopyPath[thisIndex][field].splice(index, 1);
+    //     }
+    //     setAppState({setup: setupCopy});
+    // };
 
 
     const addPos = () => {
@@ -55,16 +55,16 @@ const PosSetup = props => {
     const addGramClassOption = index => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, {name: availableGramClassGroups[0].name, gramClasses: []});
-        // console.log(setupCopyPath);
+        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, clone(availableGramClassGroups[0]));
         setAppState({setup: setupCopy});
     };
 
     const addGramFormOption = index => {
         let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].gramFormGroups.splice(index+1, 0, {name: availableGramClassAndFormGroups[0].name, gramForms: []});
-        // console.log(setupCopyPath);
+        let setupCopyPath = _.get(setupCopy, pathFrag);        
+        let gramFormGroup = availableGramClassAndFormGroups[0];
+        let groupToClone = gramFormGroup.gramClasses || gramFormGroup.gramForms;
+        setupCopyPath[thisIndex].gramFormGroups.splice(index+1, 0, {name: availableGramClassAndFormGroups[0].name, gramForms: clone(groupToClone)});
         setAppState({setup: setupCopy});
     };
 
