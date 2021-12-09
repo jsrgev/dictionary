@@ -20,23 +20,12 @@ const Entry = props => {
         }
     };
 
-    const handleSaveButtonClick = () => {
-        // console.log("asd");
-        testSave();
-    };
-
     // const testSave = () => {
     //     fetch(API_BASE + "/addEntry")
     //     .then(res => res.json())
     //     .then(data => console.log(data))
     //     .catch(err => console.error(`Error: ${err}`));
     // };
-
-    const testSave = () => {
-        axios.post(`${API_BASE}/addEntry`, clone(state.entry))
-        .then(response => console.log(response))
-        .catch(err => console.log(err));
-    };
 
     const addFunctions = {
         addMorph: (index, pathFrag) => {
@@ -104,6 +93,16 @@ const Entry = props => {
         setState({entry: entryCopy});
     };
 
+    const testSave = () => {
+        axios.post(`${API_BASE}/addEntry`, clone(state.entry))
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
+    };
+    
+    const handleSaveButtonClick = () => {
+        // console.log("asd");
+        testSave();
+    };
 
     return (
         <main id="entry">

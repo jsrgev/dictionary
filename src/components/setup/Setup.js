@@ -5,8 +5,9 @@ import IpaPalette from '../IpaPalette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
 // import { useState }  from 'react';
-import {clone} from '../../utils.js';
+import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
+import axios from 'axios';
 
 const Setup = props => {
 
@@ -16,9 +17,9 @@ const Setup = props => {
 
     // const [posOpen, setPosOpen] = useState(true);
 
-    const handleChange = value => {
+    const handleChange = (field, value) => {
         const setupCopy = clone(setup);
-        setupCopy.languageName = value;
+        setupCopy[field] = value;
         setAppState({setup: setupCopy});
     };
 
@@ -47,7 +48,29 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
-// console.log(setup)
+    const testSave = () => {
+        axios.post(`${API_BASE}/saveSetup`, clone(appState.setup))
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
+    };
+
+    const handleSaveButtonClick = () => {
+        if (appState.setup.targetLanguageName === "" && appState.setup.sourceLanguageName === "") {
+            alert("Please enter a Target Language name and a Source Language name.");
+            return;
+        }
+        if (appState.setup.targetLanguageName === "") {
+            alert("Please enter a Target Language name.");
+            return;
+        }
+        if (appState.setup.sourceLanguageName === "") {
+            alert("Please enter a Source Language name.");
+            return;
+        }
+        testSave();
+    };
+
+    // console.log(setup)
 
     return (
         <main id="setup">
@@ -59,7 +82,7 @@ const Setup = props => {
                             <div className="row-controls"></div>
                             <div className="row-content language-names">
                                 <label>Target Language</label>
-                                <input type="text" value={setup.targetLanguageName} onChange={e => handleChange(e.target.value)} />
+                                <input type="text" value={setup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
                             </div>
                         </div>
                     </div>
@@ -68,7 +91,7 @@ const Setup = props => {
                             <div className="row-controls"></div>
                             <div className="row-content language-names">
                                 <label>Source Language</label>
-                                <input type="text" value={setup.sourceLanguageName} onChange={e => handleChange(e.target.value)} />
+                                <input type="text" value={setup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
                             </div>
                         </div>
                     </div>
@@ -130,6 +153,10 @@ const Setup = props => {
                     </div>
                 </>
                 }
+            </div>
+            <div id="submit">
+                {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
+                <button onClick={handleSaveButtonClick}>Test save</button>
             </div>
             { setup.ipa.showPalette &&
                 <IpaPalette appState={appState} />
