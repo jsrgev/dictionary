@@ -3,9 +3,10 @@ import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
 import IpaPalette from '../IpaPalette';
-import {clone, generatePos} from '../../utils.js';
+import {API_BASE, clone, generatePos} from '../../utils.js';
 import {morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
 import _  from 'lodash';
+import axios from 'axios';
 
 
 const Entry = props => {
@@ -17,6 +18,24 @@ const Entry = props => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
+    };
+
+    const handleSaveButtonClick = () => {
+        // console.log("asd");
+        testSave();
+    };
+
+    // const testSave = () => {
+    //     fetch(API_BASE + "/addEntry")
+    //     .then(res => res.json())
+    //     .then(data => console.log(data))
+    //     .catch(err => console.error(`Error: ${err}`));
+    // };
+
+    const testSave = () => {
+        axios.post(`${API_BASE}/addEntry`, clone(state.entry))
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
     };
 
     const addFunctions = {
@@ -100,8 +119,8 @@ const Entry = props => {
             }
             <Etymology />
             <div id="submit">
-                <button id="submitInput" type="submit">Revert to previous saved</button>
-                <button id="submitInput" type="submit">Save entry</button>
+                {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
+                <button onClick={handleSaveButtonClick}>Test save</button>
             </div>
             </div>
             <div id="preview">
@@ -109,7 +128,7 @@ const Entry = props => {
                 <Preview appState={state} setAppState={setState} />
             }
             </div>
-            { state.setup.showIpaPalette &&
+            { state.setup.ipa.showPalette &&
                 <IpaPalette appState={state} />
             }
         </main>

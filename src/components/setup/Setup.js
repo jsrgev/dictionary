@@ -23,17 +23,17 @@ const Setup = props => {
     };
 
     const changeCheck = field => {
-        let value = setup[field];
         const setupCopy = clone(setup);
-        setupCopy[field] = !value;
+        let value = _.get(setupCopy, `[${field}]`);
+        _.set(setupCopy, `[${field}]`, !value);
         setAppState({setup: setupCopy});
-    }
+    };
 
-    const changeSeparator = value => {
+    const changeSeparator = (field, value) => {
         const setupCopy = clone(setup);
-        setupCopy.groupSeparator = value;
+        setupCopy[field].groupSeparator = value;
         setAppState({setup: setupCopy});
-    }
+    };
 
 
     const moveItem = (e, index, pathFrag, up) => {
@@ -52,18 +52,24 @@ const Setup = props => {
     return (
         <main id="setup">
             <div>
-                <h3 className="span2">Language</h3>
+                <h3 className="span2">Language Names</h3>
                 <div className="row">
                     <div className="row">
-                        <div className="row-controls">
-                            {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
-                            {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
-                            {/* <i></i> */}
-                            {/* <i className={`fas fa-chevron-${headwordOpen ? "up" : "down"}`} onClick={() => setHeadwordOpen(!headwordOpen)}></i> */}
+                        <div className="row">
+                            <div className="row-controls"></div>
+                            <div className="row-content language-names">
+                                <label>Target Language</label>
+                                <input type="text" value={setup.targetLanguageName} onChange={e => handleChange(e.target.value)} />
+                            </div>
                         </div>
-                        <div className="row-content">
-                            <label>Language Name</label>
-                            <input type="text" value={setup.languageName} onChange={e => handleChange(e.target.value)} />
+                    </div>
+                    <div className="row">
+                        <div className="row">
+                            <div className="row-controls"></div>
+                            <div className="row-content language-names">
+                                <label>Source Language</label>
+                                <input type="text" value={setup.sourceLanguageName} onChange={e => handleChange(e.target.value)} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,27 +111,27 @@ const Setup = props => {
                 <h3 className="span2">IPA</h3>
                 <div className="row setting">
                     <label>Show IPA palette</label>
-                    <input type="checkbox" checked={setup.showIpaPalette ? true : false} onChange={e => changeCheck("showIpaPalette")} />
+                    <input type="checkbox" checked={setup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
                 </div>
-                { setup.showIpaPalette &&
+                { setup.ipa.showPalette &&
                 <>
                     <div className="row setting">
                         <label>Group separator</label>
                         <ul>
-                            <li className={setup.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("none")}>None</li>
-                            <li className={setup.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("space")}>Space</li>
-                            <li className={setup.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("line")}>Line</li>
+                            <li className={setup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
+                            <li className={setup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
+                            <li className={setup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
                         </ul>
                     </div>
                     <div className="row">
-                        {setup.ipa.map((a,i) => (
+                        {setup.ipa.content.map((a,i) => (
                             <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
                         ))}
                     </div>
                 </>
                 }
             </div>
-            { setup.showIpaPalette &&
+            { setup.ipa.showPalette &&
                 <IpaPalette appState={appState} />
             }
             </main>

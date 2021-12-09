@@ -8,66 +8,62 @@ import Dictionary from './components/Dictionary';
 import About from './components/About';
 import {useSetState} from 'react-use';
 
-import {useEffect, useCallback} from 'react';
-import {clone, generateSenseGroup} from './utils.js';
+import {useState, useEffect, useCallback} from 'react';
+import {API_BASE, clone, generateSenseGroup} from './utils.js';
 import {entryDefault} from './defaults.js';
 import {partsOfSpeechDefsDefault} from './components/setup/defaults.js';
-
-
-// const API_BASE = "http://localhost:3001";
 
 const App = () => {
 
     const [state, setState] = useSetState({
         entry: undefined,
         setup: {
-            languageName: "",
+            targetLanguageName: "",
+            sourceLanguageName: "English",
             partsOfSpeechDefs: partsOfSpeechDefsDefault,
-            // partsOfSpeechDefs: [
-            //     {name: "noun", abbr: "n", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "verb", abbr: "v", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "adjective", abbr: "a", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "adverb", abbr: "adv", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "preposition", abbr: "pre", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "interjection", abbr: "i", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "determiner", abbr: "d", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            //     {name: "pronoun", abbr: "pro", multichoice: false, gramClassGroups: [], gramformGroups: []},
-            // ],
-            ipa: [
-                {
-                    group: "consonants",
-                    characters: ["p","b","t","k","m","n","ɸ","θ","ð","s","ɬ","ʃ","χ","w","l","j","w","ɾ"],
-                    bgColor: "#9ac0ff",
-                    textColor: "#000000",
-                },
-                {
-                    group: "vowel",
-                    characters: ["i","u","o","ə̥","ɛ","ɔ","a"],
-                    bgColor: "#ff7db5",
-                    textColor: "#000000",
-                },
-                {
-                    group: "rising diphthongs",
-                    characters: ["o̯͡ɛ", "o̯͡a", "o̯͡ɔ"],
-                    bgColor: "#ffbe0b",
-                    textColor: "#000000",
-                },
-                {
-                    group: "falling diphthongs",
-                    characters: ["i͡ə̯", "ə͡a̯", "a͡ɪ̯", "a͡ə̯", "u͡a̯", "u͡o̯"],
-                    bgColor: "#fda981",
-                    textColor: "#000000",
-                },
-                {
-                    group: "other",
-                    characters: ["ˈ","ˌ","."],
-                    bgColor: "#bf99f5",
-                    textColor: "#000000",
-                },      
-            ],
-            gramClasses: [
-                
-            ],
+            showPronunciation: true,
+            ipa: {
+                showPalette: true,
+                groupSeparator: "none",    
+                content: [
+                    {
+                        group: "consonants",
+                        characters: ["p","b","t","k","m","n","ɸ","θ","ð","s","ɬ","ʃ","χ","w","l","j","w","ɾ"],
+                        bgColor: "#9ac0ff",
+                        textColor: "#000000",
+                    },
+                    {
+                        group: "vowel",
+                        characters: ["i","u","o","ə̥","ɛ","ɔ","a"],
+                        bgColor: "#ff7db5",
+                        textColor: "#000000",
+                    },
+                    {
+                        group: "rising diphthongs",
+                        characters: ["o̯͡ɛ", "o̯͡a", "o̯͡ɔ"],
+                        bgColor: "#ffbe0b",
+                        textColor: "#000000",
+                    },
+                    {
+                        group: "falling diphthongs",
+                        characters: ["i͡ə̯", "ə͡a̯", "a͡ɪ̯", "a͡ə̯", "u͡a̯", "u͡o̯"],
+                        bgColor: "#fda981",
+                        textColor: "#000000",
+                    },
+                    {
+                        group: "other",
+                        characters: ["ˈ","ˌ","."],
+                        bgColor: "#bf99f5",
+                        textColor: "#000000",
+                    },
+                ]      
+            },
+            orthography: {
+                showPalette: false,
+                groupSeparator: "none",    
+                content: []      
+            },
+        
             gramClassGroups: [
                 {
                     name: "gender",
@@ -149,22 +145,16 @@ const App = () => {
                         ],
                 },
             ],
-            // gramFormAbbrs: [],
-            showPronunciation: true,
-            showIpaPalette: true,
-            groupSeparator: "none",
-            showOrthographyPalette: false,
         },
     });
 
     const initializeEntry = useCallback(() => {
-        console.log("initializing");
+        // console.log("initializing");
         let newEntry = clone(entryDefault);
         newEntry.senseGroups.push(generateSenseGroup(state.setup.partsOfSpeechDefs[0].name));
         newEntry.etymology = "";
         setState({entry: newEntry});
     }, [setState]);
-// }, [setState, state.setup.partsOfSpeechDefs]);
 
     useEffect(() => {
         initializeEntry();
@@ -176,16 +166,22 @@ const App = () => {
     // const [newTodo, setNewTodo] = useState("");
 
     // useEffect(() => {
-    //     GetTodos();
-    //     console.log(todos);
+    //     getTest();
     // },[])
 
-    // const GetTodos = () => {
-    //     fetch(API_BASE + "/todos")
-    //     .then(res => res.json())
-    //     .then(data => setTodos(data))
-    //     .catch(err => console.error(`Error: ${err}`));
-    // };
+    const getTest = () => {
+        fetch(API_BASE + "/test")
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(`Error: ${err}`));
+    };
+
+    const testSave = () => {
+        fetch(API_BASE + "/addEntry")
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(`Error: ${err}`));
+    };
 
     // const completeTodo = async id => {
     //     const data = await fetch(API_BASE + "/todo/complete/" + id)
@@ -221,7 +217,6 @@ const App = () => {
     //     setNewTodo("");
     // }
 
-
     
 	return (
         <>
@@ -229,7 +224,7 @@ const App = () => {
             <NavBar />
         </header>
         <Routes>
-            <Route exact path="/" element={<Entry state={state} setState={setState} />} />
+            <Route exact path="/" element={<Entry state={state} setState={setState} testSave={testSave} />} />
             <Route exact path="/setup" element={<Setup appState={state} setAppState={setState} />} />
             <Route exact path="/dictionary" element={<Dictionary />} />
             <Route exact path="/about" element={<About />} />

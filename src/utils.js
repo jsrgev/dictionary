@@ -1,6 +1,10 @@
 import {senseGroupDefault, gramFormDefault} from './defaults.js';
 import {gramFormSets, partsOfSpeechDefs} from './languageSettings.js';
 
+export const API_BASE = "http://localhost:3001/dictionary";
+// export const API_BASE = "http://jsrgev.net/dictionary"
+
+
 export const getIndent = (prevIndentLevel = 0) => {
     const indentAmount = 2;
     return {marginLeft: (prevIndentLevel+1)*indentAmount + "rem"} ;

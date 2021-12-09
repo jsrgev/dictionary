@@ -7,7 +7,7 @@ const IpaSetup = props => {
 
     const {appState, setAppState, thisIndex, moveItem} = props;
 
-    let pathFrag = "ipa";
+    let pathFrag = "ipa.content";
     const path = _.get(appState, "setup." + pathFrag);
 
     let groupDefault = {
@@ -94,7 +94,7 @@ const IpaSetup = props => {
                </div>
             </div>
         </>
-    )
+    );
 };
 
 export default IpaSetup;
