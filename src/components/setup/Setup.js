@@ -48,9 +48,10 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
-    const testSave = () => {
-        axios.post(`${API_BASE}/saveSetup`, clone(appState.setup))
-        .then(response => console.log(response))
+    const saveSetup = () => {
+        axios.post(`${API_BASE}/setup/save`, clone(appState.setup))
+        .then(response => setAppState({savedSetup:appState.setup}))
+        // .then()
         .catch(err => console.log(err));
     };
 
@@ -67,101 +68,107 @@ const Setup = props => {
             alert("Please enter a Source Language name.");
             return;
         }
-        testSave();
+
+        saveSetup();
     };
 
     // console.log(setup)
 
     return (
         <main id="setup">
-            <div>
-                <h3 className="span2">Language Names</h3>
-                <div className="row">
-                    <div className="row">
-                        <div className="row">
-                            <div className="row-controls"></div>
-                            <div className="row-content language-names">
-                                <label>Target Language</label>
-                                <input type="text" value={setup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="row">
-                            <div className="row-controls"></div>
-                            <div className="row-content language-names">
-                                <label>Source Language</label>
-                                <input type="text" value={setup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 className="span2">Parts of speech</h3>
-                <div className="row">
-                    {setup.partsOfSpeechDefs.map((a,i) => (
-                        <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
-                    ))}
-                </div>
-            </div>
-            <div id="gramClassSetup">
-                <h3 className="span2">Classes</h3>
-                <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
-                <div className="row">
-                    { setup.gramClassGroups.map((a, i) => (
-                        <GramClassGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
-                    ))}
-                </div>
-            </div>
-            <div id="gramFormSetup">
-                <h3 className="span2">Forms</h3>
-                <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
-                <div className="row">
-                    { setup.gramFormGroups.map((a, i) => (
-                        <GramFormGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
-                    ))}
-                </div>
-            </div>
-            <div>
-            <h3>Phonetics</h3>
-                <div className="row setting">
-                <label>Include pronunciation</label>
-                <input type="checkbox" checked={setup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
-                </div>
-            </div>
-            <div id="ipaSetup">
-                <h3 className="span2">IPA</h3>
-                <div className="row setting">
-                    <label>Show IPA palette</label>
-                    <input type="checkbox" checked={setup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
-                </div>
-                { setup.ipa.showPalette &&
+            { !appState.savedSetup ?
+                <div>Loading</div> :
                 <>
-                    <div className="row setting">
-                        <label>Group separator</label>
-                        <ul>
-                            <li className={setup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
-                            <li className={setup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
-                            <li className={setup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
-                        </ul>
-                    </div>
+                <div>
+                    <h3 className="span2">Language Names</h3>
                     <div className="row">
-                        {setup.ipa.content.map((a,i) => (
-                            <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                        <div className="row">
+                            <div className="row">
+                                <div className="row-controls"></div>
+                                <div className="row-content language-names">
+                                    <label>Target Language</label>
+                                    <input type="text" value={setup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="row">
+                                <div className="row-controls"></div>
+                                <div className="row-content language-names">
+                                    <label>Source Language</label>
+                                    <input type="text" value={setup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 className="span2">Parts of speech</h3>
+                    <div className="row">
+                        {setup.partsOfSpeechDefs.map((a,i) => (
+                            <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
                         ))}
                     </div>
-                </>
+                </div>
+                <div id="gramClassSetup">
+                    <h3 className="span2">Classes</h3>
+                    <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
+                    <div className="row">
+                        { setup.gramClassGroups.map((a, i) => (
+                            <GramClassGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                        ))}
+                    </div>
+                </div>
+                <div id="gramFormSetup">
+                    <h3 className="span2">Forms</h3>
+                    <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
+                    <div className="row">
+                        { setup.gramFormGroups.map((a, i) => (
+                            <GramFormGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                        ))}
+                    </div>
+                </div>
+                <div>
+                <h3>Phonetics</h3>
+                    <div className="row setting">
+                    <label>Include pronunciation</label>
+                    <input type="checkbox" checked={setup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
+                    </div>
+                </div>
+                <div id="ipaSetup">
+                    <h3 className="span2">IPA</h3>
+                    <div className="row setting">
+                        <label>Show IPA palette</label>
+                        <input type="checkbox" checked={setup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
+                    </div>
+                    { setup.ipa.showPalette &&
+                    <>
+                        <div className="row setting">
+                            <label>Group separator</label>
+                            <ul>
+                                <li className={setup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
+                                <li className={setup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
+                                <li className={setup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
+                            </ul>
+                        </div>
+                        <div className="row">
+                            {setup.ipa.content.map((a,i) => (
+                                <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                            ))}
+                        </div>
+                    </>
+                    }
+                </div>
+                <div id="submit">
+                    {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
+                    <button onClick={handleSaveButtonClick}>Test save</button>
+                </div>
+                { setup.ipa.showPalette &&
+                    <IpaPalette appState={appState} />
                 }
-            </div>
-            <div id="submit">
-                {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
-                <button onClick={handleSaveButtonClick}>Test save</button>
-            </div>
-            { setup.ipa.showPalette &&
-                <IpaPalette appState={appState} />
+                </>
             }
-            </main>
+        </main>
     )
 };
 

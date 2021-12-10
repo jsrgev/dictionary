@@ -16,7 +16,9 @@ import {partsOfSpeechDefsDefault} from './components/setup/defaults.js';
 const App = () => {
 
     const [state, setState] = useSetState({
+        allEntries: [],
         entry: undefined,
+        savedSetup: null,
         setup: {
             targetLanguageName: "",
             sourceLanguageName: "English",
@@ -63,7 +65,6 @@ const App = () => {
                 groupSeparator: "none",    
                 content: []      
             },
-        
             gramClassGroups: [
                 {
                     name: "gender",
@@ -148,18 +149,39 @@ const App = () => {
         },
     });
 
+    const defaultPos = state.setup.partsOfSpeechDefs[0].name;
+    
     const initializeEntry = useCallback(() => {
-        // console.log("initializing");
+        console.log("initializing");
         let newEntry = clone(entryDefault);
-        newEntry.senseGroups.push(generateSenseGroup(state.setup.partsOfSpeechDefs[0].name));
+        newEntry.senseGroups.push(generateSenseGroup(defaultPos));
         newEntry.etymology = "";
         setState({entry: newEntry});
-    }, [setState]);
+    }, [setState, defaultPos]);
+
+    const fetchSetup = () => {   
+        fetch(API_BASE + '/setup/getsetup')
+        .then(res => res.json())
+        .then(data => {
+            // console.log(data);
+            if (data) {
+                setState({setup: data});
+                setState({savedSetup: data});
+            } else {
+                setState({savedSetup: state.setup});
+            }
+        })
+        .catch(err => console.error(`Error: ${err}`));
+    }
+
+    const loadData = useCallback(() => {
+        fetchSetup();
+    }, [fetchSetup]);
 
     useEffect(() => {
+        loadData();
         initializeEntry();
     },[initializeEntry]);
-
 
     // const [todos, setTodos] = useState([]);
     // const [popupActive, setPopupActive] = useState(false);
@@ -229,7 +251,7 @@ const App = () => {
             <Route exact path="/dictionary" element={<Dictionary />} />
             <Route exact path="/about" element={<About />} />
             {/* <Route exact path="/entry" component={Home} /> */}
-        </Routes>
+        </Routes><button onClick={loadData}>Test Test Test Test Test Test Test</button>
         </>
 	);
 }
