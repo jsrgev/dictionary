@@ -51,15 +51,15 @@ export const getGramClassDef = (posName, className, partsOfSpeechDefs) =>  {
 };
 
 export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
-    console.log(posId);
-    console.log(partsOfSpeechDefs);
+    // console.log(posId);
+    // console.log(partsOfSpeechDefs);
     let posDef = partsOfSpeechDefs.find(a => a.id === posId);
-    console.log(posDef)
+    // console.log(posDef)
     return posDef.gramClassGroups;
 };
 
 export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
-    console.log(gramClassDef)
+    // console.log(gramClassDef)
     if (posObj.gramClasses) {
         let matches = posObj.gramClasses[0] === gramClassDef.name;
         if (matches && posObj.gramClasses.length === 1) {
@@ -90,15 +90,16 @@ export const generatePos = (posId, partsOfSpeechDefs) => {
     // console.log(posId);
     // console.log(partsOfSpeechDefs);
     let posDef = getPosDef(posId, partsOfSpeechDefs);
-    // console.log(posDef)  
+    // console.log(posDef)
     let obj = {
-        id: posDef.id,
+        refId: posDef.id,
     }
+    // console.log(posDef.gramClassGroups[0]);
     if (posDef.gramClassGroups?.length > 0) {
         obj.gramClassGroups = [
             {
-                gramClassGroupId: posDef.gramClassGroups[0].id,
-                gramClassId: posDef.gramClassGroups[0].gramClasses[0].id
+                refId: posDef.gramClassGroups[0].refId,
+                // gramClassRefId: posDef.gramClassGroups[0].gramClasses[0].id
             }
         ];
     }

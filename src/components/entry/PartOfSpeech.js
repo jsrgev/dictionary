@@ -57,15 +57,11 @@ const PartOfSpeech = (props) => {
     }
 
     const isAvailable = posId => {
-        // console.log(typeof(posId));
-        // console.log(typeof(availablePoses[1].id));
-        // console.log(availablePoses.some(a => a.id == posId))
-        // console.log(availablePoses.some(a => a.id === posId))
         return availablePoses.some(a => a.id === posId);
     }
 
     const isCurrentSelection = posId =>  {
-        return path[thisIndex].id === posId;
+        return path[thisIndex].refId === posId;
     }
 
     const popupItems = [
@@ -77,11 +73,29 @@ const PartOfSpeech = (props) => {
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
-    console.log(path[thisIndex])
+    // console.log(path[thisIndex]);
+    // console.log(appState.savedSetup.partsOfSpeechDefs);
+    // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 
     const getGramClasses = (gramClassGroupId, gramClassGroups) => {
-        let gramClassGroup = gramClassGroups.find(a => a.id === gramClassGroupId );
-        return gramClassGroup.gramClasses;
+        let gramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
+        // console.log(gramClassGroup);
+        // let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
+        // let gramClassGroupDef = posDef.find(a => )
+        // console.log(posDef);
+        // gramClassesA = gramClasses
+        return gramClasses.gramClasses;
+    }
+
+    
+    const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
+    // console.log(gramClassGroups)
+
+    const isCurrentGramClassSelection = (gramClassId) => {
+        // console.log(gramClassId);
+        // console.log(path[thisIndex].gramClassGroups)
+        // path[thisIndex].gramClassGroups.find(b => b.refId === a.id);
+        return false;
     }
 
     return (
@@ -113,16 +127,16 @@ const PartOfSpeech = (props) => {
                         <div className="row" key={i}>
                             <div className="row-controls"></div>
                             <div className="row-content" style={getIndent(prevIndentLevel+1)}>
-                                <span>{capitalize(appState.setup.gramClassGroups.find(b => b.id === a.gramClassGroupId).name)}</span>
+                                <span>{capitalize(appState.setup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
-                                    { getGramClasses(a.gramClassGroupId, appState.savedSetup.gramClassGroups).map((a,i) => (
+                                    { getGramClasses(a.refId, appState.savedSetup.gramClassGroups).map((a,i) => (
                                     <li key={i} value={a.name} 
-                                    className={path[thisIndex].gramClassGroups.find(b => b.gramClassGroupId === a.id) ? "selected" : ""} 
+                                    className={ isCurrentGramClassSelection(a.id) ? "selected" : ""} 
                                     onClick={handleGramClassClick}>{capitalize(a.name)}</li>
                                     )) }
                                 </ul>
                                 {/* <ul>
-                                    { getAllGramClassGroups(path[thisIndex].id, appState.savedSetup.partsOfSpeechDefs).map((a,i) => (
+                                    { gramClassGroups.map((a,i) => (
                                     <li key={i} value={a.name} 
                                     className={path[thisIndex].gramClassGroups.find(b => b.gramClassGroupId === a.id) ? "selected" : ""} 
                                     onClick={handleGramClassClick}>{capitalize(a.name)}</li>

@@ -168,7 +168,7 @@ const App = () => {
         },
     });
 
-    const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
+    // const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
     
     // const initializeEntry = useCallback(() => {
     //     console.log("initializing");
@@ -179,14 +179,14 @@ const App = () => {
     //     // setState({entry: newEntry});
     // }, [setState, defaultPos]);
 
-    const initializeEntry = () => {
-        console.log("initializing");
-        let newEntry = clone(entryDefault);
-        // console.log(state.savedSetup);
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs));
-        newEntry.etymology = "";
-        setState({entry: newEntry});
-    };
+    // const initializeEntry = () => {
+    //     console.log("initializing");
+    //     let newEntry = clone(entryDefault);
+    //     // console.log(state.savedSetup);
+    //     newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs));
+    //     newEntry.etymology = "";
+    //     setState({entry: newEntry});
+    // };
 
     // console.log(typeof(state.setup.partsOfSpeechDefs[0].id))
 
@@ -218,12 +218,12 @@ const App = () => {
     // },[initializeEntry]);
     },[]);
 
-    useEffect(() => {
-        if (state.savedSetup) {
-            // console.log(state.savedSetup)
-            initializeEntry();
-        }
-    },[state.savedSetup]);
+    // useEffect(() => {
+    //     if (state.savedSetup) {
+    //         // console.log(state.savedSetup)
+    //         initializeEntry();
+    //     }
+    // },[state.savedSetup]);
 
 
     // const [todos, setTodos] = useState([]);
@@ -294,7 +294,7 @@ const App = () => {
             <Route exact path="/dictionary" element={<Dictionary />} />
             <Route exact path="/about" element={<About />} />
             {/* <Route exact path="/entry" component={Home} /> */}
-        </Routes><button onClick={loadData}>Test Test Test Test Test Test Test</button>
+        </Routes>
         </>
 	);
 }

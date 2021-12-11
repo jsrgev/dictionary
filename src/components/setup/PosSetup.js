@@ -88,7 +88,7 @@ const PosSetup = props => {
 
     const availableGramClassGroups = appState.setup.gramClassGroups.filter(a => {
         // console.log(path[thisIndex]);
-        let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.id === a.id);
+        let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.refId === a.id);
         return !alreadySelected && a;
     })
 

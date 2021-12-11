@@ -150,6 +150,7 @@ const Preview = (props) => {
     };
 
     const getPosDisplay = (posDetails) => {
+        return <>a</>
         let posDef = getPosDef(posDetails.name, appState.setup.partsOfSpeechDefs);
         let posAbbr = posDef.abbr;
         let posGramClassAbbrs = posDetails.gramClasses.map(gramClass => getGramClassAbbr(posDef, gramClass));

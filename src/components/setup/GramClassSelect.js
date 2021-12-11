@@ -42,7 +42,7 @@ const GramClassSelect = props => {
         setAppState({setup: setupCopy});
     };
 
-    console.log(path);
+    // console.log(path);
 
     const changeMultichoice = value => {
         let setupCopy = clone(appState.setup);

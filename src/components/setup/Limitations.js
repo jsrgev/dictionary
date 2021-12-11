@@ -15,16 +15,18 @@ const Limitations = props => {
         let setupCopyPath = _.get(setupCopy, stringPath);
         if (setupCopyPath.excluded) {
             let index = setupCopyPath.excluded.findIndex(a => a === gramClassId);
-            console.log(index);
+            // console.log(index);
             if (index < 0) {
                 setupCopyPath.excluded.push(gramClassId);
+            } else if (setupCopyPath.excluded.length === 1) {
+                delete setupCopyPath.excluded;
             } else {
                 setupCopyPath.excluded.splice(index, 1);
             }
         } else {
             setupCopyPath.excluded = [gramClassId];
-            console.log(setupCopyPath.excluded);
         }
+        // console.log(setupCopyPath.excluded);
         // let index = setupCopyPath.gramClasses.findIndex(a => a === gramClassName);
         // if (index < 0) {
         //     setupCopyPath.gramClasses.push(gramClassName);
@@ -43,12 +45,12 @@ const Limitations = props => {
         // return path.gramClasses.some(a => a === gramClassName);
     };
 
-    const check = gramClassId =>  {
+    // const check = gramClassId =>  {
         // console.log(path);
         // console.log(gramClassId);
-        return "asdfsdf";
+        // return "asdfsdf";
         // return path.gramClasses.some(a => a === gramClassName);
-    };
+    // };
 
     let gramClassGroup = appState.setup.gramClassGroups.find(a => a.id === upPath.refId);
     // console.log(path)

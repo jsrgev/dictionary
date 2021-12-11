@@ -3,16 +3,39 @@ import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
 import IpaPalette from '../IpaPalette';
-import {API_BASE, clone, generatePos} from '../../utils.js';
-import {morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
+import {API_BASE, clone, generateSenseGroup, generatePos} from '../../utils.js';
+import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
 import _  from 'lodash';
 import axios from 'axios';
+import {useEffect} from 'react';
 
 
 const Entry = props => {
 
 
     const {state, setState} = props;
+
+    const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
+
+    const initializeEntry = () => {
+        console.log("initializing");
+        let newEntry = clone(entryDefault);
+        // console.log(state.savedSetup);
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs));
+        // newEntry.senseGroups[0]
+        console.log(newEntry.senseGroups[0]);
+        // if (state.setup.gramClassGroups) {
+
+        // }
+        // let defaultGramClassGroup = state.setup.gramClassGroups?.
+        // newEntry.etymology = "";
+        setState({entry: newEntry});
+    };
+
+    useEffect(() => {
+        state.savedSetup &&
+        initializeEntry();
+    },[state.savedSetup]);
 
     const handleKeyDown = e => {
         if (e.key === 'Enter') {
@@ -104,8 +127,13 @@ const Entry = props => {
         testSave();
     };
 
+    console.log(state)
+
     return (
         <main id="entry">
+            { !state.savedSetup ?
+                <div>Loading</div> :
+                <>
             <div id="wordlist">
             <p>Entries</p>
             </div>
@@ -119,7 +147,7 @@ const Entry = props => {
             <Etymology />
             <div id="submit">
                 {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
-                <button onClick={handleSaveButtonClick}>Test save</button>
+                <button onClick={handleSaveButtonClick}>Save</button>
             </div>
             </div>
             <div id="preview">
@@ -130,6 +158,8 @@ const Entry = props => {
             { state.setup.ipa.showPalette &&
                 <IpaPalette appState={state} />
             }
+            </>
+        }
         </main>
     )
 };
