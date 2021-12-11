@@ -20,7 +20,7 @@ const App = () => {
         entry: undefined,
         savedSetup: null,
         setup: {
-            targetLanguageName: "",
+            targetLanguageName: "Melfem",
             sourceLanguageName: "English",
             partsOfSpeechDefs: partsOfSpeechDefsDefault,
             showPronunciation: true,
@@ -67,43 +67,53 @@ const App = () => {
             },
             gramClassGroups: [
                 {
+                    id: "9",
                     name: "gender",
                     gramClasses: [
                         {
+                            id: "10",
                             name: "masculine",
                             abbr: "m",
                         },
                         {
+                            id: "11",
                             name: "feminine",
                             abbr: "f",
                         },
                     ],
                 },
                 {
+                    id: "12",
                     name: "number system",
                     gramClasses: [
                         {
+                            id: "13",
                             name: "singular-plural",
                             abbr: "sp",
                         },
                         {
+                            id: "14",
                             name: "collective-singulative",
                             abbr: "cs",
                         },
                         {
+                            id: "15",
                             name: "none",
                             abbr: "none",
                         },
                     ],
                 },
                 {
+                    id: "16",
                     name: "transitivity",
                     gramClasses: [
                         {
+                            id: "17",
                             name: "intransitive",
                             abbr: "i",
                         },
                         {
+                            id: "18",
                             name: "transitive",
                             abbr: "tr",
                         },
@@ -112,52 +122,74 @@ const App = () => {
             ],
             gramFormGroups: [
                 {
+                    id: "19",
                     name: "number",
                     gramForms: [
                         {
+                            id: "20",
                             name: "singular",
                             abbr: "sg",
                         },
                         {
+                            id: "21",
                             name: "plural",
                             abbr: "pl",
                         },
                         {
+                            id: "22",
                             name: "collective",
                             abbr: "col",
                         },
                         {
+                            id: "23",
                             name: "singulative",
                             abbr: "sv",
                         },
                     ],
                 },
                 {
+                    id: "24",
                     name: "definiteness",
                     gramForms: [
                         {
+                            id: "25",
                             name: "indefinite",
                             abbr: "ind",
                         },
                         {
+                            id: "26",
                             name: "definite",
                             abbr: "def",
                         },
                         ],
                 },
             ],
+            nextId: 101,
         },
     });
 
-    const defaultPos = state.setup.partsOfSpeechDefs[0].name;
+    const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
     
-    const initializeEntry = useCallback(() => {
+    // const initializeEntry = useCallback(() => {
+    //     console.log("initializing");
+    //     let newEntry = clone(entryDefault);
+    //     console.log(state.savedSetup);
+    //     // newEntry.senseGroups.push(generateSenseGroup(defaultPos, state.savedSetup.partsOfSpeechDefs));
+    //     // newEntry.etymology = "";
+    //     // setState({entry: newEntry});
+    // }, [setState, defaultPos]);
+
+    const initializeEntry = () => {
         console.log("initializing");
         let newEntry = clone(entryDefault);
-        newEntry.senseGroups.push(generateSenseGroup(defaultPos));
+        // console.log(state.savedSetup);
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs));
         newEntry.etymology = "";
         setState({entry: newEntry});
-    }, [setState, defaultPos]);
+    };
+
+    // console.log(typeof(state.setup.partsOfSpeechDefs[0].id))
+
 
     const fetchSetup = () => {   
         fetch(API_BASE + '/setup/getsetup')
@@ -171,17 +203,28 @@ const App = () => {
                 setState({savedSetup: state.setup});
             }
         })
+        // .then(a => initializeEntry())
         .catch(err => console.error(`Error: ${err}`));
     }
 
     const loadData = useCallback(() => {
+        console.log("loading");
         fetchSetup();
     }, [fetchSetup]);
 
     useEffect(() => {
         loadData();
-        initializeEntry();
-    },[initializeEntry]);
+        // initializeEntry();
+    // },[initializeEntry]);
+    },[]);
+
+    useEffect(() => {
+        if (state.savedSetup) {
+            // console.log(state.savedSetup)
+            initializeEntry();
+        }
+    },[state.savedSetup]);
+
 
     // const [todos, setTodos] = useState([]);
     // const [popupActive, setPopupActive] = useState(false);

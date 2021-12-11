@@ -1,5 +1,6 @@
 import {senseGroupDefault, gramFormDefault} from './defaults.js';
-import {gramFormSets, partsOfSpeechDefs} from './languageSettings.js';
+// import {gramFormSets, partsOfSpeechDefs} from './languageSettings.js';
+
 
 export const API_BASE = "http://localhost:3001/dictionary";
 // export const API_BASE = "http://jsrgev.net/dictionary"
@@ -14,17 +15,20 @@ export const capitalize = string => string.charAt(0).toUpperCase() + string.slic
 
 export const clone = a => JSON.parse(JSON.stringify(a));
 
-export const generateSenseGroup = posName => {
+export const generateSenseGroup = (posId, partsOfSpeechDefs) => {
     let newSenseGroup = clone(senseGroupDefault);
-    newSenseGroup.partsOfSpeech.push(generatePos(posName));
+    newSenseGroup.partsOfSpeech.push(generatePos(posId, partsOfSpeechDefs));
     return newSenseGroup;
 };
 
-export const getPosDef = posName => {
-    return partsOfSpeechDefs.find(a => a.name === posName);
+export const getPosDef = (posId, partsOfSpeechDefs) => {
+    // console.log(posId);
+    // console.log(partsOfSpeechDefs);
+    return partsOfSpeechDefs.find(a => a.id === posId);
 };
 
-export const getGramForms = gramFormSet => {
+export const getGramForms = (gramFormSet, gramFormSets) => {
+    console.log(gramFormSet);
     let gramForms = gramFormSets[gramFormSet].gramForms;
     let paradigmForms = gramForms.map(a => {
         let item = clone(gramFormDefault);
@@ -34,24 +38,28 @@ export const getGramForms = gramFormSet => {
     return paradigmForms; 
 };
 
-export const getBasicForm = pos => {
-    let posDef = partsOfSpeechDefs.find(a => a.name===pos.name);
-    let gramClassDef = posDef.gramClasses.find(a => a.name===pos.gramClasses[0]);
-    let gramFormSet = gramClassDef.gramFormSet;
-    return gramFormSets[gramFormSet].basic
-};
+// export const getBasicForm = (pos, partsOfSpeechDefs) => {
+//     let posDef = partsOfSpeechDefs.find(a => a.name===pos.name);
+//     let gramClassDef = posDef.gramClasses.find(a => a.name===pos.gramClasses[0]);
+//     let gramFormSet = gramClassDef.gramFormSet;
+//     return gramFormSets[gramFormSet].basic
+// };
 
-export const getGramClassDef = (posName, className) =>  {
-    let posDef = getPosDef(posName);
+export const getGramClassDef = (posName, className, partsOfSpeechDefs) =>  {
+    let posDef = getPosDef(posName, partsOfSpeechDefs);
     return posDef.gramClasses.find(a => a.name === className);
 };
 
-export const getAllGramClasses = pos => {
-    let posDef = partsOfSpeechDefs.find(a => a.name === pos);
-    return posDef.gramClasses;
+export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
+    console.log(posId);
+    console.log(partsOfSpeechDefs);
+    let posDef = partsOfSpeechDefs.find(a => a.id === posId);
+    console.log(posDef)
+    return posDef.gramClassGroups;
 };
 
-export const setGramForms = (posObj, gramClassDef) => {
+export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
+    console.log(gramClassDef)
     if (posObj.gramClasses) {
         let matches = posObj.gramClasses[0] === gramClassDef.name;
         if (matches && posObj.gramClasses.length === 1) {
@@ -73,18 +81,34 @@ export const setGramForms = (posObj, gramClassDef) => {
         } else {
             posObj.gramClasses = [gramClassDef.name];
         }
-        posObj.paradigmForms = gramClassDef.gramFormSet ? getGramForms(gramClassDef.gramFormSet) : [];
+        posObj.paradigmForms = gramClassDef.gramFormSet ? getGramForms(gramClassDef.gramFormSet, gramFormGroups) : [];
     }
     return posObj;
 };
 
-export const generatePos = posName => {
-    let posDef = getPosDef(posName);
+export const generatePos = (posId, partsOfSpeechDefs) => {
+    // console.log(posId);
+    // console.log(partsOfSpeechDefs);
+    let posDef = getPosDef(posId, partsOfSpeechDefs);
+    // console.log(posDef)  
     let obj = {
-        name: posDef.name,
+        id: posDef.id,
     }
-    let gramClassDef = posDef.gramClasses[0];
-    return setGramForms(obj, gramClassDef);
+    if (posDef.gramClassGroups?.length > 0) {
+        obj.gramClassGroups = [
+            {
+                gramClassGroupId: posDef.gramClassGroups[0].id,
+                gramClassId: posDef.gramClassGroups[0].gramClasses[0].id
+            }
+        ];
+    }
+    // if (posDef.gramFormGroups.length > 0) {
+    //     obj.gramFormGroups = [];
+    // }
+    // console.log(posDef);
+    // let gramClassDef = posDef.gramClassGroups[0];
+    // return setGramForms(obj, gramClassDef);
+    return obj;
 };
 
 export const handleInputBlur = e => {

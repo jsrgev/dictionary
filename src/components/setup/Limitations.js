@@ -10,23 +10,50 @@ const Limitations = props => {
     let upPath = _.get(appState, "setup." + stringPath);
 
 
-    const handleClick = (e, gramClassName) => {
+    const handleClick = (e, gramClassId) => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, stringPath);
-        let index = setupCopyPath.gramClasses.findIndex(a => a === gramClassName);
-        if (index < 0) {
-            setupCopyPath.gramClasses.push(gramClassName);
+        if (setupCopyPath.excluded) {
+            let index = setupCopyPath.excluded.findIndex(a => a === gramClassId);
+            console.log(index);
+            if (index < 0) {
+                setupCopyPath.excluded.push(gramClassId);
+            } else {
+                setupCopyPath.excluded.splice(index, 1);
+            }
         } else {
-            setupCopyPath.gramClasses.splice(index, 1);
+            setupCopyPath.excluded = [gramClassId];
+            console.log(setupCopyPath.excluded);
         }
+        // let index = setupCopyPath.gramClasses.findIndex(a => a === gramClassName);
+        // if (index < 0) {
+        //     setupCopyPath.gramClasses.push(gramClassName);
+        // } else {
+        //     setupCopyPath.gramClasses.splice(index, 1);
+        // }
         setAppState({setup: setupCopy});
     }
     
-    const isSelected = gramClassName =>  {
-        return path.gramClasses.some(a => a === gramClassName);
+    const isSelected = gramClassId =>  {
+        let isExcluded = path.excluded?.some(a => a === gramClassId);
+        // console.log(isExcluded)
+        // let seasd = excluded || "234";
+        // console.log(seasd)
+        return !isExcluded ?? true;
+        // return path.gramClasses.some(a => a === gramClassName);
     };
 
-    let gramClassGroup = appState.setup.gramClassGroups.find(a => a.name === upPath.name);
+    const check = gramClassId =>  {
+        // console.log(path);
+        // console.log(gramClassId);
+        return "asdfsdf";
+        // return path.gramClasses.some(a => a === gramClassName);
+    };
+
+    let gramClassGroup = appState.setup.gramClassGroups.find(a => a.id === upPath.refId);
+    // console.log(path)
+
+    // console.log(isSelected('10'));
 
     return(
         <>
@@ -36,7 +63,13 @@ const Limitations = props => {
                     <label>Only allow</label>
                     <ul>
                         {gramClassGroup.gramClasses.map((a, i) => (
-                            <li key={i} value={a.name} className={ isSelected(a.name) ? "selected" : "" } onClick={e => handleClick(e, a.name)}>{capitalize(a.name)}</li>
+                            <li key={i} value={a.id} 
+                            className={ isSelected(a.id) ? "selected" : "" } 
+                            // className={ check(a.id)} 
+                            onClick={e => handleClick(e, a.id)}
+                            >
+                            {capitalize(a.name)}
+                            </li>
                         ))}
                     </ul>
                 </div>

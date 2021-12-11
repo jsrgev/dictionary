@@ -21,17 +21,28 @@ const GramClassSelect = props => {
     //     setAppState({setup: setupCopy});
     // };
 
-    const handleClick = async (e, i) => {
-        let value = e.target.getAttribute("value");
-        if (!isAvailable(value)) {
+    const handleClick = async (e) => {
+        let gramClassId = e.target.getAttribute("value");
+        if (!isAvailable(gramClassId)) {
             return;
         }
+        // console.log("sdfasfd");
+        // return;
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex] = clone(appState.setup.gramClassGroups[i]);
+        // console.log(gramClassId);
+        // console.log(setupCopy);
+        // console.log(thisIndex);
+        // return;
+        let obj = {refId: gramClassId};
+        _.set(setupCopy, `[${pathFrag[thisIndex]}]`, obj);
+        // setupCopyPath[thisIndex] = ;
+        setupCopyPath[thisIndex] = obj;
+
         setAppState({setup: setupCopy});
     };
 
+    console.log(path);
 
     const changeMultichoice = value => {
         let setupCopy = clone(appState.setup);
@@ -68,22 +79,25 @@ const GramClassSelect = props => {
         popupItems.push(["Class option", () => addGramClassOption(thisIndex)]);
     };
 
-    const isAvailable = gramClassGroupName => {
-        return availableGramClassGroups.some(a => a.name === gramClassGroupName);
+    const isAvailable = gramClassGroupId => {
+        return availableGramClassGroups.some(a => a.id === gramClassGroupId);
     };
     
 
-    const isCurrentSelection = gramClassGroupName =>  {
-        return path[thisIndex].name === gramClassGroupName;
+    const isCurrentSelection = gramClassGroupId =>  {
+        return path[thisIndex].refId === gramClassGroupId;
     }
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
+    // console.log(stringPathA)
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
 
     const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
+
+    // console.log(path);
 
     return(
         <>
@@ -106,7 +120,7 @@ const GramClassSelect = props => {
                     <div>Class group</div>
                     <ul>
                         {appState.setup.gramClassGroups.map((a, i) => (
-                            <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={e => handleClick(e, i)}>{capitalize(a.name)}</li>
+                            <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={e => handleClick(e)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>
                 </div>

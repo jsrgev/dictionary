@@ -72,6 +72,10 @@ const Setup = props => {
         saveSetup();
     };
 
+    const handleRevertButtonClick = () => {
+        setAppState({setup: appState.savedSetup});
+    };
+
     // console.log(setup)
 
     return (
@@ -161,7 +165,8 @@ const Setup = props => {
                 </div>
                 <div id="submit">
                     {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
-                    <button onClick={handleSaveButtonClick}>Test save</button>
+                    <button onClick={handleRevertButtonClick}>Revert to previously saved</button>
+                    <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
                 { setup.ipa.showPalette &&
                     <IpaPalette appState={appState} />

@@ -20,20 +20,17 @@ export const gramClassGroupDefault = {
 };
 
 export const partsOfSpeechDefsDefault = [
-    {name: "noun", abbr: "n", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "verb", abbr: "v", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "adjective", abbr: "a", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "adverb", abbr: "adv", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "preposition", abbr: "pre", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "interjection", abbr: "i", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "determiner", abbr: "d", multichoice: false, gramClassGroups: [], gramFormGroups: []},
-    {name: "pronoun", abbr: "pro", multichoice: false, gramClassGroups: [], gramFormGroups: []},
+    {id: "1", name: "noun", abbr: "n"},
+    {id: "2", name: "verb", abbr: "v"},
+    {id: "3", name: "adjective", abbr: "a"},
+    {id: "4", name: "adverb", abbr: "adv"},
+    {id: "5", name: "preposition", abbr: "pre"},
+    {id: "6", name: "interjection", abbr: "i"},
+    {id: "7", name: "determiner", abbr: "d"},
+    {id: "8", name: "pronoun", abbr: "pro"},
 ];
 
 export const posDefault = {
     name: "",
     abbr: "",
-    multiChoice: false,
-    gramClassGroups: [],
-    gramFormGroups: [],
 };

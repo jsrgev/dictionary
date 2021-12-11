@@ -55,7 +55,14 @@ const PosSetup = props => {
     const addGramClassOption = index => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, clone(availableGramClassGroups[0]));
+        // console.log(setupCopyPath[thisIndex].gramClassGroups);
+        // console.log(availableGramClassGroups[0]);
+        let obj = {refId: availableGramClassGroups[0].id};
+        if (setupCopyPath[thisIndex].gramClassGroups) {
+            setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, obj);
+        } else {
+            setupCopyPath[thisIndex].gramClassGroups = [obj];
+        }
         setAppState({setup: setupCopy});
     };
 
@@ -80,29 +87,33 @@ const PosSetup = props => {
     };
 
     const availableGramClassGroups = appState.setup.gramClassGroups.filter(a => {
-        let alreadySelected = path[thisIndex].gramClassGroups.some(b => b.name === a.name);
+        // console.log(path[thisIndex]);
+        let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.id === a.id);
         return !alreadySelected && a;
     })
 
+    // console.log(path[thisIndex].gramClassGroups);
     const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
 
+    // console.log(gramClassAndFormGroups);
+
     const availableGramClassAndFormGroups = gramClassAndFormGroups.filter(a => {
-        let alreadySelected = path[thisIndex].gramFormGroups.some(b => b.name === a.name);
+        let alreadySelected = path[thisIndex].gramFormGroups?.some(b => b.id === a.id);
         return !alreadySelected && a;
     })
 
-    // console.log(availableGramClassAndFormGroups);
+    // console.log(path[thisIndex].gramClassGroups);
 
     const popupItems = [
         ["Part of speech", addPos],
     ];
 
     if (availableGramClassGroups.length > 0) {
-        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups.length-1)])
+        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 || -1)])
     };
 
     if (availableGramClassAndFormGroups.length > 0) {
-        popupItems.push(["Form group", () => addGramFormOption(path[thisIndex].gramFormGroups.length-1)])
+        popupItems.push(["Form group", () => addGramFormOption(path[thisIndex].gramFormGroups?.length-1)])
     };
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
@@ -120,7 +131,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClassGroups.length>0 || path[thisIndex].gramFormGroups.length>0 ?
+                { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     : <i></i>
                 }
@@ -139,10 +150,10 @@ const PosSetup = props => {
                     <label>Abbreviation</label>
                     <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
-                { path[thisIndex].gramClassGroups.map((a, i) => (
+                { path[thisIndex].gramClassGroups?.map((a, i) => (
                     <GramClassSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} />))
                 }
-                { path[thisIndex].gramFormGroups.map((a, i) => (
+                { path[thisIndex].gramFormGroups?.map((a, i) => (
                     <GramFormSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramFormOption={addGramFormOption} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} />))
                 }
             </div>

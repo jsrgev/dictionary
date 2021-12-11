@@ -26,7 +26,7 @@ const Preview = (props) => {
 
     const filterOutBlanks = set => {
         return set.filter(a => a.content.trim() !== "");
-    }
+    };
 
     const getNotesDisplay = arr => {
         let filteredArr = filterOutBlanks(arr);
@@ -150,7 +150,7 @@ const Preview = (props) => {
     };
 
     const getPosDisplay = (posDetails) => {
-        let posDef = getPosDef(posDetails.name);
+        let posDef = getPosDef(posDetails.name, appState.setup.partsOfSpeechDefs);
         let posAbbr = posDef.abbr;
         let posGramClassAbbrs = posDetails.gramClasses.map(gramClass => getGramClassAbbr(posDef, gramClass));
         let gramClassesString = posGramClassAbbrs.join(", ");
@@ -259,7 +259,7 @@ const Preview = (props) => {
                 <React.Fragment key={i}>{a}</React.Fragment>
             ))}
         </>
-    )
+    );
 };
 
 export default Preview;
