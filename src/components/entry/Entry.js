@@ -15,13 +15,11 @@ const Entry = props => {
 
     const {state, setState} = props;
 
-    const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
-
     const initializeEntry = () => {
         console.log("initializing");
         let newEntry = clone(entryDefault);
-        // console.log(state.savedSetup);
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs));
+        const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs,state.savedSetup.gramClassGroups));
         // newEntry.senseGroups[0]
         console.log(newEntry.senseGroups[0]);
         // if (state.setup.gramClassGroups) {
@@ -155,7 +153,7 @@ const Entry = props => {
                 <Preview appState={state} setAppState={setState} />
             }
             </div>
-            { state.setup.ipa.showPalette &&
+            { state.savedSetup.ipa.showPalette &&
                 <IpaPalette appState={state} />
             }
             </>

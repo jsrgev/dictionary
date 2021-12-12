@@ -79,9 +79,8 @@ const PartOfSpeech = (props) => {
 
     const getGramClasses = (gramClassGroupId, gramClassGroups) => {
         let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
-        // console.log(gramClassesThisPos)
         let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
-
+        // get classes that aren't allowed for this POS
         let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded;
         // filter out classes that aren't allowed for this POS
         let included = thisGroupsGramClasses.gramClasses.filter(a => {
@@ -93,13 +92,6 @@ const PartOfSpeech = (props) => {
     
     const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
     // console.log(gramClassGroups)
-
-    const isCurrentGramClassSelection = (gramClassId) => {
-        // console.log(gramClassId);
-        // console.log(path[thisIndex].gramClassGroups)
-        // path[thisIndex].gramClassGroups.find(b => b.refId === a.id);
-        return false;
-    }
 
     return (
         <>
@@ -132,10 +124,10 @@ const PartOfSpeech = (props) => {
                             <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                                 <span>{capitalize(appState.setup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
-                                    { getGramClasses(a.refId, appState.savedSetup.gramClassGroups).map((a,i) => (
-                                    <li key={i} value={a.name} 
-                                    className={ isCurrentGramClassSelection(a.id) ? "selected" : ""} 
-                                    onClick={handleGramClassClick}>{capitalize(a.name)}</li>
+                                    { getGramClasses(a.refId, appState.savedSetup.gramClassGroups).map((b,i) => (
+                                    <li key={i} value={b.name} 
+                                    className={ a.gramClassRefId === b.id ? "selected" : ""} 
+                                    onClick={handleGramClassClick}>{capitalize(b.name)}</li>
                                     )) }
                                 </ul>
                                 {/* <ul>

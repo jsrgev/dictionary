@@ -15,9 +15,9 @@ export const capitalize = string => string.charAt(0).toUpperCase() + string.slic
 
 export const clone = a => JSON.parse(JSON.stringify(a));
 
-export const generateSenseGroup = (posId, partsOfSpeechDefs) => {
+export const generateSenseGroup = (posId, partsOfSpeechDefs, gramClassGroups) => {
     let newSenseGroup = clone(senseGroupDefault);
-    newSenseGroup.partsOfSpeech.push(generatePos(posId, partsOfSpeechDefs));
+    newSenseGroup.partsOfSpeech.push(generatePos(posId, partsOfSpeechDefs, gramClassGroups));
     return newSenseGroup;
 };
 
@@ -86,7 +86,7 @@ export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
     return posObj;
 };
 
-export const generatePos = (posId, partsOfSpeechDefs) => {
+export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
     // console.log(posId);
     // console.log(partsOfSpeechDefs);
     let posDef = getPosDef(posId, partsOfSpeechDefs);
@@ -94,12 +94,26 @@ export const generatePos = (posId, partsOfSpeechDefs) => {
     let obj = {
         refId: posDef.id,
     }
-    // console.log(posDef.gramClassGroups[0]);
+    // console.log(posDef);
+    // console.log(gramClassGroups);
+    let defaultGramClassGroupId = posDef.gramClassGroups[0].refId;
+
+    let excluded = posDef.gramClassGroups.find(a => a.refId === defaultGramClassGroupId).excluded;
+    // console.log(defaultGramClassGroupId);
+    let thisGroupsGramClasses = gramClassGroups.find(a => a.id === defaultGramClassGroupId);
+    // console.log(thisGroupsGramClasses)
+    // filter out classes that aren't allowed for this POS
+    let defaultGramClass = thisGroupsGramClasses.gramClasses.find(a => {
+        return !excluded.some(b => b === a.id);
+    })
+    // console.log(included);
+
+
     if (posDef.gramClassGroups?.length > 0) {
         obj.gramClassGroups = [
             {
-                refId: posDef.gramClassGroups[0].refId,
-                // gramClassRefId: posDef.gramClassGroups[0].gramClasses[0].id
+                refId: defaultGramClassGroupId,
+                gramClassRefId: defaultGramClass.id
             }
         ];
     }
