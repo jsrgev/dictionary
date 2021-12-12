@@ -78,13 +78,16 @@ const PartOfSpeech = (props) => {
     // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 
     const getGramClasses = (gramClassGroupId, gramClassGroups) => {
-        let gramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
-        // console.log(gramClassGroup);
-        // let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
-        // let gramClassGroupDef = posDef.find(a => )
-        // console.log(posDef);
-        // gramClassesA = gramClasses
-        return gramClasses.gramClasses;
+        let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
+        // console.log(gramClassesThisPos)
+        let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
+
+        let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded;
+        // filter out classes that aren't allowed for this POS
+        let included = thisGroupsGramClasses.gramClasses.filter(a => {
+            return !excluded.some(b => b === a.id);
+        })
+        return included;
     }
 
     
