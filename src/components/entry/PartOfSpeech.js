@@ -1,4 +1,4 @@
-import {capitalize, clone, generatePos, getAllGramClassGroups, setGramForms, getGramClassDef, getPosDef, getIndent, addPopupHandler} from '../../utils';
+import {capitalize, clone, generatePos, getAllGramClassGroups, setGramForms, getGramClassDef, getPosDef, getIndent, addPopupHandler, getGramClasses} from '../../utils';
 import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
@@ -77,19 +77,6 @@ const PartOfSpeech = (props) => {
     // console.log(appState.savedSetup.partsOfSpeechDefs);
     // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 
-    const getGramClasses = (gramClassGroupId, gramClassGroups) => {
-        let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
-        let posDef = appState.savedSetup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
-        // get classes that aren't allowed for this POS
-        let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
-        // filter out classes that aren't allowed for this POS
-        let included = thisGroupsGramClasses.gramClasses.filter(a => {
-            return !excluded.some(b => b === a.id);
-        })
-        return included;
-    }
-
-    
     const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
     // console.log(gramClassGroups)
 
@@ -124,7 +111,7 @@ const PartOfSpeech = (props) => {
                             <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                                 <span>{capitalize(appState.savedSetup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
-                                    { getGramClasses(a.refId, appState.savedSetup.gramClassGroups).map((b,i) => (
+                                    { getGramClasses(path[thisIndex].refId, a.refId, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups).map((b,i) => (
                                     <li key={i} value={b.name} 
                                     className={ a.gramClassRefId === b.id ? "selected" : ""} 
                                     onClick={handleGramClassClick}>{capitalize(b.name)}</li>

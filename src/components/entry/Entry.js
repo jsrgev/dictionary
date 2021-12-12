@@ -3,7 +3,7 @@ import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
 import IpaPalette from '../IpaPalette';
-import {API_BASE, clone, generateSenseGroup, generatePos} from '../../utils.js';
+import {API_BASE, clone, generateSenseGroup, generatePos, getGramClassGroup} from '../../utils.js';
 import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
 import _  from 'lodash';
 import axios from 'axios';
@@ -19,9 +19,15 @@ const Entry = props => {
         // console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs,state.savedSetup.gramClassGroups));
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
+
         // newEntry.senseGroups[0]
-        // console.log(newEntry.senseGroups[0]);
+        console.log(newEntry.senseGroups[0]);
+        // let gramClassGroup = getGramClassGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups );
+        // console.log(gramClassGroup);
+        // if (gramClassGroup) {
+            // newEntry.senseGroups[0].
+        // }
         // if (state.setup.gramClassGroups) {
 
         // }
