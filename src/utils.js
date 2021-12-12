@@ -89,8 +89,6 @@ export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
 export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramClassGroups) => {
     let posDef = getPosDef(posId, partsOfSpeechDefs);
 
-    // let gramClassGroupId = posDef.gramClassGroups[0].refId;
-
     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId);
     let gramClasses = thisGroupsGramClasses.gramClasses.filter(a => {
@@ -101,7 +99,7 @@ export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramC
 
 export const getGramClassGroup = (posId, partsOfSpeechDefs) => {
     let posDef = getPosDef(posId, partsOfSpeechDefs);
-    let defaultGramClassGroupId = posDef.gramClassGroups[0].refId;
+    let defaultGramClassGroupId = posDef.gramClassGroups?.[0].refId;
     return defaultGramClassGroupId;
 };
 

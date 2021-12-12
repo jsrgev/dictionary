@@ -37,7 +37,7 @@ const SenseGroup = props => {
     }
     
     const availablePoses = appState.savedSetup.partsOfSpeechDefs.filter(a => {
-        let alreadySelected = path[thisIndex].partsOfSpeech.some(b => b.name === a.name);
+        let alreadySelected = path[thisIndex].partsOfSpeech.some(b => b.refId === a.id);
         return !alreadySelected && a;
     })
 

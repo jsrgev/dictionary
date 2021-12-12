@@ -27,16 +27,15 @@ const PartOfSpeech = (props) => {
         setAppState({entry: entryCopy});
     };
 
-    const handlePOSClick = async e => {
+    const handlePosClick = async e => {
         let value = e.target.getAttribute("value");
-        // console.log(value);
         if (!isAvailable(value)) {
             return;
         }
         // console.log(value);
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs);
+        entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups);
         setAppState({entry: entryCopy});
     };
 
@@ -101,7 +100,7 @@ const PartOfSpeech = (props) => {
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
                         {appState.savedSetup.partsOfSpeechDefs.map((a,i) => (
-                            <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={handlePOSClick}>{capitalize(a.name)}</li>
+                            <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={handlePosClick}>{capitalize(a.name)}</li>
                         ))}
                     </ul>   
                 </div>
@@ -117,13 +116,6 @@ const PartOfSpeech = (props) => {
                                     onClick={handleGramClassClick}>{capitalize(b.name)}</li>
                                     )) }
                                 </ul>
-                                {/* <ul>
-                                    { gramClassGroups.map((a,i) => (
-                                    <li key={i} value={a.name} 
-                                    className={path[thisIndex].gramClassGroups.find(b => b.gramClassGroupId === a.id) ? "selected" : ""} 
-                                    onClick={handleGramClassClick}>{capitalize(a.name)}</li>
-                                    )) }
-                                </ul> */}
                             </div>
                         </div>
                     ))
