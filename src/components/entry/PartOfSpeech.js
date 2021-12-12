@@ -36,7 +36,7 @@ const PartOfSpeech = (props) => {
         // console.log(value);
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        entryCopyPath[thisIndex] = generatePos(value, appState.setup.partsOfSpeechDefs);
+        entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs);
         setAppState({entry: entryCopy});
     };
 
@@ -52,7 +52,7 @@ const PartOfSpeech = (props) => {
         if (posDef.multiChoice) {
 
         }
-        setGramForms(entryCopyPath[thisIndex], gramClass, appState.setup.gramFormGroups);
+        setGramForms(entryCopyPath[thisIndex], gramClass, appState.savedSetup.gramFormGroups);
         setAppState({entry:entryCopy});
     }
 
@@ -79,9 +79,9 @@ const PartOfSpeech = (props) => {
 
     const getGramClasses = (gramClassGroupId, gramClassGroups) => {
         let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
-        let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
+        let posDef = appState.savedSetup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
         // get classes that aren't allowed for this POS
-        let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded;
+        let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
         // filter out classes that aren't allowed for this POS
         let included = thisGroupsGramClasses.gramClasses.filter(a => {
             return !excluded.some(b => b === a.id);
@@ -122,7 +122,7 @@ const PartOfSpeech = (props) => {
                         <div className="row" key={i}>
                             <div className="row-controls"></div>
                             <div className="row-content" style={getIndent(prevIndentLevel+1)}>
-                                <span>{capitalize(appState.setup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
+                                <span>{capitalize(appState.savedSetup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
                                     { getGramClasses(a.refId, appState.savedSetup.gramClassGroups).map((b,i) => (
                                     <li key={i} value={b.name} 

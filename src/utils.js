@@ -98,12 +98,15 @@ export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
     // console.log(gramClassGroups);
     let defaultGramClassGroupId = posDef.gramClassGroups[0].refId;
 
-    let excluded = posDef.gramClassGroups.find(a => a.refId === defaultGramClassGroupId).excluded;
+    let excluded = posDef.gramClassGroups.find(a => a.refId === defaultGramClassGroupId).excluded || [];
+    // console.log(excluded)
     // console.log(defaultGramClassGroupId);
     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === defaultGramClassGroupId);
     // console.log(thisGroupsGramClasses)
+    // console.log(thisGroupsGramClasses)
     // filter out classes that aren't allowed for this POS
     let defaultGramClass = thisGroupsGramClasses.gramClasses.find(a => {
+        console.log(excluded.some(b => b === a.id))
         return !excluded.some(b => b === a.id);
     })
     // console.log(included);

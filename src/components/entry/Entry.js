@@ -16,12 +16,12 @@ const Entry = props => {
     const {state, setState} = props;
 
     const initializeEntry = () => {
-        console.log("initializing");
+        // console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs,state.savedSetup.gramClassGroups));
         // newEntry.senseGroups[0]
-        console.log(newEntry.senseGroups[0]);
+        // console.log(newEntry.senseGroups[0]);
         // if (state.setup.gramClassGroups) {
 
         // }
@@ -125,7 +125,7 @@ const Entry = props => {
         testSave();
     };
 
-    console.log(state)
+    // console.log(state)
 
     return (
         <main id="entry">
