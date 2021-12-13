@@ -112,7 +112,7 @@ const PartOfSpeech = (props) => {
                                 <ul>
                                     { getGramClasses(path[thisIndex].refId, a.refId, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups).map((b,i) => (
                                     <li key={i} value={b.name} 
-                                    className={ a.gramClassRefId === b.id ? "selected" : ""} 
+                                    className={ a.gramClasses.refId === b.id ? "selected" : ""} 
                                     onClick={handleGramClassClick}>{capitalize(b.name)}</li>
                                     )) }
                                 </ul>

@@ -16,23 +16,9 @@ const Entry = props => {
     const {state, setState} = props;
 
     const initializeEntry = () => {
-        // console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
-
-        // newEntry.senseGroups[0]
-        console.log(newEntry.senseGroups[0]);
-        // let gramClassGroup = getGramClassGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups );
-        // console.log(gramClassGroup);
-        // if (gramClassGroup) {
-            // newEntry.senseGroups[0].
-        // }
-        // if (state.setup.gramClassGroups) {
-
-        // }
-        // let defaultGramClassGroup = state.setup.gramClassGroups?.
-        // newEntry.etymology = "";
         setState({entry: newEntry});
     };
 
@@ -120,15 +106,26 @@ const Entry = props => {
         setState({entry: entryCopy});
     };
 
-    const testSave = () => {
-        axios.post(`${API_BASE}/addEntry`, clone(state.entry))
-        .then(response => console.log(response))
+    const addToEntries = (newEntry) => {
+        let allEntriesCopy = clone(state.allEntries);
+        allEntriesCopy.push(newEntry);
+        setState({allEntries: allEntriesCopy});
+    };
+
+    // console.log(state.allEntries);
+
+    const addEntry = () => {
+        axios.post(`${API_BASE}/entry/add`, clone(state.entry))
+        .then(response => {
+            addToEntries(response.data);
+            initializeEntry();
+        }
+            )
         .catch(err => console.log(err));
     };
     
     const handleSaveButtonClick = () => {
-        // console.log("asd");
-        testSave();
+        addEntry();
     };
 
     // console.log(state)
@@ -150,7 +147,7 @@ const Entry = props => {
             }
             <Etymology />
             <div id="submit">
-                {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
+                <button onClick={initializeEntry}>Clear All</button>
                 <button onClick={handleSaveButtonClick}>Save</button>
             </div>
             </div>
