@@ -59,6 +59,7 @@ main > div:last-child {
 
 .entries-list-section {
 	border-bottom: 2px solid var(--light-purple);
+	overflow: scroll;
 }
 
 .entries-list div:not(.active) {

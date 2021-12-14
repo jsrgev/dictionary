@@ -116,7 +116,7 @@ const Entry = props => {
         setState({allEntries: allEntriesCopy});
     };
 
-    console.log(state.allEntries);
+    // console.log(state.allEntries);
 
     const addEntry = () => {
         axios.post(`${API_BASE}/entry/add`, clone(state.entry))
@@ -127,22 +127,62 @@ const Entry = props => {
             )
         .catch(err => console.log(err));
     };
-    
-    const handleSaveButtonClick = () => {
+
+    const updateEntry = () => {
+        axios.post(`${API_BASE}/entry/update`, clone(state.entry))
+        .then(response => {
+            let allEntriesClone = clone(state.allEntries);
+
+            let entryClone = clone(state.entry);
+            entryClone.dateModified = new Date();
+
+            let index = allEntriesClone.findIndex(a => a._id === state.entry._id);
+            allEntriesClone[index] = clone(entryClone);
+            setState({allEntries: allEntriesClone});
+            initializeEntry();
+        }
+            )
+        .catch(err => console.log(err));
+    };
+
+    const handleSaveNewClick = () => {
         addEntry();
     };
+
+    const handleSaveExistingClick = () => {
+        updateEntry();
+    };
+
+    const handleDeleteClick = () => {
+        let response = window.confirm("Are you sure you want to delete this entry?");
+        if (!response) {
+            return;
+        }
+        initializeEntry();
+    };
+
+    const handleCopyToNewEntryClick = () => {
+        let entryClone = clone(state.entry);
+        delete entryClone._id;
+        initializeEntry();
+        setState({entry: entryClone});
+    };
+
+    const handleNewBlankEntryClick = () => {
+        if (isDirty()) {
+            let response = window.confirm("Are you sure you want to leave? The new entry will not be saved.");
+            if (!response) {
+                return;
+            }
+        }
+        initializeEntry();
+    };
+
 
     usePrompt(
             "Are you sure you want to leave? The new entry will not be saved.",
         isDirty() 
-    )
-
-    const handleCLClick = () => {
-        console.log(JSON.stringify(state.entry));
-        console.log(JSON.stringify(state.entryCopy));
-        console.log(JSON.stringify(state.entry) === JSON.stringify(state.entryCopy));
-    };
-
+    );
 
     return (
         <main id="entry">
@@ -151,18 +191,32 @@ const Entry = props => {
                 <>
                     <EntriesList state={state} setState={setState} isDirty={isDirty} />
                     <div id="entryForm" onKeyDown={handleKeyDown}>
-                    <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
-                    {state.entry &&
-                        state.entry.senseGroups.map((a,i) => (
-                            <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
-                        ))
-                    }
-                    <Etymology />
-                    <div id="submit">
-                        <button onClick={handleCLClick}>Console Log</button>
-                        <button onClick={initializeEntry}>Clear All</button>
-                        <button onClick={handleSaveButtonClick}>Save</button>
-                    </div>
+                        {state.entry._id ?
+                        <div>Editing Entry: <span className="hw">{state.entry.headword.morphs[0].content}</span></div> :
+                        <div>New Entry: <span className="hw">{state.entry.headword.morphs[0].content}</span></div>
+                        }
+                        <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
+                        {state.entry &&
+                            state.entry.senseGroups.map((a,i) => (
+                                <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
+                            ))
+                        }
+                        <Etymology />
+                        <div id="submit">
+                            {state.entry._id ?
+                            <>
+                                <button onClick={handleDeleteClick}>Delete</button>
+                                <button onClick={handleSaveExistingClick}>Save Changes</button>
+                                <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
+                                <button onClick={handleNewBlankEntryClick}>New Blank Entry</button>
+                            </>
+                            :
+                            <>
+                                <button onClick={initializeEntry}>Clear All</button>
+                                <button onClick={handleSaveNewClick}>Save</button>
+                            </>
+                            }
+                        </div>
                     </div>
                     <div id="preview">
                     {state.entry &&
