@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 // import {capitalize} from './utils.js';
 // import {languageData} from './languageSettings.js';
 import Entry from "./components/entry/Entry.js";
@@ -8,16 +8,16 @@ import Dictionary from './components/Dictionary';
 import About from './components/About';
 import {useSetState} from 'react-use';
 
-import {useState, useEffect, useCallback} from 'react';
-import {API_BASE, clone, generateSenseGroup} from './utils.js';
-import {entryDefault} from './defaults.js';
+import {useEffect} from 'react';
+import {API_BASE} from './utils.js';
 import {partsOfSpeechDefsDefault} from './components/setup/defaults.js';
 
 const App = () => {
 
     const [state, setState] = useSetState({
         allEntries: [],
-        entry: undefined,
+        entry: null,
+        entryCopy: null,
         savedSetup: null,
         setup: {
             targetLanguageName: "Melfem",
@@ -168,34 +168,23 @@ const App = () => {
         },
     });
 
-    // const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
-    
-    // const initializeEntry = useCallback(() => {
-    //     console.log("initializing");
-    //     let newEntry = clone(entryDefault);
-    //     console.log(state.savedSetup);
-    //     // newEntry.senseGroups.push(generateSenseGroup(defaultPos, state.savedSetup.partsOfSpeechDefs));
-    //     // newEntry.etymology = "";
-    //     // setState({entry: newEntry});
-    // }, [setState, defaultPos]);
-
-    // const initializeEntry = () => {
-    //     console.log("initializing");
-    //     let newEntry = clone(entryDefault);
-    //     // console.log(state.savedSetup);
-    //     newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs));
-    //     newEntry.etymology = "";
-    //     setState({entry: newEntry});
-    // };
-
-    // console.log(typeof(state.setup.partsOfSpeechDefs[0].id))
-
-
-    const fetchSetup = () => {   
-        fetch(API_BASE + '/setup/getsetup')
+    const fetchEntries = () => {
+        console.log("fetching entries");
+        fetch(API_BASE + '/entry/getall')
         .then(res => res.json())
         .then(data => {
-            // console.log(data);
+            if (data) {
+                setState({entries: data});
+            }
+        })
+        .catch(err => console.error(`Error: ${err}`));
+    };
+
+    const fetchSetup = () => {
+        console.log("fetching setup");
+        fetch(API_BASE + '/setup/get')
+        .then(res => res.json())
+        .then(data => {
             if (data) {
                 setState({setup: data});
                 setState({savedSetup: data});
@@ -203,50 +192,18 @@ const App = () => {
                 setState({savedSetup: state.setup});
             }
         })
-        // .then(a => initializeEntry())
         .catch(err => console.error(`Error: ${err}`));
-    }
 
-    const loadData = useCallback(() => {
-        console.log("loading");
-        fetchSetup();
-    }, [fetchSetup]);
+    };
+
+    // console.log(state.entries)
 
     useEffect(() => {
-        loadData();
-        // initializeEntry();
-    // },[initializeEntry]);
+        fetchSetup();
+        fetchEntries();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-    // useEffect(() => {
-    //     if (state.savedSetup) {
-    //         // console.log(state.savedSetup)
-    //         initializeEntry();
-    //     }
-    // },[state.savedSetup]);
-
-
-    // const [todos, setTodos] = useState([]);
-    // const [popupActive, setPopupActive] = useState(false);
-    // const [newTodo, setNewTodo] = useState("");
-
-    // useEffect(() => {
-    //     getTest();
-    // },[])
-
-    const getTest = () => {
-        fetch(API_BASE + "/test")
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.error(`Error: ${err}`));
-    };
-
-    const testSave = () => {
-        fetch(API_BASE + "/addEntry")
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.error(`Error: ${err}`));
-    };
 
     // const completeTodo = async id => {
     //     const data = await fetch(API_BASE + "/todo/complete/" + id)
@@ -282,6 +239,8 @@ const App = () => {
     //     setNewTodo("");
     // }
 
+;
+
     
 	return (
         <>
@@ -289,7 +248,7 @@ const App = () => {
             <NavBar />
         </header>
         <Routes>
-            <Route exact path="/" element={<Entry state={state} setState={setState} testSave={testSave} />} />
+            <Route exact path="/" element={<Entry state={state} setState={setState} />} />
             <Route exact path="/setup" element={<Setup appState={state} setAppState={setState} />} />
             <Route exact path="/dictionary" element={<Dictionary />} />
             <Route exact path="/about" element={<About />} />

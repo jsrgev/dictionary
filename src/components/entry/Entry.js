@@ -3,23 +3,26 @@ import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
 import IpaPalette from '../IpaPalette';
-import {API_BASE, clone, generateSenseGroup, generatePos, getGramClassGroup} from '../../utils.js';
+import {API_BASE, clone, generateSenseGroup, generatePos} from '../../utils.js';
 import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
 import _  from 'lodash';
 import axios from 'axios';
 import {useEffect} from 'react';
+import {usePrompt} from '../../Blocker';
 
 
 const Entry = props => {
 
-
     const {state, setState} = props;
+    
+    const isDirty = () => JSON.stringify(state.entry) !== JSON.stringify(state.entryCopy);
 
     const initializeEntry = () => {
+        console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
-        setState({entry: newEntry});
+        setState({entry: newEntry, entryCopy: newEntry});
     };
 
     useEffect(() => {
@@ -27,18 +30,17 @@ const Entry = props => {
         initializeEntry();
     },[state.savedSetup]);
 
+    useEffect(() => {
+        return () => {
+            setState({entry: null, entryCopy: null});
+        }
+    }, []);
+
     const handleKeyDown = e => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     };
-
-    // const testSave = () => {
-    //     fetch(API_BASE + "/addEntry")
-    //     .then(res => res.json())
-    //     .then(data => console.log(data))
-    //     .catch(err => console.error(`Error: ${err}`));
-    // };
 
     const addFunctions = {
         addMorph: (index, pathFrag) => {
@@ -128,7 +130,10 @@ const Entry = props => {
         addEntry();
     };
 
-    // console.log(state)
+    usePrompt(
+        "Are you sure you want to leave? The new entry will not be saved.",
+        isDirty() 
+    )
 
     return (
         <main id="entry">
