@@ -2,6 +2,7 @@ import Headword from './Headword';
 import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
+import EntriesList from './EntriesList';
 import IpaPalette from '../IpaPalette';
 import {API_BASE, clone, generateSenseGroup, generatePos} from '../../utils.js';
 import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
@@ -111,10 +112,11 @@ const Entry = props => {
     const addToEntries = (newEntry) => {
         let allEntriesCopy = clone(state.allEntries);
         allEntriesCopy.push(newEntry);
+        console.log(allEntriesCopy);
         setState({allEntries: allEntriesCopy});
     };
 
-    // console.log(state.allEntries);
+    console.log(state.allEntries);
 
     const addEntry = () => {
         axios.post(`${API_BASE}/entry/add`, clone(state.entry))
@@ -135,14 +137,19 @@ const Entry = props => {
         isDirty() 
     )
 
+    const handleCLClick = () => {
+        console.log(JSON.stringify(state.entry));
+        console.log(JSON.stringify(state.entryCopy));
+        console.log(JSON.stringify(state.entry) === JSON.stringify(state.entryCopy));
+    };
+
+
     return (
         <main id="entry">
             { !state.savedSetup ?
                 <div>Loading</div> :
                 <>
-            <div id="wordlist">
-            <p>Entries</p>
-            </div>
+            <EntriesList state={state} setState={setState} />
             <div id="entryForm" onKeyDown={handleKeyDown}>
             <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
             {state.entry &&
@@ -152,6 +159,7 @@ const Entry = props => {
             }
             <Etymology />
             <div id="submit">
+                <button onClick={handleCLClick}>Console Log</button>
                 <button onClick={initializeEntry}>Clear All</button>
                 <button onClick={handleSaveButtonClick}>Save</button>
             </div>

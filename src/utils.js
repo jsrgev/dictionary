@@ -191,3 +191,10 @@ export const addPopupHandler = (addPopupVisible, setAddPopupVisible) => {
         }, 100)
     }
 };
+
+export const sortEntries = entries => {
+    return entries.sort((a,b) => {
+        return ( a.content < b.content ) ? -1 : ( a.content > b.content ) ? 1 : 0;
+      }
+    );
+};

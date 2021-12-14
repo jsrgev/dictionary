@@ -174,7 +174,7 @@ const App = () => {
         .then(res => res.json())
         .then(data => {
             if (data) {
-                setState({entries: data});
+                setState({allEntries: data});
             }
         })
         .catch(err => console.error(`Error: ${err}`));

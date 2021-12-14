@@ -48,16 +48,26 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
-    const cleanUpEntry = () => {
-        let senseGroups = appState.entry.senseGroups;
-        console.log(senseGroups);
+    const cleanUpEntries = () => {
+        if (!appState.allEntries) {
+            return;
+        }
+        let allEntriesCopy = clone(appState.allEntries);
+        console.log(allEntriesCopy);
+
+        for (let entry of allEntriesCopy) {
+            // console.log(entry.senseGroups);
+            for (let senseGroup of entry.senseGroups) {
+                console.log(senseGroup);
+            } 
+        }
     }
 
     const saveSetup = () => {
         axios.post(`${API_BASE}/setup/save`, clone(appState.setup))
         .then(response => {
             setAppState({savedSetup:appState.setup});
-            cleanUpEntry();
+            // cleanUpEntries();
         })
         .catch(err => console.log(err));
     };

@@ -1,5 +1,5 @@
 import React from "react";
-import {clone, getPosDef} from '../../utils.js';
+import {clone, getPosDef, sortEntries} from '../../utils.js';
 import {gramFormAbbrs} from '../../languageSettings';
 
 const Preview = (props) => {
@@ -18,10 +18,7 @@ const Preview = (props) => {
 
     const alphaSortSet = set => {
         let setClone = clone(set);
-        return setClone.sort((a,b) => {
-            return ( a.content < b.content ) ? -1 : ( a.content > b.content ) ? 1 : 0;
-          }
-        );
+        return sortEntries(setClone);
     };
 
     const filterOutBlanks = set => {
@@ -75,7 +72,7 @@ const Preview = (props) => {
     let headwordOrder;
 
     const getPreview = () => {
-        let morphs = [...appState.entry.headword.morphs];
+        let morphs = clone(appState.entry.headword.morphs);
         let filteredArr = filterOutBlanks(morphs);
         if (filteredArr.length === 0) return "";
 
