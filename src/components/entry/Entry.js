@@ -133,7 +133,7 @@ const Entry = props => {
     };
 
     usePrompt(
-        "Are you sure you want to leave? The new entry will not be saved.",
+            "Are you sure you want to leave? The new entry will not be saved.",
         isDirty() 
     )
 
@@ -146,34 +146,34 @@ const Entry = props => {
 
     return (
         <main id="entry">
-            { !state.savedSetup ?
+            { (!state.savedSetup || !state.entry) ?
                 <div>Loading</div> :
                 <>
-            <EntriesList state={state} setState={setState} />
-            <div id="entryForm" onKeyDown={handleKeyDown}>
-            <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
-            {state.entry &&
-                state.entry.senseGroups.map((a,i) => (
-                    <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
-                ))
+                    <EntriesList state={state} setState={setState} isDirty={isDirty} />
+                    <div id="entryForm" onKeyDown={handleKeyDown}>
+                    <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
+                    {state.entry &&
+                        state.entry.senseGroups.map((a,i) => (
+                            <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
+                        ))
+                    }
+                    <Etymology />
+                    <div id="submit">
+                        <button onClick={handleCLClick}>Console Log</button>
+                        <button onClick={initializeEntry}>Clear All</button>
+                        <button onClick={handleSaveButtonClick}>Save</button>
+                    </div>
+                    </div>
+                    <div id="preview">
+                    {state.entry &&
+                        <Preview appState={state} setAppState={setState} />
+                    }
+                    </div>
+                    { state.savedSetup.ipa.showPalette &&
+                        <IpaPalette appState={state} />
+                    }
+                </>
             }
-            <Etymology />
-            <div id="submit">
-                <button onClick={handleCLClick}>Console Log</button>
-                <button onClick={initializeEntry}>Clear All</button>
-                <button onClick={handleSaveButtonClick}>Save</button>
-            </div>
-            </div>
-            <div id="preview">
-            {state.entry &&
-                <Preview appState={state} setAppState={setState} />
-            }
-            </div>
-            { state.savedSetup.ipa.showPalette &&
-                <IpaPalette appState={state} />
-            }
-            </>
-        }
         </main>
     )
 };

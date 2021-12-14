@@ -57,8 +57,16 @@ main > div:last-child {
     border: none;
 }
 
-#entries-list {
+.entries-list-section {
 	border-bottom: 2px solid var(--light-purple);
+}
+
+.entries-list div:not(.active) {
+	cursor: pointer;;
+}
+
+.entries-list .active {
+	font-weight: 600;
 }
 
 body, input, add-popup {
