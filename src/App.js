@@ -185,9 +185,9 @@ const App = () => {
         fetch(API_BASE + '/setup/get')
         .then(res => res.json())
         .then(data => {
+            // there will be data if previous setup has been saved already
             if (data) {
-                setState({setup: data});
-                setState({savedSetup: data});
+                setState({setup: data, savedSetup: data});
             } else {
                 setState({savedSetup: state.setup});
             }

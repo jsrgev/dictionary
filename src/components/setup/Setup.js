@@ -63,10 +63,28 @@ const Setup = props => {
         }
     }
 
-    const saveSetup = () => {
-        axios.post(`${API_BASE}/setup/save`, clone(appState.setup))
+    // const saveNew = (newEntry) => {
+    //     let allEntriesCopy = clone(state.allEntries);
+    //     allEntriesCopy.push(newEntry);
+    //     console.log(allEntriesCopy);
+    //     setState({allEntries: allEntriesCopy});
+    // };
+
+    const saveNewSetup = () => {
+        axios.post(`${API_BASE}/setup/new`, clone(appState.setup))
         .then(response => {
-            setAppState({savedSetup:appState.setup});
+            setAppState({setup: response.data, savedSetup:response.data});
+            // cleanUpEntries();
+        })
+        .catch(err => console.log(err));
+    };
+    
+    const updateSetup = () => {
+        axios.post(`${API_BASE}/setup/update`, clone(appState.setup))
+        .then(response => {
+            let setupClone = clone(appState.setup);
+            setupClone.dateModified = new Date();
+            setAppState({setup: setupClone, savedSetup:setupClone});
             // cleanUpEntries();
         })
         .catch(err => console.log(err));
@@ -85,8 +103,11 @@ const Setup = props => {
             alert("Please enter a Source Language name.");
             return;
         }
-
-        saveSetup();
+        if (appState.setup._id) {
+            updateSetup();
+        } else {   
+            saveNewSetup();
+        }
     };
 
     const handleRevertButtonClick = () => {

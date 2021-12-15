@@ -21,6 +21,7 @@ export const entryDefault = {
         morphs: [JSON.parse(JSON.stringify(morphDefault))],
     },
     senseGroups: [],
+    etymology: null,
 };
 
 export const exampleDefault = {
