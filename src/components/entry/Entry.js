@@ -140,8 +140,7 @@ const Entry = props => {
             allEntriesClone[index] = clone(entryClone);
             setState({allEntries: allEntriesClone});
             initializeEntry();
-        }
-            )
+        })
         .catch(err => console.log(err));
     };
 
@@ -154,11 +153,20 @@ const Entry = props => {
     };
 
     const handleDeleteClick = () => {
+        let entryId = state.entry._id;
         let response = window.confirm("Are you sure you want to delete this entry?");
         if (!response) {
             return;
         }
-        initializeEntry();
+        axios.post(`${API_BASE}/entry/delete`, {id: entryId})
+        .then(response => {
+            let allEntriesClone = clone(state.allEntries);
+            let index = allEntriesClone.findIndex(a => a._id === entryId);
+            allEntriesClone.splice(index, 1);
+            setState({allEntries: allEntriesClone});
+            initializeEntry();
+        })
+        .catch(err => console.log(err));
     };
 
     const handleCopyToNewEntryClick = () => {

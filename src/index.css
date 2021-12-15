@@ -24,13 +24,10 @@ header {
 }
 
 nav ul {
-	list-style-type: none;
 	display: grid;
 	grid-auto-flow: column;
 	gap: 1rem;
 	justify-content: space-around;
-	padding: 0;
-	margin: 0;
 }
 
 #site-title {
@@ -62,7 +59,7 @@ main > div:last-child {
 	overflow: scroll;
 }
 
-.entries-list div:not(.active) {
+.entries-list li:not(.active) {
 	cursor: pointer;;
 }
 
@@ -192,15 +189,16 @@ fieldset {
 }
 
 
-
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
 
 
 .row ul {
-	list-style-type: none;
 	display: flex;
 	gap: .5rem .3rem;
-	padding: 0;
-	margin: 0;
 	flex-wrap: wrap;
 }
 

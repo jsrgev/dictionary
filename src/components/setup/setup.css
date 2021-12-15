@@ -11,7 +11,7 @@
 } */
 
 .partsOfSpeechSetup {
-    grid-template-columns: 6rem 1fr 6rem 1fr 6rem 1fr;
+    grid-template-columns: 6rem 1fr 6rem 1fr;
 }
 
 #ipaSetup .row-content {

@@ -39,13 +39,13 @@ const EntriesList = props => {
     return (
         <div className="entries-list-section">
             <p>Entries</p>
-            <div className="entries-list">
+            <ul className="entries-list">
                 {getSortedEntries().map((a, i) => (
-                    <div key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</div>
+                    <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>
                 ))
 
                 }
-            </div>
+            </ul>
         </div>
     )
 };
