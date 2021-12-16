@@ -47,32 +47,32 @@ export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
     return posDef.gramClassGroups;
 };
 
-export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
-    if (posObj.gramClasses) {
-        let matches = posObj.gramClasses[0] === gramClassDef.name;
-        if (matches && posObj.gramClasses.length === 1) {
-            return posObj;
-        }
-    } else {
-        posObj.gramClasses = [];
-        posObj.paradigmForms = [];    
-    }
-    if (gramClassDef) {
-        let isMultiChoice = getPosDef(posObj.name).multiChoice;
-        if (isMultiChoice) {
-            let classIndex = posObj.gramClasses.findIndex(a => a===gramClassDef.name);
-            if (classIndex >= 0) {
-                posObj.gramClasses.splice(classIndex,1);
-            } else {
-                posObj.gramClasses.push(gramClassDef.name)
-            }
-        } else {
-            posObj.gramClasses = [gramClassDef.name];
-        }
-        posObj.paradigmForms = gramClassDef.gramFormSet ? getGramForms(gramClassDef.gramFormSet, gramFormGroups) : [];
-    }
-    return posObj;
-};
+// export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
+//     if (posObj.gramClasses) {
+//         let matches = posObj.gramClasses[0] === gramClassDef.name;
+//         if (matches && posObj.gramClasses.length === 1) {
+//             return posObj;
+//         }
+//     } else {
+//         posObj.gramClasses = [];
+//         posObj.paradigmForms = [];    
+//     }
+//     if (gramClassDef) {
+//         let isMultiChoice = getPosDef(posObj.name).multiChoice;
+//         if (isMultiChoice) {
+//             let classIndex = posObj.gramClasses.findIndex(a => a===gramClassDef.name);
+//             if (classIndex >= 0) {
+//                 posObj.gramClasses.splice(classIndex,1);
+//             } else {
+//                 posObj.gramClasses.push(gramClassDef.name)
+//             }
+//         } else {
+//             posObj.gramClasses = [gramClassDef.name];
+//         }
+//         posObj.paradigmForms = gramClassDef.gramFormSet ? getGramForms(gramClassDef.gramFormSet, gramFormGroups) : [];
+//     }
+//     return posObj;
+// };
 
 // const getGramClasses = (gramClassGroupId, gramClassGroups) => {
 //     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
@@ -151,7 +151,7 @@ export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
             obj.gramClassGroups.push(
                 {
                     refId: gramClassGroupId,
-                    gramClasses: {refId: gramClasses[0].id}
+                    gramClasses: [{refId: gramClasses[0].id}]
                 }
             );            
         })

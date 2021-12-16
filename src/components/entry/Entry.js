@@ -112,7 +112,7 @@ const Entry = props => {
     const addToEntries = (newEntry) => {
         let allEntriesCopy = clone(state.allEntries);
         allEntriesCopy.push(newEntry);
-        console.log(allEntriesCopy);
+        // console.log(allEntriesCopy);
         setState({allEntries: allEntriesCopy});
     };
 
@@ -148,7 +148,7 @@ const Entry = props => {
         addEntry();
     };
 
-    const handleSaveExistingClick = () => {
+    const handleUpdateClick = () => {
         updateEntry();
     };
 
@@ -214,7 +214,7 @@ const Entry = props => {
                             {state.entry._id ?
                             <>
                                 <button onClick={handleDeleteClick}>Delete</button>
-                                <button onClick={handleSaveExistingClick}>Save Changes</button>
+                                <button onClick={handleUpdateClick}>Save Changes</button>
                                 <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
                                 <button onClick={handleNewBlankEntryClick}>New Blank Entry</button>
                             </>
