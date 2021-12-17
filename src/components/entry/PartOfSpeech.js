@@ -80,7 +80,7 @@ const PartOfSpeech = (props) => {
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
-    console.log(path[thisIndex].gramClassGroups);
+    // console.log(path[thisIndex].gramClassGroups);
     // console.log(appState.savedSetup.partsOfSpeechDefs);
     // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 

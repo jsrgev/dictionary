@@ -16,7 +16,8 @@ export const gramClassDefault = {
 
 export const gramClassGroupDefault = {
     name: "",
-    gramClasses: [JSON.parse(JSON.stringify(gramClassDefault))]
+    gramClasses: [JSON.parse(JSON.stringify(gramClassDefault))],
+    multiChoice: false
 };
 
 export const partsOfSpeechDefsDefault = [

@@ -50,6 +50,14 @@ const GramClassGroup = props => {
         setAppState({setup: setupCopy});
     };
 
+    const changeMultiChoice = value => {
+        let setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        setupCopyPath[thisIndex].multiChoice = value;
+        setAppState({setup: setupCopy});
+    }
+
+
     const popupItems = [
         ["Group", () => addGroup(thisIndex)],
         ["Class", () => addGramClass(path[thisIndex].gramClasses.length-1, pathFrag+`[${thisIndex}].gramClasses`)],
@@ -60,7 +68,7 @@ const GramClassGroup = props => {
     const isLast = thisIndex === path.length-1;
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
-    
+    console.log(path[thisIndex].multiChoice);
 
     return (
         <>
@@ -84,6 +92,11 @@ const GramClassGroup = props => {
                 <div className="row-content gram-class-setup">
                     <label>Group</label>
                     <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
+                    <label>Allow multiple</label>
+                    <ul>
+                        <li className={path[thisIndex].multiChoice ? "selected" : ""} onClick={() => changeMultiChoice(true)} >Yes</li>
+                        <li className={!path[thisIndex].multiChoice ? "selected" : ""} onClick={() => changeMultiChoice(false)} >No</li>
+                    </ul>
                </div>
                { path[thisIndex].gramClasses &&
                     path[thisIndex].gramClasses.map((a, i) => (

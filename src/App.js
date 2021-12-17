@@ -69,6 +69,7 @@ const App = () => {
                 {
                     id: "9",
                     name: "gender",
+                    multiChoice: false,
                     gramClasses: [
                         {
                             id: "10",
@@ -85,6 +86,7 @@ const App = () => {
                 {
                     id: "12",
                     name: "number system",
+                    multiChoice: false,
                     gramClasses: [
                         {
                             id: "13",
@@ -106,6 +108,7 @@ const App = () => {
                 {
                     id: "16",
                     name: "transitivity",
+                    multiChoice: true,
                     gramClasses: [
                         {
                             id: "17",
