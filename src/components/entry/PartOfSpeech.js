@@ -32,34 +32,36 @@ const PartOfSpeech = (props) => {
         if (!isAvailable(value)) {
             return;
         }
-        // console.log(value);
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
         entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups);
         setAppState({entry: entryCopy});
     };
 
-    const handleGramClassClick = (e, i, j) => {
-        
+    const handleGramClassClick = (e, i, classGroupId) => {
         let value = e.target.getAttribute("value");
-        // console.log(value);
-        // console.log(index);
-        // return;
-        if (value === path[thisIndex].class) {
-            return;
-        }
+        const isMultiChoice = appState.savedSetup.gramClassGroups.find(a => a.id === classGroupId).multiChoice;
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
-        // console.log(entryCopyPath[thisIndex].gramClassGroups[i]);
+        let index = entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.findIndex(a => a.refId === value);
 
-        // if (posDef.multiChoice) {
-
-        // } else {
-            entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(j-1, 1, {refId: value});
-        // }
-        // setGramForms(entryCopyPath[thisIndex], gramClass, appState.savedSetup.gramFormGroups);
-
-        // return;
+        if (!isMultiChoice) {
+            if (index === 0) {
+                return;
+            } else {
+                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(0, 1, {refId: value});
+            }
+        } else {
+            if (index >= 0) {
+                if (entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.length === 1) {
+                    return;
+                } else {
+                    entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(index, 1);
+                }
+            } else {
+                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.push({refId: value});
+            }
+        }
         setAppState({entry:entryCopy});
     }
 
@@ -121,7 +123,7 @@ const PartOfSpeech = (props) => {
                                     { getGramClasses(path[thisIndex].refId, a.refId, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups).map((b,j) => (
                                     <li key={j} value={b.id} 
                                     className={ a.gramClasses.some(a => a.refId === b.id) ? "selected" : ""} 
-                                    onClick={e => handleGramClassClick(e, i, j)}>{capitalize(b.name)}</li>
+                                    onClick={e => handleGramClassClick(e, i, a.refId)}>{capitalize(b.name)}</li>
                                     )) }
                                 </ul>
                             </div>

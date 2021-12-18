@@ -31,9 +31,13 @@ const GramClassGroup = props => {
     };
 
     const addGramClass = (index, pathFrag) => {
+        console.log("adding")
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath.splice(index+1, 0, clone(gramClassDefault));
+        let newGramClass = clone(gramClassDefault);
+        newGramClass.id = setupCopy.nextId.toString();
+        setupCopy.nextId++;
+        setupCopyPath.splice(index+1, 0, newGramClass);
         setAppState({setup: setupCopy});
     };
 
@@ -68,7 +72,7 @@ const GramClassGroup = props => {
     const isLast = thisIndex === path.length-1;
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
-    console.log(path[thisIndex].multiChoice);
+    // console.log(path[thisIndex]);
 
     return (
         <>

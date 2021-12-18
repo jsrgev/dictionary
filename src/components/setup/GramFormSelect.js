@@ -23,15 +23,20 @@ const GramFormSelect = props => {
     //     setAppState({setup: setupCopy});
     // };
 
-    const handleClick = async (e, definition) => {
+
+    const handleClick = async e => {
         let value = e.target.getAttribute("value");
         if (!isAvailable(value)) {
             return;
         }
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        let gramFormsToClone = definition.gramClasses || definition.gramForms;
-        setupCopyPath[thisIndex] = {name: definition.name, gramForms: clone(gramFormsToClone)};
+
+        let obj = {refId: value};
+        _.set(setupCopy, `[${pathFrag[thisIndex]}]`, obj);
+
+        setupCopyPath[thisIndex] = obj;
+
         setAppState({setup: setupCopy});
     };
 
@@ -71,13 +76,15 @@ const GramFormSelect = props => {
         popupItems.push(["Form group", () => addGramFormOption(thisIndex)]);
     };
 
-    const isAvailable = gramFormGroupName => {
-        return availableGramClassAndFormGroups.some(a => a.name === gramFormGroupName);
+    const isAvailable = gramFormGroupId => {
+        console.log(gramFormGroupId);
+        console.log(availableGramClassAndFormGroups);
+        return availableGramClassAndFormGroups.some(a => a.id === gramFormGroupId);
     };
     
 
-    const isCurrentSelection = gramFormGroupName =>  {
-        return path[thisIndex].name === gramFormGroupName;
+    const isCurrentSelection = gramFormGroupId =>  {
+        return path[thisIndex].refId === gramFormGroupId;
     }
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
@@ -109,7 +116,7 @@ const GramFormSelect = props => {
                     <div>Form group</div>
                     <ul>
                         {gramClassAndFormGroups.map((a, i) => (
-                            <li key={i} value={a.name} className={ isCurrentSelection(a.name) ? "selected" : isAvailable(a.name) ? ""  : "disabled" } onClick={e => handleClick(e, a)}>{capitalize(a.name)}</li>
+                            <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={e => handleClick(e)}>{capitalize(a.name)}</li>
                             // <li key={i} value={a.name}  onClick={e => handleClick(e, i)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>

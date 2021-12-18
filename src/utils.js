@@ -153,7 +153,7 @@ export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
                     refId: gramClassGroupId,
                     gramClasses: [{refId: gramClasses[0].id}]
                 }
-            );            
+            );
         })
     };
     return obj;

@@ -15,6 +15,7 @@ const Setup = props => {
 
     const setup = appState.setup;
 
+    // console.log(setup);
     // const [posOpen, setPosOpen] = useState(true);
 
     const handleChange = (field, value) => {

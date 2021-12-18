@@ -20,6 +20,7 @@ const App = () => {
         entryCopy: null,
         savedSetup: null,
         setup: {
+            nextId: 101,
             targetLanguageName: "Melfem",
             sourceLanguageName: "English",
             partsOfSpeechDefs: partsOfSpeechDefsDefault,
@@ -90,18 +91,18 @@ const App = () => {
                     gramClasses: [
                         {
                             id: "13",
+                            name: "none",
+                            abbr: "none",
+                        },
+                        {
+                            id: "14",
                             name: "singular-plural",
                             abbr: "sp",
                         },
                         {
-                            id: "14",
+                            id: "15",
                             name: "collective-singulative",
                             abbr: "cs",
-                        },
-                        {
-                            id: "15",
-                            name: "none",
-                            abbr: "none",
                         },
                     ],
                 },
@@ -167,7 +168,6 @@ const App = () => {
                         ],
                 },
             ],
-            nextId: 101,
         },
     });
 
