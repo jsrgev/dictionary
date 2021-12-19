@@ -11,17 +11,8 @@ const GramFormSelect = props => {
     let pathFrag = stringPath + ".gramFormGroups";
     const path = _.get(appState, "setup." + pathFrag);
 
-    // console.log(gramClassAndFormGroups[thisIndex]);
-
     const [classSelectOpen, setClassSelectOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-
-    // const handleChange = (value, field) => {
-    //     const setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     setupCopyPath[thisIndex][field] = value;
-    //     setAppState({setup: setupCopy});
-    // };
 
 
     const handleClick = async e => {
@@ -40,25 +31,6 @@ const GramFormSelect = props => {
         setAppState({setup: setupCopy});
     };
 
-
-    const changeMultichoice = value => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].multiChoice = value;
-        setAppState({setup: setupCopy});
-    }
-
-
-    const posDefault = {name: "", abbr: "", multiChoice: false, gramClassGroups: [], agrGramFormGroups: [], intGramFormGroups: [] };
-    const gramClassDefault = {name: "", abbr: "", gramForms: []};
-
-
-    // const addGramClass = index => {
-    //     let setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     setupCopyPath[thisIndex].gramClasses.splice(index+1, 0, clone(gramClassDefault));
-    //     setAppState({setup: setupCopy});
-    // };
     
     const deletePos = () => {
         let setupCopy = clone(appState.setup);
@@ -77,8 +49,8 @@ const GramFormSelect = props => {
     };
 
     const isAvailable = gramFormGroupId => {
-        console.log(gramFormGroupId);
-        console.log(availableGramClassAndFormGroups);
+        // console.log(gramFormGroupId);
+        // console.log(availableGramClassAndFormGroups);
         return availableGramClassAndFormGroups.some(a => a.id === gramFormGroupId);
     };
     
@@ -91,6 +63,8 @@ const GramFormSelect = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
+
+    console.log(path[thisIndex]);
 
 
     // const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));

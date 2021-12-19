@@ -80,15 +80,6 @@ const PosSetup = props => {
         setAppState({setup: setupCopy});
     };
 
-    // const addGramFormOption = index => {
-    //     let setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);        
-    //     let gramFormGroup = availableGramClassAndFormGroups[0];
-    //     let groupToClone = gramFormGroup.gramClasses || gramFormGroup.gramForms;
-    //     setupCopyPath[thisIndex].gramFormGroups.splice(index+1, 0, {name: availableGramClassAndFormGroups[0].name, gramForms: clone(groupToClone)});
-    //     setAppState({setup: setupCopy});
-    // };
-
     const deletePos = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
@@ -123,7 +114,7 @@ const PosSetup = props => {
     })
     // console.log(availableGramClassAndFormGroups);
 
-    // console.log(path[thisIndex].gramClassGroups);
+    // console.log(path[thisIndex]);
 
     const popupItems = [
         ["Part of speech", addPos],

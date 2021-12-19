@@ -1,4 +1,4 @@
-import {capitalize, clone, generatePos, getAllGramClassGroups, setGramForms, getGramClassDef, getPosDef, getIndent, addPopupHandler, getGramClasses} from '../../utils';
+import {capitalize, clone, generatePos, getAllGramClassGroups, getIndent, addPopupHandler, getGramClasses} from '../../utils';
 import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
@@ -86,7 +86,7 @@ const PartOfSpeech = (props) => {
     // console.log(appState.savedSetup.partsOfSpeechDefs);
     // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 
-    const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
+    // const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
     // console.log(gramClassGroups)
 
     return (

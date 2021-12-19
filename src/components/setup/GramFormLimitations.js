@@ -3,11 +3,15 @@ import _ from 'lodash';
 
 const GramFormLimitations = props => {
 
-    const {appState, setAppState, stringPath} = props;
+    const {appState, setAppState, stringPath, thisIndex} = props;
 
-    let pathFrag = stringPath;
+    // // let pathFrag = stringPath;
+    // // const path = _.get(appState, "setup." + pathFrag);
+    // const path = _.get(appState + stringPath);
+    // // let upPath = _.get(appState, "setup." + stringPath);
+
+    let pathFrag = stringPath + ".excludedGramClassGroups";
     const path = _.get(appState, "setup." + pathFrag);
-    let upPath = _.get(appState, "setup." + stringPath);
 
 
     const handleClick = (e, gramFormName) => {
@@ -22,11 +26,15 @@ const GramFormLimitations = props => {
         setAppState({setup: setupCopy});
     }
     
-    const isSelected = gramFormName =>  {
-        return path.gramForms.some(a => a === gramFormName);
+    const isSelected = gramFormId =>  {
+        console.log(gramFormId);
+        console.log(path);
+        // console.log(path.refId === gramFormId);
+        return path[thisIndex].refId === gramFormId;
+        return false;
     };
 
-    let gramFormGroup = appState.setup.gramFormGroups.find(a => a.name === upPath.name);
+    // let gramFormGroup = appState.setup.gramFormGroups.find(a => a.name === upPath.name);
 
     return(
         <>
@@ -34,11 +42,11 @@ const GramFormLimitations = props => {
                 <div className="row-controls"></div>
                 <div className="row-content" style={getIndent(1)}>
                     <label>Only allow</label>
-                    {/* <ul>
-                        {gramFormGroup.gramForms.map((a, i) => (
-                            <li key={i} value={a.name} className={ isSelected(a.name) ? "selected" : "" } onClick={e => handleClick(e, a.name)}>{capitalize(a.name)}</li>
+                    <ul>
+                        {appState.setup.gramClassGroups.map((a, i) => (
+                            <li key={i} value={a.name} className={ isSelected(a.id) ? "selected" : "" } onClick={e => handleClick(e, a.name)}>{capitalize(a.name)}</li>
                         ))}
-                    </ul> */}
+                    </ul>
                 </div>
             </div>
         </>

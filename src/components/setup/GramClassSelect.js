@@ -14,52 +14,17 @@ const GramClassSelect = props => {
     const [classSelectOpen, setClassSelectOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    // const handleChange = (value, field) => {
-    //     const setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     setupCopyPath[thisIndex][field] = value;
-    //     setAppState({setup: setupCopy});
-    // };
-
     const handleClick = async (e) => {
         let gramClassId = e.target.getAttribute("value");
         if (!isAvailable(gramClassId)) {
             return;
         }
-        // console.log("sdfasfd");
-        // return;
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        // console.log(gramClassId);
-        // console.log(setupCopy);
-        // console.log(thisIndex);
-        // return;
         let obj = {refId: gramClassId};
         _.set(setupCopy, `[${pathFrag[thisIndex]}]`, obj);
-        // setupCopyPath[thisIndex] = ;
         setupCopyPath[thisIndex] = obj;
 
-        setAppState({setup: setupCopy});
-    };
-
-    // console.log(path);
-
-    const changeMultichoice = value => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].multiChoice = value;
-        setAppState({setup: setupCopy});
-    }
-
-
-    const posDefault = {name: "", abbr: "", multiChoice: false, gramClassGroups: [], agrGramFormGroups: [], intGramFormGroups: [] };
-    const gramClassDefault = {name: "", abbr: "", gramForms: []};
-
-
-    const addGramClass = index => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].gramClasses.splice(index+1, 0, clone(gramClassDefault));
         setAppState({setup: setupCopy});
     };
     
