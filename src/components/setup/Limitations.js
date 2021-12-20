@@ -9,7 +9,6 @@ const Limitations = props => {
     const path = _.get(appState, "setup." + pathFrag);
     let upPath = _.get(appState, "setup." + stringPath);
 
-
     const handleClick = (e, gramClassId) => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, stringPath);
@@ -26,13 +25,6 @@ const Limitations = props => {
         } else {
             setupCopyPath.excluded = [gramClassId];
         }
-        // console.log(setupCopyPath.excluded);
-        // let index = setupCopyPath.gramClasses.findIndex(a => a === gramClassName);
-        // if (index < 0) {
-        //     setupCopyPath.gramClasses.push(gramClassName);
-        // } else {
-        //     setupCopyPath.gramClasses.splice(index, 1);
-        // }
         setAppState({setup: setupCopy});
     }
     

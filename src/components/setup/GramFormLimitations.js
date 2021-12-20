@@ -9,7 +9,6 @@ const GramFormLimitations = props => {
 
     let pathFrag = stringPath + ".allowedGramClassGroups";
     const path = _.get(appState, "setup." + pathFrag);
-    // const upPath = _.get(appState, "setup." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
@@ -32,6 +31,30 @@ const GramFormLimitations = props => {
         setAppState({setup: setupCopy});
     };
     
+    const handleGramClassClick = gramClassId => {
+        let setupCopy = clone(appState.setup);
+        let setupCopyPath = _.get(setupCopy, stringPath + `.allowedGramClassGroups[${thisIndex}].gramClasses`);
+        // console.log(gramClassId)
+        // console.log(setupCopyPath.allowedGramClassGroups[thisIndex].gramClasses)
+        // console.log(setupCopyPath);
+        // return
+        // if (setupCopyPath.excluded) {
+            let index = setupCopyPath.findIndex(a => a.refId === gramClassId);
+            console.log(index);
+            if (index < 0) {
+                setupCopyPath.push({refId: gramClassId});
+                // console.log(setupCopyPath);
+            } else if (setupCopyPath.length === 1) {
+                return;
+            } else {
+                setupCopyPath.splice(index, 1);
+            }
+        // } else {
+        //     setupCopyPath.excluded = [gramClassId];
+        // }
+        setAppState({setup: setupCopy});
+    };
+
     const deleteConstraint = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
@@ -44,11 +67,16 @@ const GramFormLimitations = props => {
         }
         setAppState({setup: setupCopy});
 
-    }
+    };
 
     const isCurrentSelection = gramClassGroupId =>  {
         return path[thisIndex].refId === gramClassGroupId;
     };
+
+    const isSelected = gramClassId =>  {
+        return path[thisIndex].gramClasses.some(a => a.refId === gramClassId);
+    };
+
 
     const isAvailable = gramClassGroupId => {
         return availableForLimitationGroups.some(a => a.id === gramClassGroupId);
@@ -104,7 +132,7 @@ const GramFormLimitations = props => {
                     <label>Class</label>
                     <ul>
                         {getGramClasses(path[thisIndex].refId).map((a, i) => (
-                            <li key={i} value={a.name} className={ isCurrentSelection(a.id) ? "selected" : "" } onClick={e => handleGroupClick(e, a.name)}>{capitalize(a.name)}</li>
+                            <li key={i} value={a.id} className={ isSelected(a.id) ? "selected" : "" } onClick={e => handleGramClassClick(a.id)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>
                 </div>
