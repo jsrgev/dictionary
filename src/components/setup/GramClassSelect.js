@@ -35,10 +35,7 @@ const GramClassSelect = props => {
         setAppState({setup: setupCopy});
     };
 
-
-
     const popupItems = [];
-
 
     if (availableGramClassGroups.length > 0) {
         popupItems.push(["Class option", () => addGramClassOption(thisIndex)]);

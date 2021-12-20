@@ -1,7 +1,7 @@
 import AddPopup from '../AddPopup.js';
 import { clone, addPopupHandler, getIndent } from '../../utils.js';
 import {gramFormDefault} from './defaults.js';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import _ from 'lodash';
 import GramFormLimitations from './GramFormLimitations.js';
 
@@ -49,45 +49,47 @@ const GramForm = props => {
 
 
 
-    const addConstraint = () => {
+    const addConstraint = (index) => {
+        console.log(index)
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        // console.log(setupCopyPath[thisIndex]);
-
-        let arr = [
-            {
-                refId: appState.setup.gramClassGroups[0].id,
-                gramClasses: [
-                    {
-                        refId: appState.setup.gramClassGroups[0].gramClasses[0].id
-                    }
-                ]
-            }
-        ];
-        // console.log(obj);
-        _.set(setupCopy, `[${pathFrag[thisIndex].excludedGramClassGroups}]`, "asd");
-        // console.log(_.get(setupCopy, `[${pathFrag[thisIndex]}]`));
-        // console.log(thisIndex)
-        setupCopyPath[thisIndex].excludedGramClassGroups = arr;
-        // console.log(setupCopyPath);
-
+        let obj = {
+            refId: availableForLimitationGroups[0].id,
+            gramClasses: [
+                {
+                    refId: availableForLimitationGroups[0].gramClasses[0].id
+                }
+            ]
+        };
+        if (setupCopyPath[thisIndex].allowedGramClassGroups) {
+            setupCopyPath[thisIndex].allowedGramClassGroups.splice(index, 0, obj);
+        } else {
+            setupCopyPath[thisIndex].allowedGramClassGroups = [obj];
+        }
         setAppState({setup: setupCopy});
-        // let gramClassGroups = appState.setup.gramClassGroups;
-        // console.log(gramClassGroups);
-    }
-
-
+    };    
+    
+    const availableForLimitationGroups = appState.setup.gramClassGroups.filter(a => {
+        let alreadySelected = path[thisIndex].allowedGramClassGroups?.some(b => b.refId === a.id);
+        return !alreadySelected;
+    });
     
     const popupItems = [
         ["Form", () => addGramForm(thisIndex, pathFrag)],
-        ["Constraint", () => addConstraint(thisIndex, pathFrag)],
     ];
+
+    if (availableForLimitationGroups.length > 0) {
+        popupItems.push(["Constraint", () => {
+            let index = (path[thisIndex].allowedGramClassGroups) ? path[thisIndex].allowedGramClassGroups.length : 0;
+            addConstraint(index);
+            }
+        ]);
+    };
+
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
     
-    // console.log(path[thisIndex]);
-
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
     return(
@@ -121,8 +123,8 @@ const GramForm = props => {
                         </>
                     }
                 </div>
-                {path[thisIndex].excludedGramClassGroups?.map((a, i) => (
-                    <GramFormLimitations appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} />
+                {path[thisIndex].allowedGramClassGroups?.map((a, i) => (
+                    <GramFormLimitations appState={appState} setAppState={setAppState} moveItem={moveItem} thisIndex={i} key={i} stringPath={stringPathA} addConstraint={addConstraint} availableForLimitationGroups={availableForLimitationGroups} />
                 ))
 
                 }

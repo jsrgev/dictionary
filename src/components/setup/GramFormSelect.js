@@ -49,8 +49,6 @@ const GramFormSelect = props => {
     };
 
     const isAvailable = gramFormGroupId => {
-        // console.log(gramFormGroupId);
-        // console.log(availableGramClassAndFormGroups);
         return availableGramClassAndFormGroups.some(a => a.id === gramFormGroupId);
     };
     

@@ -86,7 +86,7 @@ const PartOfSpeech = (props) => {
     // console.log(appState.savedSetup.partsOfSpeechDefs);
     // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 
-    // const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
+    // const gramClassGroups = getAl    lGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
     // console.log(gramClassGroups)
 
     return (

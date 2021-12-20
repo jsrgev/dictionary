@@ -121,7 +121,7 @@ const PosSetup = props => {
     ];
 
     if (availableGramClassGroups.length > 0) {
-        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 || -1)])
+        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 || -1)]);
     };
 
     if (availableGramClassAndFormGroups.length > 0) {
