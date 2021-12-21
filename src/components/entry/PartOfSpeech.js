@@ -15,6 +15,7 @@ const PartOfSpeech = (props) => {
     const [posOpen, setPosOpen] = useState(true);
     const [formsOpen, setFormsOpen] = useState(false);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
+    const [irregularsVisible, setIrregularsVisible] = useState(true);
 
     const deletePos = (e) => {
         let entryCopy = clone(appState.entry);
@@ -75,8 +76,6 @@ const PartOfSpeech = (props) => {
     }
 
     const isCurrentSelection = posId =>  {
-        // console.log(posId);
-        // console.log(path[thisIndex]);
         return path[thisIndex].refId === posId;
     }
 
@@ -99,51 +98,45 @@ const PartOfSpeech = (props) => {
     const getAllGramForms = () => {
         let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id = path[thisIndex].refId);
         let gramFormGroups = posDef.gramFormGroups;
-        // console.log(gramForms);
-        
+        let groups = [];
+
         gramFormGroups.forEach(a => {
-            
-            let gramFormGroupDefs = appState.setup.gramFormGroups;
-
-            
-            let groups = [];
-            gramFormGroupDefs.forEach(gramFormGroupDef => {
-                // console.log(gramFormGroupDef.name);
-                let arr = [];
-
-// for each gramForm, need to check gramFormDef.allowedGramClassGroups array
-// if it contains an obj with refId that matches any current class, don't include it
-
-
-                gramFormGroupDef.gramForms.forEach(gramFormDef => {
-                    let applicable = true;
-                    if (gramFormDef.constraints) {
-                        gramFormDef.constraints.forEach(group => {
-                            let allCurrentGramClasses = [];
-                            path[thisIndex].gramClassGroups.forEach(a => {
-                                a.gramClasses.forEach(b => {
-                                    allCurrentGramClasses.push(b)
-                                });
-                            })
-                            let match = group.excludedGramClasses.some(a => {
-                                    return allCurrentGramClasses.some(b => b === a);
-                                });
-                            if (match) {
-                                applicable = false;
-                            }
+            let gramFormGroupDef = appState.setup.gramFormGroups.find(b => b.id === a.refId) || appState.setup.gramClassGroups.find(b => b.id === a.refId);
+            let arr = [];
+            // console.log(a);
+            let gramForms = gramFormGroupDef.gramForms || gramFormGroupDef.gramClasses;
+            gramForms.forEach(gramFormDef => {
+                let applicable = true;
+                if (gramFormDef.constraints) {
+                    gramFormDef.constraints.forEach(group => {
+                        let allCurrentGramClasses = [];
+                        path[thisIndex].gramClassGroups.forEach(a => {
+                            a.gramClasses.forEach(b => {
+                                allCurrentGramClasses.push(b)
+                            });
+                        })
+                        let match = group.excludedGramClasses.some(a => {
+                            return allCurrentGramClasses.some(b => b === a);
                         });
-                    }
-                    if (applicable) {
-                        arr.push(gramFormDef.id);
-                    }
-                })
-                groups.push(arr);
+                        if (match) {
+                            applicable = false;
+                        }
+                    });
+                }
+                if (applicable) {
+                    arr.push(gramFormDef.id);
+                }
             })
-            console.log(groups)
+            groups.push(arr);
         })
+
+        // get all combinations
+        // from https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
+        const cartesian = (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
+        return cartesian(...groups);
     }
 
-    getAllGramForms();
+    console.log(getAllGramForms());
 
     // console.log(appState.savedSetup.partsOfSpeechDefs);
 
@@ -189,26 +182,21 @@ const PartOfSpeech = (props) => {
                         </div>
                     ))
                 }
-
-
-                        {/* { path[thisIndex].paradigmFormGroups?.length>0 &&
-                            <div className={`row${formsOpen ? "" : " closed"}`}>
-                                <div className="row-controls">
-                                    <i></i>
-                                    <i></i>
-                                    <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
-                                </div>
-                                <div className="row-content" style={getIndent(prevIndentLevel+1)}>
-                                    <div>Forms</div>
-                                </div>
-                                {path[thisIndex].paradigmFormsGroups.map((a,i) => (
-                                        <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
-                                ))}
-                            </div>
-                        } */}
-
-
-                    {/* </div> */}
+                { irregularsVisible &&
+                    <div className={`row${formsOpen ? "" : " closed"}`}>
+                        <div className="row-controls">
+                            <i></i>
+                            <i></i>
+                            <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
+                        </div>
+                        <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                            <div>Forms</div>
+                        </div>
+                        {/* {path[thisIndex].paradigmFormsGroups.map((a,i) => (
+                                <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
+                        ))} */}
+                    </div>
+                }
             </div>
     </>
     )
