@@ -32,23 +32,48 @@ const ParadigmForm = (props) => {
     //     // console.log(path[thisIndex].basic)
     // };
 
-    // const changeExists = () => {
-    //     if (path[thisIndex].basic) {
-    //         return;
-    //     };  
-    //     let entryCopy = clone(appState.entry);
-    //     let entryCopyPath = _.get(entryCopy, pathFrag);
-    //     let formExists = entryCopyPath[thisIndex].exists;
-    //     entryCopyPath[thisIndex].exists = !formExists;
-    //     setAppState({entry: entryCopy});
-    // };
+    const changeExists = () => {
+        let entryCopy = clone(appState.entry);
+        let entryCopyPath = _.get(entryCopy, pathFrag);
+        let index = getIndex();
+        let obj = {
+            gramFormSet: gramFormSet,
+            missing: true
+        };
+        if (!entryCopyPath.irregulars) {
+            entryCopyPath.irregulars = [obj];
+        } else if (index < 0) {
+            entryCopyPath.irregulars.push(obj);
+        } else if (entryCopyPath.irregulars[index].missing) {
+            if (entryCopyPath.irregulars[index].morphs) {
+
+                delete entryCopyPath.irregulars[index].missing;
+            } else if (entryCopyPath.irregulars.length > 1) {
+                delete entryCopyPath.irregulars.splice(index, 1);
+            } else {
+                delete entryCopyPath.irregulars;
+            }
+        } else {
+            entryCopyPath.irregulars[index] = obj;
+        }
+        setAppState({entry: entryCopy});
+    };
+
+    // console.log(path);
 
     const changeRegular = () => {
+        if (!gramFormExists()) {
+            return;
+        }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         let index = getIndex();
         if (index >= 0) {
-            entryCopyPath.irregulars.splice(index, 1);
+            if (entryCopyPath.irregulars[index].missing) {
+                delete entryCopyPath.irregulars[index].missing;
+            } else {
+                entryCopyPath.irregulars.splice(index, 1);
+            }
         } else {
             let obj = {
                 gramFormSet: gramFormSet,
@@ -63,15 +88,15 @@ const ParadigmForm = (props) => {
         setAppState({entry: entryCopy});
     };
 
-    console.log(path);
+    // console.log(path);
 
     // let posPath =  _.get(appState, "entry." + stringPath);
     // let isBasic = path[thisIndex].gramForm === getBasicForm(posPath);
     // let exists = path[thisIndex].exists;
     // let isRegular = path[thisIndex].regular;
-    let exists = true;
+    
     let isRegular = true;
-
+    
     const getGramFormNames = () => {
         let gramFormNames = gramFormSet.reduce((acc, a) => {
             let gramForm = appState.setup.gramFormGroups.reduce((acc2, b) => {
@@ -82,6 +107,24 @@ const ParadigmForm = (props) => {
         }, "");
         return gramFormNames;
     };
+    
+    const gramFormExists = () => {
+        let index = getIndex();
+        if (index < 0) {
+            return true;
+        } else {
+            return !path.irregulars?.[index].missing ? true : false;
+        }
+    };
+
+    const isIrregular = () => {
+        let index = getIndex();
+        if (index < 0) {
+            return true;
+        } else {
+            return !path.irregulars?.[index].morphs ? true : false;
+        }
+    };
 
     const getIndex = () => {
         let index = path.irregulars?.findIndex(a => {
@@ -90,10 +133,6 @@ const ParadigmForm = (props) => {
             })
         })
         return index ?? -1;
-    };
-
-    const gramFormExists = () => {
-        return true;
     };
 
     const popupItems = [
@@ -112,22 +151,20 @@ const ParadigmForm = (props) => {
                 <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndentLevel)}>
-                    <div className={exists ? "" : "missing-form"} 
-                    // onClick={changeExists}
-                    >
+                    <div>
                         {capitalize(getGramFormNames())}
                     </div>
-                    <div>
+                    <div onClick={changeExists} >
                         {gramFormExists() ? "Exists" : "Missing"}
                     </div>
                     {/* <div onClick={changeBasic}> */}
                         {/* {path[thisIndex].basic ? "Citation form" : ""} */}
                     {/* </div> */}
                     <div onClick={changeRegular}>
-                        {getIndex() < 0 ? "Regular" : "Irregular"}
+                        {!gramFormExists() ? "" : isIrregular() ? "Regular" : "Irregular"}
                     </div>
                 </div>
-                {(exists && getIndex >= 0) &&
+                {(gramFormExists() && getIndex >= 0) &&
                    path[getIndex()].morphs.map((a,i) => (
                         <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} />
                     ))
