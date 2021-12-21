@@ -101,9 +101,9 @@ const PartOfSpeech = (props) => {
         let groups = [];
 
         gramFormGroups.forEach(a => {
+            // "gramForms" could be actual gramForms or gramClasses (forms to agree with classes)
             let gramFormGroupDef = appState.setup.gramFormGroups.find(b => b.id === a.refId) || appState.setup.gramClassGroups.find(b => b.id === a.refId);
             let arr = [];
-            // console.log(a);
             let gramForms = gramFormGroupDef.gramForms || gramFormGroupDef.gramClasses;
             gramForms.forEach(gramFormDef => {
                 let applicable = true;
@@ -136,7 +136,7 @@ const PartOfSpeech = (props) => {
         return cartesian(...groups);
     }
 
-    console.log(getAllGramForms());
+    // console.log(getAllGramForms());
 
     // console.log(appState.savedSetup.partsOfSpeechDefs);
 
@@ -192,9 +192,9 @@ const PartOfSpeech = (props) => {
                         <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                             <div>Forms</div>
                         </div>
-                        {/* {path[thisIndex].paradigmFormsGroups.map((a,i) => (
-                                <ParadigmForm key={i} thisIndex={i} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
-                        ))} */}
+                        {getAllGramForms().map((a, i) => (
+                                <ParadigmForm key={i} thisIndex={i} gramFormSet={a} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
+                        ))}
                     </div>
                 }
             </div>
