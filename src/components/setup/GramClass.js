@@ -8,15 +8,9 @@ const GramForm = props => {
 
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClass} = props;
 
-    // console.log(stringPath);
-
     let pathFrag = stringPath + ".gramClasses";
     const path = _.get(appState, "setup." + pathFrag);
-    // const upPath = _.get(appState, "setup." + pathFrag);
 
-
-
-    // const [formGroupOpen, setFormGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -38,7 +32,6 @@ const GramForm = props => {
         setAppState({setup: setupCopy});
     };
 
-    
     const popupItems = [
         ["Class", () => addGramClass(thisIndex, pathFrag)],
     ];
@@ -46,9 +39,6 @@ const GramForm = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
     
-
-// console.log(path);
-
     return(
         <>
             <div className="row">

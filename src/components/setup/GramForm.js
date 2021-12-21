@@ -51,27 +51,24 @@ const GramForm = props => {
 
 
     const addConstraint = (index) => {
-        console.log(index)
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
+        let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.map(a => a.id);
+        gramClassesToExclude.shift();
         let obj = {
             refId: availableForLimitationGroups[0].id,
-            gramClasses: [
-                {
-                    refId: availableForLimitationGroups[0].gramClasses[0].id
-                }
-            ]
+            excludedGramClasses: gramClassesToExclude
         };
-        if (setupCopyPath[thisIndex].allowedGramClassGroups) {
-            setupCopyPath[thisIndex].allowedGramClassGroups.splice(index, 0, obj);
+        if (setupCopyPath[thisIndex].constraints) {
+            setupCopyPath[thisIndex].constraints.splice(index, 0, obj);
         } else {
-            setupCopyPath[thisIndex].allowedGramClassGroups = [obj];
+            setupCopyPath[thisIndex].constraints = [obj];
         }
         setAppState({setup: setupCopy});
     };    
     
     const availableForLimitationGroups = appState.setup.gramClassGroups.filter(a => {
-        let alreadySelected = path[thisIndex].allowedGramClassGroups?.some(b => b.refId === a.id);
+        let alreadySelected = path[thisIndex].constraints?.some(b => b.refId === a.id);
         return !alreadySelected;
     });
     
@@ -81,7 +78,7 @@ const GramForm = props => {
 
     if (availableForLimitationGroups.length > 0) {
         popupItems.push(["Constraint", () => {
-            let index = (path[thisIndex].allowedGramClassGroups) ? path[thisIndex].allowedGramClassGroups.length : 0;
+            let index = (path[thisIndex].constraints) ? path[thisIndex].constraints.length : 0;
             addConstraint(index);
             }
         ]);
@@ -100,7 +97,7 @@ const GramForm = props => {
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGroup}></i>
-                    { path[thisIndex].allowedGramClassGroups?.length>0 ?
+                    { path[thisIndex].constraints?.length>0 ?
                         <i className={`fas fa-chevron-${gramFormOpen ? "up" : "down"}`} onClick={() => setGramFormOpen(!gramFormOpen)}></i>
                         : <i></i>
                     }
@@ -123,7 +120,7 @@ const GramForm = props => {
                         </>
                     }
                 </div>
-                {path[thisIndex].allowedGramClassGroups?.map((a, i) => (
+                {path[thisIndex].constraints?.map((a, i) => (
                     <GramFormLimitations appState={appState} setAppState={setAppState} moveItem={moveItem} thisIndex={i} key={i} stringPath={stringPathA} addConstraint={addConstraint} availableForLimitationGroups={availableForLimitationGroups} />
                 ))
 

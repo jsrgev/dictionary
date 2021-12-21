@@ -14,7 +14,6 @@ const Limitations = props => {
         let setupCopyPath = _.get(setupCopy, stringPath);
         if (setupCopyPath.excluded) {
             let index = setupCopyPath.excluded.findIndex(a => a === gramClassId);
-            // console.log(index);
             if (index < 0) {
                 setupCopyPath.excluded.push(gramClassId);
             } else if (setupCopyPath.excluded.length === 1) {
@@ -30,24 +29,10 @@ const Limitations = props => {
     
     const isSelected = gramClassId =>  {
         let isExcluded = path.excluded?.some(a => a === gramClassId);
-        // console.log(isExcluded)
-        // let seasd = excluded || "234";
-        // console.log(seasd)
         return !isExcluded ?? true;
-        // return path.gramClasses.some(a => a === gramClassName);
     };
 
-    // const check = gramClassId =>  {
-        // console.log(path);
-        // console.log(gramClassId);
-        // return "asdfsdf";
-        // return path.gramClasses.some(a => a === gramClassName);
-    // };
-
     let gramClassGroup = appState.setup.gramClassGroups.find(a => a.id === upPath.refId);
-    // console.log(path)
-
-    // console.log(isSelected('10'));
 
     return(
         <>
@@ -59,7 +44,6 @@ const Limitations = props => {
                         {gramClassGroup.gramClasses.map((a, i) => (
                             <li key={i} value={a.id} 
                             className={ isSelected(a.id) ? "selected" : "" } 
-                            // className={ check(a.id)} 
                             onClick={e => handleClick(e, a.id)}
                             >
                             {capitalize(a.name)}

@@ -7,7 +7,7 @@ const GramFormLimitations = props => {
 
     const {appState, setAppState, moveItem, addConstraint, stringPath, thisIndex, availableForLimitationGroups} = props;
 
-    let pathFrag = stringPath + ".allowedGramClassGroups";
+    let pathFrag = stringPath + ".constraints";
     const path = _.get(appState, "setup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -18,50 +18,37 @@ const GramFormLimitations = props => {
         }
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        let gramClasses = getGramClasses(gramClassGroupId);
+        let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.map(a => a.id);
+        gramClassesToExclude.shift();
         let obj = {
-            refId: gramClassGroupId,
-            gramClasses: [
-                {
-                    refId: gramClasses[0].id
-                }
-            ]
+            refId: availableForLimitationGroups[0].id,
+            excludedGramClasses: gramClassesToExclude
         };
         setupCopyPath[thisIndex] = obj;
         setAppState({setup: setupCopy});
     };
     
-    const handleGramClassClick = gramClassId => {
+    const handleGramClassClick = (gramClassId, numOfClasses) => {
         let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, stringPath + `.allowedGramClassGroups[${thisIndex}].gramClasses`);
-        // console.log(gramClassId)
-        // console.log(setupCopyPath.allowedGramClassGroups[thisIndex].gramClasses)
-        // console.log(setupCopyPath);
-        // return
-        // if (setupCopyPath.excluded) {
-            let index = setupCopyPath.findIndex(a => a.refId === gramClassId);
-            console.log(index);
-            if (index < 0) {
-                setupCopyPath.push({refId: gramClassId});
-                // console.log(setupCopyPath);
-            } else if (setupCopyPath.length === 1) {
-                return;
-            } else {
-                setupCopyPath.splice(index, 1);
-            }
-        // } else {
-        //     setupCopyPath.excluded = [gramClassId];
-        // }
+        let setupCopyPath = _.get(setupCopy, pathFrag + `.${thisIndex}.excludedGramClasses`);
+        let index = setupCopyPath.findIndex(a => a === gramClassId);
+        if (index >= 0 ) {
+            setupCopyPath.splice(index, 1);
+        } else if (setupCopyPath.length === numOfClasses-1) {
+            return;
+        } else {
+            setupCopyPath.push(gramClassId);
+        }
         setAppState({setup: setupCopy});
     };
-
+  
     const deleteConstraint = () => {
         let setupCopy = clone(appState.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         console.log(setupCopyPath[thisIndex]);
         if (path.length === 1) {
             let setupCopyUpPath = _.get(setupCopy, stringPath);
-            delete setupCopyUpPath.allowedGramClassGroups;
+            delete setupCopyUpPath.constraints;
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
@@ -74,9 +61,8 @@ const GramFormLimitations = props => {
     };
 
     const isSelected = gramClassId =>  {
-        return path[thisIndex].gramClasses.some(a => a.refId === gramClassId);
+        return !path[thisIndex].excludedGramClasses.some(a => a === gramClassId);
     };
-
 
     const isAvailable = gramClassGroupId => {
         return availableForLimitationGroups.some(a => a.id === gramClassGroupId);
@@ -84,15 +70,14 @@ const GramFormLimitations = props => {
 
     const getGramClasses = gramClassGroupId => {
         let gramClassGroup = appState.setup.gramClassGroups.find(a => a.id === gramClassGroupId);
-        return gramClassGroup.gramClasses
+        return gramClassGroup.gramClasses;
     };
 
     const popupItems = [
         ["Delete", deleteConstraint]
     ];
 
-    // console.log
-
+    
     if (availableForLimitationGroups.length > 0) {
         popupItems.push(["Constraint", () => addConstraint(thisIndex+1)]);
     };
@@ -118,7 +103,7 @@ const GramFormLimitations = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(1)}>
-                    <label>Only for group</label>
+                    <label>In group</label>
                     <ul>
                         {appState.setup.gramClassGroups.map((a, i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={() => handleGroupClick(a.id)}>{capitalize(a.name)}</li>
@@ -129,10 +114,10 @@ const GramFormLimitations = props => {
             <div className="row">
                 <div className="row-controls"></div>
                 <div className="row-content" style={getIndent(2)}>
-                    <label>Class</label>
+                    <label>Only occurs for</label>
                     <ul>
-                        {getGramClasses(path[thisIndex].refId).map((a, i) => (
-                            <li key={i} value={a.id} className={ isSelected(a.id) ? "selected" : "" } onClick={e => handleGramClassClick(a.id)}>{capitalize(a.name)}</li>
+                        {getGramClasses(path[thisIndex].refId).map((a, i, arr) => (
+                            <li key={i} value={a.id} className={ isSelected(a.id) ? "selected" : "" } onClick={e => handleGramClassClick(a.id, arr.length)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>
                 </div>

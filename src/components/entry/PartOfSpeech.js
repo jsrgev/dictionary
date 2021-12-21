@@ -34,22 +34,27 @@ const PartOfSpeech = (props) => {
         }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
+        // console.log(appState.savedSetup.partsOfSpeechDefs)
         entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups);
+        // console.log(appState.savedSetup.partsOfSpeechDefs)
+        // console.log(entryCopyPath[thisIndex]);
         setAppState({entry: entryCopy});
     };
+
+    // console.log(path[thisIndex]);
 
     const handleGramClassClick = (e, i, classGroupId) => {
         let value = e.target.getAttribute("value");
         const isMultiChoice = appState.savedSetup.gramClassGroups.find(a => a.id === classGroupId).multiChoice;
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
-        let index = entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.findIndex(a => a.refId === value);
+        let index = entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.findIndex(a => a === value);
 
         if (!isMultiChoice) {
             if (index === 0) {
                 return;
             } else {
-                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(0, 1, {refId: value});
+                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(0, 1, value);
             }
         } else {
             if (index >= 0) {
@@ -59,7 +64,7 @@ const PartOfSpeech = (props) => {
                     entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(index, 1);
                 }
             } else {
-                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.push({refId: value});
+                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.push(value);
             }
         }
         setAppState({entry:entryCopy});
@@ -70,6 +75,8 @@ const PartOfSpeech = (props) => {
     }
 
     const isCurrentSelection = posId =>  {
+        // console.log(posId);
+        // console.log(path[thisIndex]);
         return path[thisIndex].refId === posId;
     }
 
@@ -86,8 +93,59 @@ const PartOfSpeech = (props) => {
     // console.log(appState.savedSetup.partsOfSpeechDefs);
     // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
 
-    // const gramClassGroups = getAl    lGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
+    // const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
     // console.log(gramClassGroups)
+
+    const getAllGramForms = () => {
+        let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id = path[thisIndex].refId);
+        let gramFormGroups = posDef.gramFormGroups;
+        // console.log(gramForms);
+        
+        gramFormGroups.forEach(a => {
+            
+            let gramFormGroupDefs = appState.setup.gramFormGroups;
+
+            
+            let groups = [];
+            gramFormGroupDefs.forEach(gramFormGroupDef => {
+                // console.log(gramFormGroupDef.name);
+                let arr = [];
+
+// for each gramForm, need to check gramFormDef.allowedGramClassGroups array
+// if it contains an obj with refId that matches any current class, don't include it
+
+
+                gramFormGroupDef.gramForms.forEach(gramFormDef => {
+                    let applicable = true;
+                    if (gramFormDef.constraints) {
+                        gramFormDef.constraints.forEach(group => {
+                            let allCurrentGramClasses = [];
+                            path[thisIndex].gramClassGroups.forEach(a => {
+                                a.gramClasses.forEach(b => {
+                                    allCurrentGramClasses.push(b)
+                                });
+                            })
+                            let match = group.excludedGramClasses.some(a => {
+                                    return allCurrentGramClasses.some(b => b === a);
+                                });
+                            if (match) {
+                                applicable = false;
+                            }
+                        });
+                    }
+                    if (applicable) {
+                        arr.push(gramFormDef.id);
+                    }
+                })
+                groups.push(arr);
+            })
+            console.log(groups)
+        })
+    }
+
+    getAllGramForms();
+
+    // console.log(appState.savedSetup.partsOfSpeechDefs);
 
     return (
         <>
@@ -121,10 +179,11 @@ const PartOfSpeech = (props) => {
                                 <span>{capitalize(appState.savedSetup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
                                     { getGramClasses(path[thisIndex].refId, a.refId, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups).map((b,j) => (
-                                    <li key={j} value={b.id} 
-                                    className={ a.gramClasses.some(a => a.refId === b.id) ? "selected" : ""} 
-                                    onClick={e => handleGramClassClick(e, i, a.refId)}>{capitalize(b.name)}</li>
-                                    )) }
+                                        <li key={j} value={b.id} 
+                                        className={ a.gramClasses.some(a => a === b.id) ? "selected" : ""} 
+                                        onClick={e => handleGramClassClick(e, i, a.refId)}>{capitalize(b.name)}</li>
+                                        ))
+                                    }
                                 </ul>
                             </div>
                         </div>

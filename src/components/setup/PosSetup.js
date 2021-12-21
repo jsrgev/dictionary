@@ -92,29 +92,16 @@ const PosSetup = props => {
     };
 
     const availableGramClassGroups = appState.setup.gramClassGroups.filter(a => {
-        // console.log(path[thisIndex]);
         let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.refId === a.id);
-        // console.log(alreadySelected);
         return !alreadySelected;
-        // return !alreadySelected && a;
     })
 
-
-    // console.log(path[thisIndex].gramClassGroups);
     const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
-    // console.log(gramClassAndFormGroups);
-
-    // console.log(gramClassAndFormGroups);
 
     const availableGramClassAndFormGroups = gramClassAndFormGroups.filter(a => {
-        // console.log(path[thisIndex].gramFormGroups);
         let alreadySelected = path[thisIndex].gramFormGroups?.some(b => b.refId === a.id);
         return !alreadySelected;
-        // return !alreadySelected && a;
     })
-    // console.log(availableGramClassAndFormGroups);
-
-    // console.log(path[thisIndex]);
 
     const popupItems = [
         ["Part of speech", addPos],
@@ -133,7 +120,6 @@ const PosSetup = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    // console.log(gramClassAndFormGroups);
 
 
     return(

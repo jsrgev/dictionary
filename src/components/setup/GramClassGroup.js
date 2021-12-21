@@ -59,20 +59,17 @@ const GramClassGroup = props => {
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].multiChoice = value;
         setAppState({setup: setupCopy});
-    }
-
+    };
 
     const popupItems = [
         ["Group", () => addGroup(thisIndex)],
         ["Class", () => addGramClass(path[thisIndex].gramClasses.length-1, pathFrag+`[${thisIndex}].gramClasses`)],
     ];
 
-
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
-    // console.log(path[thisIndex]);
 
     return (
         <>

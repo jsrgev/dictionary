@@ -51,15 +51,11 @@ const GramClassSelect = props => {
     }
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
-    // console.log(stringPathA)
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-
     const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
-
-    // console.log(path);
 
     return(
         <>
