@@ -8,7 +8,7 @@ import { gramFormDefault } from '../../defaults.js';
 
 const ParadigmForm = (props) => {
 
-    const {appState, setAppState, prevIndentLevel, stringPath, addFunctions, gramFormSet} = props;
+    const {appState, setAppState, prevIndentLevel, stringPath, addFunctions, gramFormSet, moveItem} = props;
     const {addMorph} = addFunctions;
 
     let pathFrag = stringPath;
@@ -69,8 +69,8 @@ const ParadigmForm = (props) => {
         let entryCopyPath = _.get(entryCopy, pathFrag);
         let index = getIndex();
         if (index >= 0) {
-            if (entryCopyPath.irregulars[index].missing) {
-                delete entryCopyPath.irregulars[index].missing;
+            if (entryCopyPath.irregulars.length === 1) {
+                delete entryCopyPath.irregulars;
             } else {
                 entryCopyPath.irregulars.splice(index, 1);
             }
@@ -92,10 +92,6 @@ const ParadigmForm = (props) => {
 
     // let posPath =  _.get(appState, "entry." + stringPath);
     // let isBasic = path[thisIndex].gramForm === getBasicForm(posPath);
-    // let exists = path[thisIndex].exists;
-    // let isRegular = path[thisIndex].regular;
-    
-    let isRegular = true;
     
     const getGramFormNames = () => {
         let gramFormNames = gramFormSet.reduce((acc, a) => {
@@ -120,9 +116,9 @@ const ParadigmForm = (props) => {
     const isIrregular = () => {
         let index = getIndex();
         if (index < 0) {
-            return true;
+            return false;
         } else {
-            return !path.irregulars?.[index].morphs ? true : false;
+            return path.irregulars?.[index].morphs ? true : false;
         }
     };
 
@@ -139,16 +135,16 @@ const ParadigmForm = (props) => {
         ["Alternate form", () => addMorph(path.length-1, pathFrag+`[${getIndex()}].morphs`)],
     ];
 
-    let stringPathA = pathFrag + `[${getIndex()}].morphs`;
+    let stringPathA = pathFrag + `.irregulars[${getIndex()}].morphs`;
 
     return (
         <>
             <div className={`row${formOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                <i className={isRegular ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
+                {/* <i className={isRegular ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
                 <i></i>
-                <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
+                {/* <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i> */}
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndentLevel)}>
                     <div>
@@ -161,12 +157,12 @@ const ParadigmForm = (props) => {
                         {/* {path[thisIndex].basic ? "Citation form" : ""} */}
                     {/* </div> */}
                     <div onClick={changeRegular}>
-                        {!gramFormExists() ? "" : isIrregular() ? "Regular" : "Irregular"}
+                        {!gramFormExists() ? "" : isIrregular() ? "Irregular" : "Regular"}
                     </div>
                 </div>
-                {(gramFormExists() && getIndex >= 0) &&
-                   path[getIndex()].morphs.map((a,i) => (
-                        <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} />
+                { isIrregular() &&
+                   path.irregulars[getIndex()].morphs.map((a,i) => (
+                        <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveItem={moveItem} />
                     ))
                 }
             </div>

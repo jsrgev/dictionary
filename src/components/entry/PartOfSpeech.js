@@ -3,8 +3,7 @@ import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
 import {useState} from 'react';
-import _ from 'lodash';
-
+import _ from 'lodash' 
 const PartOfSpeech = (props) => {
     const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses, moveItem} = props;
     const {addPos} = addFunctions;
@@ -31,18 +30,20 @@ const PartOfSpeech = (props) => {
     const handlePosClick = async e => {
         let value = e.target.getAttribute("value");
         if (!isAvailable(value)) {
+            // console.log(value);
             return;
         }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag)
-        // console.log(appState.savedSetup.partsOfSpeechDefs)
         entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups);
+        console.log(appState.setup.partsOfSpeechDefs);
+        setAppState({entry: entryCopy});
+        return;
         // console.log(appState.savedSetup.partsOfSpeechDefs)
         // console.log(entryCopyPath[thisIndex]);
-        setAppState({entry: entryCopy});
     };
 
-    // console.log(path[thisIndex]);
+    // console.log(appState.setup.partsOfSpeechDefs);
 
     const handleGramClassClick = (e, i, classGroupId) => {
         let value = e.target.getAttribute("value");
@@ -76,6 +77,9 @@ const PartOfSpeech = (props) => {
     }
 
     const isCurrentSelection = posId =>  {
+        // console.log(path[thisIndex].refId);
+        // console.log(path[thisIndex].posId);
+        console.log(path[thisIndex].refId === posId)
         return path[thisIndex].refId === posId;
     }
 
@@ -96,9 +100,13 @@ const PartOfSpeech = (props) => {
     // console.log(gramClassGroups)
 
     const getAllGramForms = () => {
-        let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id = path[thisIndex].refId);
+        let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
         let gramFormGroups = posDef.gramFormGroups;
         let groups = [];
+
+        if (!gramFormGroups) {
+            return [];
+        }
 
         gramFormGroups.forEach(a => {
             // "gramForms" could be actual gramForms or gramClasses (forms to agree with classes)
@@ -106,7 +114,7 @@ const PartOfSpeech = (props) => {
             let arr = [];
             let gramForms = gramFormGroupDef.gramForms || gramFormGroupDef.gramClasses;
             gramForms.forEach(gramFormDef => {
-                let applicable = true;
+                let applicable = true;  
                 if (gramFormDef.constraints) {
                     gramFormDef.constraints.forEach(group => {
                         let allCurrentGramClasses = [];
@@ -137,6 +145,7 @@ const PartOfSpeech = (props) => {
     }
 
     // console.log(getAllGramForms());
+    const allGramForms = getAllGramForms();
 
     // console.log(appState.savedSetup.partsOfSpeechDefs);
 
@@ -182,7 +191,7 @@ const PartOfSpeech = (props) => {
                         </div>
                     ))
                 }
-                { irregularsVisible &&
+                { allGramForms.length > 0 &&
                     <div className={`row${formsOpen ? "" : " closed"}`}>
                         <div className="row-controls">
                             <i></i>
@@ -192,8 +201,8 @@ const PartOfSpeech = (props) => {
                         <div className="row-content" style={getIndent(prevIndentLevel+1)}>
                             <div>Forms</div>
                         </div>
-                        {getAllGramForms().map((a, i) => (
-                                <ParadigmForm key={i} thisIndex={i} gramFormSet={a} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} />
+                        {allGramForms.map((a, i) => (
+                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem} />
                         ))}
                     </div>
                 }
