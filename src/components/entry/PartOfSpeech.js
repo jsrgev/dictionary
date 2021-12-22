@@ -14,7 +14,6 @@ const PartOfSpeech = (props) => {
     const [posOpen, setPosOpen] = useState(true);
     const [formsOpen, setFormsOpen] = useState(false);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [irregularsVisible, setIrregularsVisible] = useState(true);
 
     const deletePos = (e) => {
         let entryCopy = clone(appState.entry);
@@ -30,7 +29,6 @@ const PartOfSpeech = (props) => {
     const handlePosClick = async e => {
         let value = e.target.getAttribute("value");
         if (!isAvailable(value)) {
-            // console.log(value);
             return;
         }
         let entryCopy = clone(appState.entry);
@@ -39,11 +37,7 @@ const PartOfSpeech = (props) => {
         console.log(appState.setup.partsOfSpeechDefs);
         setAppState({entry: entryCopy});
         return;
-        // console.log(appState.savedSetup.partsOfSpeechDefs)
-        // console.log(entryCopyPath[thisIndex]);
     };
-
-    // console.log(appState.setup.partsOfSpeechDefs);
 
     const handleGramClassClick = (e, i, classGroupId) => {
         let value = e.target.getAttribute("value");
@@ -77,27 +71,19 @@ const PartOfSpeech = (props) => {
     }
 
     const isCurrentSelection = posId =>  {
-        // console.log(path[thisIndex].refId);
-        // console.log(path[thisIndex].posId);
-        console.log(path[thisIndex].refId === posId)
         return path[thisIndex].refId === posId;
     }
 
-    const popupItems = [
-        ["Part of speech", () => addPos(thisIndex, pathFrag, availablePoses)],
-    ]
+    const popupItems = []
+
+    if (availablePoses.length > 0) {
+        popupItems.push(["Part of speech", () => addPos(thisIndex, pathFrag, availablePoses)]);
+    }
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
-
-    // console.log(path[thisIndex].gramClassGroups);
-    // console.log(appState.savedSetup.partsOfSpeechDefs);
-    // console.log(getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs));
-
-    // const gramClassGroups = getAllGramClassGroups(path[thisIndex].refId, appState.savedSetup.partsOfSpeechDefs);
-    // console.log(gramClassGroups)
 
     const getAllGramForms = () => {
         let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
@@ -154,7 +140,7 @@ const PartOfSpeech = (props) => {
             <div className={`row${posOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                    <i className={`fas fa-plus${availablePoses.length===0 ? " disabled" : ""}`} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
+                    <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? "" : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deletePos}></i>           
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     <i

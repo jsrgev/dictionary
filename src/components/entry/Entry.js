@@ -52,7 +52,7 @@ const Entry = props => {
         },
         addDefinition: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             if (entryCopyPath.definitions) {
                 entryCopyPath.definitions.splice(index+1, 0, clone(definitionDefault));
             } else {
@@ -62,7 +62,7 @@ const Entry = props => {
         },
         addPhrase: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             if (entryCopyPath.phrases) {
                 entryCopyPath.phrases.splice(index+1, 0, clone(phraseDefault));
             } else {
@@ -72,7 +72,7 @@ const Entry = props => {
         },
         addExample: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             if (entryCopyPath.examples) {
                 entryCopyPath.examples.splice(index+1, 0, clone(exampleDefault));
             } else {
@@ -82,7 +82,7 @@ const Entry = props => {
         },
         addNote: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             if (entryCopyPath.notes) {
                 entryCopyPath.notes.splice(index+1, 0, clone(noteDefault));
             } else {
@@ -92,8 +92,10 @@ const Entry = props => {
         },
         addPos: (index, pathFrag, availablePoses) => {
             let entryCopy = clone(state.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
-            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].name));
+            let entryCopyPath = _.get(entryCopy, pathFrag);
+            // console.log(state.savedSetup.gramClassGroups);
+            // return;
+            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
             setState({entry: entryCopy});
         },
     };
@@ -112,11 +114,8 @@ const Entry = props => {
     const addToEntries = (newEntry) => {
         let allEntriesCopy = clone(state.allEntries);
         allEntriesCopy.push(newEntry);
-        // console.log(allEntriesCopy);
         setState({allEntries: allEntriesCopy});
     };
-
-    // console.log(state.allEntries);
 
     const addEntry = () => {
         axios.post(`${API_BASE}/entry/add`, clone(state.entry))

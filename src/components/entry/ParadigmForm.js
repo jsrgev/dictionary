@@ -146,7 +146,7 @@ const ParadigmForm = (props) => {
                 <i></i>
                 {/* <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i> */}
                 </div>
-                <div className="row-content paradigmForms" style={getIndent(prevIndentLevel)}>
+                <div className="row-content paradigmForms" style={getIndent(prevIndentLevel-1)}>
                     <div>
                         {capitalize(getGramFormNames())}
                     </div>
@@ -162,7 +162,7 @@ const ParadigmForm = (props) => {
                 </div>
                 { isIrregular() &&
                    path.irregulars[getIndex()].morphs.map((a,i) => (
-                        <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveItem={moveItem} />
+                        <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveItem={moveItem} />
                     ))
                 }
             </div>

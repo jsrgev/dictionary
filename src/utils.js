@@ -139,6 +139,9 @@ export const getGramClassGroupIds = (posId, partsOfSpeechDefs) => {
 };
 
 export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
+    console.log(posId)
+    console.log(partsOfSpeechDefs)
+    console.log(gramClassGroups)
     let posDef = getPosDef(posId, partsOfSpeechDefs);
     let obj = {
         refId: posDef.id,
