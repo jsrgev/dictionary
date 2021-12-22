@@ -88,10 +88,6 @@ export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
 
 export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramClassGroups) => {
     let posDef = getPosDef(posId, partsOfSpeechDefs);
-    // console.log(posDef);
-    // console.log(gramClassGroupId);
-    // console.log(posDef.gramClassGroups.find(a => a.refId === gramClassGroupId));
-    // console.log(posDef.gramClassGroups.find(a => a.refId === gramClassGroupId) || []);
     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
 
 
@@ -128,7 +124,6 @@ export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramC
 export const getGramClassGroup = (posId, partsOfSpeechDefs) => {
     let posDef = getPosDef(posId, partsOfSpeechDefs);
     let defaultGramClassGroupId = posDef.gramClassGroups?.[0].refId;
-    // console.log(posDef.gramClassGroups);
     return defaultGramClassGroupId;
 };
 
@@ -139,9 +134,6 @@ export const getGramClassGroupIds = (posId, partsOfSpeechDefs) => {
 };
 
 export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
-    console.log(posId)
-    console.log(partsOfSpeechDefs)
-    console.log(gramClassGroups)
     let posDef = getPosDef(posId, partsOfSpeechDefs);
     let obj = {
         refId: posDef.id,

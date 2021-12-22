@@ -6,7 +6,10 @@ import NavBar from "./components/NavBar.js";
 import Setup from './components/setup/Setup';
 import Dictionary from './components/Dictionary';
 import About from './components/About';
-import {useSetState} from 'react-use';
+// import {useSetState} from 'react-use';
+
+import React from "react";
+import useSetState from "@danedavid/usesetstate";
 
 import {useEffect} from 'react';
 import {API_BASE} from './utils.js';

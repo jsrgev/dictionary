@@ -86,6 +86,7 @@ const Setup = props => {
             let setupClone = clone(appState.setup);
             setupClone.dateModified = new Date();
             setAppState({setup: setupClone, savedSetup:setupClone});
+            alert("Your changes have been saved.");
             // cleanUpEntries();
         })
         .catch(err => console.log(err));

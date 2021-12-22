@@ -177,7 +177,7 @@ const Entry = props => {
 
     const handleNewBlankEntryClick = () => {
         if (isDirty()) {
-            let response = window.confirm("Are you sure you want to leave? The new entry will not be saved.");
+            let response = window.confirm("Are you sure you want to leave? Changes to this entry will not be saved.");
             if (!response) {
                 return;
             }

@@ -2,8 +2,9 @@ import {capitalize, clone, generatePos, getAllGramClassGroups, getIndent, addPop
 import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
-import {useState} from 'react';
-import _ from 'lodash' 
+import {useState, useEffect} from 'react';
+import _ from 'lodash';
+
 const PartOfSpeech = (props) => {
     const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses, moveItem} = props;
     const {addPos} = addFunctions;
@@ -17,7 +18,7 @@ const PartOfSpeech = (props) => {
 
     const deletePos = (e) => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             entryCopyPath.splice(0, 1, generatePos(appState.savedSetup.partsOfSpeechDefs[0].name));
         } else {
@@ -32,13 +33,41 @@ const PartOfSpeech = (props) => {
             return;
         }
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups);
-        console.log(appState.setup.partsOfSpeechDefs);
         setAppState({entry: entryCopy});
         return;
     };
 
+    const cleanUpGramForms = () => {
+        // console.log("cleanUpGramForms")
+        // console.log(path[thisIndex]);
+        // console.log(path[thisIndex].irregulars);
+        let irregulars = path[thisIndex].irregulars;
+        if (!irregulars) {
+            return;
+        }
+        let irregularsToDelete = [];
+        irregulars.forEach((a, i) => {
+            let gramFormSet = a.gramFormSet;
+            let formShouldntExist = !allGramForms.some(b => {
+                return gramFormSet.every(c => {
+                    return b.some(d => d === c);
+                })
+            })
+            if (formShouldntExist) irregularsToDelete.push(i);
+        });
+        if (irregularsToDelete.length > 0) {
+            let entryCopy = clone(appState.entry);
+            let entryCopyPath = _.get(entryCopy, `${pathFrag}[${thisIndex}].irregulars`);
+            irregularsToDelete.reverse().forEach(a => {
+                entryCopyPath.splice(a, 1);
+            });
+            setAppState({entry: entryCopy});
+        }
+
+    };
+    
     const handleGramClassClick = (e, i, classGroupId) => {
         let value = e.target.getAttribute("value");
         const isMultiChoice = appState.savedSetup.gramClassGroups.find(a => a.id === classGroupId).multiChoice;
@@ -63,8 +92,12 @@ const PartOfSpeech = (props) => {
                 entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.push(value);
             }
         }
-        setAppState({entry:entryCopy});
+        setAppState({entry: entryCopy});
     }
+
+    useEffect(() => {
+        cleanUpGramForms();
+    },[path[thisIndex].gramClassGroups]);
 
     const isAvailable = posId => {
         return availablePoses.some(a => a.id === posId);
@@ -74,26 +107,13 @@ const PartOfSpeech = (props) => {
         return path[thisIndex].refId === posId;
     }
 
-    const popupItems = []
-
-    if (availablePoses.length > 0) {
-        popupItems.push(["Part of speech", () => addPos(thisIndex, pathFrag, availablePoses)]);
-    }
-
-    const isFirst = thisIndex === 0;
-    const isLast = thisIndex === path.length-1;
-
-    const stringPathA = pathFrag + `[${thisIndex}]`;
-
     const getAllGramForms = () => {
         let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
         let gramFormGroups = posDef.gramFormGroups;
-        let groups = [];
-
         if (!gramFormGroups) {
             return [];
         }
-
+        let groups = [];
         gramFormGroups.forEach(a => {
             // "gramForms" could be actual gramForms or gramClasses (forms to agree with classes)
             let gramFormGroupDef = appState.setup.gramFormGroups.find(b => b.id === a.refId) || appState.setup.gramClassGroups.find(b => b.id === a.refId);
@@ -106,7 +126,7 @@ const PartOfSpeech = (props) => {
                         let allCurrentGramClasses = [];
                         path[thisIndex].gramClassGroups.forEach(a => {
                             a.gramClasses.forEach(b => {
-                                allCurrentGramClasses.push(b)
+                                allCurrentGramClasses.push(b);
                             });
                         })
                         let match = group.excludedGramClasses.some(a => {
@@ -124,16 +144,23 @@ const PartOfSpeech = (props) => {
             groups.push(arr);
         })
 
-        // get all combinations
-        // from https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
+        // get all combinations - from https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
         const cartesian = (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
         return cartesian(...groups);
-    }
+    };
 
-    // console.log(getAllGramForms());
     const allGramForms = getAllGramForms();
 
-    // console.log(appState.savedSetup.partsOfSpeechDefs);
+    const popupItems = [];
+
+    if (availablePoses.length > 0) {
+        popupItems.push(["Part of speech", () => addPos(thisIndex, pathFrag, availablePoses)]);
+    }
+
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
+
+    const stringPathA = pathFrag + `[${thisIndex}]`;
 
     return (
         <>
@@ -185,7 +212,7 @@ const PartOfSpeech = (props) => {
                             <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
                         </div>
                         <div className="row-content" style={getIndent(prevIndentLevel+1)}>
-                            <div>Forms</div>
+                            <div>Forms:</div>
                         </div>
                         {allGramForms.map((a, i) => (
                             <ParadigmForm key={i} thisIndex={i} gramFormSet={a} appState={appState} setAppState={setAppState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem} />

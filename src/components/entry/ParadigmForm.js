@@ -4,7 +4,6 @@ import Morph from './Morph.js';
 import AddPopup from '../AddPopup';
 import {useState} from 'react';
 import _ from 'lodash';
-import { gramFormDefault } from '../../defaults.js';
 
 const ParadigmForm = (props) => {
 
@@ -131,9 +130,11 @@ const ParadigmForm = (props) => {
         return index ?? -1;
     };
 
-    const popupItems = [
-        ["Alternate form", () => addMorph(path.length-1, pathFrag+`[${getIndex()}].morphs`)],
-    ];
+    const popupItems = [];
+
+    if (isIrregular()) {
+        popupItems.push(["Alternate form", () => addMorph(path.irregulars[getIndex()].morphs.length-1, pathFrag+`.irregulars[${getIndex()}].morphs`)]);
+    }
 
     let stringPathA = pathFrag + `.irregulars[${getIndex()}].morphs`;
 
@@ -142,9 +143,10 @@ const ParadigmForm = (props) => {
             <div className={`row${formOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                {/* <i className={isRegular ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
+                <i className={!isIrregular() ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
+                {/* <i></i> */}
                 <i></i>
-                {/* <i className={isRegular ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i> */}
+                <i className={!isIrregular() ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndentLevel-1)}>
                     <div>
