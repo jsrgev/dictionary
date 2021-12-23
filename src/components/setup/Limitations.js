@@ -6,11 +6,11 @@ const Limitations = props => {
     const {appState, setAppState, stringPath} = props;
 
     let pathFrag = stringPath;
-    const path = _.get(appState, "setup." + pathFrag);
-    let upPath = _.get(appState, "setup." + stringPath);
+    const path = _.get(appState, "tempSetup." + pathFrag);
+    let upPath = _.get(appState, "tempSetup." + stringPath);
 
     const handleClick = (e, gramClassId) => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, stringPath);
         if (setupCopyPath.excluded) {
             let index = setupCopyPath.excluded.findIndex(a => a === gramClassId);
@@ -24,7 +24,7 @@ const Limitations = props => {
         } else {
             setupCopyPath.excluded = [gramClassId];
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     }
     
     const isSelected = gramClassId =>  {
@@ -32,7 +32,7 @@ const Limitations = props => {
         return !isExcluded ?? true;
     };
 
-    let gramClassGroup = appState.setup.gramClassGroups.find(a => a.id === upPath.refId);
+    let gramClassGroup = appState.tempSetup.gramClassGroups.find(a => a.id === upPath.refId);
 
     return(
         <>

@@ -10,42 +10,50 @@ const GramFormGroup = props => {
     const {appState, setAppState, thisIndex, moveItem} = props;
 
     let pathFrag = "gramFormGroups";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup);
+        const setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath.splice(thisIndex+1, 0, clone(gramFormGroupDefault));
-        setAppState({setup: setupCopy});
+        let newGramFormGroup = clone(gramFormGroupDefault);
+        newGramFormGroup.id = setupCopy.nextId.toString();
+        setupCopy.nextId++;
+        setupCopyPath.splice(thisIndex+1, 0, newGramFormGroup);
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGramForm = (index, pathFrag) => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath.splice(index+1, 0, clone(gramFormDefault));
-        setAppState({setup: setupCopy});
+        let newGramForm = clone(gramFormDefault);
+        newGramForm.id = setupCopy.nextId.toString();
+        setupCopy.nextId++;
+        setupCopyPath.splice(index+1, 0, newGramForm);
+        setAppState({tempSetup: setupCopy});
     };
 
     const deleteGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
         if (setupCopyPath.length === 1) {
-            console.log(setupCopyPath)
-            setupCopyPath.splice(0, 1, clone(gramFormGroupDefault));
+            let newGramFormGroup = clone(gramFormGroupDefault);
+            newGramFormGroup.id = setupCopy.nextId.toString();
+            setupCopy.nextId++;
+            setupCopyPath.splice(0, 1, newGramFormGroup);
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     
@@ -91,7 +99,7 @@ const GramFormGroup = props => {
                 }
             </div>
         </>
-    )
+    );
 };
 
 export default GramFormGroup;

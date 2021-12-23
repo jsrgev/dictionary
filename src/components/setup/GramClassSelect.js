@@ -9,7 +9,7 @@ const GramClassSelect = props => {
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClassOption, availableGramClassGroups} = props;
 
     let pathFrag = stringPath + ".gramClassGroups";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [classSelectOpen, setClassSelectOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -19,20 +19,20 @@ const GramClassSelect = props => {
         if (!isAvailable(gramClassId)) {
             return;
         }
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let obj = {refId: gramClassId};
         _.set(setupCopy, `[${pathFrag[thisIndex]}]`, obj);
         setupCopyPath[thisIndex] = obj;
 
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
     
     const deletePos = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath.splice(thisIndex, 1);
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const popupItems = [];
@@ -48,14 +48,12 @@ const GramClassSelect = props => {
 
     const isCurrentSelection = gramClassGroupId =>  {
         return path[thisIndex].refId === gramClassGroupId;
-    }
+    };
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-
-    // const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
 
     return(
         <>
@@ -77,7 +75,7 @@ const GramClassSelect = props => {
                 <div className="row-content pos-options" style={getIndent(0)}>
                     <div>Class group</div>
                     <ul>
-                        {appState.setup.gramClassGroups.map((a, i) => (
+                        {appState.tempSetup.gramClassGroups.map((a, i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={e => handleClick(e)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>
@@ -85,7 +83,7 @@ const GramClassSelect = props => {
                 <Limitations appState={appState} setAppState={setAppState} stringPath={stringPathA} />
             </div>
         </>
-    )
+    );
 };
 
 export default GramClassSelect;

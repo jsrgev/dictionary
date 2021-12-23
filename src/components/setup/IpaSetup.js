@@ -8,7 +8,7 @@ const IpaSetup = props => {
     const {appState, setAppState, thisIndex, moveItem} = props;
 
     let pathFrag = "ipa.content";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     let groupDefault = {
         group: "",
@@ -22,31 +22,31 @@ const IpaSetup = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup);
+        const setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const changeCharacters = value => {
-        const setupCopy = clone(appState.setup);
+        const setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex].characters = value.split(" ");
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath.splice(thisIndex+1, 0, clone(groupDefault));
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag)
             setupCopyPath.splice(thisIndex, 1);
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     

@@ -10,48 +10,34 @@ const GramForm = props => {
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramForm} = props;
 
     let pathFrag = stringPath + ".gramForms";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [gramFormOpen, setGramFormOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup  );
+        const setupCopy = clone(appState.tempSetup  );
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
-            setupCopyPath.splice(0, 1, clone(gramFormDefault));
+            let newGramForm = clone(gramFormDefault);
+            newGramForm.id = setupCopy.nextId.toString();
+            setupCopy.nextId++;
+            setupCopyPath.splice(0, 1, newGramForm);
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
-
-    // const handleClick = async (e) => {
-    //     let gramClassId = e.target.getAttribute("value");
-    //     if (!isAvailable(gramClassId)) {
-    //         return;
-    //     }
-    //     let setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     let obj = {refId: gramClassId};
-    //     _.set(setupCopy, `[${pathFrag[thisIndex]}]`, obj);
-    //     setupCopyPath[thisIndex] = obj;
-
-    //     setAppState({setup: setupCopy});
-    // };
-
-
-
     const addConstraint = (index) => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.map(a => a.id);
         gramClassesToExclude.shift();
@@ -64,10 +50,10 @@ const GramForm = props => {
         } else {
             setupCopyPath[thisIndex].constraints = [obj];
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };    
     
-    const availableForLimitationGroups = appState.setup.gramClassGroups.filter(a => {
+    const availableForLimitationGroups = appState.tempSetup.gramClassGroups.filter(a => {
         let alreadySelected = path[thisIndex].constraints?.some(b => b.refId === a.id);
         return !alreadySelected;
     });
@@ -127,7 +113,7 @@ const GramForm = props => {
                 }
             </div>
         </>
-    )
+    );
 };
 
 export default GramForm;

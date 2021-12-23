@@ -11,33 +11,31 @@ const PosSetup = props => {
     const {appState, setAppState, thisIndex, moveItem} = props;
 
     let pathFrag = "partsOfSpeechDefs";
-    const path = _.get(appState, "setup." + pathFrag);
-
-    // const areClassGroupsSelected = (path[thisIndex].gramClassGroups.length > 0) ? true : false;
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [posOpen, setPosOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup);
+        const setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const addPos = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
 
         let newPos = clone(posDefault);
         newPos.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(thisIndex+1, 0, newPos);
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGramClassOption = index => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let obj = {refId: availableGramClassGroups[0].id};
         if (setupCopyPath[thisIndex].gramClassGroups) {
@@ -45,11 +43,11 @@ const PosSetup = props => {
         } else {
             setupCopyPath[thisIndex].gramClassGroups = [obj];
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGramFormGroup = index => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let obj = {refId: availableGramClassAndFormGroups[0].id};
         if (setupCopyPath[thisIndex].gramFormGroups) {
@@ -57,31 +55,31 @@ const PosSetup = props => {
         } else {
             setupCopyPath[thisIndex].gramFormGroups = [obj];
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const deletePos = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (path.length === 1) {
             setupCopyPath.splice(0, 1, clone(posDefault));
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
-    const availableGramClassGroups = appState.setup.gramClassGroups.filter(a => {
+    const availableGramClassGroups = appState.tempSetup.gramClassGroups.filter(a => {
         let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.refId === a.id);
         return !alreadySelected;
-    })
+    });
 
-    const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
+    const gramClassAndFormGroups = clone(appState.tempSetup.gramClassGroups).concat(clone(appState.tempSetup.gramFormGroups));
 
     const availableGramClassAndFormGroups = gramClassAndFormGroups.filter(a => {
         let alreadySelected = path[thisIndex].gramFormGroups?.some(b => b.refId === a.id);
         return !alreadySelected;
-    })
+    });
 
     const popupItems = [
         ["Part of speech", addPos],

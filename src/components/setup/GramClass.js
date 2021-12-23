@@ -9,27 +9,30 @@ const GramForm = props => {
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClass} = props;
 
     let pathFrag = stringPath + ".gramClasses";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup  );
+        const setupCopy = clone(appState.tempSetup  );
         let setupCopyPath = _.get(setupCopy, pathFrag)
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
-            setupCopyPath.splice(0, 1, clone(gramClassDefault));
+            let newGramClass = clone(gramClassDefault);
+            newGramClass.id = setupCopy.nextId.toString();
+            setupCopy.nextId++;
+            setupCopyPath.splice(0, 1, newGramClass);
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const popupItems = [

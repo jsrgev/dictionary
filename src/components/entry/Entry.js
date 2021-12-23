@@ -21,16 +21,16 @@ const Entry = props => {
     const initializeEntry = () => {
         // console.log("initializing");
         let newEntry = clone(entryDefault);
-        const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
+        const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
         setState({entry: newEntry, entryCopy: newEntry});
     };
 
     useEffect(() => {
-        state.savedSetup &&
+        state.setup &&
         initializeEntry();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[state.savedSetup]);
+    },[state.setup]);
 
     useEffect(() => {
         return () => {
@@ -95,9 +95,9 @@ const Entry = props => {
         addPos: (index, pathFrag, availablePoses) => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            // console.log(state.savedSetup.gramClassGroups);
+            // console.log(state.setup.gramClassGroups);
             // return;
-            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
+            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
             setState({entry: entryCopy});
         },
     };
@@ -195,7 +195,7 @@ const Entry = props => {
 
     return (
         <main id="entry">
-            { (!state.savedSetup || !state.entry) ?
+            { (!state.setup || !state.entry) ?
                 <div>Loading</div> :
                 <>
                     <EntriesList state={state} setState={setState} isDirty={isDirty} />
@@ -232,13 +232,13 @@ const Entry = props => {
                         <Preview appState={state} setAppState={setState} />
                     }
                     </div>
-                    { state.savedSetup.ipa.showPalette &&
+                    { state.setup.ipa.showPalette &&
                         <IpaPalette appState={state} />
                     }
                 </>
             }
         </main>
-    )
+    );
 };
 
 export default Entry;

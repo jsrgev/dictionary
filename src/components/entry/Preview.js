@@ -3,17 +3,7 @@ import {clone, getPosDef, getGramFormAbbrs, sortEntries} from '../../utils.js';
 
 const Preview = (props) => {
 
-
     const {appState} = props;
-    // const [previewShown, setPreviewShown] = useState(true);
-
-    // const noteDisplay = note => {
-    //     let display = "";
-    //     if (note.trim() !== "") {
-    //         display = ` (${note.trim()})`;
-    //     }
-    //     return display;
-    // };
 
     const alphaSortSet = set => {
         let setClone = clone(set);
@@ -102,20 +92,6 @@ const Preview = (props) => {
         return allDisplay;
     };
 
-
-    // const getGramClassAbbr = (posDef, gramClassId) => {
-    //     let gramClassDef = posDef.gramClasses.find(a => a.id === gramClassId);
-    //     return gramClassDef.abbr;
-        // return gramClassDef.unmarked ? "" : gramClassDef.abbr;
-    // };
-    
-    // const getGramFormAbbr = gramFormName => {
-    //     let arr = gramFormName.split(" ");
-    //     let abbrs = arr.map(a => gramFormAbbrs[a] + ".");
-    //     return abbrs.join(" ");
-    // };
-
-
     const getIrregularsDisplay = irregulars => {
         let items = [];
         for (let item of irregulars) {
@@ -143,16 +119,16 @@ const Preview = (props) => {
     };
 
     const getPosDisplay = (posDetails) => {
-        let posDef = getPosDef(posDetails.refId, appState.savedSetup.partsOfSpeechDefs);
+        let posDef = getPosDef(posDetails.refId, appState.setup.partsOfSpeechDefs);
         let posAbbr = posDef.abbr;
         let posGramClassAbbrs = posDetails.gramClassGroups?.map(gramClassGroup => {
-            let gramClassGroupDef = appState.savedSetup.gramClassGroups.find(a => a.id === gramClassGroup.refId);
+            let gramClassGroupDef = appState.setup.gramClassGroups.find(a => a.id === gramClassGroup.refId);
             let arr = gramClassGroup.gramClasses.map(c => {
                 return gramClassGroupDef.gramClasses.find(b => b.id === c).abbr;
             })
             return arr.join(", ");
         });
-        let filteredPosGramClassAbbrs = posGramClassAbbrs.filter(a => a !== "");
+        let filteredPosGramClassAbbrs = posGramClassAbbrs?.filter(a => a !== "") ?? [];
         let posGramClassAbbrsString = filteredPosGramClassAbbrs.join(", ");
         let divider = (posGramClassAbbrsString === "") ? "" : "-";
         let gramClassesString = posGramClassAbbrs ? `${divider}${posGramClassAbbrsString}` : "";
@@ -225,7 +201,6 @@ const Preview = (props) => {
     const getSenseGroupDisplay = (senseGroup) => {
         let poses = senseGroup.partsOfSpeech.map((a, i, arr) => {
             let divider = i < arr.length-1 ? <> / </> : "";
-            // console.log(a);
             let posDisplay = getPosDisplay(a);
             return <React.Fragment key={i}>{posDisplay}{divider}</React.Fragment>;
         });

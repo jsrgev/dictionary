@@ -83,7 +83,7 @@ export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
 
 // const getGramClasses = (gramClassGroupId, gramClassGroups) => {
 //     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
-//     let posDef = appState.savedSetup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
+//     let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
 //     // get classes that aren't allowed for this POS
 //     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
 //     // filter out classes that aren't allowed for this POS

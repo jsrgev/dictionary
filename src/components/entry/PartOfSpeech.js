@@ -20,7 +20,7 @@ const PartOfSpeech = (props) => {
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
-            entryCopyPath.splice(0, 1, generatePos(appState.savedSetup.partsOfSpeechDefs[0].name));
+            entryCopyPath.splice(0, 1, generatePos(appState.setup.partsOfSpeechDefs[0].name));
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
@@ -34,7 +34,7 @@ const PartOfSpeech = (props) => {
         }
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
-        entryCopyPath[thisIndex] = generatePos(value, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups);
+        entryCopyPath[thisIndex] = generatePos(value, appState.setup.partsOfSpeechDefs, appState.setup.gramClassGroups);
         setAppState({entry: entryCopy});
         return;
     };
@@ -66,7 +66,7 @@ const PartOfSpeech = (props) => {
     
     const handleGramClassClick = (e, i, classGroupId) => {
         let value = e.target.getAttribute("value");
-        const isMultiChoice = appState.savedSetup.gramClassGroups.find(a => a.id === classGroupId).multiChoice;
+        const isMultiChoice = appState.setup.gramClassGroups.find(a => a.id === classGroupId).multiChoice;
         let entryCopy = clone(appState.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         let index = entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.findIndex(a => a === value);
@@ -181,7 +181,7 @@ const PartOfSpeech = (props) => {
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
-                        {appState.savedSetup.partsOfSpeechDefs.map((a,i) => (
+                        {appState.setup.partsOfSpeechDefs.map((a,i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={handlePosClick}>{capitalize(a.name)}</li>
                         ))}
                     </ul>   
@@ -190,9 +190,9 @@ const PartOfSpeech = (props) => {
                         <div className="row" key={i}>
                             <div className="row-controls"></div>
                             <div className="row-content" style={getIndent(prevIndentLevel+1)}>
-                                <span>{capitalize(appState.savedSetup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
+                                <span>{capitalize(appState.setup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
-                                    { getGramClasses(path[thisIndex].refId, a.refId, appState.savedSetup.partsOfSpeechDefs, appState.savedSetup.gramClassGroups).map((b,j) => (
+                                    { getGramClasses(path[thisIndex].refId, a.refId, appState.setup.partsOfSpeechDefs, appState.setup.gramClassGroups).map((b,j) => (
                                         <li key={j} value={b.id} 
                                         className={ a.gramClasses.some(a => a === b.id) ? "selected" : ""} 
                                         onClick={e => handleGramClassClick(e, i, a.refId)}>{capitalize(b.name)}</li>

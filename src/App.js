@@ -1,6 +1,4 @@
 import { Route, Routes} from "react-router-dom";
-// import {capitalize} from './utils.js';
-// import {languageData} from './languageSettings.js';
 import Entry from "./components/entry/Entry.js";
 import NavBar from "./components/NavBar.js";
 import Setup from './components/setup/Setup';
@@ -18,8 +16,8 @@ const App = () => {
         allEntries: [],
         entry: null,
         entryCopy: null,
-        savedSetup: null,
-        setup: {
+        setup: null,
+        tempSetup: {
             nextId: 101,
             targetLanguageName: "Melfem",
             sourceLanguageName: "English",
@@ -190,60 +188,20 @@ const App = () => {
         .then(data => {
             // there will be data if previous setup has been saved already
             if (data) {
-                setState({setup: data, savedSetup: data});
+                setState({setup: data, tempSetup: data});
             } else {
-                setState({savedSetup: state.setup});
+                setState({setup: state.tempSetup});
             }
         })
         .catch(err => console.error(`Error: ${err}`));
 
     };
 
-    // console.log(state.entries)
-
     useEffect(() => {
         fetchSetup();
         fetchEntries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
-
-
-    // const completeTodo = async id => {
-    //     const data = await fetch(API_BASE + "/todo/complete/" + id)
-    //     .then(res => res.json());
-    //     setTodos(todos => todos.map(todo => {
-    //         if (todo._id === data._id) {
-    //             todo.complete = data.complete;
-    //         }
-    //         return todo;
-    //     }))
-    // }
-
-    // const deleteToDo = async id => {
-    //     const data = await fetch(API_BASE + "/todo/delete/" + id, {method: "DELETE"})
-    //     .then(res => res.json());
-    //     setTodos(todos => todos.filter(todo => todo._id !== data._id));
-
-    // }
-
-    // const addTodo = async () => {
-    //     const data = await fetch(API_BASE + "/todo/new", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             text: newTodo
-    //         })
-    //     })
-    //     .then(res => res.json());
-    //     setTodos([...todos, data]);
-    //     setPopupActive(false);
-    //     setNewTodo("");
-    // }
-
-;
-
     
 	return (
         <>

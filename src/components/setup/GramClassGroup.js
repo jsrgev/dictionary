@@ -11,54 +11,60 @@ const GramClassGroup = props => {
     const {appState, setAppState, thisIndex, moveItem} = props;
 
     let pathFrag = "gramClassGroups";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup);
+        const setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGroup = index => {
-        const setupCopy = clone(appState.setup);
+        const setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath.splice(index+1, 0, clone(gramClassGroupDefault));
-        setAppState({setup: setupCopy});
+
+        let newGramClassGroup = clone(gramClassGroupDefault);
+        newGramClassGroup.id = setupCopy.nextId.toString();
+        setupCopy.nextId++;
+
+        setupCopyPath.splice(index+1, 0, newGramClassGroup);
+        setAppState({tempSetup: setupCopy});
     };
 
     const addGramClass = (index, pathFrag) => {
         console.log("adding")
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let newGramClass = clone(gramClassDefault);
         newGramClass.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(index+1, 0, newGramClass);
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
-
     const deleteGramClassGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
-            console.log(setupCopyPath)
-            setupCopyPath.splice(0, 1, clone(gramClassGroupDefault));
+            let newGramClassGroup = clone(gramClassGroupDefault);
+            newGramClassGroup.id = setupCopy.nextId.toString();
+            setupCopy.nextId++;
+            setupCopyPath.splice(0, 1, newGramClassGroup);
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const changeMultiChoice = value => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].multiChoice = value;
-        setAppState({setup: setupCopy});
+        setAppState({tempSetup: setupCopy});
     };
 
     const popupItems = [

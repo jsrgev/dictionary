@@ -13,40 +13,40 @@ const Setup = props => {
 
     const {appState, setAppState} = props;
 
-    const setup = appState.setup;
+    const tempSetup = appState.tempSetup;
 
-    // console.log(setup);
+    // console.log(tempSetup);
     // const [posOpen, setPosOpen] = useState(true);
 
     const handleChange = (field, value) => {
-        const setupCopy = clone(setup);
-        setupCopy[field] = value;
-        setAppState({setup: setupCopy});
+        const tempSetupCopy = clone(tempSetup);
+        tempSetupCopy[field] = value;
+        setAppState({tempSetup: tempSetupCopy});
     };
 
     const changeCheck = field => {
-        const setupCopy = clone(setup);
-        let value = _.get(setupCopy, `[${field}]`);
-        _.set(setupCopy, `[${field}]`, !value);
-        setAppState({setup: setupCopy});
+        const tempSetupCopy = clone(tempSetup);
+        let value = _.get(tempSetupCopy, `[${field}]`);
+        _.set(tempSetupCopy, `[${field}]`, !value);
+        setAppState({tempSetup: tempSetupCopy});
     };
 
     const changeSeparator = (field, value) => {
-        const setupCopy = clone(setup);
-        setupCopy[field].groupSeparator = value;
-        setAppState({setup: setupCopy});
+        const tempSetupCopy = clone(tempSetup);
+        tempSetupCopy[field].groupSeparator = value;
+        setAppState({tempSetup: tempSetupCopy});
     };
 
 
     const moveItem = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
-        let thisItemCopy = clone(setupCopyPath[index]);
-        setupCopyPath.splice(index, 1);
-        setupCopyPath.splice(position, 0, thisItemCopy);
-        setAppState({setup: setupCopy});
+        let tempSetupCopy = clone(appState.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag)
+        let thisItemCopy = clone(tempSetupCopyPath[index]);
+        tempSetupCopyPath.splice(index, 1);
+        tempSetupCopyPath.splice(position, 0, thisItemCopy);
+        setAppState({tempSetup: tempSetupCopy});
     };
 
     // const cleanUpEntries = () => {
@@ -72,20 +72,20 @@ const Setup = props => {
     // };
 
     const saveNewSetup = () => {
-        axios.post(`${API_BASE}/setup/new`, clone(appState.setup))
+        axios.post(`${API_BASE}/tempSetup/new`, clone(appState.tempSetup))
         .then(response => {
-            setAppState({setup: response.data, savedSetup:response.data});
+            setAppState({tempSetup: response.data, setup:response.data});
             // cleanUpEntries();
         })
         .catch(err => console.log(err));
     };
     
     const updateSetup = () => {
-        axios.post(`${API_BASE}/setup/update`, clone(appState.setup))
+        axios.post(`${API_BASE}/tempSetup/update`, clone(appState.tempSetup))
         .then(response => {
-            let setupClone = clone(appState.setup);
-            setupClone.dateModified = new Date();
-            setAppState({setup: setupClone, savedSetup:setupClone});
+            let tempSetupClone = clone(appState.tempSetup);
+            tempSetupClone.dateModified = new Date();
+            setAppState({tempSetup: tempSetupClone, setup:tempSetupClone});
             alert("Your changes have been saved.");
             // cleanUpEntries();
         })
@@ -93,19 +93,19 @@ const Setup = props => {
     };
 
     const handleSaveButtonClick = () => {
-        if (appState.setup.targetLanguageName === "" && appState.setup.sourceLanguageName === "") {
+        if (appState.tempSetup.targetLanguageName === "" && appState.tempSetup.sourceLanguageName === "") {
             alert("Please enter a Target Language name and a Source Language name.");
             return;
         }
-        if (appState.setup.targetLanguageName === "") {
+        if (appState.tempSetup.targetLanguageName === "") {
             alert("Please enter a Target Language name.");
             return;
         }
-        if (appState.setup.sourceLanguageName === "") {
+        if (appState.tempSetup.sourceLanguageName === "") {
             alert("Please enter a Source Language name.");
             return;
         }
-        if (appState.setup._id) {
+        if (appState.tempSetup._id) {
             updateSetup();
         } else {   
             saveNewSetup();
@@ -113,14 +113,14 @@ const Setup = props => {
     };
 
     const handleRevertButtonClick = () => {
-        setAppState({setup: appState.savedSetup});
+        setAppState({tempSetup: appState.setup});
     };
 
-    // console.log(setup)
+    // console.log(tempSetup)
 
     return (
         <main id="setup">
-            { !appState.savedSetup ?
+            { !appState.setup ?
                 <div>Loading</div> :
                 <>
                 <div>
@@ -131,7 +131,7 @@ const Setup = props => {
                                 <div className="row-controls"></div>
                                 <div className="row-content language-names">
                                     <label>Target Language</label>
-                                    <input type="text" value={setup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
+                                    <input type="text" value={tempSetup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const Setup = props => {
                                 <div className="row-controls"></div>
                                 <div className="row-content language-names">
                                     <label>Source Language</label>
-                                    <input type="text" value={setup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
+                                    <input type="text" value={tempSetup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@ const Setup = props => {
                 <div>
                     <h3 className="span2">Parts of speech</h3>
                     <div className="row">
-                        {setup.partsOfSpeechDefs.map((a,i) => (
+                        {tempSetup.partsOfSpeechDefs.map((a,i) => (
                             <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
                         ))}
                     </div>
@@ -158,7 +158,7 @@ const Setup = props => {
                     <h3 className="span2">Classes</h3>
                     <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
                     <div className="row">
-                        { setup.gramClassGroups.map((a, i) => (
+                        { tempSetup.gramClassGroups.map((a, i) => (
                             <GramClassGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
                     </div>
@@ -167,7 +167,7 @@ const Setup = props => {
                     <h3 className="span2">Forms</h3>
                     <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                     <div className="row">
-                        { setup.gramFormGroups.map((a, i) => (
+                        { tempSetup.gramFormGroups.map((a, i) => (
                             <GramFormGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
                     </div>
@@ -176,27 +176,27 @@ const Setup = props => {
                 <h3>Phonetics</h3>
                     <div className="row setting">
                     <label>Include pronunciation</label>
-                    <input type="checkbox" checked={setup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
+                    <input type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                     </div>
                 </div>
                 <div id="ipaSetup">
                     <h3 className="span2">IPA</h3>
                     <div className="row setting">
                         <label>Show IPA palette</label>
-                        <input type="checkbox" checked={setup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
+                        <input type="checkbox" checked={tempSetup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
                     </div>
-                    { setup.ipa.showPalette &&
+                    { tempSetup.ipa.showPalette &&
                     <>
                         <div className="row setting">
                             <label>Group separator</label>
                             <ul>
-                                <li className={setup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
-                                <li className={setup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
-                                <li className={setup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
+                                <li className={tempSetup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
+                                <li className={tempSetup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
+                                <li className={tempSetup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
                             </ul>
                         </div>
                         <div className="row">
-                            {setup.ipa.content.map((a,i) => (
+                            {tempSetup.ipa.content.map((a,i) => (
                                 <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
                             ))}
                         </div>
@@ -208,7 +208,7 @@ const Setup = props => {
                     <button onClick={handleRevertButtonClick}>Revert to previously saved</button>
                     <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
-                { setup.ipa.showPalette &&
+                { tempSetup.ipa.showPalette &&
                     <IpaPalette appState={appState} />
                 }
                 </>
