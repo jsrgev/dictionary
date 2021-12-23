@@ -6,10 +6,7 @@ import NavBar from "./components/NavBar.js";
 import Setup from './components/setup/Setup';
 import Dictionary from './components/Dictionary';
 import About from './components/About';
-// import {useSetState} from 'react-use';
-
-import React from "react";
-import useSetState from "@danedavid/usesetstate";
+import {useSetState} from 'react-use';
 
 import {useEffect} from 'react';
 import {API_BASE} from './utils.js';
@@ -175,7 +172,7 @@ const App = () => {
     });
 
     const fetchEntries = () => {
-        console.log("fetching entries");
+        // console.log("fetching entries");
         fetch(API_BASE + '/entry/getall')
         .then(res => res.json())
         .then(data => {
@@ -187,7 +184,7 @@ const App = () => {
     };
 
     const fetchSetup = () => {
-        console.log("fetching setup");
+        // console.log("fetching setup");
         fetch(API_BASE + '/setup/get')
         .then(res => res.json())
         .then(data => {

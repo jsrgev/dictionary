@@ -1,4 +1,4 @@
-import {capitalize, clone, generatePos, getAllGramClassGroups, getIndent, addPopupHandler, getGramClasses} from '../../utils';
+import {capitalize, clone, generatePos, getIndent, addPopupHandler, getGramClasses} from '../../utils';
 import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
@@ -40,9 +40,6 @@ const PartOfSpeech = (props) => {
     };
 
     const cleanUpGramForms = () => {
-        // console.log("cleanUpGramForms")
-        // console.log(path[thisIndex]);
-        // console.log(path[thisIndex].irregulars);
         let irregulars = path[thisIndex].irregulars;
         if (!irregulars) {
             return;
@@ -65,7 +62,6 @@ const PartOfSpeech = (props) => {
             });
             setAppState({entry: entryCopy});
         }
-
     };
     
     const handleGramClassClick = (e, i, classGroupId) => {
@@ -95,9 +91,12 @@ const PartOfSpeech = (props) => {
         setAppState({entry: entryCopy});
     }
 
+    const gramClassGroups = path[thisIndex].gramClassGroups;
+
     useEffect(() => {
         cleanUpGramForms();
-    },[path[thisIndex].gramClassGroups]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[gramClassGroups]);
 
     const isAvailable = posId => {
         return availablePoses.some(a => a.id === posId);
@@ -167,7 +166,7 @@ const PartOfSpeech = (props) => {
             <div className={`row${posOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                    <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? "" : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
+                    <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? undefined : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deletePos}></i>           
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     <i

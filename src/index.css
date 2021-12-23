@@ -336,3 +336,10 @@ ul {
     border-top-right-radius: .5rem;
     border-bottom-right-radius: .5rem;
 }
+
+
+/* Dictionary display, preview */
+
+.pos-abbr {
+	font-style: oblique;
+}

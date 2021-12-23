@@ -50,7 +50,7 @@ const GramFormSelect = props => {
         return path[thisIndex].refId === gramFormGroupId;
     }
 
-    const stringPathA = pathFrag + `[${thisIndex}]`;
+    // const stringPathA = pathFrag + `[${thisIndex}]`;
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;

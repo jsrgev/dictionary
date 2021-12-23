@@ -1,7 +1,7 @@
 import AddPopup from '../AddPopup.js';
 import GramClassSelect from './GramClassSelect.js';
 import GramFormSelect from './GramFormSelect.js';
-import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
+import { clone, addPopupHandler } from '../../utils.js';
 import {posDefault} from './defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
@@ -24,26 +24,6 @@ const PosSetup = props => {
         setupCopyPath[thisIndex][field] = value;
         setAppState({setup: setupCopy});
     };
-
-    const changeMultichoice = value => {
-        let setupCopy = clone(appState.setup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].multiChoice = value;
-        setAppState({setup: setupCopy});
-    }
-
-    // const handleClick = (gramClassName, field) => {
-    //     let setupCopy = clone(appState.setup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     let index = path[thisIndex][field].findIndex(a => a === gramClassName);
-    //     if (index < 0) {
-    //         setupCopyPath[thisIndex][field].push(gramClassName);
-    //     } else {
-    //         setupCopyPath[thisIndex][field].splice(index, 1);
-    //     }
-    //     setAppState({setup: setupCopy});
-    // };
-
 
     const addPos = () => {
         let setupCopy = clone(appState.setup);
@@ -108,7 +88,7 @@ const PosSetup = props => {
     ];
 
     if (availableGramClassGroups.length > 0) {
-        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 || -1)]);
+        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 ?? -1)]);
     };
 
     if (availableGramClassAndFormGroups.length > 0) {
@@ -119,8 +99,6 @@ const PosSetup = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-
-
 
     return(
         <>

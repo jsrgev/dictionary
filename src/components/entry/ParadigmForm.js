@@ -1,4 +1,4 @@
-import {capitalize, clone, getIndent, addPopupHandler} from '../../utils.js';
+import {clone, getIndent, addPopupHandler, getGramFormAbbrs} from '../../utils.js';
 import { morphDefault } from '../../defaults.js';
 import Morph from './Morph.js';
 import AddPopup from '../AddPopup';
@@ -15,21 +15,6 @@ const ParadigmForm = (props) => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [formOpen, setFormOpen] = useState(true);
-
-    // const changeBasic = () => {
-    //     let entryCopy = clone(appState.entry);
-    //     let entryCopyPath = _.get(entryCopy, pathFrag);
-    //     for (let form of entryCopyPath) {
-    //         form.basic = false;
-    //     }
-    //     let formExists = entryCopyPath[thisIndex].exists;
-    //     entryCopyPath[thisIndex].basic = true;
-    //     if (!formExists) {
-    //         entryCopyPath[thisIndex].exists = true;
-    //     }
-    //     setAppState({entry: entryCopy});
-    //     // console.log(path[thisIndex].basic)
-    // };
 
     const changeExists = () => {
         let entryCopy = clone(appState.entry);
@@ -58,8 +43,6 @@ const ParadigmForm = (props) => {
         setAppState({entry: entryCopy});
     };
 
-    // console.log(path);
-
     const changeRegular = () => {
         if (!gramFormExists()) {
             return;
@@ -86,22 +69,18 @@ const ParadigmForm = (props) => {
         }
         setAppState({entry: entryCopy});
     };
-
-    // console.log(path);
-
-    // let posPath =  _.get(appState, "entry." + stringPath);
-    // let isBasic = path[thisIndex].gramForm === getBasicForm(posPath);
     
-    const getGramFormNames = () => {
-        let gramFormNames = gramFormSet.reduce((acc, a) => {
-            let gramForm = appState.setup.gramFormGroups.reduce((acc2, b) => {
-                let result = b.gramForms.find(c => c.id === a);
-                return result ? (acc2 += `${result.abbr}.`) : acc2;
-            }, ""); 
-            return acc += ` ${gramForm}`;
-        }, "");
-        return gramFormNames;
-    };
+    // const getGramFormAbbrs = () => {
+    //     let gramFormNames = gramFormSet.map(a => {
+    //         let gramForm = appState.setup.gramFormGroups.reduce((acc2, b) => {
+    //             let result = b.gramForms.find(c => c.id === a);
+    //             return result ? (acc2 += `${result.abbr}.`) : acc2;
+    //         }, ""); 
+    //         return gramForm;
+    //     });
+    //     let filteredGramFormNames = gramFormNames.filter(a => a);        
+    //     return filteredGramFormNames.join(" ");
+    // };
     
     const gramFormExists = () => {
         let index = getIndex();
@@ -150,14 +129,11 @@ const ParadigmForm = (props) => {
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndentLevel-1)}>
                     <div>
-                        {capitalize(getGramFormNames())}
+                        {getGramFormAbbrs(gramFormSet, appState.setup.gramFormGroups)}
                     </div>
                     <div onClick={changeExists} >
                         {gramFormExists() ? "Exists" : "Missing"}
                     </div>
-                    {/* <div onClick={changeBasic}> */}
-                        {/* {path[thisIndex].basic ? "Citation form" : ""} */}
-                    {/* </div> */}
                     <div onClick={changeRegular}>
                         {!gramFormExists() ? "" : isIrregular() ? "Irregular" : "Regular"}
                     </div>

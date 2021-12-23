@@ -49,20 +49,20 @@ const Setup = props => {
         setAppState({setup: setupCopy});
     };
 
-    const cleanUpEntries = () => {
-        if (!appState.allEntries) {
-            return;
-        }
-        let allEntriesCopy = clone(appState.allEntries);
-        console.log(allEntriesCopy);
+    // const cleanUpEntries = () => {
+    //     if (!appState.allEntries) {
+    //         return;
+    //     }
+    //     let allEntriesCopy = clone(appState.allEntries);
+    //     console.log(allEntriesCopy);
 
-        for (let entry of allEntriesCopy) {
-            // console.log(entry.senseGroups);
-            for (let senseGroup of entry.senseGroups) {
-                console.log(senseGroup);
-            } 
-        }
-    }
+    //     for (let entry of allEntriesCopy) {
+    //         // console.log(entry.senseGroups);
+    //         for (let senseGroup of entry.senseGroups) {
+    //             console.log(senseGroup);
+    //         } 
+    //     }
+    // };
 
     // const saveNew = (newEntry) => {
     //     let allEntriesCopy = clone(state.allEntries);

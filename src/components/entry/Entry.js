@@ -19,7 +19,7 @@ const Entry = props => {
     const isDirty = () => JSON.stringify(state.entry) !== JSON.stringify(state.entryCopy);
 
     const initializeEntry = () => {
-        console.log("initializing");
+        // console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.savedSetup.partsOfSpeechDefs[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.savedSetup.partsOfSpeechDefs, state.savedSetup.gramClassGroups));
@@ -29,12 +29,14 @@ const Entry = props => {
     useEffect(() => {
         state.savedSetup &&
         initializeEntry();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[state.savedSetup]);
 
     useEffect(() => {
         return () => {
             setState({entry: null, entryCopy: null});
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleKeyDown = e => {

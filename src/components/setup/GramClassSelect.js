@@ -55,14 +55,14 @@ const GramClassSelect = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
+    // const gramClassAndFormGroups = clone(appState.setup.gramClassGroups).concat(clone(appState.setup.gramFormGroups));
 
     return(
         <>
             <div className={`row${classSelectOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? "" : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
+                <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? undefined : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
                 <i className={`fas fa-chevron-${classSelectOpen ? "up" : "down"}`} onClick={() => setClassSelectOpen(!classSelectOpen)}></i>
                 <i

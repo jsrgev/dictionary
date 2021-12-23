@@ -13,6 +13,13 @@ export const getIndent = (prevIndentLevel = 0) => {
 
 export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
 
+// export const capitalize = string => {
+//     console.log(string);
+//     console.log(string.charAt(0));
+//     return string.charAt(0).toUpperCase() + string.slice(1)
+// };
+
+
 export const clone = a => JSON.parse(JSON.stringify(a));
 
 export const generateSenseGroup = (posId, partsOfSpeechDefs, gramClassGroups) => {
@@ -192,4 +199,16 @@ export const sortEntries = entries => {
         return ( a.content < b.content ) ? -1 : ( a.content > b.content ) ? 1 : 0;
       }
     );
+};
+
+export const getGramFormAbbrs = (gramFormSet, gramFormGroupDefs) => {
+    let gramFormNames = gramFormSet.map(a => {
+        let gramForm = gramFormGroupDefs.reduce((acc2, b) => {
+            let result = b.gramForms.find(c => c.id === a);
+            return result ? (acc2 += `${result.abbr}.`) : acc2;
+        }, ""); 
+        return gramForm;
+    });
+    let filteredGramFormNames = gramFormNames.filter(a => a);        
+    return filteredGramFormNames.join(" ");
 };
