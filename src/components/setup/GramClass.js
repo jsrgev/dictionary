@@ -8,14 +8,14 @@ const GramForm = props => {
 
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClass} = props;
 
-    let pathFrag = stringPath + ".gramClasses";
+    const pathFrag = stringPath + ".gramClasses";
     const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.tempSetup  );
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({tempSetup: setupCopy});
     };
@@ -75,7 +75,7 @@ const GramForm = props => {
                 </div>
             </div>
         </>
-    )
+    );
 };
 
 export default GramForm;

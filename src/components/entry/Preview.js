@@ -1,5 +1,6 @@
 import React from "react";
 import {clone, getPosDef, getGramFormAbbrs, sortEntries} from '../../utils.js';
+import {getPreview} from '../../entryDisplayFuncs.js';
 
 const Preview = (props) => {
 
@@ -60,7 +61,7 @@ const Preview = (props) => {
     let altDisplayForHeadword = [];
     let headwordOrder;
 
-    const getPreview = () => {
+    const getPreview2 = () => {
         let morphs = clone(appState.entry.headword.morphs);
         let filteredArr = filterOutBlanks(morphs);
         if (filteredArr.length === 0) return "";
@@ -215,7 +216,6 @@ const Preview = (props) => {
     };
 
     const getSenseGroups = () => {
-
         let senseGroupsDisplay = appState.entry.senseGroups.map((a,i,arr) => {
             let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
             let display = getSenseGroupDisplay(a);
@@ -224,7 +224,8 @@ const Preview = (props) => {
         return senseGroupsDisplay;
     };
 
-    let entryPreview = getPreview();
+    let entryPreview = getPreview(appState.entry, appState.setup);
+    console.log(entryPreview);
 
     return(
         <>

@@ -5,9 +5,9 @@ const Limitations = props => {
 
     const {appState, setAppState, stringPath} = props;
 
-    let pathFrag = stringPath;
+    const pathFrag = stringPath;
     const path = _.get(appState, "tempSetup." + pathFrag);
-    let upPath = _.get(appState, "tempSetup." + stringPath);
+    const upPath = _.get(appState, "tempSetup." + stringPath);
 
     const handleClick = (e, gramClassId) => {
         let setupCopy = clone(appState.tempSetup);
@@ -25,14 +25,14 @@ const Limitations = props => {
             setupCopyPath.excluded = [gramClassId];
         }
         setAppState({tempSetup: setupCopy});
-    }
+    };
     
     const isSelected = gramClassId =>  {
         let isExcluded = path.excluded?.some(a => a === gramClassId);
         return !isExcluded ?? true;
     };
 
-    let gramClassGroup = appState.tempSetup.gramClassGroups.find(a => a.id === upPath.refId);
+    const gramClassGroup = appState.tempSetup.gramClassGroups.find(a => a.id === upPath.refId);
 
     return(
         <>
@@ -53,7 +53,7 @@ const Limitations = props => {
                 </div>
             </div>
         </>
-    )
+    );
 };
 
 export default Limitations;

@@ -4,7 +4,6 @@ import IpaSetup from './IpaSetup';
 import IpaPalette from '../IpaPalette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
-// import { useState }  from 'react';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
@@ -14,9 +13,6 @@ const Setup = props => {
     const {appState, setAppState} = props;
 
     const tempSetup = appState.tempSetup;
-
-    // console.log(tempSetup);
-    // const [posOpen, setPosOpen] = useState(true);
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(tempSetup);

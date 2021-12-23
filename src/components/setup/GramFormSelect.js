@@ -7,7 +7,7 @@ const GramFormSelect = props => {
 
     const {appState, setAppState, thisIndex, moveItem, stringPath, addGramFormOption, gramClassAndFormGroups, availableGramClassAndFormGroups} = props;
 
-    let pathFrag = stringPath + ".gramFormGroups";
+    const pathFrag = stringPath + ".gramFormGroups";
     const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [classSelectOpen, setClassSelectOpen] = useState(true);
@@ -40,7 +40,7 @@ const GramFormSelect = props => {
 
     if (availableGramClassAndFormGroups.length > 0) {
         popupItems.push(["Form group", () => addGramFormOption(thisIndex)]);
-    };
+    }
 
     const isAvailable = gramFormGroupId => {
         return availableGramClassAndFormGroups.some(a => a.id === gramFormGroupId);
@@ -82,7 +82,7 @@ const GramFormSelect = props => {
                 </div>
             </div>
         </>
-    )
+    );
 };
 
 export default GramFormSelect;

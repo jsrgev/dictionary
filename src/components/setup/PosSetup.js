@@ -10,7 +10,7 @@ const PosSetup = props => {
 
     const {appState, setAppState, thisIndex, moveItem} = props;
 
-    let pathFrag = "partsOfSpeechDefs";
+    const pathFrag = "partsOfSpeechDefs";
     const path = _.get(appState, "tempSetup." + pathFrag);
 
     const [posOpen, setPosOpen] = useState(true);
@@ -87,11 +87,11 @@ const PosSetup = props => {
 
     if (availableGramClassGroups.length > 0) {
         popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 ?? -1)]);
-    };
+    }
 
     if (availableGramClassAndFormGroups.length > 0) {
         popupItems.push(["Form group", () => addGramFormGroup(path[thisIndex].gramFormGroups?.length-1)])
-    };
+    }
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
@@ -132,7 +132,7 @@ const PosSetup = props => {
                 }
             </div>
         </>
-    )
+    );
 };
 
 export default PosSetup;

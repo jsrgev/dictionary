@@ -7,15 +7,15 @@ const IpaSetup = props => {
 
     const {appState, setAppState, thisIndex, moveItem} = props;
 
-    let pathFrag = "ipa.content";
+    const pathFrag = "ipa.content";
     const path = _.get(appState, "tempSetup." + pathFrag);
 
-    let groupDefault = {
+    const groupDefault = {
         group: "",
         characters: [],
         bgColor: "#9ac0ff",
         textColor: "#000000",
-    }
+    };
 
 
     const [ipaOpen, setIpaOpen] = useState(true);

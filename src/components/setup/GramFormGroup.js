@@ -17,7 +17,7 @@ const GramFormGroup = props => {
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({tempSetup: setupCopy});
     };
@@ -44,7 +44,7 @@ const GramFormGroup = props => {
 
     const deleteGroup = () => {
         let setupCopy = clone(appState.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramFormGroup = clone(gramFormGroupDefault);
             newGramFormGroup.id = setupCopy.nextId.toString();
