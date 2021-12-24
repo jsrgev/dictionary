@@ -211,7 +211,7 @@ const App = () => {
         <Routes>
             <Route exact path="/" element={<Entry state={state} setState={setState} />} />
             <Route exact path="/setup" element={<Setup appState={state} setAppState={setState} />} />
-            <Route exact path="/dictionary" element={<Dictionary />} />
+            <Route exact path="/dictionary" element={<Dictionary state={state} />} />
             <Route exact path="/about" element={<About />} />
             {/* <Route exact path="/entry" component={Home} /> */}
         </Routes>

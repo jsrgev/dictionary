@@ -1,10 +1,12 @@
 import React from "react";
-import {clone, getPosDef, getGramFormAbbrs, sortEntries} from './utils.js';
+import {clone, getPosDef, getGramFormAbbrs} from './utils.js';
 
 
-const alphaSortSet = set => {
-    let setClone = clone(set);
-    return sortEntries(setClone);
+export const sortEntries = entries => {
+    return entries.sort((a,b) => {
+        return ( a.sortTerm < b.sortTerm ) ? -1 : ( a.sortTerm > b.sortTerm ) ? 1 : 0;
+      }
+    );
 };
 
 const filterOutBlanks = set => {
@@ -30,19 +32,19 @@ const getPronunciationsDisplay = arr => {
     return <> {newArr}</>;
 };
 
-const getAltDisplayForHeadword = () => {
+const getAltDisplayForHeadword = (altDisplayForHeadword) => {
     return altDisplayForHeadword.map((a,i) => {
         return <React.Fragment key={i}> or {a}</React.Fragment>
     })
 };
 
-const getMorphsDisplay = (arr, headword) => {
-    let morphType = headword ? "hw" : "for";
+const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword) => {
+    let morphType = isHeadword ? "hw" : "for";
         let newArr = arr.map((a, i) => {
         let morph = <span className={morphType}>{a.content}</span>;
         let pronunciations = getPronunciationsDisplay(a.pronunciations);
         let notes = a.notes ? getNotesDisplay(a.notes) : "";
-        let alts = a.headword ? getAltDisplayForHeadword() : "";
+        let alts = a.isHeadword ? getAltDisplayForHeadword(altDisplayForHeadword) : "";
         return <React.Fragment key={i}>
                 {morph}
                 {pronunciations}
@@ -53,40 +55,42 @@ const getMorphsDisplay = (arr, headword) => {
     return newArr;
 };
 
-let allDisplay = [];
-let altDisplayForHeadword = [];
-let headwordOrder;
 
-export const getPreview = (entry, setup) => {
-    let morphs = clone(entry.headword.morphs);
-    let filteredArr = filterOutBlanks(morphs);
-    if (filteredArr.length === 0) return "";
-
-    // mark first morph as headword so it will be treated so after sorting
-    filteredArr[0].headword = true;
-
-    let sortedMorphs = alphaSortSet(filteredArr);
-    for (let i=0; i<sortedMorphs.length; i++) {
-        sortedMorphs[i].order = i;
-    }
-    sortedMorphs.forEach((a,i) => {
-        if (!a.headword) {
-            let display = 
-                <p>
-                    <span className="for">{a.content}</span> see <span className="for">{morphs[0].content}</span>
-                </p>;
-            allDisplay[i] = (display);
-            let fullDisplay = getMorphsDisplay([a]);
+export const getEntriesDisplay = (entries, setup) => {
+    let allDisplayItems = [];
+    let key = 0;
+    entries.forEach(entry => {
+        let altDisplayForHeadword = [];
+        let morphs = clone(entry.headword.morphs);
+        let filteredArr = filterOutBlanks(morphs);
+        if (filteredArr.length === 0) return "";
+        for (let i=1; i<filteredArr.length; i++) {
+            let item = filteredArr[i];
+            let obj = {
+                sortTerm: item.content,
+                display:
+                    <p key={key}>
+                        <span className="for">{item.content}</span> see <span className="for">{filteredArr[0].content}</span>
+                    </p>
+            };
+            allDisplayItems.push(obj);
+            let fullDisplay = getMorphsDisplay([item]);
             altDisplayForHeadword.push(fullDisplay);
+            key++;
+        };
+
+        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword);
+        let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
+        let obj = {
+            sortTerm: filteredArr[0].content,
+            display: <p key={key}>{morphsDisplay}{senseGroupDisplay}</p>
         }
-    });
-
-    headwordOrder = sortedMorphs.find(a => a.headword).order;
-
-    let morphsDisplay = getMorphsDisplay([filteredArr[0]], true);
-    let senseGroupDisplay = getSenseGroups(entry, setup);
-    allDisplay[headwordOrder] = <p>{morphsDisplay}{senseGroupDisplay}</p>;
-    return allDisplay;
+        allDisplayItems.push(obj);
+        key++;
+    })
+    sortEntries(allDisplayItems);
+    let justDisplays = allDisplayItems.map(a => a.display);
+    return justDisplays;
 };
 
 const getIrregularsDisplay = (irregulars, setup) => {
@@ -211,8 +215,8 @@ const getSenseGroupDisplay = (senseGroup, setup) => {
     return <> {poses}{definitionsDisplay}{divider}{phrasesDisplay}</>;
 };
 
-const getSenseGroups = (entry, setup) => {
-    let senseGroupsDisplay = entry.senseGroups.map((a,i,arr) => {
+const getSenseGroups = (senseGroups, setup) => {
+    let senseGroupsDisplay = senseGroups.map((a,i,arr) => {
         let divider = ((arr.length > 1) && (i < arr.length-1) ) ? "; " : "";
         let display = getSenseGroupDisplay(a, setup);
         return <React.Fragment key={i}>{display}{divider}</React.Fragment>;
