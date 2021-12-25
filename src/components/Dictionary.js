@@ -7,12 +7,23 @@ const Dictionary = props => {
 
     // let entryPreview = getEntriesDisplay(state.entry, state.setup);
 
+    let entries = getEntriesDisplay(state.allEntries, state.setup);
+
     return (
         <main>
-            {(state.allEntries && state.setup) ?
-            <div>{getEntriesDisplay(state.allEntries, state.setup)}</div>
+            {(entries && state.setup) ?
+            <>
+            {entries.map((a, i) => (
+                <React.Fragment key={i}>
+                    <div className="dic"><h3>{a.letter}</h3></div>
+                    {a.items.map((b, j) => (
+                        <div>{b}</div>
+                    ))}
+                </React.Fragment>
+            ))}
+            </>
             :
-            <>"No entries"</>
+            <div>Loading</div>
             }
         </main>
     )
