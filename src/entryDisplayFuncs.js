@@ -56,24 +56,6 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword) => {
 };
 
 
-const splitEnries = (allDisplayItems) => {
-    let arr = [];
-    let lastLetter = "";
-    allDisplayItems.forEach(a => {
-        if (a.sortTerm[0] === lastLetter) {
-            arr[arr.length - 1].items.push(a.display);
-        } else {
-            let obj = {
-                letter: a.sortTerm[0],
-                items: [a.display]
-            }
-            arr.push(obj);
-            lastLetter = a.sortTerm[0];
-        }
-    })
-    return arr;
-};
-
 export const getEntriesDisplay = (entries, setup) => {
     let allDisplayItems = [];
     let key = 0;
@@ -107,9 +89,10 @@ export const getEntriesDisplay = (entries, setup) => {
         key++;
     })
     sortEntries(allDisplayItems);
-    let finalEntires = splitEnries(allDisplayItems);
-    // let justDisplays = allDisplayItems.map(a => a.display);
-    return finalEntires;
+    return allDisplayItems;
+
+    // let finalEntries = splitEnries(allDisplayItems);
+    let finalEntries = allDisplayItems.map(a => a.display);
 };
 
 const getIrregularsDisplay = (irregulars, setup) => {

@@ -7,17 +7,43 @@ const Dictionary = props => {
 
     // let entryPreview = getEntriesDisplay(state.entry, state.setup);
 
-    let entries = getEntriesDisplay(state.allEntries, state.setup);
+    const splitEntries = (allDisplayItems) => {
+        let arr = [];
+        let lastLetter = "";
+        allDisplayItems.forEach(a => {
+            if (a.sortTerm[0] === lastLetter) {
+                arr[arr.length - 1].items.push(a.display);
+            } else {
+                let obj = {
+                    letter: a.sortTerm[0],
+                    items: [a.display]
+                }
+                arr.push(obj);
+                lastLetter = a.sortTerm[0];
+            }
+        })
+        return arr;
+    };
+    
+
+    const getDisplay = () => {
+        // console.log(state.allEntries);
+        let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup);
+        let finalEntries = splitEntries(allDisplayItems);
+        return finalEntries;
+    };
+
+    // let entries = getEntriesDisplay(state.allEntries, state.setup);
 
     return (
         <main>
-            {(entries && state.setup) ?
+            {(state.allEntries && state.setup) ?
             <>
-            {entries.map((a, i) => (
+            {getDisplay().map((a, i) => (
                 <React.Fragment key={i}>
-                    <div className="dic"><h3>{a.letter}</h3></div>
+                    <div className="dic" id={`letter-${a.letter}`}><h3>{a.letter}</h3></div>
                     {a.items.map((b, j) => (
-                        <div>{b}</div>
+                        <div key={j}>{b}</div>
                     ))}
                 </React.Fragment>
             ))}

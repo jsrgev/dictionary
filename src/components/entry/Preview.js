@@ -224,13 +224,18 @@ const Preview = (props) => {
     //     return senseGroupsDisplay;
     // };
 
-    let entryPreview = getEntriesDisplay([appState.entry], appState.setup);
+
+    const getDisplay = () => {
+        let allDisplayItems = getEntriesDisplay([appState.entry], appState.setup);
+        let finalEntries = allDisplayItems.map(a => a.display);
+        return finalEntries;
+    };
 
     return(
         <>
             <p>Preview</p>
-            {entryPreview &&
-            entryPreview.map((a, i) => (
+            {appState.entry &&
+            getDisplay().map((a, i) => (
                 <div key={i}>{a}</div>
                 // <React.Fragment key={i}>{a}</React.Fragment>
             ))}
