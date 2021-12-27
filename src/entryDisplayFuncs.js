@@ -3,8 +3,12 @@ import {clone, getPosDef, getGramFormAbbrs} from './utils.js';
 
 
 export const sortEntries = entries => {
-    return entries.sort((a,b) => {
-        return ( a.sortTerm < b.sortTerm ) ? -1 : ( a.sortTerm > b.sortTerm ) ? 1 : 0;
+    const collator = new Intl.Collator();          
+    return entries.sort((a, b) => {
+
+        return collator.compare(a.sortTerm, b.sortTerm);
+
+        // return ( a.sortTerm < b.sortTerm ) ? -1 : ( a.sortTerm > b.sortTerm ) ? 1 : 0;
       }
     );
 };
