@@ -5,21 +5,25 @@ const Dictionary = props => {
 
     const {state} = props;
 
-    // let entryPreview = getEntriesDisplay(state.entry, state.setup);
+    const getInitial = string => {
+        return string.normalize('NFD').toLowerCase()[0];
+    }
 
     const splitEntries = (allDisplayItems) => {
+        const sortOrder = state.setup.sortOrder;
         let arr = [];
-        let lastLetter = "";
+        let currentLetter = "";
         allDisplayItems.forEach(a => {
-            if (a.sortTerm[0] === lastLetter) {
+            const firstLetter = getInitial(a.sortTerm[0]);
+            if (firstLetter === currentLetter) {
                 arr[arr.length - 1].items.push(a.display);
             } else {
                 let obj = {
-                    letter: a.sortTerm[0],
+                    letter: firstLetter,
                     items: [a.display]
                 }
                 arr.push(obj);
-                lastLetter = a.sortTerm[0];
+                currentLetter = firstLetter;
             }
         })
         return arr;
@@ -27,13 +31,10 @@ const Dictionary = props => {
     
 
     const getDisplay = () => {
-        // console.log(state.allEntries);
         let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup);
         let finalEntries = splitEntries(allDisplayItems);
         return finalEntries;
     };
-
-    // let entries = getEntriesDisplay(state.allEntries, state.setup);
 
     return (
         <main>

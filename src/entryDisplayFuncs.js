@@ -13,6 +13,8 @@ export const sortEntries = entries => {
     );
 };
 
+
+
 const filterOutBlanks = set => {
     return set.filter(a => a.content.trim() !== "");
 };
