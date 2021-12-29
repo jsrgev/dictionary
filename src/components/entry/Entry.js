@@ -210,7 +210,7 @@ const Entry = props => {
                                 <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
                             ))
                         }
-                        <Etymology />
+                        <Etymology state={state} setState={setState} />
                         <div id="submit">
                             {state.entry._id ?
                             <>

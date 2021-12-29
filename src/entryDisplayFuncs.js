@@ -1,4 +1,5 @@
 import React from "react";
+import Etymology from "./components/entry/Etymology.js";
 import {clone, getPosDef, getGramFormAbbrs} from './utils.js';
 
 
@@ -87,9 +88,10 @@ export const getEntriesDisplay = (entries, setup) => {
 
         let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
+        let etymologyDisplay = getEtymologyDisplay(entry.etymology);
         let obj = {
             sortTerm: filteredArr[0].content,
-            display: <p key={key}>{morphsDisplay}{senseGroupDisplay}</p>
+            display: <p key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</p>
         }
         allDisplayItems.push(obj);
         key++;
@@ -125,6 +127,12 @@ const getIrregularsDisplay = (irregulars, setup) => {
         return <React.Fragment key={i}>{a}{divider}</React.Fragment>
     })
     return <> ({display})</>
+};
+
+
+const getEtymologyDisplay = etymology => {
+    if (etymology === "") return "";
+    return ` [${etymology}]`;
 };
 
 const getPosDisplay = (posDetails, setup) => {

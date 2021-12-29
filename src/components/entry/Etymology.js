@@ -1,23 +1,34 @@
-// import {useState} from 'react';
+import {useState} from 'react';
+import { clone } from '../../utils';
 
-const Etymology = () => {
+const Etymology = props => {
 
-    // const [etymologyShown, setEtymologyShown] = useState(false);
+    const {state, setState} = props;
 
+    const [etymologyOpen, setEtymologyOpen] = useState(false);
+
+    const handleChange = value => {
+        if (value !== undefined) {
+            let entryCopy = clone(state.entry);
+            // let entryCopyPath = _.get(entryCopy, pathFrag)
+            entryCopy.etymology = value;
+            setState({entry:entryCopy});
+        }
+    }
 
     return (
         <>
-        <div>
 
-        </div>
-            {/* <div className="bar-etymology" onClick={()=>setEtymologyShown(!etymologyShown)}>Etymology <i className={etymologyShown ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i></div> */}
-            {/* <fieldset className={`etymology${etymologyShown ? "" : " hidden"}`}>
-                <p>Etymology</p>
-                <input id="etymologyInput" type="text" />
-            </fieldset> */}
+            <div className={`row${etymologyOpen ? "" : " closed"}`}>
+                <div className="row-controls">
+                </div>
+                <div className="row-content">
+                    <label>Etymology</label>
+                    <input value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" />
+                </div>
+            </div>
         </>
-    )
-    
+    )  
 };
     
 export default Etymology;
