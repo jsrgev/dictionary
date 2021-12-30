@@ -54,72 +54,9 @@ export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
     return posDef.gramClassGroups;
 };
 
-// export const setGramForms = (posObj, gramClassDef, gramFormGroups) => {
-//     if (posObj.gramClasses) {
-//         let matches = posObj.gramClasses[0] === gramClassDef.name;
-//         if (matches && posObj.gramClasses.length === 1) {
-//             return posObj;
-//         }
-//     } else {
-//         posObj.gramClasses = [];
-//         posObj.paradigmForms = [];    
-//     }
-//     if (gramClassDef) {
-//         let isMultiChoice = getPosDef(posObj.name).multiChoice;
-//         if (isMultiChoice) {
-//             let classIndex = posObj.gramClasses.findIndex(a => a===gramClassDef.name);
-//             if (classIndex >= 0) {
-//                 posObj.gramClasses.splice(classIndex,1);
-//             } else {
-//                 posObj.gramClasses.push(gramClassDef.name)
-//             }
-//         } else {
-//             posObj.gramClasses = [gramClassDef.name];
-//         }
-//         posObj.paradigmForms = gramClassDef.gramFormSet ? getGramForms(gramClassDef.gramFormSet, gramFormGroups) : [];
-//     }
-//     return posObj;
-// };
-
-// const getGramClasses = (gramClassGroupId, gramClassGroups) => {
-//     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId );
-//     let posDef = appState.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
-//     // get classes that aren't allowed for this POS
-//     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
-//     // filter out classes that aren't allowed for this POS
-//     let included = thisGroupsGramClasses.gramClasses.filter(a => {
-//         return !excluded.some(b => b === a.id);
-//     })
-//     return included;
-// };
-
 export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramClassGroups) => {
     let posDef = getPosDef(posId, partsOfSpeechDefs);
     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
-
-
-    // get classes that aren't allowed for this POS:
-    // this POS's gramClassGroups:
-    // let thisGramClassGroups = posDef.gramClassGroups.find(a => {
-    //     console.log(a);
-    //     console.log(a.refId)
-    //     console.log(gramClassGroupId)
-    //     console.log(a.refId === gramClassGroupId);
-    //     return a.refId === gramClassGroupId
-    // });
-    // console.log(thisGramClassGroups);
-
-    // filter out classes that aren't allowed for this POS
-    // let excluded = thisGramClassGroups.excluded || []
-
-    // let excluded = posDef.gramClassGroups.find(a => {
-    //     console.log(a.refId)
-    //     console.log(gramClassGroupId)
-    //     console.log(a.refId === gramClassGroupId);
-    //     return a.refId === gramClassGroupId
-    // }).excluded || [];
-    // console.log(gramClassGroups.find(a => a.id === gramClassGroupId));
-    // console.log(gramClassGroups.filter(a => a.id === gramClassGroupId));
 
     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId);
     let gramClasses = thisGroupsGramClasses.gramClasses.filter(a => {
@@ -195,11 +132,13 @@ export const addPopupHandler = (addPopupVisible, setAddPopupVisible) => {
 };
 
 export const sortEntries = entries => {
-    return entries.sort((a,b) => {
-        return ( a.content < b.content ) ? -1 : ( a.content > b.content ) ? 1 : 0;
-      }
+    const collator = new Intl.Collator();          
+    return entries.sort((a, b) => {
+        return collator.compare(a.sortTerm || a.content, b.sortTerm || b.content);
+        }
     );
 };
+
 
 export const getGramFormAbbrs = (gramFormSet, gramFormGroupDefs) => {
     let gramFormNames = gramFormSet.map(a => {

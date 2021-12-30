@@ -3,8 +3,6 @@ import { sortEntries } from "../../utils";
 const EntriesList = props => {
     const {state, setState, isDirty} = props;
 
-    // console.log(state.allEntries[0].headword.morphs[0].content)
-
     const getSortedEntries = () => {
         const entrySet = state.allEntries.map(a => {
             return {

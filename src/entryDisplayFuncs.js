@@ -1,19 +1,6 @@
 import React from "react";
-import Etymology from "./components/entry/Etymology.js";
-import {clone, getPosDef, getGramFormAbbrs} from './utils.js';
-
-
-export const sortEntries = entries => {
-    const collator = new Intl.Collator();          
-    return entries.sort((a, b) => {
-
-        return collator.compare(a.sortTerm, b.sortTerm);
-
-        // return ( a.sortTerm < b.sortTerm ) ? -1 : ( a.sortTerm > b.sortTerm ) ? 1 : 0;
-      }
-    );
-};
-
+// import Etymology from "./components/entry/Etymology.js";
+import {clone, getPosDef, getGramFormAbbrs, sortEntries} from './utils.js';
 
 
 const filterOutBlanks = set => {
@@ -98,9 +85,6 @@ export const getEntriesDisplay = (entries, setup) => {
     })
     sortEntries(allDisplayItems);
     return allDisplayItems;
-
-    // let finalEntries = splitEnries(allDisplayItems);
-    let finalEntries = allDisplayItems.map(a => a.display);
 };
 
 const getIrregularsDisplay = (irregulars, setup) => {
