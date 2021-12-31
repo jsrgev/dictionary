@@ -166,7 +166,15 @@ const App = () => {
                         ],
                 },
             ],
-            sortOrder: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+            sortOrder: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
+            etymologyAbbrs: [
+                {id: "27", abbr: "ext", content: "extended form of"},
+                {id: "28", abbr: "obs", content: "obsolete"},
+                {id: "29", abbr: "old", content: "older form"},
+                {id: "30", abbr: "pos", content: "possibly"},
+                {id: "31", abbr: "rel", content: "related to"},
+                {id: "32", abbr: "tr", content: "truncation"},
+            ]
         },
     });
 

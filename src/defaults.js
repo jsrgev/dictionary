@@ -45,3 +45,8 @@ export const gramFormDefault = {
     regular: true,
     morphs: [JSON.parse(JSON.stringify(morphDefault))],
 };
+
+export const etymologyAbbrDefault = {
+    content: "",
+    abbr: ""
+}

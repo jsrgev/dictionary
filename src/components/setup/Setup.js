@@ -4,6 +4,7 @@ import IpaSetup from './IpaSetup';
 import IpaPalette from '../IpaPalette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
+import EtymologyAbbrs from'./EtymologyAbbrs';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
@@ -68,7 +69,7 @@ const Setup = props => {
     // };
 
     const saveNewSetup = () => {
-        axios.post(`${API_BASE}/tempSetup/new`, clone(appState.tempSetup))
+        axios.post(`${API_BASE}/setup/new`, clone(appState.tempSetup))
         .then(response => {
             setAppState({tempSetup: response.data, setup:response.data});
             // cleanUpEntries();
@@ -77,7 +78,7 @@ const Setup = props => {
     };
     
     const updateSetup = () => {
-        axios.post(`${API_BASE}/tempSetup/update`, clone(appState.tempSetup))
+        axios.post(`${API_BASE}/setup/update`, clone(appState.tempSetup))
         .then(response => {
             let tempSetupClone = clone(appState.tempSetup);
             tempSetupClone.dateModified = new Date();
@@ -112,7 +113,7 @@ const Setup = props => {
         setAppState({tempSetup: appState.setup});
     };
 
-    // console.log(tempSetup)
+    console.log(tempSetup.etymologyAbbrs)
 
     return (
         <main id="setup">
@@ -151,7 +152,7 @@ const Setup = props => {
                     </div>
                 </div>
                 <div id="gramClassSetup">
-                    <h3 className="span2">Classes</h3>
+                    <h3 className="span2">Grammatical Classes</h3>
                     <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
                     <div className="row">
                         { tempSetup.gramClassGroups.map((a, i) => (
@@ -160,12 +161,20 @@ const Setup = props => {
                     </div>
                 </div>
                 <div id="gramFormSetup">
-                    <h3 className="span2">Forms</h3>
+                    <h3 className="span2">Grammatical Forms</h3>
                     <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                     <div className="row">
                         { tempSetup.gramFormGroups.map((a, i) => (
                             <GramFormGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
+                    </div>
+                </div>
+                <div>
+                <h3 className="span2">Etymology Abbreviations</h3>
+                    <div className="row">
+                    {tempSetup.etymologyAbbrs.map((a, i) => (
+                        <EtymologyAbbrs appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                    ))}
                     </div>
                 </div>
                 <div>

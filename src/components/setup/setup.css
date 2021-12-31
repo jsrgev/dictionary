@@ -36,7 +36,7 @@ input[type="color" i] {
     grid-template-columns: 9rem 1fr;
 }
 
-.gram-class-setup, .gram-form-setup {
+.gram-class-setup, .gram-form-setup, .etymology-abbrs-setup {
     grid-template-columns: 6rem 1fr 6rem 1fr;
 }
 
