@@ -21,7 +21,7 @@ const Morph = props => {
     const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});
         }
@@ -29,7 +29,7 @@ const Morph = props => {
 
     const deleteMorph = e => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         if (entryCopyPath.length === 1) {
             entryCopyPath.splice(0, 1, clone(morphDefault));
         } else {
@@ -41,7 +41,7 @@ const Morph = props => {
     const addPronunciation = (e, index) => {
         index = index ?? path[thisIndex].pronunciations.length-1;
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         entryCopyPath[thisIndex].pronunciations.splice(index+1, 0, clone(pronunciationDefault));
         setAppState({entry: entryCopy});
     };

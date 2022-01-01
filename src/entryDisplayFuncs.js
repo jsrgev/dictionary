@@ -50,7 +50,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword) => {
 };
 
 
-export const getEntriesDisplay = (entries, setup) => {
+export const getEntriesDisplay = (entries, setup, etymologyTags) => {
     let allDisplayItems = [];
     let key = 0;
     entries.forEach(entry => {
@@ -75,7 +75,7 @@ export const getEntriesDisplay = (entries, setup) => {
 
         let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-        let etymologyDisplay = getEtymologyDisplay(entry.etymology);
+        let etymologyDisplay = getEtymologyDisplay(entry.etymology, etymologyTags);
         let obj = {
             sortTerm: filteredArr[0].content,
             display: <p key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</p>
@@ -113,10 +113,36 @@ const getIrregularsDisplay = (irregulars, setup) => {
     return <> ({display})</>
 };
 
-
-const getEtymologyDisplay = etymology => {
+const getEtymologyDisplay = (etymology, etymologyTags) => {
     if (etymology === "") return "";
-    return ` [${etymology}]`;
+    etymology = etymology.trim();
+    let arr = etymology.split(/(\[.+?\])/g);
+    let filteredArr = arr.filter(a => a !== "");
+    let arrClone = clone(filteredArr);
+    let arr2 = [];
+    for (let i = 0; i < arrClone.length; i++) {
+        let tags = etymologyTags.find(a => a.displayOpen === arrClone[i]);
+        let code = <>{arrClone[i]}</>;
+        if (tags) {
+            let tags2 = etymologyTags.find(a => a.displayClose === arrClone[i+1]);
+            if (tags2) {
+                code = "";
+                i++;
+            } else {
+                tags2 = etymologyTags.find(a => a.displayClose === arrClone[i+2]);
+                if (tags2) {
+                    code = tags.getCode(arrClone[i+1]);
+                    i += 2;
+                }
+            }
+        }
+        arr2.push(code);
+
+    }
+    let display = arr2.reduce((prev, curr) => {
+        return <>{prev}{curr}</>
+    }, <></>);
+    return <span className="etymology"> [{display}]</span>;
 };
 
 const getPosDisplay = (posDetails, setup) => {

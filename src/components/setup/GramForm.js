@@ -17,7 +17,7 @@ const GramForm = props => {
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.tempSetup  );
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({tempSetup: setupCopy});
     };

@@ -39,7 +39,7 @@ const Setup = props => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
         let tempSetupCopy = clone(appState.tempSetup);
-        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag)
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
         let thisItemCopy = clone(tempSetupCopyPath[index]);
         tempSetupCopyPath.splice(index, 1);
         tempSetupCopyPath.splice(position, 0, thisItemCopy);
@@ -112,8 +112,6 @@ const Setup = props => {
     const handleRevertButtonClick = () => {
         setAppState({tempSetup: appState.setup});
     };
-
-    console.log(tempSetup.etymologyAbbrs)
 
     return (
         <main id="setup">
@@ -219,7 +217,7 @@ const Setup = props => {
                 </>
             }
         </main>
-    )
+    );
 };
 
 export default Setup;

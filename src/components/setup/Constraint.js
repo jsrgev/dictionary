@@ -15,12 +15,10 @@ const Constraint = props => {
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.setup  );
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({setup: setupCopy});
     };
-
-
     
     const deleteGroup = () => {
         let setupCopy = clone(appState.setup);
@@ -74,7 +72,7 @@ const Constraint = props => {
                 </div>
             </div>
         </>
-    )
+    );
 };
 
 export default Constraint;

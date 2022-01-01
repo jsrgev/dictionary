@@ -106,7 +106,7 @@ const Entry = props => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
         let entryCopy = clone(state.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         let thisItemCopy = clone(entryCopyPath[index]);
         entryCopyPath.splice(index, 1);
         entryCopyPath.splice(position, 0, thisItemCopy);

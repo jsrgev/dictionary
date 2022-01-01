@@ -343,3 +343,12 @@ ul {
 .pos-abbr {
 	font-style: oblique;
 }
+
+input .highlight {
+	background: var(--light-mango);
+}
+
+.etymology .for {
+	color: inherit;
+	font-style: italic;
+}

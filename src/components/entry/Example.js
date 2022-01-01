@@ -28,7 +28,7 @@ const Example = props => {
 
     const deleteExample = e => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             // if (!upPath.definitions) {
             //     entryCopyPath.splice(0, 1, clone(exampleDefault));

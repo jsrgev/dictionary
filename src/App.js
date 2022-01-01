@@ -174,8 +174,52 @@ const App = () => {
                 {id: "30", abbr: "pos", content: "possibly"},
                 {id: "31", abbr: "rel", content: "related to"},
                 {id: "32", abbr: "tr", content: "truncation"},
-            ]
+            ],
         },
+        etymologyTags: [
+            {
+                id: "1",
+                name: "foreign word",
+                displayOpen: "[foreign]",
+                displayClose: "[/foreign]",
+                getCode: string => <span className="for">{string}</span>,
+            },
+            {
+                id: "2",
+                name: "stem",
+                displayOpen: "[stem]",
+                displayClose: "[/stem]",
+                getCode: string => <span className="for">{string}</span>,
+            },
+            {
+                id: "3",
+                name: "prefix",
+                displayOpen: "[prefix]",
+                displayClose: "[/prefix]",
+                getCode: string => <><span className="for">{string}</span>-</>,
+            },
+            {
+                id: "4",
+                name: "suffix",
+                displayOpen: "[suffix]",
+                displayClose: "[/suffix]",
+                getCode: string => <>-<span className="for">{string}</span></>,
+            },
+            {
+                id: "5",
+                name: "infix",
+                displayOpen: "[infix]",
+                displayClose: "[/infix]",
+                getCode: string => <>-<span className="for">{string}</span>-</>,
+            },
+            {
+                id: "6",
+                name: "gloss",
+                displayOpen: "[gloss]",
+                displayClose: "[/gloss]",
+                getCode: string => <>‘{string}’</>,
+            }
+        ]
     });
 
     const fetchEntries = () => {

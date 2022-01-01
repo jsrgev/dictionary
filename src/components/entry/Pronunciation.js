@@ -20,7 +20,7 @@ const Pronunciation = (props) => {
     const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(appState.entry);
-            let entryCopyPath = _.get(entryCopy, pathFrag)
+            let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
             setAppState({entry:entryCopy});    
         }
@@ -28,7 +28,7 @@ const Pronunciation = (props) => {
 
     const deletePronunciation = () => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
 
         if (path.length === 1) {
             entryCopyPath.splice(0, 1, clone(pronunciationDefault));
@@ -87,7 +87,7 @@ const Pronunciation = (props) => {
                 ))}
                 </div>
         </>
-    )
+    );
 };
 
 export default Pronunciation;

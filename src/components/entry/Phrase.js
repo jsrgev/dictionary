@@ -29,7 +29,7 @@ const Phrase = props => {
 
     const deletePhrase = e => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             if (!upPath.definitions) {
                 entryCopyPath.splice(0, 1, clone(phraseDefault));
@@ -42,8 +42,6 @@ const Phrase = props => {
         }
         setAppState({entry: entryCopy});
     }; 
-
-    // console.log(path[thisIndex])
 
     const popupItems = [
         ["Phrase", () => addPhrase(thisIndex, stringPath)],
@@ -103,8 +101,7 @@ const Phrase = props => {
                 }
             </div>
         </>
-    )
-
+    );
 };
 
 export default Phrase;

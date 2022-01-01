@@ -26,7 +26,7 @@ const Note = props => {
 
     const deleteNote = e => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             let entryCopyUpPath = _.get(entryCopy, stringPath);
             delete entryCopyUpPath.notes;
@@ -64,8 +64,7 @@ const Note = props => {
                 </div>
             </div>
         </>
-    )
-
+    );
 };
 
 export default Note;

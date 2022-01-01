@@ -30,7 +30,7 @@ const Definition = props => {
 
     const deleteDefinition = e => {
         let entryCopy = clone(appState.entry);
-        let entryCopyPath = _.get(entryCopy, pathFrag)
+        let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             if (!upPath.phrases) {
                 entryCopyPath.splice(0, 1, clone(definitionDefault));

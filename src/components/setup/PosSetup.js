@@ -62,7 +62,10 @@ const PosSetup = props => {
         let setupCopy = clone(appState.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (path.length === 1) {
-            setupCopyPath.splice(0, 1, clone(posDefault));
+            let newPos = clone(posDefault);
+            newPos.id = setupCopy.nextId.toString();
+            setupCopy.nextId++;
+            setupCopyPath.splice(0, 1, newPos);
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }

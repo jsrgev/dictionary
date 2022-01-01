@@ -112,7 +112,7 @@ const GramClassGroup = props => {
                 }
             </div>
         </>
-    )
+    );
 };
 
 export default GramClassGroup;

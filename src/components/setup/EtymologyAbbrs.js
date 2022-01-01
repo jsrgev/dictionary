@@ -18,17 +18,7 @@ const EtymologyAbbrs = props => {
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({tempSetup: setupCopy});
-    }
-
-    // const oneTime = () => {
-    //     let setupCopy = clone(appState.tempSetup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     let newAbbr = {abbr: "ext", content: "extended form of"};
-    //     newAbbr.id = setupCopy.nextId.toString();
-    //     setupCopy.nextId++;
-    //     setupCopyPath.splice(thisIndex+1, 0, newAbbr);
-    //     setAppState({tempSetup: setupCopy});    
-    // }
+    };
 
     const addAbbr = () => {
         let setupCopy = clone(appState.tempSetup);
@@ -40,6 +30,21 @@ const EtymologyAbbrs = props => {
         setupCopyPath.splice(thisIndex+1, 0, newAbbr);
         setAppState({tempSetup: setupCopy});
     };
+
+    const deleteAbbr = () => {
+        let setupCopy = clone(appState.tempSetup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        if (setupCopyPath.length === 1) {
+            let newAbbr = clone(etymologyAbbrDefault);
+            newAbbr.id = setupCopy.nextId.toString();
+            setupCopy.nextId++;
+            setupCopyPath.splice(0, 1, newAbbr);
+        } else {
+            setupCopyPath.splice(thisIndex, 1);
+        }
+        setAppState({tempSetup: setupCopy});
+    };
+
 
     const popupItems = [
         ["Abbrevation", addAbbr],
@@ -55,12 +60,8 @@ const EtymologyAbbrs = props => {
             <div className="row-controls">
             <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-            {/* <button onClick={oneTime}>oneTime</button> */}
-                {/* <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
-                    <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
-                    : <i></i>
-                } */}
+                <i className="fas fa-minus" onClick={deleteAbbr}></i>
+                <i></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, true)}
@@ -78,7 +79,7 @@ const EtymologyAbbrs = props => {
             </div>
 
         </div>
-    )
+    );
 };
 
 export default EtymologyAbbrs;

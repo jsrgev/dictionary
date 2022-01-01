@@ -23,14 +23,14 @@ const IpaSetup = props => {
 
     const handleChange = (value, field) => {
         const setupCopy = clone(appState.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
         setAppState({tempSetup: setupCopy});
     };
 
     const changeCharacters = value => {
         const setupCopy = clone(appState.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].characters = value.split(" ");
         setAppState({tempSetup: setupCopy});
     };
@@ -44,7 +44,7 @@ const IpaSetup = props => {
     
     const deleteGroup = () => {
         let setupCopy = clone(appState.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag)
+        let setupCopyPath = _.get(setupCopy, pathFrag);
             setupCopyPath.splice(thisIndex, 1);
         setAppState({tempSetup: setupCopy});
     };

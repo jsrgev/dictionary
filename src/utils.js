@@ -99,8 +99,8 @@ export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
 };
 
 export const handleInputBlur = e => {
-    let hoverItems = document.querySelectorAll( ":hover" );
-    let clickedItem = hoverItems[hoverItems.length-1];
+    const hoverItems = document.querySelectorAll( ":hover" );
+    const clickedItem = hoverItems[hoverItems.length-1];
     if (clickedItem === undefined || !clickedItem.closest("#ipa")) {
         return;
     };
@@ -108,13 +108,23 @@ export const handleInputBlur = e => {
     if (clickedItem.tagName !== "SPAN") {
         return;
     }
-    let inputNode = e.target;
-    let {value} = inputNode;
+    const inputNode = e.target;
+    const {value} = inputNode;
 
-    let selectionStart = inputNode.selectionStart ?? value.length;
-    let selectionEnd = inputNode.selectionEnd ?? value.length;
+    const selectionStart = inputNode.selectionStart ?? value.length;
+    const selectionEnd = inputNode.selectionEnd ?? value.length;
 
-    const newValue = value.substring(0, selectionStart) + clickedItem.textContent + value.substring(selectionEnd);
+    const clickedItemValue = clickedItem.textContent;
+    const newValue = value.substring(0, selectionStart) + clickedItemValue + value.substring(selectionEnd);
+    const positionsToSkip = clickedItemValue.length;
+    const newCursorPosition = selectionStart + positionsToSkip;
+
+    setTimeout(() => {
+        e.target.selectionStart = newCursorPosition;
+        e.target.selectionEnd = newCursorPosition;
+    }, 5);
+
+
     return newValue;
 };
 
