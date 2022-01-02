@@ -890,7 +890,8 @@ fieldset {
 .row-content {
 	display: grid;
 	gap: .5rem 1rem;
-	grid-template-columns: 6rem 1fr;
+	grid-template-columns: 9rem 1fr;
+    align-items: flex-start;
 }
 
 .row > .row {
@@ -907,17 +908,17 @@ fieldset {
 	display: grid;
 	gap: 1rem;
 	grid-template-columns: max-content 1fr max-content 1fr max-content max-content;
-	grid-template-columns: 1rem 1rem 6rem 1fr;
+	grid-template-columns: 1rem 1rem 9rem 1fr;
 }
 
 .pos {
 	display: grid;
-	grid-template-columns: 6rem 1fr;
+	grid-template-columns: 9rem 1fr;
 	gap: 1rem;
 }
 
 .language-names {
-	grid-template-columns: 7rem 1fr;
+	grid-template-columns: 9rem 1fr;
 }
 
 #preview {
