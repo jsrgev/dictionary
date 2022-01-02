@@ -14,7 +14,7 @@ const Preview = (props) => {
 
     return(
         <>
-            <p>Preview</p>
+            <h2>Preview</h2>
             {appState.entry &&
             getDisplay().map((a, i) => (
                 <div key={i}>{a}</div>

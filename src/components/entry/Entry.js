@@ -200,10 +200,7 @@ const Entry = props => {
                 <>
                     <EntriesList state={state} setState={setState} isDirty={isDirty} />
                     <div id="entryForm" onKeyDown={handleKeyDown}>
-                        {state.entry._id ?
-                        <div>Editing Entry: <span className="hw">{state.entry.headword.morphs[0].content}</span></div> :
-                        <div>New Entry: <span className="hw">{state.entry.headword.morphs[0].content}</span></div>
-                        }
+                        <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].content}</span></h1>
                         <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (

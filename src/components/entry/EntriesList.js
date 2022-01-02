@@ -35,9 +35,9 @@ const EntriesList = props => {
     const isActive = id => id === state.entry._id;
 
     return (
-        <div className="entries-list-section">
-            <p>Entries</p>
-            <ul className="entries-list">
+        <div id="entries-list-section">
+            <h2>Entries</h2>
+            <ul id="entries-list">
                 {getSortedEntries().map((a, i) => (
                     <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>
                 ))
