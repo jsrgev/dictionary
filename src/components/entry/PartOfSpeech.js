@@ -142,14 +142,16 @@ const PartOfSpeech = (props) => {
             })
             groups.push(arr);
         })
-
         // get all combinations - from https://stackoverflow.com/questions/12303989/cartesian-product-of-multiple-arrays-in-javascript
         const cartesian = (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
-        return cartesian(...groups);
+
+        // cartesian doesn't work right for single array, e.g. just [sg., pl.]
+        let allGramForms = groups.length === 1 ? _.chunk(...groups, 1) : cartesian(...groups);
+        let x = _.chunk(...groups, 1);
+        return (typeof(allGramForms[0]) === "string") ? [allGramForms] : allGramForms;
     };
 
     const allGramForms = getAllGramForms();
-
     const popupItems = [];
 
     if (availablePoses.length > 0) {

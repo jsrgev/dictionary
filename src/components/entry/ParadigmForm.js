@@ -70,6 +70,8 @@ const ParadigmForm = (props) => {
         setAppState({entry: entryCopy});
     };
     
+    // console.log(gramFormSet);
+
     // const getGramFormAbbrs = () => {
     //     let gramFormNames = gramFormSet.map(a => {
     //         let gramForm = appState.setup.gramFormGroups.reduce((acc2, b) => {
