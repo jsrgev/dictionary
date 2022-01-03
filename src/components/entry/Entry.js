@@ -198,7 +198,14 @@ const Entry = props => {
             { (!state.setup || !state.entry) ?
                 <div>Loading</div> :
                 <>
-                    <EntriesList state={state} setState={setState} isDirty={isDirty} />
+                    <div id="sidebar">
+                        <EntriesList state={state} setState={setState} isDirty={isDirty} />
+                        <div id="preview">
+                        {state.entry &&
+                            <Preview appState={state} setAppState={setState} />
+                        }
+                        </div>
+                    </div>
                     <div id="entryForm" onKeyDown={handleKeyDown}>
                         <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].content}</span></h1>
                         <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
@@ -223,11 +230,6 @@ const Entry = props => {
                             </>
                             }
                         </div>
-                    </div>
-                    <div id="preview">
-                    {state.entry &&
-                        <Preview appState={state} setAppState={setState} />
-                    }
                     </div>
                     { state.setup.ipa.showPalette &&
                         <IpaPalette appState={state} />

@@ -63,9 +63,9 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
             let obj = {
                 sortTerm: item.content,
                 display:
-                    <p key={key}>
-                        <span className="for">{item.content}</span> see <span className="for">{filteredArr[0].content}</span>
-                    </p>
+                    <React.Fragment key={key}>
+                        <span key={key} className="for">{item.content}</span> see <span className="for">{filteredArr[0].content}</span>
+                    </React.Fragment>
             };
             allDisplayItems.push(obj);
             let fullDisplay = getMorphsDisplay([item]);
@@ -78,7 +78,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         let etymologyDisplay = getEtymologyDisplay(entry.etymology, etymologyTags);
         let obj = {
             sortTerm: filteredArr[0].content,
-            display: <p key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</p>
+            display: <React.Fragment key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</React.Fragment>
         }
         allDisplayItems.push(obj);
         key++;

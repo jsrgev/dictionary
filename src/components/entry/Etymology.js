@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { clone } from '../../utils';
+import { clone, getIndent } from '../../utils';
 
 const Etymology = props => {
 
     const {state, setState} = props;
 
-    const [etymologyOpen, setEtymologyOpen] = useState(false);
+    const [etymologyOpen, setEtymologyOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
@@ -75,31 +75,34 @@ const Etymology = props => {
 
             <div className={`row${etymologyOpen ? "" : " closed"}`}>
                 <div className="row-controls">
+                    <i></i>
+                    <i></i>
+                    <i className={`fas fa-chevron-${etymologyOpen ? "up" : "down"}`} onClick={() => setEtymologyOpen(!etymologyOpen)}></i>
                 </div>
                 <div className="row-content">
                     <label>Etymology</label>
                     <input value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
                 </div>
-            </div>
-            <div className={`row${etymologyOpen ? "" : " closed"}`}>
-                <div className="row-controls">
-                </div>
-                <div className="row-content">
-                    <label>Insert abbr/sym</label>
-                    <ul id="etymology-abbrs">
-                        {state.setup.etymologyAbbrs.concat(symbols).map((a, i) => (
-                            <li value={a.isSymbol ? a.content : a.abbr + "."} key={i}>{a.isSymbol ? a.content : a.abbr}</li>
-                        ))}
-                    </ul>
-                    <label>Insert tags</label>
-                    <ul id="etymology-tags">
-                        {state.etymologyTags.map((a, i) => (
-                            <React.Fragment key={i}>
-                                <li value={a.id}>{a.name}</li>
-                                {/* <li>{a.displayClose}</li> */}
-                            </React.Fragment>
-                        ))}
-                    </ul>
+                <div className={`row${etymologyOpen ? "" : " closed"}`} style={getIndent(0)}>
+                    <div className="row-controls">
+                    </div>
+                    <div className="row-content">
+                        <label>Insert abbr/sym</label>
+                        <ul id="etymology-abbrs">
+                            {state.setup.etymologyAbbrs.concat(symbols).map((a, i) => (
+                                <li value={a.isSymbol ? a.content : a.abbr + "."} key={i}>{a.isSymbol ? a.content : a.abbr}</li>
+                            ))}
+                        </ul>
+                        <label>Insert tags</label>
+                        <ul id="etymology-tags">
+                            {state.etymologyTags.map((a, i) => (
+                                <React.Fragment key={i}>
+                                    <li value={a.id}>{a.name}</li>
+                                    {/* <li>{a.displayClose}</li> */}
+                                </React.Fragment>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </>
