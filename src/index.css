@@ -57,7 +57,7 @@
 	--darkgray2: #8F8F8F;
 	--lightgray: #d9d9d9;
 	--lightgray1: #F2F2F2;
-	--lightgray3: #eaeaea;
+	--lightgray2: #eaeaea;
 	--yellow: #ECF65C;
 	--yellow2: #FFE66D;
 	--purple: #857ee8;
@@ -641,7 +641,7 @@ form.contact button:hover, form.contact button:focus {
 }
 
 form.contact button:active {
-	background-color: var(--lightgray3);
+	background-color: var(--lightgray2);
 	box-shadow: inset 3px 3px 5px var(--gray), inset -3px -3px 5px #ffffffba;
 }
 
@@ -774,11 +774,6 @@ button:disabled, button:disabled:hover {
 
 
 
-
-
-
-
-
 a.active {
 	cursor: default;
 	color: #000000;
@@ -818,8 +813,13 @@ nav ul {
 	padding: 1rem;
 }
 
+#entries-list-section input {
+	margin-bottom: 1rem;
+	background: #ffffff;
+}
+
 #entries-list-section ul {
-    height: calc(100% - 1rem - 1.4 * 1.1rem);
+    height: calc(100% - 1rem - 1.4 * 1.1rem - 1.4 * 1rem - 2px - 1rem);
 	overflow: scroll;
 }
 
@@ -860,9 +860,11 @@ main > div {
 
 
 input {
+	padding: 1px 2px;
 	outline: none;
 	border: none;
-	background-color: #e7e7e7;
+	border-bottom: 2px solid #ffffff;
+	background-color: var(--lightgray2);
 	width: 100%;
 }
 
@@ -870,9 +872,10 @@ input[type="checkbox"] {
 	width: auto;
 }
 
-input, label {
-	padding: 1px 2px;
+input:hover, textarea:hover, input:focus, textarea:focus {
+	border-color: var(--blue);
 }
+
 
 #entryForm {
 	grid-row: span 2;
@@ -954,7 +957,7 @@ fieldset {
 	cursor: pointer;
 }
 
-.fa-plus:hover:not(.disabled), .fa-minus:hover:not(.disabled) {
+.row-controls i:hover:not(.disabled) {
 	color: var(--blue);
 }
 
