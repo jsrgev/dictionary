@@ -41,7 +41,7 @@ const Headword = props => {
                     <i className={`fas fa-chevron-${headwordOpen ? "up" : "down"}`} onClick={() => setHeadwordOpen(!headwordOpen)}></i>
                 </div>
                 <div className="row-content">
-                    Headword
+                    <span>Headword</span>
                 </div>
                 {appState.entry?.headword?.morphs.map((a,i) => (
                     <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveItem={moveItem} />

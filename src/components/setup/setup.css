@@ -15,7 +15,7 @@
 }
 
 #ipaSetup .row-content {
-    grid-template-columns: 9rem 1fr max-content 1rem max-content 1rem;
+    grid-template-columns: 9rem 1fr max-content 1.5rem max-content 1.5rem;
 }
 
 #ipaSetup .row-content input:last-child {
@@ -30,7 +30,34 @@ input[type="color" i] {
     height: auto;
     padding: 0;
     background: transparent;
+    border: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    -webkit-appearance: none;
+   -moz-appearance: none;
+    appearance: none;
 }
+
+input[type="color" i]::-webkit-color-swatch {
+    padding: 0;
+    margin: 0;
+    border-radius: 15px;
+    border: none;
+    display: inline-block;
+  }
+
+  input[type="color" i]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+input[type="color" i]::-moz-color-swatch {
+    padding: 0;
+    margin: 0;
+    border-radius: 15px;
+    border: none;
+    height: 2rem;
+  }
 
 .setting {
     grid-template-columns: 9rem 1fr;

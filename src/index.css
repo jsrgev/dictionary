@@ -858,14 +858,20 @@ main > div {
 }
 
 
+#entryForm > .row > .row-content > *:first-child {
+	font-weight: 500;
+}
+
+
 
 input {
+    box-sizing: border-box;
+	width: 100%;
 	padding: 1px 2px;
 	outline: none;
 	border: none;
 	border-bottom: 2px solid #ffffff;
 	background-color: var(--lightgray2);
-	width: 100%;
 }
 
 input[type="checkbox"] {
@@ -961,11 +967,15 @@ fieldset {
 	color: var(--blue);
 }
 
-.fa-chevron-down, .fa-chevron-down {
+.fa-chevron-down {
     position: relative;
-    top: 0.1rem;
+    top: .35em;
 }
 
+.fa-chevron-up {
+    position: relative;
+    top: .05em;
+}
 
 ul {
 	list-style-type: none;

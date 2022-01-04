@@ -41,8 +41,8 @@ const EntriesList = props => {
 
     const isActive = id => id === state.entry._id;
 
-    // const sortedEntries = getSortedEntries();
     const filteredEntries = getSortedEntries().filter(a => {
+        // exclude unicode combining diacritics block
         const entry = a.content.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         const term = filterTerm.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         return entry.includes(term);

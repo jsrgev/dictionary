@@ -81,7 +81,7 @@ const SenseGroup = props => {
                     ></i>
                </div>
                 <div className="row-content">
-                    Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}
+                    <span>Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}</span>
                 </div>
                     {path[thisIndex].partsOfSpeech.map((a,i) => (
                     <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveItem={moveItem} />

@@ -80,10 +80,19 @@ const Etymology = props => {
                     <i className={`fas fa-chevron-${etymologyOpen ? "up" : "down"}`} onClick={() => setEtymologyOpen(!etymologyOpen)}></i>
                 </div>
                 <div className="row-content">
-                    <label>Etymology</label>
-                    <input value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
+                    <span>Etymology</span>
                 </div>
-                <div className={`row${etymologyOpen ? "" : " closed"}`} style={getIndent(0)}>
+
+                <div className="row" style={getIndent(0)}>
+                    <div className="row-controls">
+                    </div>
+                    <div className="row-content">
+                        <label>Text</label>
+                        <input value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
+                    </div>
+                </div>
+
+                <div className="row" style={getIndent(1)}>
                     <div className="row-controls">
                     </div>
                     <div className="row-content">
