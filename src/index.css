@@ -805,12 +805,14 @@ nav ul {
 	position: sticky;
 	top: 0;
 	height: calc(100vh - 40px - 6rem);
+	margin-top: -1rem;
 }
 
 
 #entries-list-section {
 	background: var(--light-yellow);
 	padding: 1rem;
+	margin-top: 1rem;
 }
 
 #entries-list-section input {
@@ -819,7 +821,7 @@ nav ul {
 }
 
 #entries-list-section ul {
-    height: calc(100% - 1rem - 1.4 * 1.1rem - 1.4 * 1rem - 2px - 1rem);
+    height: calc(100% - 16px - 1.4 * 1.1rem - 1.4 * 1rem - 2px - 1rem);
 	overflow: scroll;
 }
 
@@ -992,7 +994,7 @@ ul {
 }
 
 .row li {
-	padding: 0.1rem .3rem;
+	padding: 0 .3rem;
 	border-radius: .5rem;
 	cursor: pointer;
 }

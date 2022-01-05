@@ -68,6 +68,7 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
+    // console.log(appState)
 
     return (
         <>
@@ -95,7 +96,8 @@ const Morph = props => {
                     />
                 </div>
                 {/* <div className="row"> */}
-                    {path[thisIndex].pronunciations.map((a,i) => (
+                    { appState.setup.showPronunciation &&
+                    path[thisIndex].pronunciations.map((a,i) => (
                         <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
                         />
                     ))}
