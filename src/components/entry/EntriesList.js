@@ -1,5 +1,5 @@
 import { sortEntries } from "../../utils";
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 
 const EntriesList = props => {
     const {state, setState, isDirty} = props;
@@ -51,7 +51,7 @@ const EntriesList = props => {
     return (
         <div id="entries-list-section">
             <h2>Entries</h2>
-            <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} />
+            <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} aria-label="Filter entries" placeholder="Filter entries..."/>
             <ul id="entries-list">
                 {filteredEntries.map((a, i) => (
                     <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>

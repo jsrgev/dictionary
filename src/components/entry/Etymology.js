@@ -4,6 +4,7 @@ import { clone, getIndent } from '../../utils';
 const Etymology = props => {
 
     const {state, setState} = props;
+    let pathFrag = "etymology";
 
     const [etymologyOpen, setEtymologyOpen] = useState(true);
 
@@ -87,8 +88,8 @@ const Etymology = props => {
                     <div className="row-controls">
                     </div>
                     <div className="row-content">
-                        <label>Text</label>
-                        <input value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
+                        <label htmlFor={pathFrag}>Text</label>
+                        <input id={pathFrag} value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
                     </div>
                 </div>
 

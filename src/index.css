@@ -79,11 +79,6 @@
 }
 
 
-button {
-	margin: 0;
-	padding: 0;
-}
-
 html {
 	font-size: 14px;
 }
@@ -92,7 +87,7 @@ body {
 	background-color: white;
 }
 
-body, td, th, input, form button, textarea, .tooltip:hover:after {
+body, td, th, input, button, textarea, .tooltip:hover:after {
 	font-family: "Rubik", "dejavu_sans", "Lucida Grande", sans-serif;
 	line-height: 1.4;
 	font-size: 1rem;
@@ -116,7 +111,7 @@ a:visited {
 a:hover, a:active, a:focus, nav a:hover, nav a:active {
 	color: var(--turquoise) !important;
 	text-decoration: underline !important;
-	outline: none;
+	outline: 0;
 }
 
 h1 {
@@ -352,8 +347,8 @@ nav > ul > li.expanded {
 }
 
 nav button {
-	outline: none;
-	border: none;
+	outline: 0;
+	border: 0;
 	background: none;
 	cursor: pointer;
 	font-size: inherit;
@@ -593,7 +588,7 @@ form.contact div {
 	padding: .3rem .5rem;
 	background-color: #fefefe;
 	box-sizing: border-box;
-	border: none;
+	border: 0;
 	border-radius: 0;
 	outline: 0;
 }
@@ -745,7 +740,7 @@ button:disabled, button:disabled:hover {
 		position: relative;
 		display: none;
 		padding: 0;
-		border: none;
+		border: 0;
 		right: 0 !important;
 		background: var(--transparent);
 	}
@@ -870,8 +865,8 @@ input {
     box-sizing: border-box;
 	width: 100%;
 	padding: 1px 2px;
-	outline: none;
-	border: none;
+	outline: 0;
+	border: 0;
 	border-bottom: 2px solid #ffffff;
 	background-color: var(--lightgray2);
 }
@@ -896,7 +891,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 }
 
 fieldset {
-	border: none;
+	border: 0;
 	margin: 0;
 	padding: 1rem;
     align-items: start;
@@ -907,6 +902,7 @@ fieldset {
 	display: grid;
 	gap: .5rem 1rem;
 	grid-template-columns: max-content 1fr;
+    align-items: flex-start;
 }
 
 .row-controls {
@@ -921,7 +917,6 @@ fieldset {
 	display: grid;
 	gap: .5rem 1rem;
 	grid-template-columns: 9rem 1fr;
-    align-items: flex-start;
 }
 
 .row > .row {
@@ -1080,7 +1075,7 @@ ul {
 }
 
 #ipa.ipa-chars-hidden {
-	border: none;
+	border: 0;
 }
 
 .ipa-chars-hidden #show-ipa {
@@ -1123,7 +1118,7 @@ ul {
 }
 
 .add-popup div:last-child {
-	border: none;
+	border: 0;
     border-top-right-radius: .5rem;
     border-bottom-right-radius: .5rem;
 }
@@ -1152,4 +1147,39 @@ input .highlight {
 	flex-wrap: wrap;
 	gap: 1rem;
     justify-content: space-evenly;
+}
+
+button {
+	margin: 0;
+	padding: .3rem .7rem .2rem;
+	outline: 0;
+	box-sizing: border-box;
+	outline: 0;
+	font-weight: 500;
+	text-align: center;
+
+	background: var(--lightgray1);
+	border-radius: 10px;
+
+	color: var(--bluelink);
+	border: 2px solid var(--gray);
+	/* box-shadow: 2px 2px 0px var(--gray), -2px -2px 0px white; */
+
+}
+
+
+button:hover, button:focus {
+	/* color: var(--turquoise); */
+	background-color: var(--light-yellow);
+	border-color: var(--blue);
+}
+
+button:active {
+	/* background-color: var(--lightgray3); */
+	box-shadow: inset 3px 3px 5px var(--gray), inset -3px -3px 5px #ffffffba;
+}
+
+button:disabled, button:disabled:hover {
+	border: 2px solid var(--gray3);
+	color: var(--gray3);
 }

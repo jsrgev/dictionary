@@ -79,8 +79,8 @@ const Example = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <label>Example{path.length>1 && ` ${thisIndex+1}`}</label>
-                    <input type="text"
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Example{path.length>1 && ` ${thisIndex+1}`}</label>
+                    <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}

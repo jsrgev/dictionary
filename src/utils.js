@@ -161,3 +161,6 @@ export const getGramFormAbbrs = (gramFormSet, gramFormGroupDefs) => {
     let filteredGramFormNames = gramFormNames.filter(a => a);        
     return filteredGramFormNames.join(" ");
 };
+
+export const getRandomId = () => Math.random().toString(16).slice(-12);
+

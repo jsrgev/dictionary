@@ -68,8 +68,6 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
-    // console.log(appState)
-
     return (
         <>
             <div className={`row${morphOpen ? "" : " closed"}`}>
@@ -88,8 +86,8 @@ const Morph = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <label forhtml={`targetLang-${thisIndex}`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
-                    <input id={`targetLang-${thisIndex}`} type="text"
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
+                    <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}

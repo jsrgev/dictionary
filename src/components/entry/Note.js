@@ -55,8 +55,8 @@ const Note = props => {
                     <i className="fas fa-minus" onClick={deleteNote}></i>           
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <div>Note</div>
-                    <input type="text"
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Note {path.length>1 && ` ${thisIndex+1}`}</label>
+                    <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}

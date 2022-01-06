@@ -84,8 +84,8 @@ const Phrase = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
-                    <label>Phrase{path.length>1 && ` ${thisIndex+1}`}</label>
-                    <input type="text"
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Phrase{path.length>1 && ` ${thisIndex+1}`}</label>
+                    <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}

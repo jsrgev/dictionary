@@ -147,7 +147,6 @@ const PartOfSpeech = (props) => {
 
         // cartesian doesn't work right for single array, e.g. just [sg., pl.]
         let allGramForms = groups.length === 1 ? _.chunk(...groups, 1) : cartesian(...groups);
-        let x = _.chunk(...groups, 1);
         return (typeof(allGramForms[0]) === "string") ? [allGramForms] : allGramForms;
     };
 
