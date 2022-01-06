@@ -1163,7 +1163,8 @@ button {
 
 	color: var(--bluelink);
 	border: 2px solid var(--gray);
-	/* box-shadow: 2px 2px 0px var(--gray), -2px -2px 0px white; */
+	/* box-shadow: inset -3px -3px -5px var(--gray), inset 3px 3px 5px #ffffffba; */
+	/* box-shadow: inset 2px 2px 4px #ffffffba , inset -2px -2px 4px var(--gray); */
 
 }
 

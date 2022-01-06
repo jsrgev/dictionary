@@ -99,10 +99,10 @@ const GramForm = props => {
                 <div className="row-content gram-form-setup" style={getIndent(0)}>
                     {
                         <>
-                            <label>Form</label>
-                            <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
-                            <label>Abbreviation</label>
-                            <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
+                            <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Form</label>
+                            <input id={`${pathFrag}[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
+                            <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbreviation</label>
+                            <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                         </>
                     }
                 </div>

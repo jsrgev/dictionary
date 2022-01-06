@@ -89,8 +89,8 @@ const GramFormGroup = props => {
                     ></i>
                 </div>
                 <div className="row-content">
-                    <label>Group</label>
-                    <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
+                    <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                 </div>
                 { path[thisIndex].gramForms &&
                     path[thisIndex].gramForms.map((a, i) => (

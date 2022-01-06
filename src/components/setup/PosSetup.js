@@ -122,10 +122,10 @@ const PosSetup = props => {
                 </i>
                 </div>
                 <div className="row-content partsOfSpeechSetup">
-                    <label>Part of Speech</label>
-                    <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
-                    <label>Abbreviation</label>
-                    <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Part of Speech</label>
+                    <input id={`${pathFrag}[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbreviation</label>
+                    <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
                 { path[thisIndex].gramClassGroups?.map((a, i) => (
                     <GramClassSelect key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} />))

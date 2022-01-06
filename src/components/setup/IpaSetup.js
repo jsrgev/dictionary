@@ -80,17 +80,17 @@ const IpaSetup = props => {
 
                 </div>
                 <div className="row-content ipa">
-                    <label>Group</label>
-                    <input type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].group`}>Group</label>
+                    <input id={`${pathFrag}[${thisIndex}].group`} type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
 
-                    <label>Background color</label>
-                    <input type="color" value={path[thisIndex].bgColor} onChange={e => handleChange(e.target.value, "bgColor")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].bg-color`}>Background color</label>
+                    <input id={`${pathFrag}[${thisIndex}].bg-color`} type="color" value={path[thisIndex].bgColor} onChange={e => handleChange(e.target.value, "bgColor")} />
 
-                    <label>Text color</label>
-                    <input type="color" value={path[thisIndex].textColor} onChange={e => handleChange(e.target.value, "textColor")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].text-color`}>Text color</label>
+                    <input id={`${pathFrag}[${thisIndex}].text-color`} type="color" value={path[thisIndex].textColor} onChange={e => handleChange(e.target.value, "textColor")} />
 
-                    <label>Characters</label>
-                    <input type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].characters`}>Characters</label>
+                    <input id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
                </div>
             </div>
         </>

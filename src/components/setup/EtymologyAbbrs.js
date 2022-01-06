@@ -72,10 +72,10 @@ const EtymologyAbbrs = props => {
                 </i>
             </div>
             <div className="row-content etymology-abbrs-setup">
-                <label>Term</label>
-                <input type="text" value={path[thisIndex].content} onChange={e => handleChange(e.target.value, "content")} />
-                <label>Abbr</label>
-                <input type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
+                <label htmlFor={`${pathFrag}[${thisIndex}].content`}>Term</label>
+                <input id={`${pathFrag}[${thisIndex}].content`} type="text" value={path[thisIndex].content} onChange={e => handleChange(e.target.value, "content")} />
+                <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbr</label>
+                <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
             </div>
 
         </div>

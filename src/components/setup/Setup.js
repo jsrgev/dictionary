@@ -125,8 +125,8 @@ const Setup = props => {
                             <div className="row">
                                 <div className="row-controls"></div>
                                 <div className="row-content language-names">
-                                    <label>Target Language</label>
-                                    <input type="text" value={tempSetup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
+                                    <label htmlFor='target-language'>Target Language</label>
+                                    <input id='target-language' type="text" value={tempSetup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -134,8 +134,8 @@ const Setup = props => {
                             <div className="row">
                                 <div className="row-controls"></div>
                                 <div className="row-content language-names">
-                                    <label>Source Language</label>
-                                    <input type="text" value={tempSetup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
+                                    <label htmlFor='source-language'>Source Language</label>
+                                    <input id='target-language' type="text" value={tempSetup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -178,15 +178,15 @@ const Setup = props => {
                 <div>
                 <h3>Phonetics</h3>
                     <div className="row setting">
-                    <label>Include pronunciation</label>
-                    <input type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
+                    <label htmlFor='include-pronunciation'>Include pronunciation</label>
+                    <input id='include-pronunciation' type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                     </div>
                 </div>
                 <div id="ipaSetup">
                     <h3 className="span2">IPA</h3>
                     <div className="row setting">
-                        <label>Show IPA palette</label>
-                        <input type="checkbox" checked={tempSetup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
+                        <label htmlFor='show-ipa-palette'>Show IPA palette</label>
+                        <input id='show-ipa-palette' type="checkbox" checked={tempSetup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
                     </div>
                     { tempSetup.ipa.showPalette &&
                     <>

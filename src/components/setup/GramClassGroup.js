@@ -97,8 +97,8 @@ const GramClassGroup = props => {
                     ></i>
                 </div>
                 <div className="row-content gram-class-setup">
-                    <label>Group</label>
-                    <input type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
+                    <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Allow multiple</label>
                     <ul>
                         <li className={path[thisIndex].multiChoice ? "selected" : ""} onClick={() => changeMultiChoice(true)} >Yes</li>
