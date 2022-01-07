@@ -1,14 +1,16 @@
 import { sortEntries } from "../../utils";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 const EntriesList = props => {
     const {state, setState, isDirty} = props;
 
     const [filterTerm, changeFilterTerm] = useState("");
+    const [topArrowShown, setTopArrowShown] = useState(false);
+    const [bottomArrowShown, setBottomArrowShown] = useState(false);
 
-    // useEffect(() => {
-
-    // }, filterTerm);
+    useEffect(() => {
+        handleScroll();
+    }, []);
 
     const getSortedEntries = () => {
         const entrySet = state.allEntries.map(a => {
@@ -18,6 +20,30 @@ const EntriesList = props => {
             };
         });
         return sortEntries(entrySet);
+    };
+
+    const handleScroll = () => {
+        const ul = document.getElementById("entries-list");
+        const pixels = 12;
+        const isContentBelow = ul.scrollHeight - ul.scrollTop > ul.clientHeight + pixels;
+        const isContentAbove = ul.scrollHeight - ul.scrollTop < ul.scrollHeight - pixels;
+        if (isContentBelow) {
+            setBottomArrowShown(true);
+        } else {
+            setBottomArrowShown(false);
+        };
+        if (isContentAbove) {
+            setTopArrowShown(true);
+        } else {
+            setTopArrowShown(false);
+        }
+    };
+
+    const getArrowClasses = () => {
+        let classes  = [];
+        if (topArrowShown) classes.push("top-arrow");
+        if (bottomArrowShown) classes.push("bottom-arrow");
+        return classes.join(" ");
     };
 
     const handleClick = (id) => {
@@ -52,7 +78,7 @@ const EntriesList = props => {
         <div id="entries-list-section">
             <h2>Entries</h2>
             <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} aria-label="Filter entries" placeholder="Filter entries..."/>
-            <ul id="entries-list">
+            <ul id="entries-list" onScroll={handleScroll} className={getArrowClasses()}>
                 {filteredEntries.map((a, i) => (
                     <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>
                 ))

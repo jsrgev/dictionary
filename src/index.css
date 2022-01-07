@@ -815,11 +815,16 @@ nav ul {
 	background: #ffffff;
 }
 
-#entries-list-section ul {
+#entries-list {
     height: calc(100% - 16px - 1.4 * 1.1rem - 1.4 * 1rem - 2px - 1rem);
 	overflow: scroll;
+	position: relative;
 }
 
+
+#entries-list li {
+	width: max-content;
+}
 
 #entries-list li:not(.active) {
 	cursor: pointer;;
@@ -829,6 +834,29 @@ nav ul {
 	font-weight: 600;
 }
 
+#entries-list.top-arrow::before {
+	position: sticky;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%);
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	content: "\f0d8";
+	font-size: 1.5rem;
+	color: var(--blue);
+}
+
+#entries-list.bottom-arrow::after {
+	position: sticky;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%);
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	content: "\f0d7";
+	font-size: 1.5rem;
+	color: var(--blue);
+}
 
 #preview {
 	background: var(--light-green);

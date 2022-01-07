@@ -32,11 +32,11 @@ const getAltDisplayForHeadword = (altDisplayForHeadword) => {
     })
 };
 
-const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciations) => {
+const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation) => {
     let morphType = isHeadword ? "hw" : "for";
         let newArr = arr.map((a, i) => {
         let morph = <span className={morphType}>{a.content}</span>;
-        let pronunciations = showPronunciations ? getPronunciationsDisplay(a.pronunciations) : "";
+        let pronunciations = showPronunciation ? getPronunciationsDisplay(a.pronunciations) : "";
         let notes = a.notes ? getNotesDisplay(a.notes) : "";
         let alts = a.isHeadword ? getAltDisplayForHeadword(altDisplayForHeadword) : "";
         return <React.Fragment key={i}>
@@ -73,7 +73,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
             key++;
         };
 
-        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.showPronunciations);
+        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.showPronunciation);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
         let etymologyDisplay = getEtymologyDisplay(entry.etymology, etymologyTags);
         let obj = {
