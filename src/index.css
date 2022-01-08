@@ -49,6 +49,7 @@
 	--turquoise: #33D4D1;
 	--turquoise2: #33D4D1;
 	--blue: #5E90FF;
+	--transparentblue: #5E90FFab;
 	--bluelink: #1563ff;
 	--bluelinkvisited: #84b2f9;
 	--gray: #D1D1D1;
@@ -473,7 +474,6 @@ li:nth-last-child(n + 11), li:nth-last-child(n + 11) ~ li, .entries p:nth-last-c
 	margin-top: 0;
 }
 
-
 .double {
 	display: grid;
 	margin: 1rem 40px 1rem;
@@ -834,28 +834,49 @@ nav ul {
 	font-weight: 600;
 }
 
-#entries-list.top-arrow::before {
+#entries-list::before {
 	position: sticky;
-	top: 0;
+	top: -.4rem;
 	left: 50%;
 	transform: translate(-50%);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	content: "\f0d8";
-	font-size: 1.5rem;
-	color: var(--blue);
+	font-size: 1.7rem;
+	color: var(--transparentblue);
+	/* z-index: 15; */
+	opacity: 0;
+	transition: .3s;
 }
 
-#entries-list.bottom-arrow::after {
+#entries-list.top-arrow::before {
+	opacity: 1;
+}
+
+#entries-list::after {
 	position: sticky;
-	bottom: 0;
+	bottom: -.4rem;
 	left: 50%;
 	transform: translate(-50%);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	content: "\f0d7";
-	font-size: 1.5rem;
-	color: var(--blue);
+	font-size: 1.7rem;
+	color: var(--transparentblue);
+	opacity: 0;
+	transition: .3s;
+}
+
+#entries-list.bottom-arrow::after {
+	opacity: 1;
+}
+
+#entries-list li:first-child {
+	margin-top: calc((1.7rem * 1.4) * -1);
+}
+
+#entries-list li:last-child {
+	margin-bottom: calc((1.7rem * 1.4) * -1);
 }
 
 #preview {

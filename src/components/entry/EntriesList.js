@@ -39,6 +39,11 @@ const EntriesList = props => {
         }
     };
 
+    const showPosition = e => {
+        let li = e.target;
+        console.log(li.getBoundingClientRect())
+    };
+
     const getArrowClasses = () => {
         let classes  = [];
         if (topArrowShown) classes.push("top-arrow");
@@ -78,9 +83,15 @@ const EntriesList = props => {
         <div id="entries-list-section">
             <h2>Entries</h2>
             <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} aria-label="Filter entries" placeholder="Filter entries..."/>
-            <ul id="entries-list" onScroll={handleScroll} className={getArrowClasses()}>
+            <ul id="entries-list" onScroll={handleScroll}
+                                onClick={e => showPosition(e)}
+
+            className={getArrowClasses()}>
                 {filteredEntries.map((a, i) => (
-                    <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>
+                    <li key={i} className={isActive(a.id) ? "active" : null}
+                    onClick={e => showPosition(e)}
+                    //  onClick={() => handleClick(a.id)}
+                    >{a.content}</li>
                 ))
 
                 }
