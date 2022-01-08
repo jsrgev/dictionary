@@ -403,6 +403,10 @@ footer span:last-child, header h1:last-child {
 
 /* Dictionaries */
 
+.dictionary h1 {
+	text-align: left;
+}
+
 .dictionary .toc {
 	padding: 1rem 0;
 	border: 3px solid var(--turquoise);
@@ -891,7 +895,7 @@ nav ul {
 	margin-bottom: 0;
 }
 
-main {
+main:not(.dictionary) {
 	display: grid;
     align-content: start;
 	gap: 1rem;

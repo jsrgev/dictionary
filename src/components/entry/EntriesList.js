@@ -9,7 +9,7 @@ const EntriesList = props => {
     const [bottomArrowShown, setBottomArrowShown] = useState(false);
 
     useEffect(() => {
-        handleScroll();
+        displayArrows();
     }, []);
 
     const getSortedEntries = () => {
@@ -22,8 +22,11 @@ const EntriesList = props => {
         return sortEntries(entrySet);
     };
 
-    const handleScroll = () => {
+    const displayArrows = () => {
         const ul = document.getElementById("entries-list");
+        if (!ul) {
+            return;
+        }
         const pixels = 4;
         const isContentBelow = ul.scrollHeight - ul.scrollTop > ul.clientHeight + pixels;
         const isContentAbove = ul.scrollHeight - ul.scrollTop < ul.scrollHeight - pixels;
@@ -39,7 +42,7 @@ const EntriesList = props => {
         }
     };
 
-    window.onresize = handleScroll;
+    window.onresize = displayArrows;
 
     const getArrowClasses = () => {
         let classes  = [];
@@ -80,7 +83,7 @@ const EntriesList = props => {
         <div id="entries-list-section">
             <h2>Entries</h2>
             <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} aria-label="Filter entries" placeholder="Filter entries..."/>
-            <ul id="entries-list" onScroll={handleScroll} className={getArrowClasses()}>
+            <ul id="entries-list" onScroll={displayArrows} className={getArrowClasses()}>
                 {filteredEntries.map((a, i) => (
                     <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>
                 ))

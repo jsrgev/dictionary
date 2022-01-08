@@ -37,16 +37,16 @@ const Dictionary = props => {
     };
 
     return (
-        <main>
+        <main className="dictionary">
             {(state.allEntries && state.setup) ?
             <>
             {getDisplay().map((a, i) => (
-                <React.Fragment key={i}>
-                    <div className="dic" id={`letter-${a.letter}`}><h3>{a.letter}</h3></div>
+                <div className="entries" id={`letter-${a.letter}`} key={i}>
+                    <h1>{a.letter}</h1>
                     {a.items.map((b, j) => (
-                        <div key={j}>{b}</div>
+                        <p key={j}>{b}</p>
                     ))}
-                </React.Fragment>
+                </div>
             ))}
             </>
             :
