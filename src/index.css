@@ -836,8 +836,8 @@ nav ul {
 
 #entries-list::before {
 	position: sticky;
-	top: -.4rem;
-	left: 50%;
+	top: -.3em;
+	left: calc(50% - .5rem);
 	transform: translate(-50%);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
@@ -845,6 +845,7 @@ nav ul {
 	font-size: 1.7rem;
 	color: var(--transparentblue);
 	/* z-index: 15; */
+	line-height: 0;
 	opacity: 0;
 	transition: .3s;
 }
@@ -855,14 +856,15 @@ nav ul {
 
 #entries-list::after {
 	position: sticky;
-	bottom: -.4rem;
-	left: 50%;
+	bottom: -.3rem;
+	left: calc(50% - .5rem);
 	transform: translate(-50%);
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	content: "\f0d7";
 	font-size: 1.7rem;
 	color: var(--transparentblue);
+	line-height: 0;
 	opacity: 0;
 	transition: .3s;
 }
@@ -872,11 +874,11 @@ nav ul {
 }
 
 #entries-list li:first-child {
-	margin-top: calc((1.7rem * 1.4) * -1);
+	margin-top: -1.4rem;
 }
 
 #entries-list li:last-child {
-	margin-bottom: calc((1.7rem * 1.4) * -1);
+	margin-bottom: -1.4rem;
 }
 
 #preview {
