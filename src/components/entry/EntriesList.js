@@ -68,6 +68,9 @@ const EntriesList = props => {
         }
         let thisEntry = state.allEntries.find(a => a._id === id);
         setState({entry: thisEntry, entryCopy: thisEntry});
+        setTimeout(() => {
+            displayArrows();
+        }, 10); ;
     }
 
     const isActive = id => id === state.entry._id;

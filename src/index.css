@@ -848,7 +848,6 @@ nav ul {
 	content: "\f0d8";
 	font-size: 1.7rem;
 	color: var(--transparentblue);
-	/* z-index: 15; */
 	line-height: 0;
 	opacity: 0;
 	transition: .3s;
@@ -860,7 +859,7 @@ nav ul {
 
 #entries-list::after {
 	position: sticky;
-	bottom: -.3rem;
+	bottom: -.1rem;
 	left: calc(50% - .5rem);
 	transform: translate(-50%);
 	font-family: "Font Awesome 5 Free";
@@ -1198,13 +1197,16 @@ input .highlight {
 
 
 #submit {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	/* flex-wrap: wrap; */
 	gap: 1rem;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
+	grid-template-columns: 1fr 1fr;
+	justify-items: center;
 }
 
 button {
+	width: 11rem;
 	margin: 0;
 	padding: .3rem .7rem .2rem;
 	outline: 0;
