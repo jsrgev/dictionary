@@ -35,3 +35,18 @@ export const posDefault = {
     name: "",
     abbr: "",
 };
+
+export const groupDefault = {
+    group: "",
+    characters: [],
+    bgColor: "#9ac0ff",
+    textColor: "#000000",
+};
+
+export const paletteDefault = {
+    display: true,
+    name: "",
+    groupSeparator: "none",
+    color: "#3b345a",
+    groups: [JSON.parse(JSON.stringify(gramClassDefault))],
+};

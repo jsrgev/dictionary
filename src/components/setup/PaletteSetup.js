@@ -14,6 +14,14 @@ const PaletteSetup = props => {
     const path = _.get(state, "tempSetup." + pathFrag);
 
 
+    const handleChange = value => {
+        const tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        // let value = tempSetupCopyPath[thisIndex][field];
+        tempSetupCopyPath[thisIndex].name = value;
+        setState({tempSetup: tempSetupCopy});
+    };
+
     const changeCheck = field => {
         const tempSetupCopy = clone(state.tempSetup);
         let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
@@ -35,8 +43,12 @@ const PaletteSetup = props => {
     return (
             <>
                     <div className="row setting">
-                        <label htmlFor={`show-palette[${thisIndex}]`}>Show palette</label>
-                        <input id={`show-palette[${thisIndex}]`} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
+                        <label htmlFor={`palette[${thisIndex}].name`}>Palette name</label>
+                        <input id={`palette[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value)} />
+                    </div>
+                    <div className="row setting">
+                        <label htmlFor={`palette[${thisIndex}].display`}>Show palette</label>
+                        <input id={`palette[${thisIndex}].display`} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
                     </div>
                 <div className="row setting">
                     <label>Group separator</label>

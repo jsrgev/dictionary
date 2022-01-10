@@ -3,7 +3,7 @@ import SenseGroup from './SenseGroup';
 import Etymology from './Etymology';
 import Preview from './Preview';
 import EntriesList from './EntriesList';
-import IpaPalette from '../IpaPalette';
+import Palette from '../Palette';
 import {API_BASE, clone, generateSenseGroup, generatePos} from '../../utils.js';
 import {entryDefault, morphDefault, definitionDefault, phraseDefault, exampleDefault, noteDefault} from '../../defaults.js';
 import _  from 'lodash';
@@ -232,7 +232,7 @@ const Entry = props => {
                         </div>
                     </div>
                     { state.setup.ipa.display &&
-                        <IpaPalette state={state} />
+                        <Palette state={state} />
                     }
                 </>
             }

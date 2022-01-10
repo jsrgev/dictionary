@@ -1,5 +1,6 @@
 import AddPopup from '../AddPopup.js';
 import { clone, addPopupHandler } from '../../utils.js';
+import {groupDefault} from './defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -9,13 +10,6 @@ const PaletteGroupSetup = props => {
 
     const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
-
-    const groupDefault = {
-        group: "",
-        characters: [],
-        bgColor: "#9ac0ff",
-        textColor: "#000000",
-    };
 
     const [ipaOpen, setIpaOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);

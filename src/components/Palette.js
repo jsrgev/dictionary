@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 
-const IpaPalette = props => {
+const Palette = props => {
 
     const {state, thisIndex} = props;
     // const path = state.setup.ipa;
@@ -11,7 +11,7 @@ const IpaPalette = props => {
 
     return (
         <div id="ipa" className={`${paletteShown ? "" : "ipa-chars-hidden"}`}>
-            <div id="show-ipa" onClick={() => setPaletteShown(!paletteShown)}>IPA <i className={paletteShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
+            <div id="show-ipa" onClick={() => setPaletteShown(!paletteShown)}>{path[thisIndex].name} <i className={paletteShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
             <div id="ipa-chars">
 
             { path[thisIndex].content.map((a, i) => (
@@ -30,4 +30,4 @@ const IpaPalette = props => {
     );
 };
 
-export default IpaPalette;
+export default Palette;

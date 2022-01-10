@@ -1,8 +1,7 @@
 import './setup.css';
-import {useState} from 'react';
 import PosSetup from './PosSetup';
-import PaletteSetup from './PaletteSetup';
-import IpaPalette from '../IpaPalette';
+import PaletteSection from './PaletteSection';
+import Palette from '../Palette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
 import EtymologyAbbrs from'./EtymologyAbbrs';
@@ -15,10 +14,6 @@ const Setup = props => {
     const {state, setState} = props;
 
     const tempSetup = state.tempSetup;
-
-    const [paletteSectionOpen, setPaletteSectionOpen] = useState(true);
-
-    
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(tempSetup);
@@ -127,7 +122,7 @@ const Setup = props => {
     const handleRevertButtonClick = () => {
         setState({tempSetup: state.setup});
     };
-
+    
     // console.log(tempSetup);
 
     return (
@@ -200,25 +195,7 @@ const Setup = props => {
                     </div>
                 </div>
 
-                {/* <div id="ipaSetup"> */}
- 
-                <div id="ipaSetup" className={`row${paletteSectionOpen ? "" : " closed"}`}>
-                    <div className="row-controls">
-                        {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
-                        {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
-                        <i></i>
-                        <i></i>
-                        <i className={`fas fa-chevron-${paletteSectionOpen ? "up" : "down"}`} onClick={() => setPaletteSectionOpen(!paletteSectionOpen)}></i>
-                    </div>
-                    <div className="row-content">
-                        <span>Character Palettes</span>
-                    </div>
-
-                    { tempSetup.palettes?.map((a, i) => (
-                        <PaletteSetup state={state} setState={setState} moveItem={moveItem} stringPath="palettes" thisIndex={i} key={i}/>
-                    ))}
-                </div>
-                {/* </div> */}
+                <PaletteSection state={state} setState={setState} moveItem={moveItem} />
 
 
                 <div id="submit">
@@ -229,7 +206,7 @@ const Setup = props => {
                 </div>
                 { tempSetup.palettes.map((a, i) => {
                     return (a.display) ?
-                        <IpaPalette state={state} thisIndex={i} key={i} />
+                        <Palette state={state} thisIndex={i} key={i} />
                         : null;
                     }
                 )}
