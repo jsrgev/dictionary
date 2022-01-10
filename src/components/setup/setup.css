@@ -3,7 +3,7 @@
 }
 
 .row {
-    grid-column: span 2;
+    /* grid-column: span 2; */
 }
 
 /* .row-controls {
@@ -25,6 +25,11 @@
 #ipaSetup .row-content input:last-child {
     /* grid-column: span 3; */
 }
+
+#ipaSetup > .row-content {
+    grid-template-columns: 1fr;
+}
+
 
 input[type="color" i] {
     padding: 0;

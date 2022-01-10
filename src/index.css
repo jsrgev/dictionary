@@ -909,7 +909,8 @@ main > div {
 }
 
 
-#entryForm > .row > .row-content > *:first-child {
+#entryForm > .row > .row-content > *:first-child,
+#setup > .row > .row-content > *:first-child {
 	font-weight: 500;
 }
 
@@ -935,7 +936,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 
 
 #entryForm {
-	grid-row: span 2;
+	/* grid-row: span 2; */
     align-content: start;
 	display: grid;
 	grid-template-columns: 1fr;
@@ -1042,7 +1043,7 @@ ul {
     align-items: flex-start;
 }
 
-.row li {
+.row li:not(.disabled) {
 	padding: 0 .3rem;
 	border-radius: .5rem;
 	cursor: pointer;
@@ -1092,10 +1093,8 @@ ul {
 	display: grid;
 	grid-auto-flow: column;
     align-items: end;
-	/* gap: 1rem; */
     border-radius: .6rem;
     backdrop-filter: blur(1.5px);
-	/* display: none; */
 }
 
 #show-ipa  {
@@ -1198,9 +1197,7 @@ input .highlight {
 
 #submit {
 	display: grid;
-	/* flex-wrap: wrap; */
 	gap: 1rem;
-    /* justify-content: space-evenly; */
 	grid-template-columns: 1fr 1fr;
 	justify-items: center;
 }
@@ -1220,20 +1217,16 @@ button {
 
 	color: var(--bluelink);
 	border: 2px solid var(--gray);
-	/* box-shadow: inset -3px -3px -5px var(--gray), inset 3px 3px 5px #ffffffba; */
-	/* box-shadow: inset 2px 2px 4px #ffffffba , inset -2px -2px 4px var(--gray); */
 
 }
 
 
 button:hover, button:focus {
-	/* color: var(--turquoise); */
 	background-color: var(--light-yellow);
 	border-color: var(--blue);
 }
 
 button:active {
-	/* background-color: var(--lightgray3); */
 	box-shadow: inset 3px 3px 5px var(--gray), inset -3px -3px 5px #ffffffba;
 }
 

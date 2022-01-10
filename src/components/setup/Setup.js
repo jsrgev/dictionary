@@ -1,6 +1,7 @@
 import './setup.css';
+import {useState} from 'react';
 import PosSetup from './PosSetup';
-import IpaSetup from './IpaSetup';
+import PaletteSetup from './PaletteSetup';
 import IpaPalette from '../IpaPalette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
@@ -8,13 +9,16 @@ import EtymologyAbbrs from'./EtymologyAbbrs';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
-import PaletteSetup from './PaletteSetup';
 
 const Setup = props => {
 
     const {state, setState} = props;
 
     const tempSetup = state.tempSetup;
+
+    const [paletteSectionOpen, setPaletteSectionOpen] = useState(true);
+
+    
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(tempSetup);
@@ -28,6 +32,23 @@ const Setup = props => {
         _.set(tempSetupCopy, `[${field}]`, !value);
         setState({tempSetup: tempSetupCopy});
     };
+
+    // const fix = () => {
+    //     const tempSetupCopy = clone(tempSetup);
+
+    //     let ipa = tempSetup.ipa;
+    //     // console.log(ipa);
+    //     ipa.name = "IPA";
+    //     ipa.color = "#3b345a";
+    //     tempSetupCopy.palettes = [ipa];
+    //     // return;
+    //     //         let obj = [tempSetup.ipa];
+    //     // ;
+    //     //         _.set(tempSetupCopy, `[${palettes}]`, obj);
+    //     setState({tempSetup: tempSetupCopy});
+    //     delete tempSetupCopy.ipa;
+    // };
+
 
     const moveItem = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
@@ -107,6 +128,8 @@ const Setup = props => {
         setState({tempSetup: state.setup});
     };
 
+    // console.log(tempSetup);
+
     return (
         <main id="setup">
             { !state.setup ?
@@ -170,53 +193,46 @@ const Setup = props => {
                     </div>
                 </div>
                 <div>
-                <h3>Phonetics</h3>
+                    <h3>Phonetics</h3>
                     <div className="row setting">
                     <label htmlFor='include-pronunciation'>Include pronunciation</label>
                     <input id='include-pronunciation' type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                     </div>
                 </div>
 
-                <div id="ipaSetup">
-                    <h3 className="span2">IPA</h3>
-                    <div className="row setting">
-                        <label htmlFor='show-ipa-palette'>Show IPA palette</label>
-                        <input id='show-ipa-palette' type="checkbox" checked={tempSetup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
+                {/* <div id="ipaSetup"> */}
+ 
+                <div id="ipaSetup" className={`row${paletteSectionOpen ? "" : " closed"}`}>
+                    <div className="row-controls">
+                        {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
+                        {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
+                        <i></i>
+                        <i></i>
+                        <i className={`fas fa-chevron-${paletteSectionOpen ? "up" : "down"}`} onClick={() => setPaletteSectionOpen(!paletteSectionOpen)}></i>
+                    </div>
+                    <div className="row-content">
+                        <span>Character Palettes</span>
                     </div>
 
-
-
-                    { tempSetup.ipa.showPalette &&
-                    <PaletteSetup state={state} setState={setState} moveItem={moveItem} stringPath="tempSetup.ipa" />
-
-                    // <>
-                    //     <div className="row setting">
-                    //         <label>Group separator</label>
-                    //         <ul>
-                    //             <li className={tempSetup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
-                    //             <li className={tempSetup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
-                    //             <li className={tempSetup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
-                    //         </ul>
-                    //     </div>
-                    // </>
-                    }
-
-                {/* <div className="row">
-                    {tempSetup.ipa.content.map((a,i) => (
-                        <IpaSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
+                    { tempSetup.palettes?.map((a, i) => (
+                        <PaletteSetup state={state} setState={setState} moveItem={moveItem} stringPath="palettes" thisIndex={i} key={i}/>
                     ))}
-                </div> */}
                 </div>
+                {/* </div> */}
 
 
                 <div id="submit">
                     {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
+                    {/* <button onClick={fix}>Fix</button> */}
                     <button onClick={handleRevertButtonClick}>Revert to previously saved</button>
                     <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
-                { tempSetup.ipa.showPalette &&
-                    <IpaPalette state={state} />
-                }
+                { tempSetup.palettes.map((a, i) => {
+                    return (a.display) ?
+                        <IpaPalette state={state} thisIndex={i} key={i} />
+                        : null;
+                    }
+                )}
                 </>
             }
         </main>

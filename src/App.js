@@ -23,44 +23,48 @@ const App = () => {
             sourceLanguageName: "English",
             partsOfSpeechDefs: partsOfSpeechDefsDefault,
             showPronunciation: true,
-            ipa: {
-                showPalette: true,
-                groupSeparator: "none",    
-                content: [
-                    {
-                        group: "consonants",
-                        characters: ["p","b","t","k","m","n","ɸ","θ","ð","s","ɬ","ʃ","χ","w","l","j","w","ɾ"],
-                        bgColor: "#9ac0ff",
-                        textColor: "#000000",
-                    },
-                    {
-                        group: "vowel",
-                        characters: ["i","u","o","ə̥","ɛ","ɔ","a"],
-                        bgColor: "#ff7db5",
-                        textColor: "#000000",
-                    },
-                    {
-                        group: "rising diphthongs",
-                        characters: ["o̯͡ɛ", "o̯͡a", "o̯͡ɔ"],
-                        bgColor: "#ffbe0b",
-                        textColor: "#000000",
-                    },
-                    {
-                        group: "falling diphthongs",
-                        characters: ["i͡ə̯", "ə͡a̯", "a͡ɪ̯", "a͡ə̯", "u͡a̯", "u͡o̯"],
-                        bgColor: "#fda981",
-                        textColor: "#000000",
-                    },
-                    {
-                        group: "other",
-                        characters: ["ˈ","ˌ","."],
-                        bgColor: "#bf99f5",
-                        textColor: "#000000",
-                    },
-                ]      
-            },
+            palettes: [
+                {
+                    name: "IPA",
+                    color: "#3b345a",
+                    display: true,
+                    groupSeparator: "none",    
+                    content: [
+                        {
+                            group: "consonants",
+                            characters: ["p","b","t","k","m","n","ɸ","θ","ð","s","ɬ","ʃ","χ","w","l","j","w","ɾ"],
+                            bgColor: "#9ac0ff",
+                            textColor: "#000000",
+                        },
+                        {
+                            group: "vowel",
+                            characters: ["i","u","o","ə̥","ɛ","ɔ","a"],
+                            bgColor: "#ff7db5",
+                            textColor: "#000000",
+                        },
+                        {
+                            group: "rising diphthongs",
+                            characters: ["o̯͡ɛ", "o̯͡a", "o̯͡ɔ"],
+                            bgColor: "#ffbe0b",
+                            textColor: "#000000",
+                        },
+                        {
+                            group: "falling diphthongs",
+                            characters: ["i͡ə̯", "ə͡a̯", "a͡ɪ̯", "a͡ə̯", "u͡a̯", "u͡o̯"],
+                            bgColor: "#fda981",
+                            textColor: "#000000",
+                        },
+                        {
+                            group: "other",
+                            characters: ["ˈ","ˌ","."],
+                            bgColor: "#bf99f5",
+                            textColor: "#000000",
+                        },
+                    ]      
+                },
+            ],
             orthography: {
-                showPalette: false,
+                display: false,
                 groupSeparator: "none",    
                 content: []      
             },

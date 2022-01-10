@@ -3,11 +3,11 @@ import { clone, addPopupHandler } from '../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
-const IpaSetup = props => {
+const PaletteGroupSetup = props => {
 
-    const {state, setState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem, stringPath} = props;
 
-    const pathFrag = "ipa.content";
+    const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const groupDefault = {
@@ -16,8 +16,6 @@ const IpaSetup = props => {
         bgColor: "#9ac0ff",
         textColor: "#000000",
     };
-
-        console.log(path);
 
     const [ipaOpen, setIpaOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -65,11 +63,7 @@ const IpaSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deleteGroup}></i>
-                { path[thisIndex].gramForms?.length>0 ?
                     <i className={`fas fa-chevron-${ipaOpen ? "up" : "down"}`} onClick={() => setIpaOpen(!ipaOpen)}></i>
-                    : <i></i>
-                }
-
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveItem(e, thisIndex, pathFrag, true)}
@@ -98,4 +92,4 @@ const IpaSetup = props => {
     );
 };
 
-export default IpaSetup;
+export default PaletteGroupSetup;

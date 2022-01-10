@@ -231,7 +231,7 @@ const Entry = props => {
                             }
                         </div>
                     </div>
-                    { state.setup.ipa.showPalette &&
+                    { state.setup.ipa.display &&
                         <IpaPalette state={state} />
                     }
                 </>
