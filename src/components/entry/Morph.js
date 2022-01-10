@@ -88,6 +88,7 @@ const Morph = props => {
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
+                    className="for norm"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}

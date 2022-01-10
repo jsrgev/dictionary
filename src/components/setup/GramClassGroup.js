@@ -7,7 +7,6 @@ import _ from 'lodash';
 
 const GramClassGroup = props => {
 
-    // const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, moveItem, addGramClass} = props;
     const {appState, setAppState, thisIndex, moveItem} = props;
 
     let pathFrag = "gramClassGroups";

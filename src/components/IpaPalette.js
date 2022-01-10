@@ -4,13 +4,14 @@ import {useState} from 'react';
 const IpaPalette = props => {
 
     const {appState} = props;
-    const path = appState.setup.ipa;
+    // const path = appState.setup.ipa;
+    const path = appState.tempSetup.ipa;
     
-    const [ipaShown, setIpaShown] = useState(false);
+    const [paletteShown, setPaletteShown] = useState(false);
 
     return (
-        <div id="ipa" className={`${ipaShown ? "" : "ipa-chars-hidden"}`}>
-            <div id="show-ipa" onClick={() => setIpaShown(!ipaShown)}>IPA <i className={ipaShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
+        <div id="ipa" className={`${paletteShown ? "" : "ipa-chars-hidden"}`}>
+            <div id="show-ipa" onClick={() => setPaletteShown(!paletteShown)}>IPA <i className={paletteShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
             <div id="ipa-chars">
 
             { path.content.map((a, i) => (

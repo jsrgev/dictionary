@@ -191,10 +191,10 @@ sub {
 	text-decoration: underline;
 }
 
-/* .norm{
-	color: black;
-	font-weight: 400;
-} */
+.norm {
+	color: black !important;
+	/* font-weight: 400; */
+}
 
 .for, .hw {
 	color: var(--orange);
@@ -1206,7 +1206,7 @@ input .highlight {
 }
 
 button {
-	width: 11rem;
+	width: 15rem;
 	margin: 0;
 	padding: .3rem .7rem .2rem;
 	outline: 0;

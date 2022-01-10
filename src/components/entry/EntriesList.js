@@ -77,7 +77,7 @@ const EntriesList = props => {
 
     const filteredEntries = getSortedEntries().filter(a => {
         // exclude unicode combining diacritics block
-        const entry = a.content.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        const entry = a.content.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace("‑", "-").toLowerCase();
         const term = filterTerm.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         return entry.includes(term);
     });
@@ -86,7 +86,7 @@ const EntriesList = props => {
         <div id="entries-list-section">
             <h2>Entries</h2>
             <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} aria-label="Filter entries" placeholder="Filter entries..."/>
-            <ul id="entries-list" onScroll={displayArrows} className={getArrowClasses()}>
+            <ul id="entries-list" onScroll={displayArrows} className={`for norm ${getArrowClasses()}`}>
                 {filteredEntries.map((a, i) => (
                     <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content}</li>
                 ))

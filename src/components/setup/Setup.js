@@ -8,6 +8,7 @@ import EtymologyAbbrs from'./EtymologyAbbrs';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
+import PaletteSetup from './PaletteSetup';
 
 const Setup = props => {
 
@@ -27,13 +28,6 @@ const Setup = props => {
         _.set(tempSetupCopy, `[${field}]`, !value);
         setAppState({tempSetup: tempSetupCopy});
     };
-
-    const changeSeparator = (field, value) => {
-        const tempSetupCopy = clone(tempSetup);
-        tempSetupCopy[field].groupSeparator = value;
-        setAppState({tempSetup: tempSetupCopy});
-    };
-
 
     const moveItem = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
@@ -182,30 +176,39 @@ const Setup = props => {
                     <input id='include-pronunciation' type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                     </div>
                 </div>
+
                 <div id="ipaSetup">
                     <h3 className="span2">IPA</h3>
                     <div className="row setting">
                         <label htmlFor='show-ipa-palette'>Show IPA palette</label>
                         <input id='show-ipa-palette' type="checkbox" checked={tempSetup.ipa.showPalette ? true : false} onChange={e => changeCheck("ipa.showPalette")} />
                     </div>
+
+
+
                     { tempSetup.ipa.showPalette &&
-                    <>
-                        <div className="row setting">
-                            <label>Group separator</label>
-                            <ul>
-                                <li className={tempSetup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
-                                <li className={tempSetup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
-                                <li className={tempSetup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
-                            </ul>
-                        </div>
-                        <div className="row">
-                            {tempSetup.ipa.content.map((a,i) => (
-                                <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
-                            ))}
-                        </div>
-                    </>
+                    <PaletteSetup appState={appState} setAppState={setAppState} moveItem={moveItem} stringPath="tempSetup.ipa" />
+
+                    // <>
+                    //     <div className="row setting">
+                    //         <label>Group separator</label>
+                    //         <ul>
+                    //             <li className={tempSetup.ipa.groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("ipa", "none")}>None</li>
+                    //             <li className={tempSetup.ipa.groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("ipa", "space")}>Space</li>
+                    //             <li className={tempSetup.ipa.groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("ipa", "line")}>Line</li>
+                    //         </ul>
+                    //     </div>
+                    // </>
                     }
+
+                {/* <div className="row">
+                    {tempSetup.ipa.content.map((a,i) => (
+                        <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                    ))}
+                </div> */}
                 </div>
+
+
                 <div id="submit">
                     {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
                     <button onClick={handleRevertButtonClick}>Revert to previously saved</button>

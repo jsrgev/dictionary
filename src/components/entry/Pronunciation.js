@@ -77,6 +77,7 @@ const Pronunciation = (props) => {
                 <div className="row-content" style={getIndent(prevIndentLevel)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Pronunciation{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
+                    className="for norm"
                     value={path[thisIndex].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}

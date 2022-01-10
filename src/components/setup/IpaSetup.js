@@ -17,6 +17,7 @@ const IpaSetup = props => {
         textColor: "#000000",
     };
 
+        console.log(path);
 
     const [ipaOpen, setIpaOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -90,7 +91,7 @@ const IpaSetup = props => {
                     <input id={`${pathFrag}[${thisIndex}].text-color`} type="color" value={path[thisIndex].textColor} onChange={e => handleChange(e.target.value, "textColor")} />
 
                     <label htmlFor={`${pathFrag}[${thisIndex}].characters`}>Characters</label>
-                    <input id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
+                    <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
                </div>
             </div>
         </>

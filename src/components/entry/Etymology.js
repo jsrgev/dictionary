@@ -61,7 +61,7 @@ const Etymology = props => {
 
     const symbols = [
         {
-            content: ">",
+            content: "<",
             isSymbol: true
 
         },
@@ -89,7 +89,7 @@ const Etymology = props => {
                     </div>
                     <div className="row-content">
                         <label htmlFor={pathFrag}>Text</label>
-                        <input id={pathFrag} value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
+                        <input className="for norm" id={pathFrag} value={state.entry.etymology} onChange={e => handleChange(e.target.value)} type="text" onBlur={e => handleChange(handleEtymologyInputBlur(e))} />
                     </div>
                 </div>
 
