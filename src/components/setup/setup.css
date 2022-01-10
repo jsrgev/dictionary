@@ -14,13 +14,13 @@
     grid-template-columns: 9rem 1fr max-content 1.5rem max-content 1.5rem;
 }
 
-.palette-groupt input:last-child {
+/* .palette-groupt input:last-child {
     grid-column: span 5;
 }
 
 .palette-group input:last-child {
     grid-column: span 5;
-}
+} */
 
 #ipaSetup > .row-content {
     grid-template-columns: 1fr;

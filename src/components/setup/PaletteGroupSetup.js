@@ -1,17 +1,17 @@
 import AddPopup from '../AddPopup.js';
-import { clone, addPopupHandler } from '../../utils.js';
+import { clone, addPopupHandler, getIndent } from '../../utils.js';
 import {groupDefault} from './defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
 const PaletteGroupSetup = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, prevIndentLevel} = props;
 
     const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [ipaOpen, setIpaOpen] = useState(true);
+    const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -51,23 +51,22 @@ const PaletteGroupSetup = props => {
     
     return(
         <>
-            <div className="row">
+            <div className={`row${groupOpen ? "" : " closed"}`}>
                 <div className="row-controls">
-                <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                <i className="fas fa-minus" onClick={deleteGroup}></i>
-                    <i className={`fas fa-chevron-${ipaOpen ? "up" : "down"}`} onClick={() => setIpaOpen(!ipaOpen)}></i>
-                <i
-                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
-                ></i>
-                <i
-                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
-                ></i>
-
+                    <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                    <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
+                    <i className="fas fa-minus" onClick={deleteGroup}></i>
+                        <i className={`fas fa-chevron-${groupOpen ? "up" : "down"}`} onClick={() => setGroupOpen(!groupOpen)}></i>
+                    <i
+                        className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                        className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    ></i>
                 </div>
-                <div className="row-content palette-group">
+                <div className="row-content palette-group" style={getIndent(prevIndentLevel)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}].group`}>Group</label>
                     <input id={`${pathFrag}[${thisIndex}].group`} type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
 
@@ -76,10 +75,14 @@ const PaletteGroupSetup = props => {
 
                     <label htmlFor={`${pathFrag}[${thisIndex}].text-color`}>Text color</label>
                     <input id={`${pathFrag}[${thisIndex}].text-color`} type="color" value={path[thisIndex].textColor} onChange={e => handleChange(e.target.value, "textColor")} />
-
-                    <label htmlFor={`${pathFrag}[${thisIndex}].characters`}>Characters</label>
-                    <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
-               </div>
+                </div>
+                <div className="row">
+                    <div className="row-controls"></div>
+                    <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                        <label htmlFor={`${pathFrag}[${thisIndex}].characters`}>Characters</label>
+                        <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
+                    </div>
+                </div>
             </div>
         </>
     );

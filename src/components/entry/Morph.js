@@ -11,7 +11,6 @@ const Morph = props => {
     const {state, setState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions, moveItem} = props;
     const {addMorph, addNote} = addFunctions;
 
-    console.log(setState)
     let pathFrag = stringPath + "";
     const path = _.get(state, "entry." + pathFrag);
 

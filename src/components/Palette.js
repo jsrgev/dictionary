@@ -4,7 +4,6 @@ import {useState} from 'react';
 const Palette = props => {
 
     const {state, thisIndex} = props;
-    // const path = state.setup.ipa;
     const path = state.tempSetup.palettes;
     
     const [paletteShown, setPaletteShown] = useState(false);
