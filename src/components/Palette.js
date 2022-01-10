@@ -10,9 +10,9 @@ const Palette = props => {
     const [paletteShown, setPaletteShown] = useState(false);
 
     return (
-        <div id="ipa" className={`${paletteShown ? "" : "ipa-chars-hidden"}`}>
-            <div id="show-ipa" onClick={() => setPaletteShown(!paletteShown)}>{path[thisIndex].name} <i className={paletteShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
-            <div id="ipa-chars">
+        <div className={`${paletteShown ? "palette" : "palette palette-hidden"}`}>
+            <div className="show-palette" onClick={() => setPaletteShown(!paletteShown)}>{path[thisIndex].name} <i className={paletteShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
+            <div className="palette-chars">
 
             { path[thisIndex].content.map((a, i) => (
                 <React.Fragment key={i}>

@@ -10,8 +10,8 @@ const Morph = props => {
 
     const {state, setState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions, moveItem} = props;
     const {addMorph, addNote} = addFunctions;
-    // const path = state.entry.headword[thisIndex];
 
+    console.log(setState)
     let pathFrag = stringPath + "";
     const path = _.get(state, "entry." + pathFrag);
 
@@ -23,7 +23,7 @@ const Morph = props => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
-            setState({entry:entryCopy});
+            setState({entry: entryCopy});
         }
     }
 

@@ -231,9 +231,12 @@ const Entry = props => {
                             }
                         </div>
                     </div>
-                    { state.setup.ipa.display &&
-                        <Palette state={state} />
+                    { state.setup.palettes.map((a, i) => {
+                    return (a.display) ?
+                        <Palette state={state} thisIndex={i} key={i} />
+                        : null;
                     }
+                )}
                 </>
             }
         </main>

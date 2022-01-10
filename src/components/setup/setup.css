@@ -67,7 +67,7 @@ input[type="color" i]::-moz-color-swatch {
     grid-template-columns: 9rem 1fr;
 }
 
-.double-input-input {
+.double-input {
     grid-template-columns: 9rem 1fr 9rem 1fr;
 }
 

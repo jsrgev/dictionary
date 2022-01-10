@@ -900,7 +900,7 @@ main:not(.dictionary) {
 	gap: 1rem;
 }
 
-main:not(#entry), #entry > div:nnot(#ipa) {
+main:not(#entry), #entry > div:not(.palette) {
 	padding: 1rem;
 }
 
@@ -1083,7 +1083,7 @@ ul {
 
 /* IPA */
 
-#ipa  {
+.palette  {
 	position: fixed;
 	bottom: 0;
 	background: #ffffffe0;
@@ -1097,7 +1097,7 @@ ul {
     backdrop-filter: blur(1.5px);
 }
 
-#show-ipa  {
+.show-palette  {
 	background-color: #2afdc2;
 	color: white;
 	padding: .6rem;
@@ -1106,7 +1106,7 @@ ul {
 	margin: 0 0 -2px -2px;
 }
 
-#ipa-chars {
+.palette-chars {
 	display: grid;
 	gap: .6rem;
 	font-size: 13px;
@@ -1115,27 +1115,27 @@ ul {
 	grid-template-columns: repeat(20,1fr);
 }
 
-#ipa-chars > div {
+.palette-chars > div {
 	display: flex;
 	gap: .6rem;
 }
 
-#ipa-chars span {
+.palette-chars span {
 	padding: .2rem;
 	border-radius: 50%;
 	text-align: center;
 	cursor: pointer;
 }
 
-#ipa.ipa-chars-hidden {
+.palette-hidden {
 	border: 0;
 }
 
-.ipa-chars-hidden #show-ipa {
+.palette-hidden .show-palette {
 	margin: 0;
 } 
 
-.ipa-chars-hidden #ipa-chars {
+.palette-hidden .palette-chars {
 	display: none;
 }
 

@@ -101,7 +101,7 @@ export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
 export const handleInputBlur = e => {
     const hoverItems = document.querySelectorAll( ":hover" );
     const clickedItem = hoverItems[hoverItems.length-1];
-    if (clickedItem === undefined || !clickedItem.closest("#ipa")) {
+    if (clickedItem === undefined || !clickedItem.closest(".palette")) {
         return;
     };
     e.target.focus();
