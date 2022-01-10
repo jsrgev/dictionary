@@ -95,7 +95,7 @@ const GramClassGroup = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content gram-class-setup">
+                <div className="row-content double-input">
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
                     <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Allow multiple</label>

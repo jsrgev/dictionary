@@ -60,7 +60,7 @@ const Constraint = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content gram-form-setup" style={getIndent(0)}>
+                <div className="row-content double-input" style={getIndent(0)}>
                     {
                         <>
                             <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Form</label>

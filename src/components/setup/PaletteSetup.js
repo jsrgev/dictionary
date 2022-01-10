@@ -42,21 +42,20 @@ const PaletteSetup = props => {
 
     return (
             <>
-                    <div className="row setting">
+                <div className="row">
+                    <div className="row-controls"></div>
+                    <div className="row-content triple-input">
                         <label htmlFor={`palette[${thisIndex}].name`}>Palette name</label>
                         <input id={`palette[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value)} />
-                    </div>
-                    <div className="row setting">
+                        <label>Group separator</label>
+                        <ul>
+                            <li className={path[thisIndex].groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("none")}>None</li>
+                            <li className={path[thisIndex].groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("space")}>Space</li>
+                            <li className={path[thisIndex].groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("line")}>Line</li>
+                        </ul>
                         <label htmlFor={`palette[${thisIndex}].display`}>Show palette</label>
                         <input id={`palette[${thisIndex}].display`} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
                     </div>
-                <div className="row setting">
-                    <label>Group separator</label>
-                    <ul>
-                        <li className={path[thisIndex].groupSeparator === "none" ? "selected" : ""} onClick={() => changeSeparator("none")}>None</li>
-                        <li className={path[thisIndex].groupSeparator === "space" ? "selected" : ""} onClick={() => changeSeparator("space")}>Space</li>
-                        <li className={path[thisIndex].groupSeparator === "line" ? "selected" : ""} onClick={() => changeSeparator("line")}>Line</li>
-                    </ul>
                 </div>
                 <div className="row">
                     {path[thisIndex].content.map((a,i) => (

@@ -63,7 +63,7 @@ const GramForm = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content gram-class-setup" style={getIndent(0)}>
+                <div className="row-content double-input" style={getIndent(0)}>
                     {
                         <>
                             <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Class</label>

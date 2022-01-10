@@ -121,7 +121,7 @@ const PosSetup = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
                 </i>
                 </div>
-                <div className="row-content partsOfSpeechSetup">
+                <div className="row-content double-input">
                     <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Part of Speech</label>
                     <input id={`${pathFrag}[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbreviation</label>

@@ -41,7 +41,6 @@ const PaletteGroupSetup = props => {
             setupCopyPath.splice(thisIndex, 1);
         setState({tempSetup: setupCopy});
     };
-
     
     const popupItems = [
         ["Group", () => addGroup()],
@@ -68,7 +67,7 @@ const PaletteGroupSetup = props => {
                 ></i>
 
                 </div>
-                <div className="row-content ipa">
+                <div className="row-content palette-group">
                     <label htmlFor={`${pathFrag}[${thisIndex}].group`}>Group</label>
                     <input id={`${pathFrag}[${thisIndex}].group`} type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
 

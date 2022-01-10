@@ -71,7 +71,7 @@ const EtymologyAbbrs = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
                 </i>
             </div>
-            <div className="row-content etymology-abbrs-setup">
+            <div className="row-content double-input">
                 <label htmlFor={`${pathFrag}[${thisIndex}].content`}>Term</label>
                 <input id={`${pathFrag}[${thisIndex}].content`} type="text" value={path[thisIndex].content} onChange={e => handleChange(e.target.value, "content")} />
                 <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbr</label>

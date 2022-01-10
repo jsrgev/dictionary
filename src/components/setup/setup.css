@@ -10,20 +10,16 @@
     grid-template-columns: repeat(5, 1rem);
 } */
 
-.partsOfSpeechSetup {
-    grid-template-columns: 9rem 1fr 9rem 1fr;
-}
-
-#ipaSetup .row-content {
+.palette-group {
     grid-template-columns: 9rem 1fr max-content 1.5rem max-content 1.5rem;
 }
 
-#ipaSetup .row-content input:last-child {
+.palette-groupt input:last-child {
     grid-column: span 5;
 }
 
-#ipaSetup .row-content input:last-child {
-    /* grid-column: span 3; */
+.palette-group input:last-child {
+    grid-column: span 5;
 }
 
 #ipaSetup > .row-content {
@@ -71,8 +67,12 @@ input[type="color" i]::-moz-color-swatch {
     grid-template-columns: 9rem 1fr;
 }
 
-.gram-class-setup, .gram-form-setup, .etymology-abbrs-setup {
+.double-input-input {
     grid-template-columns: 9rem 1fr 9rem 1fr;
+}
+
+.triple-input {
+    grid-template-columns: 9rem 1fr 9rem max-content 9rem max-content;
 }
 
 /* .pos-options {
