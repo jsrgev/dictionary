@@ -6,29 +6,29 @@ import _ from 'lodash';
 
 const Constraint = props => {
 
-    const {appState, setAppState, thisIndex, moveItem, stringPath, addGramForm} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramForm} = props;
 
     let pathFrag = stringPath + ".gramForms";
-    const path = _.get(appState, "setup." + pathFrag);
+    const path = _.get(state, "setup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.setup  );
+        const setupCopy = clone(state.setup  );
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({setup: setupCopy});
+        setState({setup: setupCopy});
     };
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.setup);
+        let setupCopy = clone(state.setup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             setupCopyPath.splice(0, 1, clone(gramFormDefault));
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({setup: setupCopy});
+        setState({setup: setupCopy});
     };
 
     

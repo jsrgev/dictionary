@@ -5,10 +5,10 @@ import _ from 'lodash';
 
 const GramFormSelect = props => {
 
-    const {appState, setAppState, thisIndex, moveItem, stringPath, addGramFormOption, gramClassAndFormGroups, availableGramClassAndFormGroups} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramFormOption, gramClassAndFormGroups, availableGramClassAndFormGroups} = props;
 
     const pathFrag = stringPath + ".gramFormGroups";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [classSelectOpen, setClassSelectOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -18,7 +18,7 @@ const GramFormSelect = props => {
         if (!isAvailable(value)) {
             return;
         }
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
 
         let obj = {refId: value};
@@ -26,14 +26,14 @@ const GramFormSelect = props => {
 
         setupCopyPath[thisIndex] = obj;
 
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const deletePos = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath.splice(thisIndex, 1);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const popupItems = [];

@@ -6,26 +6,26 @@ import _ from 'lodash';
 
 const Note = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, stringPath, addFunctions} = props;
+    const {state, setState, prevIndentLevel, thisIndex, stringPath, addFunctions} = props;
     const {addNote} = addFunctions;
 
     let pathFrag = stringPath + ".notes";
-    const path = _.get(appState, "entry." + pathFrag);
+    const path = _.get(state, "entry." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
         if (value !== undefined) {
-            let entryCopy = clone(appState.entry);
+            let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
-            setAppState({entry:entryCopy});
+            setState({entry:entryCopy});
         }
     };
 
 
     const deleteNote = e => {
-        let entryCopy = clone(appState.entry);
+        let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             let entryCopyUpPath = _.get(entryCopy, stringPath);
@@ -33,7 +33,7 @@ const Note = props => {
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
-        setAppState({entry: entryCopy});
+        setState({entry: entryCopy});
     }; 
 
     const popupItems = [
@@ -42,7 +42,7 @@ const Note = props => {
         }]
     ];
 
-    // console.log(appState);
+    // console.log(state);
 
     return (
         <>

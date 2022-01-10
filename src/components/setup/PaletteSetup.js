@@ -8,15 +8,15 @@ import _ from 'lodash';
 
 const PaletteSetup = props => {
     
-    const {appState, setAppState, thisIndex, stringPath, moveItem} = props;
+    const {state, setState, thisIndex, stringPath, moveItem} = props;
 
     let pathFrag = stringPath;
-    const path = _.get(appState, pathFrag);
+    const path = _.get(state, pathFrag);
 
     const changeSeparator = (field, value) => {
-        const tempSetupCopy = clone(appState.tempSetup);
+        const tempSetupCopy = clone(state.tempSetup);
         tempSetupCopy[field].groupSeparator = value;
-        setAppState({tempSetup: tempSetupCopy});
+        setState({tempSetup: tempSetupCopy});
     };
 
 
@@ -32,7 +32,7 @@ const PaletteSetup = props => {
                 </div>
                 <div className="row">
                     {path.content.map((a,i) => (
-                        <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                        <IpaSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
                     ))}
                 </div>
             </>

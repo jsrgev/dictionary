@@ -7,43 +7,43 @@ import _ from 'lodash';
 
 const GramFormGroup = props => {
 
-    const {appState, setAppState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem} = props;
 
     let pathFrag = "gramFormGroups";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.tempSetup);
+        const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let newGramFormGroup = clone(gramFormGroupDefault);
         newGramFormGroup.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(thisIndex+1, 0, newGramFormGroup);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addGramForm = (index, pathFrag) => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let newGramForm = clone(gramFormDefault);
         newGramForm.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(index+1, 0, newGramForm);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const deleteGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramFormGroup = clone(gramFormGroupDefault);
@@ -53,7 +53,7 @@ const GramFormGroup = props => {
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     
@@ -94,7 +94,7 @@ const GramFormGroup = props => {
                 </div>
                 { path[thisIndex].gramForms &&
                     path[thisIndex].gramForms.map((a, i) => (
-                        <GramForm key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramForm={addGramForm} />
+                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramForm={addGramForm} />
                     ))
                 }
             </div>

@@ -12,39 +12,39 @@ import PaletteSetup from './PaletteSetup';
 
 const Setup = props => {
 
-    const {appState, setAppState} = props;
+    const {state, setState} = props;
 
-    const tempSetup = appState.tempSetup;
+    const tempSetup = state.tempSetup;
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(tempSetup);
         tempSetupCopy[field] = value;
-        setAppState({tempSetup: tempSetupCopy});
+        setState({tempSetup: tempSetupCopy});
     };
 
     const changeCheck = field => {
         const tempSetupCopy = clone(tempSetup);
         let value = _.get(tempSetupCopy, `[${field}]`);
         _.set(tempSetupCopy, `[${field}]`, !value);
-        setAppState({tempSetup: tempSetupCopy});
+        setState({tempSetup: tempSetupCopy});
     };
 
     const moveItem = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
-        let tempSetupCopy = clone(appState.tempSetup);
+        let tempSetupCopy = clone(state.tempSetup);
         let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
         let thisItemCopy = clone(tempSetupCopyPath[index]);
         tempSetupCopyPath.splice(index, 1);
         tempSetupCopyPath.splice(position, 0, thisItemCopy);
-        setAppState({tempSetup: tempSetupCopy});
+        setState({tempSetup: tempSetupCopy});
     };
 
     // const cleanUpEntries = () => {
-    //     if (!appState.allEntries) {
+    //     if (!state.allEntries) {
     //         return;
     //     }
-    //     let allEntriesCopy = clone(appState.allEntries);
+    //     let allEntriesCopy = clone(state.allEntries);
     //     console.log(allEntriesCopy);
 
     //     for (let entry of allEntriesCopy) {
@@ -63,20 +63,20 @@ const Setup = props => {
     // };
 
     const saveNewSetup = () => {
-        axios.post(`${API_BASE}/setup/new`, clone(appState.tempSetup))
+        axios.post(`${API_BASE}/setup/new`, clone(state.tempSetup))
         .then(response => {
-            setAppState({tempSetup: response.data, setup:response.data});
+            setState({tempSetup: response.data, setup:response.data});
             // cleanUpEntries();
         })
         .catch(err => console.log(err));
     };
     
     const updateSetup = () => {
-        axios.post(`${API_BASE}/setup/update`, clone(appState.tempSetup))
+        axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
         .then(response => {
-            let tempSetupClone = clone(appState.tempSetup);
+            let tempSetupClone = clone(state.tempSetup);
             tempSetupClone.dateModified = new Date();
-            setAppState({tempSetup: tempSetupClone, setup:tempSetupClone});
+            setState({tempSetup: tempSetupClone, setup:tempSetupClone});
             alert("Your changes have been saved.");
             // cleanUpEntries();
         })
@@ -84,19 +84,19 @@ const Setup = props => {
     };
 
     const handleSaveButtonClick = () => {
-        if (appState.tempSetup.targetLanguageName === "" && appState.tempSetup.sourceLanguageName === "") {
+        if (state.tempSetup.targetLanguageName === "" && state.tempSetup.sourceLanguageName === "") {
             alert("Please enter a Target Language name and a Source Language name.");
             return;
         }
-        if (appState.tempSetup.targetLanguageName === "") {
+        if (state.tempSetup.targetLanguageName === "") {
             alert("Please enter a Target Language name.");
             return;
         }
-        if (appState.tempSetup.sourceLanguageName === "") {
+        if (state.tempSetup.sourceLanguageName === "") {
             alert("Please enter a Source Language name.");
             return;
         }
-        if (appState.tempSetup._id) {
+        if (state.tempSetup._id) {
             updateSetup();
         } else {   
             saveNewSetup();
@@ -104,12 +104,12 @@ const Setup = props => {
     };
 
     const handleRevertButtonClick = () => {
-        setAppState({tempSetup: appState.setup});
+        setState({tempSetup: state.setup});
     };
 
     return (
         <main id="setup">
-            { !appState.setup ?
+            { !state.setup ?
                 <div>Loading</div> :
                 <>
                 <div>
@@ -139,7 +139,7 @@ const Setup = props => {
                     <h3 className="span2">Parts of speech</h3>
                     <div className="row">
                         {tempSetup.partsOfSpeechDefs.map((a,i) => (
-                            <PosSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                            <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
                         ))}
                     </div>
                 </div>
@@ -148,7 +148,7 @@ const Setup = props => {
                     <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
                     <div className="row">
                         { tempSetup.gramClassGroups.map((a, i) => (
-                            <GramClassGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                            <GramClassGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
                     </div>
                 </div>
@@ -157,7 +157,7 @@ const Setup = props => {
                     <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                     <div className="row">
                         { tempSetup.gramFormGroups.map((a, i) => (
-                            <GramFormGroup appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                            <GramFormGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
                     </div>
                 </div>
@@ -165,7 +165,7 @@ const Setup = props => {
                 <h3 className="span2">Etymology Abbreviations</h3>
                     <div className="row">
                     {tempSetup.etymologyAbbrs.map((a, i) => (
-                        <EtymologyAbbrs appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} key={i} />
+                        <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
                     ))}
                     </div>
                 </div>
@@ -187,7 +187,7 @@ const Setup = props => {
 
 
                     { tempSetup.ipa.showPalette &&
-                    <PaletteSetup appState={appState} setAppState={setAppState} moveItem={moveItem} stringPath="tempSetup.ipa" />
+                    <PaletteSetup state={state} setState={setState} moveItem={moveItem} stringPath="tempSetup.ipa" />
 
                     // <>
                     //     <div className="row setting">
@@ -203,7 +203,7 @@ const Setup = props => {
 
                 {/* <div className="row">
                     {tempSetup.ipa.content.map((a,i) => (
-                        <IpaSetup key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} />
+                        <IpaSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
                     ))}
                 </div> */}
                 </div>
@@ -215,7 +215,7 @@ const Setup = props => {
                     <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
                 { tempSetup.ipa.showPalette &&
-                    <IpaPalette appState={appState} />
+                    <IpaPalette state={state} />
                 }
                 </>
             }

@@ -6,33 +6,33 @@ import _ from 'lodash';
 
 const EtymologyAbbrs = props => {
 
-    const {appState, setAppState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem} = props;
 
     const pathFrag = "etymologyAbbrs";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.tempSetup);
+        const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addAbbr = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
 
         let newAbbr = clone(etymologyAbbrDefault);
         newAbbr.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(thisIndex+1, 0, newAbbr);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const deleteAbbr = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newAbbr = clone(etymologyAbbrDefault);
@@ -42,7 +42,7 @@ const EtymologyAbbrs = props => {
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
 
@@ -53,7 +53,7 @@ const EtymologyAbbrs = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    // console.log(appState.tempSetup.etymologyAbbrs);
+    // console.log(state.tempSetup.etymologyAbbrs);
 
     return (
         <div className="row">

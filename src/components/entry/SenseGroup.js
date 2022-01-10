@@ -8,35 +8,35 @@ import {useState} from 'react';
 import _ from 'lodash';
 
 const SenseGroup = props => {
-    const {appState, setAppState, thisIndex, addFunctions, moveItem} = props;
+    const {state, setState, thisIndex, addFunctions, moveItem} = props;
     const {addDefinition, addPhrase, addPos} = addFunctions;
-    // const path = appState.entry.senseGroups;
+    // const path = state.entry.senseGroups;
 
     const stringPath = 'senseGroups';
     let pathFrag = stringPath;
-    const path = _.get(appState, "entry." + pathFrag);
+    const path = _.get(state, "entry." + pathFrag);
 
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [senseGroupOpen, setSenseGroupOpen] = useState(true);
 
     const addSenseGroup = e => {
-        let entryCopy = clone(appState.entry);
-        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup(appState.setup.partsOfSpeechDefs[0].id, appState.setup.partsOfSpeechDefs, appState.setup.gramClassGroups));
-        setAppState({entry: entryCopy});
+        let entryCopy = clone(state.entry);
+        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup(state.setup.partsOfSpeechDefs[0].id, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
+        setState({entry: entryCopy});
     }
     
     const deleteSenseGroup = e => {
-        let entryCopy = clone(appState.entry);
-        if (appState.entry.senseGroups.length === 1) {
-            entryCopy.senseGroups = [generateSenseGroup(appState.setup.partsOfSpeechDefs[0].id, appState.setup.partsOfSpeechDefs, appState.setup.gramClassGroups)];
+        let entryCopy = clone(state.entry);
+        if (state.entry.senseGroups.length === 1) {
+            entryCopy.senseGroups = [generateSenseGroup(state.setup.partsOfSpeechDefs[0].id, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups)];
         } else {
             entryCopy.senseGroups.splice(thisIndex, 1);
         }
-        setAppState({entry: entryCopy});
+        setState({entry: entryCopy});
     }
     
-    const availablePoses = appState.setup.partsOfSpeechDefs.filter(a => {
+    const availablePoses = state.setup.partsOfSpeechDefs.filter(a => {
         let alreadySelected = path[thisIndex].partsOfSpeech.some(b => b.refId === a.id);
         return !alreadySelected && a;
     })
@@ -84,15 +84,15 @@ const SenseGroup = props => {
                     <span>Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}</span>
                 </div>
                     {path[thisIndex].partsOfSpeech.map((a,i) => (
-                    <PartOfSpeech appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveItem={moveItem} />
+                    <PartOfSpeech state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveItem={moveItem} />
                     ))}
                     {path[thisIndex].definitions &&
                     path[thisIndex].definitions.map((a,i) => (
-                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                     ))}
                     {path[thisIndex].phrases &&
                     path[thisIndex].phrases.map((a,i) => (
-                    <Phrase appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Phrase state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                     ))}
             </div>
          </>

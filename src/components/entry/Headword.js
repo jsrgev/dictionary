@@ -9,14 +9,14 @@ import {useState} from 'react';
 
 const Headword = props => {
 
-    const {appState, setAppState, addFunctions, moveItem} = props;
+    const {state, setState, addFunctions, moveItem} = props;
     let {addMorph, addNote} =  addFunctions;
     const [headwordOpen, setHeadwordOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     let stringPath = "headword"
     let pathFrag = stringPath + "";
-    const path = _.get(appState, "entry." + pathFrag);
+    const path = _.get(state, "entry." + pathFrag);
 
     let pathFragA = pathFrag+".morphs";
 
@@ -43,13 +43,13 @@ const Headword = props => {
                 <div className="row-content">
                     <span>Headword</span>
                 </div>
-                {appState.entry?.headword?.morphs.map((a,i) => (
-                    <Morph appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveItem={moveItem} />
+                {state.entry?.headword?.morphs.map((a,i) => (
+                    <Morph state={state} setState={setState} thisIndex={i} key={i} stringPath={pathFragA} prevIndentLevel={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveItem={moveItem} />
                 ))
                 }
-                {appState.entry?.headword?.morphs.notes?.map((a,i) => (
+                {state.entry?.headword?.morphs.notes?.map((a,i) => (
                     // path.notes?.map((a,i) => (
-                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPath} prevIndentLevel={0} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPath} prevIndentLevel={0} addFunctions={addFunctions} />
                 ))
                 }
             </div>

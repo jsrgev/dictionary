@@ -4,10 +4,10 @@ import {getEntriesDisplay} from '../../entryDisplayFuncs.js';
 
 const Preview = (props) => {
 
-    const {appState} = props;
+    const {state} = props;
 
     const getDisplay = () => {
-        let allDisplayItems = getEntriesDisplay([appState.entry], appState.setup, appState.etymologyTags);
+        let allDisplayItems = getEntriesDisplay([state.entry], state.setup, state.etymologyTags);
         let finalEntries = allDisplayItems.map(a => a.display);
         return finalEntries;
     };
@@ -15,7 +15,7 @@ const Preview = (props) => {
     return(
         <>
             <h2>Preview</h2>
-            {appState.entry &&
+            {state.entry &&
             getDisplay().map((a, i) => (
                 <p key={i}>{a}</p>
             ))}

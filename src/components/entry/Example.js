@@ -7,27 +7,27 @@ import _ from 'lodash';
 
 const Example = props => {
 
-    const {appState, setAppState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
+    const {state, setState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
     const {addDefinition, addExample, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".examples";
-    const path = _.get(appState, "entry." + pathFrag);
-    // const upPath = _.get(appState, "entry." + stringPath);
+    const path = _.get(state, "entry." + pathFrag);
+    // const upPath = _.get(state, "entry." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [exampleOpen, setExampleOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
-            let entryCopy = clone(appState.entry);
+            let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
-            setAppState({entry:entryCopy});
+            setState({entry:entryCopy});
         }
     };
 
     const deleteExample = e => {
-        let entryCopy = clone(appState.entry);
+        let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
             // if (!upPath.definitions) {
@@ -39,7 +39,7 @@ const Example = props => {
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
-        setAppState({entry: entryCopy});
+        setState({entry: entryCopy});
     }; 
 
     const popupItems = [
@@ -87,10 +87,10 @@ const Example = props => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
                 ))  }
                 {path[thisIndex].definitions.map((a,i) => (
-                    <Definition appState={appState} setAppState={setAppState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))}
             </div>
         </>

@@ -7,27 +7,27 @@ import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {appState, setAppState, thisIndex, prevIndentLevel, stringPath, addFunctions, addPronunciation, moveItem} = props;
+    const {state, setState, thisIndex, prevIndentLevel, stringPath, addFunctions, addPronunciation, moveItem} = props;
     const {addNote} = addFunctions;
-    // const path = appState.entry.headword[morphIndex].pronunciations;
+    // const path = state.entry.headword[morphIndex].pronunciations;
 
     let pathFrag = stringPath + ".pronunciations";
-    const path = _.get(appState, "entry." + pathFrag);
+    const path = _.get(state, "entry." + pathFrag);
 
     const [pronunciationOpen, setPronunciationOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
         if (value !== undefined) {
-            let entryCopy = clone(appState.entry);
+            let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
-            setAppState({entry:entryCopy});    
+            setState({entry:entryCopy});    
         }
     };
 
     const deletePronunciation = () => {
-        let entryCopy = clone(appState.entry);
+        let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
 
         if (path.length === 1) {
@@ -35,7 +35,7 @@ const Pronunciation = (props) => {
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
-        setAppState({entry: entryCopy});
+        setState({entry: entryCopy});
     };
 
 
@@ -84,7 +84,7 @@ const Pronunciation = (props) => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
                 ))}
                 </div>
         </>

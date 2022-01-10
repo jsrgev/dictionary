@@ -7,23 +7,23 @@ import GramFormLimitations from './GramFormLimitations.js';
 
 const GramForm = props => {
 
-    const {appState, setAppState, thisIndex, moveItem, stringPath, addGramForm} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramForm} = props;
 
     let pathFrag = stringPath + ".gramForms";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [gramFormOpen, setGramFormOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.tempSetup  );
+        const setupCopy = clone(state.tempSetup  );
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramForm = clone(gramFormDefault);
@@ -33,11 +33,11 @@ const GramForm = props => {
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addConstraint = (index) => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.map(a => a.id);
         gramClassesToExclude.shift();
@@ -50,10 +50,10 @@ const GramForm = props => {
         } else {
             setupCopyPath[thisIndex].constraints = [obj];
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };    
     
-    const availableForLimitationGroups = appState.tempSetup.gramClassGroups.filter(a => {
+    const availableForLimitationGroups = state.tempSetup.gramClassGroups.filter(a => {
         let alreadySelected = path[thisIndex].constraints?.some(b => b.refId === a.id);
         return !alreadySelected;
     });
@@ -107,7 +107,7 @@ const GramForm = props => {
                     }
                 </div>
                 {path[thisIndex].constraints?.map((a, i) => (
-                    <GramFormLimitations appState={appState} setAppState={setAppState} moveItem={moveItem} thisIndex={i} key={i} stringPath={stringPathA} addConstraint={addConstraint} availableForLimitationGroups={availableForLimitationGroups} />
+                    <GramFormLimitations state={state} setState={setState} moveItem={moveItem} thisIndex={i} key={i} stringPath={stringPathA} addConstraint={addConstraint} availableForLimitationGroups={availableForLimitationGroups} />
                 ))
 
                 }

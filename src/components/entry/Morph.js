@@ -8,42 +8,42 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {appState, setAppState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions, moveItem} = props;
+    const {state, setState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions, moveItem} = props;
     const {addMorph, addNote} = addFunctions;
-    // const path = appState.entry.headword[thisIndex];
+    // const path = state.entry.headword[thisIndex];
 
     let pathFrag = stringPath + "";
-    const path = _.get(appState, "entry." + pathFrag);
+    const path = _.get(state, "entry." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [morphOpen, setMorphOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
-            let entryCopy = clone(appState.entry);
+            let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             entryCopyPath[thisIndex].content = value;
-            setAppState({entry:entryCopy});
+            setState({entry:entryCopy});
         }
     }
 
     const deleteMorph = e => {
-        let entryCopy = clone(appState.entry);
+        let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         if (entryCopyPath.length === 1) {
             entryCopyPath.splice(0, 1, clone(morphDefault));
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
-        setAppState({entry: entryCopy});
+        setState({entry: entryCopy});
     };
 
     const addPronunciation = (e, index) => {
         index = index ?? path[thisIndex].pronunciations.length-1;
-        let entryCopy = clone(appState.entry);
+        let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         entryCopyPath[thisIndex].pronunciations.splice(index+1, 0, clone(pronunciationDefault));
-        setAppState({entry: entryCopy});
+        setState({entry: entryCopy});
     };
 
     const popupItems = [
@@ -95,14 +95,14 @@ const Morph = props => {
                     />
                 </div>
                 {/* <div className="row"> */}
-                    { appState.setup.showPronunciation &&
+                    { state.setup.showPronunciation &&
                     path[thisIndex].pronunciations.map((a,i) => (
-                        <Pronunciation appState={appState} setAppState={setAppState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
+                        <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
                         />
                     ))}
-                    {appState.entry &&
+                    {state.entry &&
                     path[thisIndex].notes?.map((a,i) => (
-                        <Note appState={appState} setAppState={setAppState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                        <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
                     ))
                     }
                 {/* </div> */}

@@ -202,16 +202,16 @@ const Entry = props => {
                         <EntriesList state={state} setState={setState} isDirty={isDirty} />
                         <div id="preview">
                         {state.entry &&
-                            <Preview appState={state} setAppState={setState} />
+                            <Preview state={state} setState={setState} />
                         }
                         </div>
                     </div>
                     <div id="entryForm" onKeyDown={handleKeyDown}>
                         <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].content}</span></h1>
-                        <Headword appState={state} setAppState={setState} addFunctions={addFunctions} moveItem={moveItem} />
+                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveItem={moveItem} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (
-                                <SenseGroup appState={state} setAppState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
+                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
                             ))
                         }
                         <Etymology state={state} setState={setState} />
@@ -232,7 +232,7 @@ const Entry = props => {
                         </div>
                     </div>
                     { state.setup.ipa.showPalette &&
-                        <IpaPalette appState={state} />
+                        <IpaPalette state={state} />
                     }
                 </>
             }

@@ -5,10 +5,10 @@ import _ from 'lodash';
 
 const IpaSetup = props => {
 
-    const {appState, setAppState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem} = props;
 
     const pathFrag = "ipa.content";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const groupDefault = {
         group: "",
@@ -23,31 +23,31 @@ const IpaSetup = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.tempSetup);
+        const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const changeCharacters = value => {
-        const setupCopy = clone(appState.tempSetup);
+        const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].characters = value.split(" ");
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath.splice(thisIndex+1, 0, clone(groupDefault));
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
             setupCopyPath.splice(thisIndex, 1);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     

@@ -6,23 +6,23 @@ import _ from 'lodash';
 
 const GramForm = props => {
 
-    const {appState, setAppState, thisIndex, moveItem, stringPath, addGramClass} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramClass} = props;
 
     const pathFrag = stringPath + ".gramClasses";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.tempSetup  );
+        const setupCopy = clone(state.tempSetup  );
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     
     const deleteGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramClass = clone(gramClassDefault);
@@ -32,7 +32,7 @@ const GramForm = props => {
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const popupItems = [

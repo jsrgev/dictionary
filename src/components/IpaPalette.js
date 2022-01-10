@@ -3,9 +3,9 @@ import {useState} from 'react';
 
 const IpaPalette = props => {
 
-    const {appState} = props;
-    // const path = appState.setup.ipa;
-    const path = appState.tempSetup.ipa;
+    const {state} = props;
+    // const path = state.setup.ipa;
+    const path = state.tempSetup.ipa;
     
     const [paletteShown, setPaletteShown] = useState(false);
 

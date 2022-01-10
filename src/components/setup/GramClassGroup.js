@@ -7,23 +7,23 @@ import _ from 'lodash';
 
 const GramClassGroup = props => {
 
-    const {appState, setAppState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem} = props;
 
     let pathFrag = "gramClassGroups";
-    const path = _.get(appState, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [groupOpen, setGroupOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(appState.tempSetup);
+        const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addGroup = index => {
-        const setupCopy = clone(appState.tempSetup);
+        const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
 
         let newGramClassGroup = clone(gramClassGroupDefault);
@@ -31,22 +31,22 @@ const GramClassGroup = props => {
         setupCopy.nextId++;
 
         setupCopyPath.splice(index+1, 0, newGramClassGroup);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const addGramClass = (index, pathFrag) => {
         console.log("adding")
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let newGramClass = clone(gramClassDefault);
         newGramClass.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(index+1, 0, newGramClass);
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const deleteGramClassGroup = () => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramClassGroup = clone(gramClassGroupDefault);
@@ -56,14 +56,14 @@ const GramClassGroup = props => {
         } else {
             setupCopyPath.splice(thisIndex, 1);
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const changeMultiChoice = value => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex].multiChoice = value;
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
 
     const popupItems = [
@@ -106,7 +106,7 @@ const GramClassGroup = props => {
                </div>
                { path[thisIndex].gramClasses &&
                     path[thisIndex].gramClasses.map((a, i) => (
-                        <GramClass key={i} appState={appState} setAppState={setAppState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClass={addGramClass} />
+                        <GramClass key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClass={addGramClass} />
                     ))
                 }
             </div>

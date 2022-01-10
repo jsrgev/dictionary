@@ -3,14 +3,14 @@ import _ from 'lodash';
 
 const Limitations = props => {
 
-    const {appState, setAppState, stringPath} = props;
+    const {state, setState, stringPath} = props;
 
     const pathFrag = stringPath;
-    const path = _.get(appState, "tempSetup." + pathFrag);
-    const upPath = _.get(appState, "tempSetup." + stringPath);
+    const path = _.get(state, "tempSetup." + pathFrag);
+    const upPath = _.get(state, "tempSetup." + stringPath);
 
     const handleClick = (e, gramClassId) => {
-        let setupCopy = clone(appState.tempSetup);
+        let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, stringPath);
         if (setupCopyPath.excluded) {
             let index = setupCopyPath.excluded.findIndex(a => a === gramClassId);
@@ -24,7 +24,7 @@ const Limitations = props => {
         } else {
             setupCopyPath.excluded = [gramClassId];
         }
-        setAppState({tempSetup: setupCopy});
+        setState({tempSetup: setupCopy});
     };
     
     const isSelected = gramClassId =>  {
@@ -32,7 +32,7 @@ const Limitations = props => {
         return !isExcluded ?? true;
     };
 
-    const gramClassGroup = appState.tempSetup.gramClassGroups.find(a => a.id === upPath.refId);
+    const gramClassGroup = state.tempSetup.gramClassGroups.find(a => a.id === upPath.refId);
 
     return(
         <>
