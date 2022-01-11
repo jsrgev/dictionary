@@ -45,8 +45,8 @@ export const groupDefault = {
 
 export const paletteDefault = {
     display: true,
-    name: "",
     groupSeparator: "none",
+    name: "",
     color: "#3b345a",
-    groups: [JSON.parse(JSON.stringify(gramClassDefault))],
+    content: [JSON.parse(JSON.stringify(groupDefault))],
 };

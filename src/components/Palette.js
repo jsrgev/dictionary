@@ -16,7 +16,7 @@ const Palette = props => {
             { path[thisIndex].content.map((a, i) => (
                 <React.Fragment key={i}>
                     {(path[thisIndex].groupSeparator === "space" && i !== 0) &&<span></span>}
-                    {a.characters.map((b, j) => {
+                    {a.characters?.map((b, j) => {
                         if (b === "") return null;
                         const gridColumnValue = (path[thisIndex].groupSeparator === "line" && j === 0) ? 1 : "auto";
                         return <span key={j} style={{background: a.bgColor, color: a.textColor, gridColumn: gridColumnValue}}>{b}</span>

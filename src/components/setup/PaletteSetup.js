@@ -13,7 +13,7 @@ const PaletteSetup = props => {
     let pathFrag = stringPath;
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [paletteOpen, setPaletteOpen] = useState(false);
+    const [paletteOpen, setPaletteOpen] = useState(true);
 
     const handleChange = value => {
         const tempSetupCopy = clone(state.tempSetup);

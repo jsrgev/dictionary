@@ -188,7 +188,7 @@ const Setup = props => {
                     </div>
                 </div>
                 <div>
-                    <h3>Phonetics</h3>
+                    <h3>Entries</h3>
                     <div className="row setting">
                     <label htmlFor='include-pronunciation'>Include pronunciation</label>
                     <input id='include-pronunciation' type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
