@@ -38,6 +38,12 @@ const PaletteSetup = props => {
         setState({tempSetup: tempSetupCopy});
     };
 
+    const deletePalette = index => {
+        let tempSetupCopy = clone(state.tempSetup);
+        tempSetupCopy.palettes.splice(thisIndex, 1);
+        setState({tempSetup: tempSetupCopy});
+    };
+
     const popupItems =[
         ["Palette", () => addPalette(thisIndex)],
     ];
@@ -53,7 +59,7 @@ const PaletteSetup = props => {
                     <div className="row-controls">
                         <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                         <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
-                        <i></i>
+                        <i className="fas fa-minus" onClick={deletePalette}></i>
                         <i className={`fas fa-chevron-${paletteOpen ? "up" : "down"}`} onClick={() => setPaletteOpen(!paletteOpen)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

@@ -38,7 +38,11 @@ const PaletteGroupSetup = props => {
     const deleteGroup = () => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
+        if (setupCopyPath.length === 1) {
+            setupCopyPath.splice(0, 1, clone(groupDefault));
+        } else {
             setupCopyPath.splice(thisIndex, 1);
+        }
         setState({tempSetup: setupCopy});
     };
     
@@ -49,14 +53,16 @@ const PaletteGroupSetup = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
     
+    const groupIsEmpty = () => path[thisIndex].characters.length === 0 && path[thisIndex].name === "";
+
     return(
         <>
             <div className={`row${groupOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                    <i className="fas fa-minus" onClick={deleteGroup}></i>
-                        <i className={`fas fa-chevron-${groupOpen ? "up" : "down"}`} onClick={() => setGroupOpen(!groupOpen)}></i>
+                    <i className={`fas fa-minus${path.length === 1 && groupIsEmpty() ? " disabled" : ""}`} onClick={deleteGroup}></i>
+                    <i className={`fas fa-chevron-${groupOpen ? "up" : "down"}`} onClick={() => setGroupOpen(!groupOpen)}></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                         onClick={e => moveItem(e, thisIndex, pathFrag, true)}
@@ -67,8 +73,8 @@ const PaletteGroupSetup = props => {
                     ></i>
                 </div>
                 <div className="row-content palette-group" style={getIndent(prevIndentLevel)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}].group`}>Group</label>
-                    <input id={`${pathFrag}[${thisIndex}].group`} type="text" value={path[thisIndex].group} onChange={e => handleChange(e.target.value, "group")} />
+                    <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Group</label>
+                    <input id={`${pathFrag}[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
 
                     <label htmlFor={`${pathFrag}[${thisIndex}].bg-color`}>Background color</label>
                     <input id={`${pathFrag}[${thisIndex}].bg-color`} type="color" value={path[thisIndex].bgColor} onChange={e => handleChange(e.target.value, "bgColor")} />

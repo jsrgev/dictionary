@@ -37,7 +37,7 @@ export const posDefault = {
 };
 
 export const groupDefault = {
-    group: "",
+    name: "",
     characters: [],
     bgColor: "#9ac0ff",
     textColor: "#000000",
