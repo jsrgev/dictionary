@@ -1,4 +1,4 @@
-// import AddPopup from '../AddPopup.js';
+import AddPopup from '../AddPopup.js';
 // import GramClass from './GramClass.js';
 import PaletteGroupSetup from './PaletteGroupSetup';
 import { clone, addPopupHandler, getIndent } from '../../utils.js';
@@ -8,12 +8,13 @@ import _ from 'lodash';
 
 const PaletteSetup = props => {
     
-    const {state, setState, thisIndex, stringPath, moveItem, prevIndentLevel} = props;
+    const {state, setState, thisIndex, stringPath, moveItem, prevIndentLevel, addPalette} = props;
 
     let pathFrag = stringPath;
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [paletteOpen, setPaletteOpen] = useState(true);
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
         const tempSetupCopy = clone(state.tempSetup);
@@ -37,6 +38,10 @@ const PaletteSetup = props => {
         setState({tempSetup: tempSetupCopy});
     };
 
+    const popupItems =[
+        ["Palette", () => addPalette(thisIndex)],
+    ];
+
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
@@ -46,7 +51,8 @@ const PaletteSetup = props => {
             <>
                 <div className={`row${paletteOpen ? "" : " closed"}`}>
                     <div className="row-controls">
-                        <i></i>
+                        <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                        <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                         <i></i>
                         <i className={`fas fa-chevron-${paletteOpen ? "up" : "down"}`} onClick={() => setPaletteOpen(!paletteOpen)}></i>
                         <i
