@@ -1,10 +1,8 @@
 import PaletteSetup from './PaletteSetup';
-import Palette from '../Palette';
 import AddPopup from "../AddPopup";
 import {useState} from 'react';
 import {paletteDefault} from './defaults.js';
 import {clone, addPopupHandler} from '../../utils.js';
-import _ from 'lodash';
 
 const PaletteSection = props => {
 

@@ -1,12 +1,12 @@
 import AddPopup from '../AddPopup.js';
-import { clone, addPopupHandler } from '../../utils.js';
-import { etymologyAbbrDefault } from '../../defaults';
+import { clone, addPopupHandler, getIndent } from '../../utils.js';
+import { etymologyAbbrDefault } from './defaults';
 import {useState} from 'react';
 import _ from 'lodash';
 
 const EtymologyAbbrs = props => {
 
-    const {state, setState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem, addAbbr} = props;
 
     const pathFrag = "etymologyAbbrs";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -20,16 +20,16 @@ const EtymologyAbbrs = props => {
         setState({tempSetup: setupCopy});
     };
 
-    const addAbbr = () => {
-        let setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
+    // const addAbbr = () => {
+    //     let setupCopy = clone(state.tempSetup);
+    //     let setupCopyPath = _.get(setupCopy, pathFrag);
 
-        let newAbbr = clone(etymologyAbbrDefault);
-        newAbbr.id = setupCopy.nextId.toString();
-        setupCopy.nextId++;
-        setupCopyPath.splice(thisIndex+1, 0, newAbbr);
-        setState({tempSetup: setupCopy});
-    };
+    //     let newAbbr = clone(etymologyAbbrDefault);
+    //     newAbbr.id = setupCopy.nextId.toString();
+    //     setupCopy.nextId++;
+    //     setupCopyPath.splice(thisIndex+1, 0, newAbbr);
+    //     setState({tempSetup: setupCopy});
+    // };
 
     const deleteAbbr = () => {
         let setupCopy = clone(state.tempSetup);
@@ -47,7 +47,7 @@ const EtymologyAbbrs = props => {
 
 
     const popupItems = [
-        ["Abbrevation", addAbbr],
+        ["Abbrevation", () => addAbbr(thisIndex)],
     ];
 
     const isFirst = thisIndex === 0;
@@ -71,7 +71,7 @@ const EtymologyAbbrs = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
                 </i>
             </div>
-            <div className="row-content double-input">
+            <div className="row-content double-input" style={getIndent(0)}>
                 <label htmlFor={`${pathFrag}[${thisIndex}].content`}>Term</label>
                 <input id={`${pathFrag}[${thisIndex}].content`} type="text" value={path[thisIndex].content} onChange={e => handleChange(e.target.value, "content")} />
                 <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbr</label>

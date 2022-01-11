@@ -50,3 +50,8 @@ export const paletteDefault = {
     color: "#3b345a",
     content: [JSON.parse(JSON.stringify(groupDefault))],
 };
+
+export const etymologyAbbrDefault = {
+    content: "",
+    abbr: ""
+};

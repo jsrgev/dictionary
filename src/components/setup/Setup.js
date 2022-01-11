@@ -4,6 +4,7 @@ import PaletteSection from './PaletteSection';
 import Palette from '../Palette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
+import EtymologySetup from './EtymologySetup';
 import EtymologyAbbrs from'./EtymologyAbbrs';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
@@ -179,14 +180,17 @@ const Setup = props => {
                         ))}
                     </div>
                 </div>
-                <div>
+
+                <EtymologySetup state={state} setState={setState} moveItem={moveItem} />
+
+                {/* <div>
                 <h3 className="span2">Etymology Abbreviations</h3>
                     <div className="row">
                     {tempSetup.etymologyAbbrs.map((a, i) => (
                         <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
                     ))}
                     </div>
-                </div>
+                </div> */}
                 <div>
                     <h3>Entries</h3>
                     <div className="row setting">
@@ -204,19 +208,20 @@ const Setup = props => {
                     <button onClick={handleRevertButtonClick}>Revert to previously saved</button>
                     <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
-                { tempSetup.palettes.map((a, i) => {
-
-                    if (a.display) {
-                        const isNotEmpty = a.content.some(b => {
-                            const filteredArr = b.characters.filter(c => c !== "");
-                            return filteredArr.length > 0
-                        });
-                        if (isNotEmpty) {
-                            return <Palette state={state} thisIndex={i} key={i} />;
+                 { tempSetup.palettes.map((a, i) => {
+                        let result = null;
+                        if (a.display) {
+                            const isNotEmpty = a.content.some(b => {
+                                const filteredArr = b.characters.filter(c => c !== "");
+                                return filteredArr.length > 0
+                            });
+                            if (isNotEmpty) {
+                                result = <Palette state={state} thisIndex={i} key={i} />;
+                            }
                         }
+                        return result;
+                        })
                     }
-                    })
-                }   
                 </>
             }
         </main>
