@@ -205,17 +205,18 @@ const Setup = props => {
                     <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
                 { tempSetup.palettes.map((a, i) => {
-                    // let x = a.content.some(b => b.characters.length > 0);
-                    let x = a.content.some(b => {
-                        const filteredArr = b.characters.filter(c => c !== "");
-                        return filteredArr.length > 0
-                    });
-                    // console.log(x);
-                    return (a.display && x) ?
-                        <Palette state={state} thisIndex={i} key={i} />
-                        : null;
+
+                    if (a.display) {
+                        const isNotEmpty = a.content.some(b => {
+                            const filteredArr = b.characters.filter(c => c !== "");
+                            return filteredArr.length > 0
+                        });
+                        if (isNotEmpty) {
+                            return <Palette state={state} thisIndex={i} key={i} />;
+                        }
                     }
-                )}
+                    })
+                }   
                 </>
             }
         </main>

@@ -231,12 +231,20 @@ const Entry = props => {
                             }
                         </div>
                     </div>
+
                     { state.setup.palettes.map((a, i) => {
-                    return (a.display) ?
-                        <Palette state={state} thisIndex={i} key={i} />
-                        : null;
+
+                        if (a.display) {
+                            const isNotEmpty = a.content.some(b => {
+                                const filteredArr = b.characters.filter(c => c !== "");
+                                return filteredArr.length > 0
+                            });
+                            if (isNotEmpty) {
+                                return <Palette state={state} thisIndex={i} key={i} />;
+                            }
+                        }
+                        })
                     }
-                )}
                 </>
             }
         </main>
