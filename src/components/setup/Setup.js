@@ -4,23 +4,17 @@ import PaletteSection from './PaletteSection';
 import Palette from '../Palette';
 import GramClassGroup from './GramClassGroup';
 import GramFormGroup from './GramFormGroup';
-import EtymologySetup from './EtymologySetup';
-import EtymologyAbbrs from'./EtymologyAbbrs';
+import EtymologySection from './EtymologySection';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
+import LanguageDataSection from './LanguageDataSection';
 
 const Setup = props => {
 
     const {state, setState} = props;
 
     const tempSetup = state.tempSetup;
-
-    const handleChange = (field, value) => {
-        const tempSetupCopy = clone(tempSetup);
-        tempSetupCopy[field] = value;
-        setState({tempSetup: tempSetupCopy});
-    };
 
     const changeCheck = field => {
         const tempSetupCopy = clone(tempSetup);
@@ -70,13 +64,6 @@ const Setup = props => {
     //             console.log(senseGroup);
     //         } 
     //     }
-    // };
-
-    // const saveNew = (newEntry) => {
-    //     let allEntriesCopy = clone(state.allEntries);
-    //     allEntriesCopy.push(newEntry);
-    //     console.log(allEntriesCopy);
-    //     setState({allEntries: allEntriesCopy});
     // };
 
     const saveNewSetup = () => {
@@ -131,31 +118,9 @@ const Setup = props => {
             { !state.setup ?
                 <div>Loading</div> :
                 <>
+                <LanguageDataSection state={state} setState={setState} />
                 <div>
-                    <h3 className="span2">Language Names</h3>
-                    <div className="row">
-                        <div className="row">
-                            <div className="row">
-                                <div className="row-controls"></div>
-                                <div className="row-content language-names">
-                                    <label htmlFor='target-language'>Target Language</label>
-                                    <input id='target-language' type="text" value={tempSetup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="row">
-                                <div className="row-controls"></div>
-                                <div className="row-content language-names">
-                                    <label htmlFor='source-language'>Source Language</label>
-                                    <input id='target-language' type="text" value={tempSetup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3 className="span2">Parts of speech</h3>
+                    <h3>Parts of speech</h3>
                     <div className="row">
                         {tempSetup.partsOfSpeechDefs.map((a,i) => (
                             <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
@@ -163,7 +128,7 @@ const Setup = props => {
                     </div>
                 </div>
                 <div id="gramClassSetup">
-                    <h3 className="span2">Grammatical Classes</h3>
+                    <h3>Grammatical Classes</h3>
                     <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
                     <div className="row">
                         { tempSetup.gramClassGroups.map((a, i) => (
@@ -172,7 +137,7 @@ const Setup = props => {
                     </div>
                 </div>
                 <div id="gramFormSetup">
-                    <h3 className="span2">Grammatical Forms</h3>
+                    <h3>Grammatical Forms</h3>
                     <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                     <div className="row">
                         { tempSetup.gramFormGroups.map((a, i) => (
@@ -181,16 +146,8 @@ const Setup = props => {
                     </div>
                 </div>
 
-                <EtymologySetup state={state} setState={setState} moveItem={moveItem} />
+                <EtymologySection state={state} setState={setState} moveItem={moveItem} />
 
-                {/* <div>
-                <h3 className="span2">Etymology Abbreviations</h3>
-                    <div className="row">
-                    {tempSetup.etymologyAbbrs.map((a, i) => (
-                        <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
-                    ))}
-                    </div>
-                </div> */}
                 <div>
                     <h3>Entries</h3>
                     <div className="row setting">
@@ -208,20 +165,20 @@ const Setup = props => {
                     <button onClick={handleRevertButtonClick}>Revert to previously saved</button>
                     <button onClick={handleSaveButtonClick}>Save</button>
                 </div>
-                 { tempSetup.palettes.map((a, i) => {
-                        let result = null;
-                        if (a.display) {
-                            const isNotEmpty = a.content.some(b => {
-                                const filteredArr = b.characters.filter(c => c !== "");
-                                return filteredArr.length > 0
-                            });
-                            if (isNotEmpty) {
-                                result = <Palette state={state} thisIndex={i} key={i} />;
-                            }
+                { tempSetup.palettes.map((a, i) => {
+                    let result = null;
+                    if (a.display) {
+                        const isNotEmpty = a.content.some(b => {
+                            const filteredArr = b.characters.filter(c => c !== "");
+                            return filteredArr.length > 0
+                        });
+                        if (isNotEmpty) {
+                            result = <Palette state={state} thisIndex={i} key={i} />;
                         }
-                        return result;
-                        })
                     }
+                    return result;
+                    })
+                }
                 </>
             }
         </main>

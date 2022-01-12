@@ -1,26 +1,11 @@
-.span2  {
+/* .span2  {
     grid-column: span 2;
-}
-
-.row {
-    /* grid-column: span 2; */
-}
-
-/* .row-controls {
-    grid-template-columns: repeat(5, 1rem);
 } */
 
 .palette-group {
     grid-template-columns: 9rem 1fr max-content 1.5rem max-content 1.5rem;
 }
 
-/* .palette-groupt input:last-child {
-    grid-column: span 5;
-}
-
-.palette-group input:last-child {
-    grid-column: span 5;
-} */
 
 #ipaSetup > .row-content {
     grid-template-columns: 1fr;

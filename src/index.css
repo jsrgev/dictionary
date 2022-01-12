@@ -127,7 +127,7 @@ h1:first-child {
 	margin-top: 0;
 }
 
-#entryForm h1 {
+#entryForm h1, #setup h1 {
 	margin-bottom: 0;
 }
 
@@ -935,7 +935,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 }
 
 
-#entryForm {
+#entryForm, #setup {
 	/* grid-row: span 2; */
     align-content: start;
 	display: grid;
