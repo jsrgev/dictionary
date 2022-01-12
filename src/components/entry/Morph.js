@@ -47,13 +47,17 @@ const Morph = props => {
 
     const popupItems = [
         ["Alternate form", () => addMorph(thisIndex, pathFrag)],
-        ["Pronunciation", addPronunciation],
         ["Note", () => {
             let index = (path.notes) ? path.notes.length-1 : 0;
             addNote(index, pathFrag+`[${thisIndex}]`);
         }]
     ];
     
+    if (state.setup.showPronunciation) {
+        popupItems.splice(1, 0, ["Pronunciation", addPronunciation]);
+    }
+
+
     const getNumber = () => {
         if (labels[0] === "Basic form") {
             if (path.length > 2 && thisIndex > 0) return ` ${thisIndex}`;

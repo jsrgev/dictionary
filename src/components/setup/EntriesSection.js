@@ -1,18 +1,27 @@
 import {useState} from 'react';
 import {clone, getIndent} from '../../utils.js';
+import _ from 'lodash';
 
-const LanguageDataSection = props => {
+const EntriesSection = props => {
 
     const {state, setState} = props;
 
     // const pathFrag = "etymologyAbbrs";
     // const path = _.get(state, "state.tempSetup." + pathFrag);
 
-    const handleChange = (field, value) => {
+    // const handleChange = (field, value) => {
+    //     const tempSetupCopy = clone(state.tempSetup);
+    //     tempSetupCopy[field] = value;
+    //     setState({tempSetup: tempSetupCopy});
+    // };
+
+    const changeCheck = field => {
         const tempSetupCopy = clone(state.tempSetup);
-        tempSetupCopy[field] = value;
+        let value = _.get(tempSetupCopy, `[${field}]`);
+        _.set(tempSetupCopy, `[${field}]`, !value);
         setState({tempSetup: tempSetupCopy});
     };
+
 
     const [rowOpen, setRowOpen] = useState(true);
 
@@ -26,30 +35,23 @@ const LanguageDataSection = props => {
                 <i className={`fas fa-chevron-${rowOpen ? "up" : "down"}`} onClick={() => setRowOpen(!rowOpen)}></i>
             </div>
             <div className="row-content">
-                <span>Language Names</span>
+                <span>Entries</span>
             </div>
             <div className="row" style={getIndent(0)}>
                 <div className="row">
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content language-names">
-                            <label htmlFor='target-language'>Target Language</label>
-                            <input id='target-language' type="text" value={state.tempSetup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
-                        </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="row">
-                        <div className="row-controls"></div>
-                        <div className="row-content language-names">
-                            <label htmlFor='source-language'>Source Language</label>
-                            <input id='target-language' type="text" value={state.tempSetup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
+                            <label htmlFor='include-pronunciation'>Include pronunciation</label>
+                            <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     );
 };
 
-export default LanguageDataSection;
+export default EntriesSection;

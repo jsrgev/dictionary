@@ -9,6 +9,7 @@ import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
 import LanguageDataSection from './LanguageDataSection';
+import EntriesSection from './EntriesSection';
 
 const Setup = props => {
 
@@ -16,12 +17,6 @@ const Setup = props => {
 
     const tempSetup = state.tempSetup;
 
-    const changeCheck = field => {
-        const tempSetupCopy = clone(tempSetup);
-        let value = _.get(tempSetupCopy, `[${field}]`);
-        _.set(tempSetupCopy, `[${field}]`, !value);
-        setState({tempSetup: tempSetupCopy});
-    };
 
     // const fix = () => {
     //     const tempSetupCopy = clone(tempSetup);
@@ -148,13 +143,7 @@ const Setup = props => {
 
                 <EtymologySection state={state} setState={setState} moveItem={moveItem} />
 
-                <div>
-                    <h3>Entries</h3>
-                    <div className="row setting">
-                    <label htmlFor='include-pronunciation'>Include pronunciation</label>
-                    <input id='include-pronunciation' type="checkbox" checked={tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
-                    </div>
-                </div>
+                <EntriesSection state={state} setState={setState} moveItem={moveItem} />
 
                 <PaletteSection state={state} setState={setState} moveItem={moveItem} />
 
