@@ -28,11 +28,11 @@ const LanguageDataSection = props => {
             <div className="row-content">
                 <span>Language Names</span>
             </div>
-            <div className="row" style={getIndent(0)}>
+            <div className="row">
                 <div className="row">
                     <div className="row">
                         <div className="row-controls"></div>
-                        <div className="row-content language-names">
+                        <div className="row-content language-names" style={getIndent(0)}>
                             <label htmlFor='target-language'>Target Language</label>
                             <input id='target-language' type="text" value={state.tempSetup.targetLanguageName} onChange={e => handleChange("targetLanguageName", e.target.value)} />
                         </div>
@@ -41,7 +41,7 @@ const LanguageDataSection = props => {
                 <div className="row">
                     <div className="row">
                         <div className="row-controls"></div>
-                        <div className="row-content language-names">
+                        <div className="row-content language-names" style={getIndent(0)}>
                             <label htmlFor='source-language'>Source Language</label>
                             <input id='target-language' type="text" value={state.tempSetup.sourceLanguageName} onChange={e => handleChange("sourceLanguageName", e.target.value)} />
                         </div>

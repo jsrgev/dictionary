@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const Limitations = props => {
 
-    const {state, setState, stringPath} = props;
+    const {state, setState, stringPath, prevIndent} = props;
 
     const pathFrag = stringPath;
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -38,7 +38,7 @@ const Limitations = props => {
         <>
             <div className="row">
                 <div className="row-controls"></div>
-                <div className="row-content" style={getIndent(1)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label>Only allow</label>
                     <ul>
                         {gramClassGroup.gramClasses.map((a, i) => (

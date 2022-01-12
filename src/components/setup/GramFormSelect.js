@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const GramFormSelect = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, addGramFormOption, gramClassAndFormGroups, availableGramClassAndFormGroups} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramFormOption, gramClassAndFormGroups, availableGramClassAndFormGroups, prevIndent} = props;
 
     const pathFrag = stringPath + ".gramFormGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -72,7 +72,7 @@ const GramFormSelect = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
                 </i>
                 </div>
-                <div className="row-content pos-options" style={getIndent(0)}>
+                <div className="row-content pos-options" style={getIndent(prevIndent)}>
                     <div>Form group</div>
                     <ul>
                         {gramClassAndFormGroups.map((a, i) => (

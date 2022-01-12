@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const PaletteGroupSetup = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, prevIndentLevel} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, prevIndent} = props;
 
     const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -72,7 +72,7 @@ const PaletteGroupSetup = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content palette-group" style={getIndent(prevIndentLevel)}>
+                <div className="row-content palette-group" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Group</label>
                     <input id={`${pathFrag}[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
 
@@ -84,7 +84,7 @@ const PaletteGroupSetup = props => {
                 </div>
                 <div className="row">
                     <div className="row-controls"></div>
-                    <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                    <div className="row-content" style={getIndent(prevIndent+1)}>
                         <label htmlFor={`${pathFrag}[${thisIndex}].characters`}>Characters</label>
                         <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeCharacters(e.target.value)} />
                     </div>

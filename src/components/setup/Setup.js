@@ -1,5 +1,5 @@
 import './setup.css';
-import PosSetup from './PosSetup';
+import PosSection from './PosSection';
 import PaletteSection from './PaletteSection';
 import Palette from '../Palette';
 import GramClassGroup from './GramClassGroup';
@@ -14,7 +14,7 @@ import EntriesSection from './EntriesSection';
 const Setup = props => {
 
     const {state, setState} = props;
-
+    const prevIndent = -1;
     const tempSetup = state.tempSetup;
 
 
@@ -114,14 +114,18 @@ const Setup = props => {
                 <div>Loading</div> :
                 <>
                 <LanguageDataSection state={state} setState={setState} />
-                <div>
+
+                <PosSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
+
+                {/* <div>
                     <h3>Parts of speech</h3>
                     <div className="row">
                         {tempSetup.partsOfSpeechDefs.map((a,i) => (
                             <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
                         ))}
                     </div>
-                </div>
+                </div> */}
+
                 <div id="gramClassSetup">
                     <h3>Grammatical Classes</h3>
                     <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>

@@ -1,34 +1,33 @@
-import EtymologyAbbrs from './EtymologyAbbrs';
-import AddPopup from "../AddPopup";
+import AddPopup from '../AddPopup.js';
+import PosSetup from './PosSetup';
 import {useState} from 'react';
-import {etymologyAbbrDefault} from './defaults.js';
+import {posDefault} from './defaults.js';
 import {clone, addPopupHandler} from '../../utils.js';
 import _ from 'lodash';
 
-const EtymologySection = props => {
+const PosSection = props => {
 
-    const {state, setState, moveItem} = props;
+    const {state, setState, moveItem, prevIndent} = props;
 
-    const pathFrag = "etymologyAbbrs";
-    // const path = _.get(state, "tempSetup." + pathFrag);
+    const pathFrag = "partsOfSpeechDefs";
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [rowOpen, setRowOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    const addAbbr = index => {
+    const addPos = index => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
 
-        let newAbbr = clone(etymologyAbbrDefault);
-        newAbbr.id = setupCopy.nextId.toString();
+        let newPos = clone(posDefault);
+        newPos.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
-        setupCopyPath.splice(index+1, 0, newAbbr);
+        setupCopyPath.splice(index+1, 0, newPos);
         setState({tempSetup: setupCopy});
     };
 
-
-    const popupItems =[
-        ["Abbreviation", () => addAbbr(state.tempSetup.etymologyAbbrs.length-1)],
+    const popupItems = [
+        ["Part of speech", () => addPos(state.tempSetup.partsOfSpeechDefs.length)],
     ];
 
     return(
@@ -40,13 +39,17 @@ const EtymologySection = props => {
                 <i className={`fas fa-chevron-${rowOpen ? "up" : "down"}`} onClick={() => setRowOpen(!rowOpen)}></i>
             </div>
             <div className="row-content">
-                <span>Etymologies</span>
+                <span>Parts of Speech</span>
             </div>
-            {state.tempSetup.etymologyAbbrs.map((a, i) => (
-                <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} addAbbr={addAbbr} />
-            ))}
+            <div className="row">
+                {state.tempSetup.partsOfSpeechDefs.map((a,i) => (
+                    <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} prevIndent={prevIndent+1} addPos={addPos} />
+                    ))}
+            </div>
         </div>
+
+
     );
 };
 
-export default EtymologySection;
+export default PosSection;

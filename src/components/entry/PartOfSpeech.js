@@ -6,7 +6,7 @@ import {useState, useEffect} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {state, setState, thisIndex, prevIndentLevel, stringPath, addFunctions, availablePoses, moveItem} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveItem} = props;
     const {addPos} = addFunctions;
 
     let pathFrag = stringPath + ".partsOfSpeech";
@@ -179,7 +179,7 @@ const PartOfSpeech = (props) => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
                         {state.setup.partsOfSpeechDefs.map((a,i) => (
@@ -190,7 +190,7 @@ const PartOfSpeech = (props) => {
                 { path[thisIndex].gramClassGroups?.map((a, i) => (
                         <div className="row" key={i}>
                             <div className="row-controls"></div>
-                            <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                            <div className="row-content" style={getIndent(prevIndent+1)}>
                                 <span>{capitalize(state.setup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
                                     { getGramClasses(path[thisIndex].refId, a.refId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups).map((b,j) => (
@@ -211,11 +211,11 @@ const PartOfSpeech = (props) => {
                             <i></i>
                             <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
                         </div>
-                        <div className="row-content" style={getIndent(prevIndentLevel+1)}>
+                        <div className="row-content" style={getIndent(prevIndent+1)}>
                             <div>Forms:</div>
                         </div>
                         {allGramForms.map((a, i) => (
-                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndentLevel={prevIndentLevel+2} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem} />
+                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem} />
                         ))}
                     </div>
                 }

@@ -26,7 +26,7 @@ const EntriesSection = props => {
     const [rowOpen, setRowOpen] = useState(true);
 
     return(
-        <div id="ipaSetup" className={`row${rowOpen ? "" : " closed"}`}>
+        <div className={`row${rowOpen ? "" : " closed"}`}>
             <div className="row-controls">
                 {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
                 {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}

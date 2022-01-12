@@ -7,7 +7,7 @@ import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {state, setState, thisIndex, prevIndentLevel, stringPath, addFunctions, addPronunciation, moveItem} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, addPronunciation, moveItem} = props;
     const {addNote} = addFunctions;
     // const path = state.entry.headword[morphIndex].pronunciations;
 
@@ -74,7 +74,7 @@ const Pronunciation = (props) => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Pronunciation{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     className="for norm"
@@ -84,7 +84,7 @@ const Pronunciation = (props) => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note state={state} setState={setState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} />
                 ))}
                 </div>
         </>

@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const Phrase = props => {
 
-    const {state, setState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
+    const {state, setState, prevIndent, thisIndex, addFunctions, stringPath, moveItem} = props;
     const {addDefinition, addPhrase, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".phrases";
@@ -83,7 +83,7 @@ const Phrase = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Phrase{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     value={path[thisIndex].content}
@@ -92,11 +92,11 @@ const Phrase = props => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} />
                 ))
                 }
                 {path[thisIndex].definitions.map((a,i) => (
-                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))
                 }
             </div>

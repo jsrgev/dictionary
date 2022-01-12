@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const Definition = props => {
 
-    const {state, setState, prevIndentLevel, thisIndex, addFunctions, stringPath, moveItem} = props;
+    const {state, setState, prevIndent, thisIndex, addFunctions, stringPath, moveItem} = props;
     const {addDefinition, addExample, addNote} = addFunctions;
     // const path = state.entry.senseGroups[senseGroupIndex].definitions;
 
@@ -94,7 +94,7 @@ const Definition = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Definition{path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     value={path[thisIndex].content}
@@ -103,11 +103,11 @@ const Definition = props => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} />
                 ))
                 }
                 {path[thisIndex].examples?.map((a,i) => (
-                    <Example state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Example state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
                 ))
                 }
             </div>

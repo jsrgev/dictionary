@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const Note = props => {
 
-    const {state, setState, prevIndentLevel, thisIndex, stringPath, addFunctions} = props;
+    const {state, setState, prevIndent, thisIndex, stringPath, addFunctions} = props;
     const {addNote} = addFunctions;
 
     let pathFrag = stringPath + ".notes";
@@ -54,7 +54,7 @@ const Note = props => {
                     ></i>
                     <i className="fas fa-minus" onClick={deleteNote}></i>           
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Note {path.length>1 && ` ${thisIndex+1}`}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     value={path[thisIndex].content}

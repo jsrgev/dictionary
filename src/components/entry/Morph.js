@@ -8,7 +8,7 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {state, setState, thisIndex, stringPath, prevIndentLevel, labels, addFunctions, moveItem} = props;
+    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveItem} = props;
     const {addMorph, addNote} = addFunctions;
 
     let pathFrag = stringPath + "";
@@ -88,7 +88,7 @@ const Morph = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content" style={getIndent(prevIndentLevel)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
@@ -100,12 +100,12 @@ const Morph = props => {
                 {/* <div className="row"> */}
                     { state.setup.showPronunciation &&
                     path[thisIndex].pronunciations.map((a,i) => (
-                        <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndentLevel={prevIndentLevel+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
+                        <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
                         />
                     ))}
                     {state.entry &&
                     path[thisIndex].notes?.map((a,i) => (
-                        <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndentLevel={prevIndentLevel+1} addFunctions={addFunctions} />
+                        <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} />
                     ))
                     }
                 {/* </div> */}

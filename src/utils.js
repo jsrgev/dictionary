@@ -6,9 +6,9 @@ export const API_BASE = "http://localhost:3001/dictionary";
 // export const API_BASE = "http://jsrgev.net/dictionary"
 
 
-export const getIndent = (prevIndentLevel = 0) => {
+export const getIndent = (prevIndent = 0) => {
     const indentAmount = 2;
-    return {marginLeft: (prevIndentLevel+1)*indentAmount + "rem"} ;
+    return {marginLeft: (prevIndent+1)*indentAmount + "rem"} ;
 };
 
 export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);

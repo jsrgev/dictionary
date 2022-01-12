@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const ParadigmForm = (props) => {
 
-    const {state, setState, prevIndentLevel, stringPath, addFunctions, gramFormSet, moveItem} = props;
+    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveItem} = props;
     const {addMorph} = addFunctions;
 
     let pathFrag = stringPath;
@@ -129,7 +129,7 @@ const ParadigmForm = (props) => {
                 <i></i>
                 <i className={!isIrregular() ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
                 </div>
-                <div className="row-content paradigmForms" style={getIndent(prevIndentLevel-1)}>
+                <div className="row-content paradigmForms" style={getIndent(prevIndent-1)}>
                     <div>
                         {getGramFormAbbrs(gramFormSet, state.setup.gramFormGroups)}
                     </div>
@@ -142,7 +142,7 @@ const ParadigmForm = (props) => {
                 </div>
                 { isIrregular() &&
                    path.irregulars[getIndex()].morphs.map((a,i) => (
-                        <Morph state={state} setState={setState} thisIndex={i} key={i} prevIndentLevel={prevIndentLevel} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveItem={moveItem} />
+                        <Morph state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveItem={moveItem} />
                     ))
                 }
             </div>

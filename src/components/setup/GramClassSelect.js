@@ -6,7 +6,7 @@ import Limitations from './Limitations.js';
 
 const GramClassSelect = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, addGramClassOption, availableGramClassGroups} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramClassOption, availableGramClassGroups, prevIndent} = props;
 
     let pathFrag = stringPath + ".gramClassGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -72,7 +72,7 @@ const GramClassSelect = props => {
                     onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
                 </i>
                 </div>
-                <div className="row-content pos-options" style={getIndent(0)}>
+                <div className="row-content pos-options" style={getIndent(prevIndent)}>
                     <div>Class group</div>
                     <ul>
                         {state.tempSetup.gramClassGroups.map((a, i) => (
@@ -80,7 +80,7 @@ const GramClassSelect = props => {
                         ))}
                     </ul>
                 </div>
-                <Limitations state={state} setState={setState} stringPath={stringPathA} />
+                <Limitations state={state} setState={setState} stringPath={stringPathA} prevIndent={prevIndent+1} />
             </div>
         </>
     );
