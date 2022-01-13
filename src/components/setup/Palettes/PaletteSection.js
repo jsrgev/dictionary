@@ -22,7 +22,7 @@ const PaletteSection = props => {
     ];
 
     return(
-        <div id="ipaSetup" className={`row${paletteSectionOpen ? "" : " closed"}`}>
+        <div className={`row${paletteSectionOpen ? "" : " closed"}`}>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>

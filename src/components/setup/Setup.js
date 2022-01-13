@@ -125,17 +125,11 @@ const Setup = props => {
                         ))}
                     </div>
                 </div> */}
-{/* 
-                <div id="gramClassSetup">
-                    <h3>Grammatical Classes</h3>
-                    <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
-                    <div className="row">
-                        { tempSetup.gramClassGroups.map((a, i) => (
-                            <GramClassGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
-                        ))}
-                    </div>
-                </div> */}
 
+                <GramClassSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
+            
+                <GramFormSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
+                
                 {/* <div id="gramFormSetup">
                     <h3>Grammatical Forms</h3>
                     <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>

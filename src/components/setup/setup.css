@@ -6,11 +6,9 @@
     grid-template-columns: 9rem 1fr max-content 1.5rem max-content 1.5rem;
 }
 
-
-#ipaSetup > .row-content {
+#setup > .row > .row-content {
     grid-template-columns: 1fr;
 }
-
 
 input[type="color" i] {
     padding: 0;
@@ -34,11 +32,11 @@ input[type="color" i]::-webkit-color-swatch {
     border: 0;
     border: 1px solid var(--darkgray);
     display: inline-block;
-  }
+}
 
 input[type="color" i]::-webkit-color-swatch-wrapper {
     padding: 0;
-  }
+}
 
 input[type="color" i]::-moz-color-swatch {
     padding: 0;

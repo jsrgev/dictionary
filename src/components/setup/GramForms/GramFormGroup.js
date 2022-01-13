@@ -1,13 +1,13 @@
 import AddPopup from '../../AddPopup';
 import GramForm from './GramForm';
-import { clone, addPopupHandler } from '../../../utils.js';
+import { clone, addPopupHandler, getIndent } from '../../../utils.js';
 import {gramFormDefault, gramFormGroupDefault} from '../defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 
 const GramFormGroup = props => {
 
-    const {state, setState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem, prevIndent, addGroup} = props;
 
     let pathFrag = "gramFormGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -19,16 +19,6 @@ const GramFormGroup = props => {
         const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setState({tempSetup: setupCopy});
-    };
-
-    const addGroup = () => {
-        let setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        let newGramFormGroup = clone(gramFormGroupDefault);
-        newGramFormGroup.id = setupCopy.nextId.toString();
-        setupCopy.nextId++;
-        setupCopyPath.splice(thisIndex+1, 0, newGramFormGroup);
         setState({tempSetup: setupCopy});
     };
 
@@ -58,7 +48,7 @@ const GramFormGroup = props => {
 
     
     const popupItems = [
-        ["Group", () => addGroup()],
+        ["Group", () => addGroup(thisIndex)],
         ["Form", () => addGramForm(path[thisIndex].gramForms.length-1, pathFrag+`[${thisIndex}].gramForms`)],
     ];
 
@@ -88,13 +78,13 @@ const GramFormGroup = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content">
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
                     <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                 </div>
                 { path[thisIndex].gramForms &&
                     path[thisIndex].gramForms.map((a, i) => (
-                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramForm={addGramForm} />
+                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramForm={addGramForm} prevIndent={prevIndent+1} />
                     ))
                 }
             </div>

@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const GramForm = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, addGramClass} = props;
+    const {state, setState, thisIndex, moveItem, stringPath, addGramClass, prevIndent} = props;
 
     const pathFrag = stringPath + ".gramClasses";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -63,7 +63,7 @@ const GramForm = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content double-input" style={getIndent(0)}>
+                <div className="row-content double-input" style={getIndent(prevIndent)}>
                     {
                         <>
                             <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Class</label>

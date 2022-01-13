@@ -1,13 +1,13 @@
 import AddPopup from '../../AddPopup';
 import GramClass from './GramClass';
-import { clone, addPopupHandler } from '../../../utils.js';
+import { clone, addPopupHandler, getIndent } from '../../../utils.js';
 import {gramClassGroupDefault, gramClassDefault} from '../defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 
 const GramClassGroup = props => {
 
-    const {state, setState, thisIndex, moveItem} = props;
+    const {state, setState, thisIndex, moveItem, addGroup, prevIndent} = props;
 
     let pathFrag = "gramClassGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -19,18 +19,6 @@ const GramClassGroup = props => {
         const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         setupCopyPath[thisIndex][field] = value;
-        setState({tempSetup: setupCopy});
-    };
-
-    const addGroup = index => {
-        const setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-
-        let newGramClassGroup = clone(gramClassGroupDefault);
-        newGramClassGroup.id = setupCopy.nextId.toString();
-        setupCopy.nextId++;
-
-        setupCopyPath.splice(index+1, 0, newGramClassGroup);
         setState({tempSetup: setupCopy});
     };
 
@@ -95,7 +83,7 @@ const GramClassGroup = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content double-input">
+                <div className="row-content double-input" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
                     <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Allow multiple</label>
@@ -106,7 +94,7 @@ const GramClassGroup = props => {
                </div>
                { path[thisIndex].gramClasses &&
                     path[thisIndex].gramClasses.map((a, i) => (
-                        <GramClass key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClass={addGramClass} />
+                        <GramClass key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClass={addGramClass} prevIndent={prevIndent+1} />
                     ))
                 }
             </div>

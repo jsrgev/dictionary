@@ -10,7 +10,6 @@ const PosSection = props => {
     const {state, setState, moveItem, prevIndent} = props;
 
     const pathFrag = "partsOfSpeechDefs";
-    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [rowOpen, setRowOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);

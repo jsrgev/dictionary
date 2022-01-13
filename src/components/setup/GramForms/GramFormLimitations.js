@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const GramFormLimitations = props => {
 
-    const {state, setState, moveItem, addConstraint, stringPath, thisIndex, availableForLimitationGroups} = props;
+    const {state, setState, moveItem, addConstraint, stringPath, thisIndex, availableForLimitationGroups, prevIndent} = props;
 
     let pathFrag = stringPath + ".constraints";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -102,7 +102,7 @@ const GramFormLimitations = props => {
                         onClick={e => moveItem(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
-                <div className="row-content" style={getIndent(1)}>
+                <div className="row-content" style={getIndent(prevIndent)}>
                     <label>In group</label>
                     <ul>
                         {state.tempSetup.gramClassGroups.map((a, i) => (
@@ -113,7 +113,7 @@ const GramFormLimitations = props => {
             </div>
             <div className="row">
                 <div className="row-controls"></div>
-                <div className="row-content" style={getIndent(2)}>
+                <div className="row-content" style={getIndent(prevIndent+1)}>
                     <label>Only occurs for</label>
                     <ul>
                         {getGramClasses(path[thisIndex].refId).map((a, i, arr) => (

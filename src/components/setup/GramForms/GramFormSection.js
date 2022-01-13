@@ -1,1 +1,52 @@
+import AddPopup from '../../AddPopup';
 import GramFormGroup from './GramFormGroup';
+import {useState} from 'react';
+import {gramFormGroupDefault} from '../defaults.js';
+import {clone, addPopupHandler} from '../../../utils.js';
+import _ from 'lodash';
+
+const GramFormSection = props => {
+
+    const {state, setState, moveItem, prevIndent} = props;
+
+    const pathFrag = "gramFormGroups";
+    // const path = _.get(state, "tempSetup." + pathFrag);
+
+    const [rowOpen, setRowOpen] = useState(true);
+    const [addPopupVisible, setAddPopupVisible] = useState(false);
+
+    const addGroup = index => {
+        let setupCopy = clone(state.tempSetup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        let newGramFormGroup = clone(gramFormGroupDefault);
+        newGramFormGroup.id = setupCopy.nextId.toString();
+        setupCopy.nextId++;
+        setupCopyPath.splice(index+1, 0, newGramFormGroup);
+        setState({tempSetup: setupCopy});
+    };
+
+    const popupItems = [
+        ["Group", () => addGroup(state.tempSetup.gramClassGroups.length)],
+    ];
+
+    return(
+        <div className={`row${rowOpen ? "" : " closed"}`}>
+            <div className="row-controls">
+                <AddPopup popupItems={popupItems} visible={addPopupVisible} />
+                <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
+                <i></i>
+                <i className={`fas fa-chevron-${rowOpen ? "up" : "down"}`} onClick={() => setRowOpen(!rowOpen)}></i>
+            </div>
+            <div className="row-content">
+                <span>Grammatical Forms</span>
+            </div>
+            <div className="row">
+                { state.tempSetup.gramFormGroups.map((a, i) => (
+                    <GramFormGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default GramFormSection;
