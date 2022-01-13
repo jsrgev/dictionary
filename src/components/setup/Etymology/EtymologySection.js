@@ -1,8 +1,8 @@
 import EtymologyAbbrs from './EtymologyAbbrs';
-import AddPopup from "../AddPopup";
+import AddPopup from "../../AddPopup";
 import {useState} from 'react';
-import {etymologyAbbrDefault} from './defaults.js';
-import {clone, addPopupHandler} from '../../utils.js';
+import {etymologyAbbrDefault} from '../defaults.js';
+import {clone, addPopupHandler} from '../../../utils.js';
 import _ from 'lodash';
 
 const EtymologySection = props => {

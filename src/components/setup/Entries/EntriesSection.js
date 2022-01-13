@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {clone, getIndent} from '../../utils.js';
+import {clone, getIndent} from '../../../utils.js';
 import _ from 'lodash';
 
 const EntriesSection = props => {

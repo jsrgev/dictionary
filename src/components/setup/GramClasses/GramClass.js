@@ -1,6 +1,6 @@
-import AddPopup from '../AddPopup.js';
-import { clone, addPopupHandler, getIndent } from '../../utils.js';
-import {gramClassDefault} from './defaults.js';
+import AddPopup from '../../AddPopup';
+import { clone, addPopupHandler, getIndent } from '../../../utils.js';
+import {gramClassDefault} from '../defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 

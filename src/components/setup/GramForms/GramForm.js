@@ -1,9 +1,9 @@
-import AddPopup from '../AddPopup.js';
-import { clone, addPopupHandler, getIndent } from '../../utils.js';
-import {gramFormDefault} from './defaults.js';
+import AddPopup from '../../AddPopup';
+import GramFormLimitations from './GramFormLimitations';
+import { clone, addPopupHandler, getIndent } from '../../../utils.js';
+import {gramFormDefault} from '../defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
-import GramFormLimitations from './GramFormLimitations.js';
 
 const GramForm = props => {
 

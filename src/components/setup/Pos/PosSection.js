@@ -1,8 +1,8 @@
-import AddPopup from '../AddPopup.js';
+import AddPopup from '../../AddPopup';
 import PosSetup from './PosSetup';
 import {useState} from 'react';
-import {posDefault} from './defaults.js';
-import {clone, addPopupHandler} from '../../utils.js';
+import {posDefault} from '../defaults.js';
+import {clone, addPopupHandler} from '../../../utils.js';
 import _ from 'lodash';
 
 const PosSection = props => {
@@ -18,7 +18,6 @@ const PosSection = props => {
     const addPos = index => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-
         let newPos = clone(posDefault);
         newPos.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
@@ -44,11 +43,9 @@ const PosSection = props => {
             <div className="row">
                 {state.tempSetup.partsOfSpeechDefs.map((a,i) => (
                     <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} prevIndent={prevIndent+1} addPos={addPos} />
-                    ))}
+                ))}
             </div>
         </div>
-
-
     );
 };
 

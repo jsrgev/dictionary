@@ -1,15 +1,15 @@
 import './setup.css';
-import PosSection from './PosSection';
-import PaletteSection from './PaletteSection';
+import PosSection from './Pos/PosSection';
+import PaletteSection from './Palettes/PaletteSection';
 import Palette from '../Palette';
-import GramClassGroup from './GramClassGroup';
-import GramFormGroup from './GramFormGroup';
-import EtymologySection from './EtymologySection';
+import GramClassSection from './GramClasses/GramClassSection';
+import GramFormSection from './GramForms/GramFormSection';
+import EtymologySection from './Etymology/EtymologySection';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
 import axios from 'axios';
-import LanguageDataSection from './LanguageDataSection';
-import EntriesSection from './EntriesSection';
+import LanguageDataSection from './LanguageData/LanguageDataSection';
+import EntriesSection from './Entries/EntriesSection';
 
 const Setup = props => {
 
@@ -125,7 +125,7 @@ const Setup = props => {
                         ))}
                     </div>
                 </div> */}
-
+{/* 
                 <div id="gramClassSetup">
                     <h3>Grammatical Classes</h3>
                     <p>For example: masculine, feminine, intransitive, transitive, singular-plural, collective-singulative.</p>
@@ -134,8 +134,9 @@ const Setup = props => {
                             <GramClassGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
                     </div>
-                </div>
-                <div id="gramFormSetup">
+                </div> */}
+
+                {/* <div id="gramFormSetup">
                     <h3>Grammatical Forms</h3>
                     <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
                     <div className="row">
@@ -143,7 +144,7 @@ const Setup = props => {
                             <GramFormGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
                         ))}
                     </div>
-                </div>
+                </div> */}
 
                 <EtymologySection state={state} setState={setState} moveItem={moveItem} />
 

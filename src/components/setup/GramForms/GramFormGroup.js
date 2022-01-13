@@ -1,7 +1,7 @@
-import AddPopup from '../AddPopup.js';
-import GramForm from './GramForm.js';
-import { clone, addPopupHandler } from '../../utils.js';
-import {gramFormDefault, gramFormGroupDefault} from './defaults.js';
+import AddPopup from '../../AddPopup';
+import GramForm from './GramForm';
+import { clone, addPopupHandler } from '../../../utils.js';
+import {gramFormDefault, gramFormGroupDefault} from '../defaults.js';
 import React, {useState} from 'react';
 import _ from 'lodash';
 

@@ -1,8 +1,8 @@
-import AddPopup from '../AddPopup.js';
-import GramClassSelect from './GramClassSelect.js';
-import GramFormSelect from './GramFormSelect.js';
-import { clone, addPopupHandler, getIndent } from '../../utils.js';
-import {posDefault} from './defaults.js';
+import AddPopup from '../../AddPopup';
+import GramClassSelect from './GramClassSelect';
+import GramFormSelect from './GramFormSelect';
+import { clone, addPopupHandler, getIndent } from '../../../utils.js';
+import {posDefault} from '../defaults.js';
 import {useState} from 'react';
 import _ from 'lodash';
 
@@ -22,17 +22,6 @@ const PosSetup = props => {
         setupCopyPath[thisIndex][field] = value;
         setState({tempSetup: setupCopy});
     };
-
-    // const addPos = () => {
-    //     let setupCopy = clone(state.tempSetup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-
-    //     let newPos = clone(posDefault);
-    //     newPos.id = setupCopy.nextId.toString();
-    //     setupCopy.nextId++;
-    //     setupCopyPath.splice(thisIndex+1, 0, newPos);
-    //     setState({tempSetup: setupCopy});
-    // };
 
     const addGramClassOption = index => {
         let setupCopy = clone(state.tempSetup);

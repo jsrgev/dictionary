@@ -1,5 +1,5 @@
-import AddPopup from '../AddPopup.js';
-import { clone, capitalize, getIndent, addPopupHandler } from '../../utils.js';
+import AddPopup from '../../AddPopup';
+import { clone, capitalize, getIndent, addPopupHandler } from '../../../utils.js';
 import {useState} from 'react';
 import _ from 'lodash';
 import Limitations from './Limitations.js';

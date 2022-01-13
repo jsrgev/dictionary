@@ -1,4 +1,4 @@
-import { clone, capitalize, getIndent } from '../../utils.js';
+import { clone, capitalize, getIndent } from '../../../utils.js';
 import _ from 'lodash';
 
 const Limitations = props => {
