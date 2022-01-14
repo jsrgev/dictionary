@@ -48,6 +48,17 @@ const EntriesSection = props => {
                     </div>
                 </div>
             </div>
+            <div className="row" style={getIndent(0)}>
+                <div className="row">
+                    <div className="row">
+                        <div className="row-controls"></div>
+                        <div className="row-content language-names">
+                            <label htmlFor='include-pronunciation'>Include alternate transcription</label>
+                            <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.showAltTranscription ? true : false} onChange={e => changeCheck("showAltTranscription")} />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

@@ -49,10 +49,6 @@ const GramForm = props => {
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGroup}></i>
-                    {/* { path[thisIndex].gramClasses?.length>0 ?
-                        <i className={`fas fa-chevron-${formGroupOpen ? "up" : "down"}`} onClick={() => setFormGroupOpen(!formGroupOpen)}></i>
-                        : <i></i>
-                    } */}
                     <i></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
