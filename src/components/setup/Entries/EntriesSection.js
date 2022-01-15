@@ -7,7 +7,7 @@ const EntriesSection = props => {
     const {state, setState} = props;
 
     // const pathFrag = "etymologyAbbrs";
-    // const path = _.get(state, "state.tempSetup." + pathFrag);
+    // const path = _.get(state, "tempSetup." + pathFrag);
 
     // const handleChange = (field, value) => {
     //     const tempSetupCopy = clone(state.tempSetup);
@@ -53,8 +53,8 @@ const EntriesSection = props => {
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content language-names">
-                            <label htmlFor='include-pronunciation'>Include alternate transcription</label>
-                            <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.showAltTranscription ? true : false} onChange={e => changeCheck("showAltTranscription")} />
+                            <label htmlFor='include-etymology'>Include etymology</label>
+                            <input id='include-etymology' type="checkbox" checked={state.tempSetup.showEtymology ? true : false} onChange={e => changeCheck("showEtymology")} />
                         </div>
                     </div>
                 </div>

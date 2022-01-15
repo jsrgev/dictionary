@@ -6,7 +6,7 @@ const LanguageDataSection = props => {
     const {state, setState} = props;
 
     // const pathFrag = "etymologyAbbrs";
-    // const path = _.get(state, "state.tempSetup." + pathFrag);
+    // const path = _.get(state, "tempSetup." + pathFrag);
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(state.tempSetup);
@@ -17,7 +17,7 @@ const LanguageDataSection = props => {
     const [rowOpen, setRowOpen] = useState(true);
 
     return(
-        <div id="ipaSetup" className={`row${rowOpen ? "" : " closed"}`}>
+        <div className={`row${rowOpen ? "" : " closed"}`}>
             <div className="row-controls">
                 {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
                 {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}

@@ -34,7 +34,7 @@ const getAltDisplayForHeadword = (altDisplayForHeadword) => {
 
 const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation) => {
     let morphType = isHeadword ? "hw" : "for";
-        let newArr = arr.map((a, i) => {
+    let newArr = arr.map((a, i) => {
         let morph = <span className={morphType}>{a.content}</span>;
         let pronunciations = showPronunciation ? getPronunciationsDisplay(a.pronunciations) : "";
         let notes = a.notes ? getNotesDisplay(a.notes) : "";
@@ -46,6 +46,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
                 {alts}
             </React.Fragment>;
     });
+    console.log(newArr);
     return newArr;
 };
 
@@ -75,7 +76,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
 
         let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.showPronunciation);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-        let etymologyDisplay = getEtymologyDisplay(entry.etymology, etymologyTags);
+        let etymologyDisplay = setup.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let obj = {
             sortTerm: filteredArr[0].content,
             display: <React.Fragment key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</React.Fragment>
@@ -96,7 +97,7 @@ const getIrregularsDisplay = (irregulars, setup) => {
         } else {
             let filteredArr = filterOutBlanks(item.morphs);
             if (filteredArr.length > 0) {
-                let morphs = getMorphsDisplay(item.morphs);
+                let morphs = getMorphsDisplay(item.morphs, false, null, setup.showPronunciation);
                 let morphsDisplay = morphs.map((a, i, arr) => {
                     let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
                     return <React.Fragment key={i}>{a}{divider}</React.Fragment>

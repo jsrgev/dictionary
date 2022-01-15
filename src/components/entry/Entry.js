@@ -145,6 +145,10 @@ const Entry = props => {
         .catch(err => console.log(err));
     };
 
+    const revertToSaved = () => {
+        setState({entry: state.entryCopy});
+    };
+
     const handleSaveNewClick = () => {
         addEntry();
     };
@@ -214,23 +218,12 @@ const Entry = props => {
                                 <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
                             ))
                         }
-                        <Etymology state={state} setState={setState} />
-                        <div id="submit">
-                            {state.entry._id ?
-                            <>
-                                <button onClick={handleDeleteClick}>Delete</button>
-                                <button onClick={handleUpdateClick}>Save Changes</button>
-                                <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
-                                <button onClick={handleNewBlankEntryClick}>New Blank Entry</button>
-                            </>
-                            :
-                            <>
-                                <button onClick={initializeEntry}>Clear All</button>
-                                <button onClick={handleSaveNewClick}>Save</button>
-                            </>
-                            }
-                        </div>
+                        {(state.entry && state.setup.showEtymology) &&
+                            <Etymology state={state} setState={setState} />
+                        }
                     </div>
+            <div id="bottom-bar">
+                <div>
                     { state.setup.palettes.map((a, i) => {
                         let result = null;
                         if (a.display) {
@@ -245,7 +238,25 @@ const Entry = props => {
                         return result;
                         })
                     }
-                </>
+                </div>
+                <div>
+                    {state.entry._id ?
+                    <>
+                        <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
+                        <button onClick={handleNewBlankEntryClick}>New Blank Entry</button>
+                        <button onClick={revertToSaved}>Revert to Saved</button>
+                        <button onClick={handleDeleteClick}>Delete</button>
+                        <button onClick={handleUpdateClick}>Save Changes</button>
+                    </>
+                    :
+                    <>
+                        <button onClick={initializeEntry}>Clear All</button>
+                        <button onClick={handleSaveNewClick}>Save</button>
+                    </>
+                    }
+                </div>
+            </div>
+            </>
             }
         </main>
     );

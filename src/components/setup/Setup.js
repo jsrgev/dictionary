@@ -4,6 +4,7 @@ import PaletteSection from './Palettes/PaletteSection';
 import Palette from '../Palette';
 import GramClassSection from './GramClasses/GramClassSection';
 import GramFormSection from './GramForms/GramFormSection';
+import ScriptSection from './Scripts/ScriptSection';
 import EtymologySection from './Etymology/EtymologySection';
 import {API_BASE, clone} from '../../utils.js';
 import _ from 'lodash';
@@ -117,28 +118,11 @@ const Setup = props => {
 
                 <PosSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
 
-                {/* <div>
-                    <h3>Parts of speech</h3>
-                    <div className="row">
-                        {tempSetup.partsOfSpeechDefs.map((a,i) => (
-                            <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} />
-                        ))}
-                    </div>
-                </div> */}
-
                 <GramClassSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
             
                 <GramFormSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
                 
-                {/* <div id="gramFormSetup">
-                    <h3>Grammatical Forms</h3>
-                    <p>For example: Number: singular, plural, collective, singulative. Definitiveness: indefinite, definite. Case: accusative, genitive. Person: 1, 2, 3. Tense: past, future.</p>
-                    <div className="row">
-                        { tempSetup.gramFormGroups.map((a, i) => (
-                            <GramFormGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} />
-                        ))}
-                    </div>
-                </div> */}
+                <ScriptSection state={state} setState={setState} moveItem={moveItem} />
 
                 <EtymologySection state={state} setState={setState} moveItem={moveItem} />
 
@@ -147,26 +131,29 @@ const Setup = props => {
                 <PaletteSection state={state} setState={setState} moveItem={moveItem} />
 
 
-                <div id="submit">
-                    {/* <button id="submitInput" type="submit">Revert to previous saved</button> */}
-                    {/* <button onClick={fix}>Fix</button> */}
-                    <button onClick={handleRevertButtonClick}>Revert to previously saved</button>
-                    <button onClick={handleSaveButtonClick}>Save</button>
-                </div>
-                { tempSetup.palettes.map((a, i) => {
-                    let result = null;
-                    if (a.display) {
-                        const isNotEmpty = a.content.some(b => {
-                            const filteredArr = b.characters.filter(c => c !== "");
-                            return filteredArr.length > 0
-                        });
-                        if (isNotEmpty) {
-                            result = <Palette state={state} thisIndex={i} key={i} />;
+                <div id="bottom-bar">
+                    <div>
+                        { tempSetup.palettes.map((a, i) => {
+                            let result = null;
+                            if (a.display) {
+                                const isNotEmpty = a.content.some(b => {
+                                    const filteredArr = b.characters.filter(c => c !== "");
+                                    return filteredArr.length > 0
+                                });
+                                if (isNotEmpty) {
+                                    result = <Palette state={state} thisIndex={i} key={i} />;
+                                }
+                            }
+                            return result;
+                            })
                         }
-                    }
-                    return result;
-                    })
-                }
+                    </div>
+                    <div>
+                        <button onClick={handleRevertButtonClick}>Revert to Saved</button>
+                        <button onClick={handleSaveButtonClick}>Save</button>
+                    </div>
+                </div>
+
                 </>
             }
         </main>

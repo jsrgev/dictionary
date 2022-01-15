@@ -15,13 +15,13 @@ const PosSection = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addPos = index => {
-        let setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
+        let tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
         let newPos = clone(posDefault);
-        newPos.id = setupCopy.nextId.toString();
-        setupCopy.nextId++;
-        setupCopyPath.splice(index+1, 0, newPos);
-        setState({tempSetup: setupCopy});
+        newPos.id = tempSetupCopy.nextId.toString();
+        tempSetupCopy.nextId++;
+        tempSetupCopyPath.splice(index+1, 0, newPos);
+        setState({tempSetup: tempSetupCopy});
     };
 
     const popupItems = [

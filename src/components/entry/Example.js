@@ -64,10 +64,7 @@ const Example = props => {
                     <i className="fas fa-plus"
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
-                    <i
-                    className="fas fa-minus"
-                    onClick={deleteExample}
-                    ></i>            
+                    <i className="fas fa-minus" onClick={deleteExample}></i>            
                     <i className={`fas fa-chevron-${exampleOpen ? "up" : "down"}`} onClick={() => setExampleOpen(!exampleOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

@@ -63,11 +63,13 @@ const App = () => {
                     ]      
                 },
             ],
-            orthography: {
-                display: false,
-                groupSeparator: "none",    
-                content: []      
-            },
+            scripts: [
+                {
+                    id: "33",
+                    name: "Roman",
+                    sortOrder: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
+                }
+            ],
             gramClassGroups: [
                 {
                     id: "9",
@@ -170,7 +172,6 @@ const App = () => {
                         ],
                 },
             ],
-            sortOrder: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
             etymologyAbbrs: [
                 {id: "27", abbr: "ext", content: "extended form of"},
                 {id: "28", abbr: "obs", content: "obsolete"},

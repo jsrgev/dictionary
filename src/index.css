@@ -216,7 +216,7 @@ body {
 }
 
 main {
-	margin: 20px 0;
+	margin: 20px 0 0;
 }
 
 
@@ -694,6 +694,11 @@ button:disabled, button:disabled:hover {
 		padding: 20px;
 	}
 
+	#bottom-bar {
+		padding: .5rem 20px;
+		margin: 0 -20px;
+	}
+
 	header nav::after {
 		content: "";
 		position: absolute;
@@ -901,7 +906,7 @@ main:not(.dictionary) {
 }
 
 main:not(#entry), #entry > div:not(.palette) {
-	padding: 1rem;
+	/* padding: 1rem; */
 }
 
 main > div {
@@ -1019,12 +1024,12 @@ fieldset {
 	color: var(--blue);
 }
 
-.fa-chevron-down {
+.row-controls .fa-chevron-down {
     position: relative;
     top: .35em;
 }
 
-.fa-chevron-up {
+.row-controls .fa-chevron-up {
     position: relative;
     top: .05em;
 }
@@ -1084,8 +1089,8 @@ ul {
 /* IPA */
 
 .palette  {
-	position: fixed;
-	bottom: 0;
+	/* position: fixed; */
+	/* bottom: 0; */
 	background: #ffffffe0;
 	font-size: 13px;
 	border: 2px solid #2afdc2;
@@ -1101,16 +1106,19 @@ ul {
 	background-color: #2afdc2;
 	color: white;
 	padding: .6rem;
+	padding: .3rem .7rem .2rem;
     border-radius: .6rem;
 	border: 2px solid #2afdc2;
-	margin: 0 0 -2px -2px;
+	/* margin: 0 0 -2px -2px; */
 }
 
 .palette-chars {
+	position: relative;
 	display: grid;
 	gap: .6rem;
 	font-size: 13px;
-	padding: .6rem;
+	/* padding: .6rem; */
+	padding: .3rem .7rem .2rem;
 	grid-template-columns: repeat(auto-fit minmax(1rem,1fr));
 	grid-template-columns: repeat(20,1fr);
 }
@@ -1195,15 +1203,38 @@ input .highlight {
 
 
 
-#submit {
-	display: grid;
+#bottom-bar {
+	display: flex;
 	gap: 1rem;
-	grid-template-columns: 1fr 1fr;
-	justify-items: center;
+	/* grid-template-columns: 1fr 1fr; */
+    justify-content: space-between;
+	position: sticky;
+	bottom: 0;
+    margin: 0 -60px;
+	padding: .5rem 60px;
+	background: var(--transparentblue);
 }
 
+#entry #bottom-bar {
+	grid-column: span 2;
+}
+
+#bottom-bar > div {
+	display: flex;
+	gap: 1rem;
+	/* grid-template-columns: 1fr 1fr; */
+	justify-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+	/* position: sticky; */
+	/* bottom: 0; */
+	/* padding: .5rem; */
+	/* background: var(--transparentblue); */
+}
+
+
 button {
-	width: 15rem;
+	/* width: 15rem; */
 	margin: 0;
 	padding: .3rem .7rem .2rem;
 	outline: 0;

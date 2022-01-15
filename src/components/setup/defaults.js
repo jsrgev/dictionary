@@ -55,3 +55,10 @@ export const etymologyAbbrDefault = {
     content: "",
     abbr: ""
 };
+
+export const scriptDefault = {
+    id: "",
+    name: "",
+    sortOrder: [],
+};
+

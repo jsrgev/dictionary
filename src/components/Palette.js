@@ -5,12 +5,11 @@ const Palette = props => {
 
     const {state, thisIndex} = props;
     const path = state.tempSetup.palettes;
-    
     const [paletteShown, setPaletteShown] = useState(false);
 
     return (
         <div className={`${paletteShown ? "palette" : "palette palette-hidden"}`}>
-            <div className="show-palette" onClick={() => setPaletteShown(!paletteShown)}>{path[thisIndex].name} <i className={paletteShown? "fas fa-chevron-left" : "fas fa-chevron-right"}></i></div>
+            <div className="show-palette" onClick={() => setPaletteShown(!paletteShown)}>{path[thisIndex].name} <i className={paletteShown? "fas fa-chevron-down" : "fas fa-chevron-up"}></i></div>
             <div className="palette-chars">
 
             { path[thisIndex].content.map((a, i) => (
