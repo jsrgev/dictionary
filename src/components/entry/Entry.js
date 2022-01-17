@@ -23,6 +23,14 @@ const Entry = props => {
         let newEntry = clone(entryDefault);
         const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
+        newEntry.headword.morphs[0].scriptForms = state.setup.scripts.map(a => {
+            let obj = {
+                refId: a.id,
+                content: ""
+            }
+            return obj;
+        });
+        // console.log(newEntry.headword.morphs[0]);
         setState({entry: newEntry, entryCopy: newEntry});
     };
 

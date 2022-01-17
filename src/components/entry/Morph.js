@@ -1,5 +1,6 @@
 import Pronunciation from './Pronunciation';
 import AddPopup from '../AddPopup';
+import ScriptForm from './ScriptForm';
 import Note from './Note';
 import {clone, getIndent, handleInputBlur, addPopupHandler} from '../../utils.js';
 import {morphDefault, pronunciationDefault} from '../../defaults.js';
@@ -98,6 +99,11 @@ const Morph = props => {
                     />
                 </div>
                 {/* <div className="row"> */}
+                    { state.setup.scripts &&
+                    path[thisIndex].scriptForms.map((a,i) => (
+                        <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem}
+                        />
+                    ))}
                     { state.setup.showPronunciation &&
                     path[thisIndex].pronunciations.map((a,i) => (
                         <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
