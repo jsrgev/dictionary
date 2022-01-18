@@ -6,7 +6,7 @@ import {clone, addPopupHandler} from '../../../utils.js';
 
 const PaletteSection = props => {
 
-    const {state, setState, moveItem} = props;
+    const {state, setState, moveRow} = props;
 
     const [paletteSectionOpen, setPaletteSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -33,7 +33,7 @@ const PaletteSection = props => {
                 <span>Character Palettes</span>
             </div>
             { state.tempSetup.palettes?.map((a, i) => (
-                <PaletteSetup state={state} setState={setState} moveItem={moveItem} stringPath="palettes" thisIndex={i} key={i} prevIndent={0} addPalette={addPalette} />
+                <PaletteSetup state={state} setState={setState} moveRow={moveRow} stringPath="palettes" thisIndex={i} key={i} prevIndent={0} addPalette={addPalette} />
             ))}
         </div>
     );

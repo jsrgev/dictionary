@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const Example = props => {
 
-    const {state, setState, prevIndent, thisIndex, addFunctions, stringPath, moveItem} = props;
+    const {state, setState, prevIndent, thisIndex, addFunctions, stringPath, moveRow} = props;
     const {addDefinition, addExample, addNote} = addFunctions;
 
     let pathFrag = stringPath + ".examples";
@@ -68,11 +68,11 @@ const Example = props => {
                     <i className={`fas fa-chevron-${exampleOpen ? "up" : "down"}`} onClick={() => setExampleOpen(!exampleOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
@@ -84,10 +84,10 @@ const Example = props => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} moveRow={moveRow} />
                 ))  }
                 {path[thisIndex].definitions.map((a,i) => (
-                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent+1} addFunctions={addFunctions} stringPath={stringPathA} moveRow={moveRow} />
                 ))}
             </div>
         </>

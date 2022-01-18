@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const PaletteGroupSetup = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, prevIndent} = props;
 
     const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -65,11 +65,11 @@ const PaletteGroupSetup = props => {
                     <i className={`fas fa-chevron-${groupOpen ? "up" : "down"}`} onClick={() => setGroupOpen(!groupOpen)}></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                         className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content palette-group" style={getIndent(prevIndent)}>

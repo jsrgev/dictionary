@@ -6,7 +6,7 @@ import {useState, useEffect} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveItem} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveRow} = props;
     const {addPos} = addFunctions;
 
     let pathFrag = stringPath + ".partsOfSpeech";
@@ -172,11 +172,11 @@ const PartOfSpeech = (props) => {
                     <i className={`fas fa-chevron-${posOpen ? "up" : "down"}`} onClick={() => setPosOpen(!posOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
@@ -215,7 +215,7 @@ const PartOfSpeech = (props) => {
                             <div>Forms:</div>
                         </div>
                         {allGramForms.map((a, i) => (
-                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem} />
+                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} />
                         ))}
                     </div>
                 }

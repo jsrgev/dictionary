@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const ParadigmForm = (props) => {
 
-    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveItem} = props;
+    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow} = props;
     const {addMorph} = addFunctions;
 
     let pathFrag = stringPath;
@@ -142,7 +142,7 @@ const ParadigmForm = (props) => {
                 </div>
                 { isIrregular() &&
                    path.irregulars[getIndex()].morphs.map((a,i) => (
-                        <Morph state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveItem={moveItem} />
+                        <Morph state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveRow={moveRow} />
                     ))
                 }
             </div>

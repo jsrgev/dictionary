@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const PosSection = props => {
 
-    const {state, setState, moveItem, prevIndent} = props;
+    const {state, setState, moveRow, prevIndent} = props;
 
     const pathFrag = "partsOfSpeechDefs";
 
@@ -41,7 +41,7 @@ const PosSection = props => {
             </div>
             <div className="row">
                 {state.tempSetup.partsOfSpeechDefs.map((a,i) => (
-                    <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} prevIndent={prevIndent+1} addPos={addPos} />
+                    <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} prevIndent={prevIndent+1} addPos={addPos} />
                 ))}
             </div>
         </div>

@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramForm = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, addGramForm, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, addGramForm, prevIndent} = props;
 
     let pathFrag = stringPath + ".gramForms";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -89,11 +89,11 @@ const GramForm = props => {
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                         className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content double-input" style={getIndent(prevIndent)}>
@@ -107,7 +107,7 @@ const GramForm = props => {
                     }
                 </div>
                 {path[thisIndex].constraints?.map((a, i) => (
-                    <GramFormLimitations state={state} setState={setState} moveItem={moveItem} thisIndex={i} key={i} stringPath={stringPathA} addConstraint={addConstraint} availableForLimitationGroups={availableForLimitationGroups} prevIndent={prevIndent+1} />
+                    <GramFormLimitations state={state} setState={setState} moveRow={moveRow} thisIndex={i} key={i} stringPath={stringPathA} addConstraint={addConstraint} availableForLimitationGroups={availableForLimitationGroups} prevIndent={prevIndent+1} />
                 ))
 
                 }

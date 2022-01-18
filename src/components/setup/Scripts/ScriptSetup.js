@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const ScriptSection = props => {
 
-    const {state, setState, thisIndex, moveItem, addScript} = props;
+    const {state, setState, thisIndex, moveRow, addScript} = props;
 
     const pathFrag = "scripts";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -61,11 +61,11 @@ const ScriptSection = props => {
                         <i className={`fas fa-chevron-${rowOpen ? "up" : "down"}`} onClick={() => setRowOpen(!rowOpen)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                            onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                            onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                         ></i>
                         <i
                             className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                            onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
+                            onClick={e => moveRow(e, thisIndex, pathFrag, false)}>
                         </i>
                     </div>
                     <div className="row-content double-input">

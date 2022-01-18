@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const EtymologySection = props => {
 
-    const {state, setState, moveItem} = props;
+    const {state, setState, moveRow} = props;
 
     const pathFrag = "etymologyAbbrs";
     // const path = _.get(state, "tempSetup." + pathFrag);
@@ -43,7 +43,7 @@ const EtymologySection = props => {
                 <span>Etymologies</span>
             </div>
             {state.tempSetup.etymologyAbbrs.map((a, i) => (
-                <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} addAbbr={addAbbr} />
+                <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addAbbr={addAbbr} />
             ))}
         </div>
     );

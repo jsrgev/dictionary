@@ -7,7 +7,7 @@ import _ from "lodash";
 
 const Pronunciation = (props) => {
 
-    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, addPronunciation, moveItem} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, addPronunciation, moveRow} = props;
     const {addNote} = addFunctions;
     // const path = state.entry.headword[morphIndex].pronunciations;
 
@@ -67,11 +67,11 @@ const Pronunciation = (props) => {
 
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
@@ -84,7 +84,7 @@ const Pronunciation = (props) => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} />
                 ))}
                 </div>
         </>

@@ -6,7 +6,7 @@ import Limitations from './Limitations.js';
 
 const GramClassSelect = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, addGramClassOption, availableGramClassGroups, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, addGramClassOption, availableGramClassGroups, prevIndent} = props;
 
     let pathFrag = stringPath + ".gramClassGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -65,11 +65,11 @@ const GramClassSelect = props => {
                 <i className={`fas fa-chevron-${classSelectOpen ? "up" : "down"}`} onClick={() => setClassSelectOpen(!classSelectOpen)}></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                 ></i>
                 <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}>
                 </i>
                 </div>
                 <div className="row-content pos-options" style={getIndent(prevIndent)}>

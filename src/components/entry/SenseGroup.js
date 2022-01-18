@@ -8,7 +8,7 @@ import {useState} from 'react';
 import _ from 'lodash';
 
 const SenseGroup = props => {
-    const {state, setState, thisIndex, addFunctions, moveItem} = props;
+    const {state, setState, thisIndex, addFunctions, moveRow} = props;
     const {addDefinition, addPhrase, addPos} = addFunctions;
     // const path = state.entry.senseGroups;
 
@@ -73,26 +73,26 @@ const SenseGroup = props => {
                     <i className={`fas fa-chevron-${senseGroupOpen ? "up" : "down"}`} onClick={() => setSenseGroupOpen(!senseGroupOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                </div>
                 <div className="row-content">
                     <span>Sense group{path.length>1 ? ` ${thisIndex+1}` : ""}</span>
                 </div>
                     {path[thisIndex].partsOfSpeech.map((a,i) => (
-                    <PartOfSpeech state={state} setState={setState} thisIndex={i} key={i} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveItem={moveItem} />
+                    <PartOfSpeech state={state} setState={setState} thisIndex={i} key={i} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} />
                     ))}
                     {path[thisIndex].definitions &&
                     path[thisIndex].definitions.map((a,i) => (
-                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndent={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Definition state={state} setState={setState} thisIndex={i} key={i} prevIndent={0} addFunctions={addFunctions} stringPath={stringPathA} moveRow={moveRow} />
                     ))}
                     {path[thisIndex].phrases &&
                     path[thisIndex].phrases.map((a,i) => (
-                    <Phrase state={state} setState={setState} thisIndex={i} key={i} prevIndent={0} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Phrase state={state} setState={setState} thisIndex={i} key={i} prevIndent={0} addFunctions={addFunctions} stringPath={stringPathA} moveRow={moveRow} />
                     ))}
             </div>
          </>

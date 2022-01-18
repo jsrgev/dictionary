@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const PaletteSetup = props => {
     
-    const {state, setState, thisIndex, stringPath, moveItem, prevIndent, addPalette} = props;
+    const {state, setState, thisIndex, stringPath, moveRow, prevIndent, addPalette} = props;
 
     let pathFrag = stringPath;
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -61,11 +61,11 @@ const PaletteSetup = props => {
                         <i className={`fas fa-chevron-${paletteOpen ? "up" : "down"}`} onClick={() => setPaletteOpen(!paletteOpen)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                            onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                            onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                         ></i>
                         <i
                             className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                            onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                            onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                         ></i>
                     </div>
                     <div className="row-content triple-input" style={getIndent(prevIndent)}>
@@ -82,7 +82,7 @@ const PaletteSetup = props => {
                     </div>
                     <div className="row">
                         {path[thisIndex].content.map((a,i) => (
-                            <PaletteGroupSetup key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} prevIndent={prevIndent+1} />
+                            <PaletteGroupSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} prevIndent={prevIndent+1} />
                             ))}
                     </div>
                 </div>

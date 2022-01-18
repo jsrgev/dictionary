@@ -36,7 +36,7 @@ const Setup = props => {
     // };
 
 
-    const moveItem = (e, index, pathFrag, up) => {
+    const moveRow = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
         let tempSetupCopy = clone(state.tempSetup);
@@ -116,19 +116,19 @@ const Setup = props => {
                 <>
                 <LanguageDataSection state={state} setState={setState} />
 
-                <PosSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
+                <PosSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
 
-                <GramClassSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
+                <GramClassSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
             
-                <GramFormSection state={state} setState={setState} moveItem={moveItem} prevIndent={prevIndent} />
+                <GramFormSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
                 
-                <ScriptSection state={state} setState={setState} moveItem={moveItem} />
+                <ScriptSection state={state} setState={setState} moveRow={moveRow} />
 
-                <EtymologySection state={state} setState={setState} moveItem={moveItem} />
+                <EtymologySection state={state} setState={setState} moveRow={moveRow} />
 
-                <EntriesSection state={state} setState={setState} moveItem={moveItem} />
+                <EntriesSection state={state} setState={setState} moveRow={moveRow} />
 
-                <PaletteSection state={state} setState={setState} moveItem={moveItem} />
+                <PaletteSection state={state} setState={setState} moveRow={moveRow} />
 
 
                 <div id="bottom-bar">

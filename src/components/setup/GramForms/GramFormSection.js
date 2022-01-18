@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramFormSection = props => {
 
-    const {state, setState, moveItem, prevIndent} = props;
+    const {state, setState, moveRow, prevIndent} = props;
 
     const pathFrag = "gramFormGroups";
     // const path = _.get(state, "tempSetup." + pathFrag);
@@ -42,7 +42,7 @@ const GramFormSection = props => {
             </div>
             <div className="row">
                 { state.tempSetup.gramFormGroups.map((a, i) => (
-                    <GramFormGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
+                    <GramFormGroup state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
                 ))}
             </div>
         </div>

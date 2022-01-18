@@ -7,7 +7,7 @@ import {scriptDefault} from '../defaults.js';
 
 const ScriptSection = props => {
 
-    const {state, setState, moveItem} = props;
+    const {state, setState, moveRow} = props;
 
     // const pathFrag = "scripts";
     // const path = _.get(state, "state.tempSetup." + pathFrag);
@@ -41,7 +41,7 @@ const ScriptSection = props => {
                 <span>Scripts</span>
             </div>
             { state.tempSetup.scripts.map((a, i) => (
-                <ScriptSetup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} addScript={addScript} />
+                <ScriptSetup state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addScript={addScript} />
             ))
             }
         </div>

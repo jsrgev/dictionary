@@ -9,7 +9,7 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveItem} = props;
+    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveRow} = props;
     const {addMorph, addNote} = addFunctions;
 
     let pathFrag = stringPath + "";
@@ -82,11 +82,11 @@ const Morph = props => {
                     <i className={`fas fa-chevron-${morphOpen ? "up" : "down"}`} onClick={() => setMorphOpen(!morphOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
@@ -101,17 +101,17 @@ const Morph = props => {
                 {/* <div className="row"> */}
                     { state.setup.scripts &&
                     path[thisIndex].scriptForms.map((a,i) => (
-                        <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveItem={moveItem}
+                        <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow}
                         />
                     ))}
                     { state.setup.showPronunciation &&
                     path[thisIndex].pronunciations.map((a,i) => (
-                        <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveItem={moveItem}
+                        <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveRow={moveRow}
                         />
                     ))}
                     {state.entry &&
                     path[thisIndex].notes?.map((a,i) => (
-                        <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} />
+                        <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} moveRow={moveRow} />
                     ))
                     }
                 {/* </div> */}

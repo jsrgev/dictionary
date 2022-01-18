@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const Definition = props => {
 
-    const {state, setState, prevIndent, thisIndex, addFunctions, stringPath, moveItem} = props;
+    const {state, setState, prevIndent, thisIndex, addFunctions, stringPath, moveRow} = props;
     const {addDefinition, addExample, addNote} = addFunctions;
     // const path = state.entry.senseGroups[senseGroupIndex].definitions;
 
@@ -87,11 +87,11 @@ const Definition = props => {
                     }
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
@@ -103,11 +103,11 @@ const Definition = props => {
                     />
                 </div>
                 {path[thisIndex].notes?.map((a,i) => (
-                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPathA} prevIndent={prevIndent+1} addFunctions={addFunctions} moveRow={moveRow} />
                 ))
                 }
                 {path[thisIndex].examples?.map((a,i) => (
-                    <Example state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent+1} addFunctions={addFunctions} stringPath={stringPathA} moveItem={moveItem} />
+                    <Example state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent+1} addFunctions={addFunctions} stringPath={stringPathA} moveRow={moveRow} />
                 ))
                 }
             </div>

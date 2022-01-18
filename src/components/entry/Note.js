@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const Note = props => {
 
-    const {state, setState, prevIndent, thisIndex, stringPath, addFunctions} = props;
+    const {state, setState, prevIndent, thisIndex, stringPath, addFunctions, moveRow} = props;
     const {addNote} = addFunctions;
 
     let pathFrag = stringPath + ".notes";
@@ -42,7 +42,8 @@ const Note = props => {
         }]
     ];
 
-    // console.log(state);
+    const isFirst = thisIndex === 0;
+    const isLast = thisIndex === path.length-1;
 
     return (
         <>
@@ -52,7 +53,16 @@ const Note = props => {
                     <i className="fas fa-plus"
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
-                    <i className="fas fa-minus" onClick={deleteNote}></i>           
+                    <i className="fas fa-minus" onClick={deleteNote}></i>
+                    <i></i>
+                    <i
+                    className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
+                    ></i>
+                    <i
+                    className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
+                    ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
                     <label htmlFor={`${pathFrag}[${thisIndex}]`}>Note {path.length>1 && ` ${thisIndex+1}`}</label>

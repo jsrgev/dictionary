@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramClassSection = props => {
 
-    const {state, setState, moveItem, prevIndent} = props;
+    const {state, setState, moveRow, prevIndent} = props;
 
     const pathFrag = "gramClassGroups";
 
@@ -43,7 +43,7 @@ const GramClassSection = props => {
             </div>
             <div className="row">
                 { state.tempSetup.gramClassGroups.map((a, i) => (
-                    <GramClassGroup state={state} setState={setState} thisIndex={i} moveItem={moveItem} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
+                    <GramClassGroup state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
                 ))}
             </div>
         </div>

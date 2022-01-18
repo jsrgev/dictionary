@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramClassGroup = props => {
 
-    const {state, setState, thisIndex, moveItem, addGroup, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, addGroup, prevIndent} = props;
 
     let pathFrag = "gramClassGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -76,11 +76,11 @@ const GramClassGroup = props => {
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                         className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content double-input" style={getIndent(prevIndent)}>
@@ -94,7 +94,7 @@ const GramClassGroup = props => {
                </div>
                { path[thisIndex].gramClasses &&
                     path[thisIndex].gramClasses.map((a, i) => (
-                        <GramClass key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClass={addGramClass} prevIndent={prevIndent+1} />
+                        <GramClass key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClass={addGramClass} prevIndent={prevIndent+1} />
                     ))
                 }
             </div>

@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramFormGroup = props => {
 
-    const {state, setState, thisIndex, moveItem, prevIndent, addGroup} = props;
+    const {state, setState, thisIndex, moveRow, prevIndent, addGroup} = props;
 
     let pathFrag = "gramFormGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -71,11 +71,11 @@ const GramFormGroup = props => {
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                         className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
@@ -84,7 +84,7 @@ const GramFormGroup = props => {
                 </div>
                 { path[thisIndex].gramForms &&
                     path[thisIndex].gramForms.map((a, i) => (
-                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramForm={addGramForm} prevIndent={prevIndent+1} />
+                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramForm={addGramForm} prevIndent={prevIndent+1} />
                     ))
                 }
             </div>

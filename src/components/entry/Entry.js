@@ -110,7 +110,7 @@ const Entry = props => {
         },
     };
 
-    const moveItem = (e, index, pathFrag, up) => {
+    const moveRow = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
         let entryCopy = clone(state.entry);
@@ -220,10 +220,10 @@ const Entry = props => {
                     </div>
                     <div id="entryForm" onKeyDown={handleKeyDown}>
                         <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].content}</span></h1>
-                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveItem={moveItem} />
+                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (
-                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveItem={moveItem} />
+                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} />
                             ))
                         }
                         {(state.entry && state.setup.showEtymology) &&

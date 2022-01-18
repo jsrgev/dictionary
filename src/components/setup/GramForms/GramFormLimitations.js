@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 const GramFormLimitations = props => {
 
-    const {state, setState, moveItem, addConstraint, stringPath, thisIndex, availableForLimitationGroups, prevIndent} = props;
+    const {state, setState, moveRow, addConstraint, stringPath, thisIndex, availableForLimitationGroups, prevIndent} = props;
 
     let pathFrag = stringPath + ".constraints";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -95,11 +95,11 @@ const GramFormLimitations = props => {
                     <i></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                         className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>

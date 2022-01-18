@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 const PosSetup = props => {
 
-    const {state, setState, thisIndex, moveItem, prevIndent, addPos} = props;
+    const {state, setState, thisIndex, moveRow, prevIndent, addPos} = props;
 
     const pathFrag = "partsOfSpeechDefs";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -103,11 +103,11 @@ const PosSetup = props => {
                 }
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                 ></i>
                 <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}>
                 </i>
                 </div>
                 <div className="row-content double-input" style={getIndent(prevIndent)}>
@@ -117,10 +117,10 @@ const PosSetup = props => {
                     <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
                 { path[thisIndex].gramClassGroups?.map((a, i) => (
-                    <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} />))
+                    <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} />))
                 }
                 { path[thisIndex].gramFormGroups?.map((a, i) => (
-                    <GramFormSelect key={i} state={state} setState={setState} thisIndex={i} moveItem={moveItem} stringPath={stringPathA} addGramFormOption={addGramFormGroup} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} prevIndent={prevIndent+1} />))
+                    <GramFormSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramFormOption={addGramFormGroup} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} prevIndent={prevIndent+1} />))
                 }
             </div>
         </>

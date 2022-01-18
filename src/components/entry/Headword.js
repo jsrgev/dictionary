@@ -9,7 +9,7 @@ import {useState} from 'react';
 
 const Headword = props => {
 
-    const {state, setState, addFunctions, moveItem} = props;
+    const {state, setState, addFunctions, moveRow} = props;
     let {addMorph, addNote} =  addFunctions;
     const [headwordOpen, setHeadwordOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -44,12 +44,12 @@ const Headword = props => {
                     <span>Headword</span>
                 </div>
                 {state.entry?.headword?.morphs.map((a,i) => (
-                    <Morph state={state} setState={setState} thisIndex={i} key={i} stringPath={pathFragA} prevIndent={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveItem={moveItem} />
+                    <Morph state={state} setState={setState} thisIndex={i} key={i} stringPath={pathFragA} prevIndent={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveRow={moveRow} />
                 ))
                 }
                 {state.entry?.headword?.morphs.notes?.map((a,i) => (
                     // path.notes?.map((a,i) => (
-                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPath} prevIndent={0} addFunctions={addFunctions} />
+                    <Note state={state} setState={setState} thisIndex={i} key={i} stringPath={stringPath} prevIndent={0} addFunctions={addFunctions} moveRow={moveRow} />
                 ))
                 }
             </div>

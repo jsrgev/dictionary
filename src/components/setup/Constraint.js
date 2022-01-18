@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const Constraint = props => {
 
-    const {state, setState, thisIndex, moveItem, stringPath, addGramForm} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, addGramForm} = props;
 
     let pathFrag = stringPath + ".gramForms";
     const path = _.get(state, "setup." + pathFrag);
@@ -53,11 +53,11 @@ const Constraint = props => {
                     <i></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                     ></i>
                     <i
                         className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                        onClick={e => moveItem(e, thisIndex, pathFrag, false)}
+                        onClick={e => moveRow(e, thisIndex, pathFrag, false)}
                     ></i>
                 </div>
                 <div className="row-content double-input" style={getIndent(0)}>

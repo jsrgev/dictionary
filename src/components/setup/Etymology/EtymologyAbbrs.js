@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const EtymologyAbbrs = props => {
 
-    const {state, setState, thisIndex, moveItem, addAbbr} = props;
+    const {state, setState, thisIndex, moveRow, addAbbr} = props;
 
     const pathFrag = "etymologyAbbrs";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -64,11 +64,11 @@ const EtymologyAbbrs = props => {
                 <i></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
                 ></i>
                 <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveItem(e, thisIndex, pathFrag, false)}>
+                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}>
                 </i>
             </div>
             <div className="row-content double-input" style={getIndent(0)}>
