@@ -100,7 +100,7 @@ const Morph = props => {
                 </div>
                 {/* <div className="row"> */}
                     { state.setup.scripts &&
-                    path[thisIndex].scriptForms.map((a,i) => (
+                    path[thisIndex].scriptForms?.map((a,i) => (
                         <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow}
                         />
                     ))}

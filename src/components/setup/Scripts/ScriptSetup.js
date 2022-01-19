@@ -14,10 +14,10 @@ const ScriptSection = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [rowOpen, setRowOpen] = useState(true);
 
-    const handleChange = (value) => {
+    const handleChange = (field, value) => {
         const tempSetupCopy = clone(state.tempSetup);
         let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-        tempSetupCopyPath[thisIndex].name = value;
+        tempSetupCopyPath[thisIndex][field] = value;
         setState({tempSetup: tempSetupCopy});
     };
 
@@ -70,7 +70,12 @@ const ScriptSection = props => {
                     </div>
                     <div className="row-content double-input">
                         <label htmlFor={`script[${thisIndex}]-name`}>Name</label>
-                        <input id={`script[${thisIndex}]-name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value)} />
+                        <input id={`script[${thisIndex}]-name`} type="text" value={path[thisIndex].name} onChange={e => handleChange("name", e.target.value)} />
+                        <label htmlFor={`script[${thisIndex}]-name`}>Abbreviation</label>
+                        <input id={`script[${thisIndex}]-abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange("abbr", e.target.value)} />
+                    </div>
+                    <div className="row-controls"></div>
+                    <div className="row-content" style={getIndent(0)}>
                         <label htmlFor={`script[${thisIndex}]-name`}>Sort Order</label>
                         <input id={`script[${thisIndex}]-sortOrder`} type="text" value={path[thisIndex].sortOrder.join(" ")} onChange={e => changeSortOrder(e.target.value)} />
                         {/* <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeSortOrder(e.target.value)} /> */}
