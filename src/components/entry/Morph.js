@@ -22,7 +22,7 @@ const Morph = props => {
         if (value !== undefined) {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath[thisIndex].content = value;
+            entryCopyPath[thisIndex].scriptForms[0].content = value;
             setState({entry: entryCopy});
         }
     }
@@ -58,6 +58,7 @@ const Morph = props => {
         popupItems.splice(1, 0, ["Pronunciation", addPronunciation]);
     }
 
+    // console.log(path[thisIndex]);
 
     const getNumber = () => {
         if (labels[0] === "Basic form") {
@@ -71,6 +72,8 @@ const Morph = props => {
     const isLast = thisIndex === path.length-1;
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
+
+    const scriptLabels = state.setup.scripts.length > 1 ? state.setup.scripts.map(a => a.abbr) : null;
 
     return (
         <>
@@ -90,10 +93,10 @@ const Morph = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabels && ` - ${scriptLabels[thisIndex]}`}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
-                    value={path[thisIndex].content}
+                    value={path[thisIndex].scriptForms[0].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
@@ -101,6 +104,7 @@ const Morph = props => {
                 {/* <div className="row"> */}
                     { state.setup.scripts &&
                     path[thisIndex].scriptForms?.map((a,i) => (
+                        i > 0 &&
                         <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow}
                         />
                     ))}

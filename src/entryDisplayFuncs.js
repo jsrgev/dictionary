@@ -46,7 +46,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
                 {alts}
             </React.Fragment>;
     });
-    console.log(newArr);
+    // console.log(newArr);
     return newArr;
 };
 

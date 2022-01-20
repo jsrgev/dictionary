@@ -6,7 +6,7 @@ import {useState, useEffect} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveRow} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveRow, setScriptForms} = props;
     const {addPos} = addFunctions;
 
     let pathFrag = stringPath + ".partsOfSpeech";
@@ -215,7 +215,7 @@ const PartOfSpeech = (props) => {
                             <div>Forms:</div>
                         </div>
                         {allGramForms.map((a, i) => (
-                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} />
+                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
                         ))}
                     </div>
                 }

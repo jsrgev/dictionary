@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const ParadigmForm = (props) => {
 
-    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow} = props;
+    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow, setScriptForms} = props;
     const {addMorph} = addFunctions;
 
     let pathFrag = stringPath;
@@ -61,6 +61,8 @@ const ParadigmForm = (props) => {
                 gramFormSet: gramFormSet,
                 morphs: [clone(morphDefault)]
             }
+            setScriptForms(obj.morphs[0]);
+            // console.log(obj);
             if (entryCopyPath.irregulars) {
                 entryCopyPath.irregulars.push(obj);
             } else {
@@ -106,7 +108,7 @@ const ParadigmForm = (props) => {
         let index = path.irregulars?.findIndex(a => {
             return a.gramFormSet.every(b => {
                return gramFormSet.some(c => c === b);
-            })
+            });
         })
         return index ?? -1;
     };
@@ -118,6 +120,9 @@ const ParadigmForm = (props) => {
     }
 
     let stringPathA = pathFrag + `.irregulars[${getIndex()}].morphs`;
+
+    // console.log(path);
+
 
     return (
         <>

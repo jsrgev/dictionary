@@ -18,18 +18,30 @@ const Entry = props => {
     
     const isDirty = () => JSON.stringify(state.entry) !== JSON.stringify(state.entryCopy);
 
-    const initializeEntry = () => {
-        // console.log("initializing");
-        let newEntry = clone(entryDefault);
-        const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
-        newEntry.headword.morphs[0].scriptForms = state.setup.scripts.map(a => {
+
+    const setScriptForms = obj => {
+        obj.scriptForms = state.setup.scripts.map(a => {
             let obj = {
                 refId: a.id,
                 content: ""
             }
             return obj;
         });
+    };
+
+    const initializeEntry = () => {
+        // console.log("initializing");
+        let newEntry = clone(entryDefault);
+        const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
+        setScriptForms(newEntry.headword.morphs[0]);
+        // newEntry.headword.morphs[0].scriptForms = state.setup.scripts.map(a => {
+        //     let obj = {
+        //         refId: a.id,
+        //         content: ""
+        //     }
+        //     return obj;
+        // });
         // console.log(newEntry.headword.morphs[0]);
         setState({entry: newEntry, entryCopy: newEntry});
     };
@@ -57,7 +69,9 @@ const Entry = props => {
         addMorph: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath.splice(index+1, 0, clone(morphDefault));
+            let obj = clone(morphDefault);
+            setScriptForms(obj);
+            entryCopyPath.splice(index+1, 0, obj);
             setState({entry: entryCopy});
         },
         addDefinition: (index, pathFrag) => {
@@ -223,7 +237,7 @@ const Entry = props => {
                         <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (
-                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} />
+                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
                             ))
                         }
                         {(state.entry && state.setup.showEtymology) &&

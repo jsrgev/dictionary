@@ -51,7 +51,7 @@ const ScriptForm = (props) => {
 
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>{state.setup.scripts[thisIndex].name}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>{state.setup.scripts[thisIndex].abbr}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     className="for norm"
                     value={path[thisIndex].content}

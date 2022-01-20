@@ -51,7 +51,7 @@ const ScriptSection = props => {
     const isLast = thisIndex === path.length-1;
 
     return(
-        <div className="row" style={getIndent(0)}>
+        <div className="row"> 
             <div className="row">
                 <div className="row">
                     <div className="row-controls">
