@@ -93,7 +93,7 @@ const Morph = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabels && ` - ${scriptLabels[thisIndex]}`}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabels && ` - ${scriptLabels[0]}`}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
                     value={path[thisIndex].scriptForms[0].content}
