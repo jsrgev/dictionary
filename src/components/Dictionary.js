@@ -36,10 +36,37 @@ const Dictionary = props => {
         return finalEntries;
     };
 
+    console.log(state.setup);
+
+    const getAllAbbr = () => {
+        let arr = [];
+        const pushAbbrs = set => {
+            set.forEach(a => {
+                arr.push([a.abbr, a.name]);
+            })
+        }
+        pushAbbrs(state.setup.partsOfSpeechDefs);
+        pushAbbrs(state.setup.etymologyAbbrs);
+        state.setup.gramClassGroups.forEach(a => pushAbbrs(a.gramClasses));
+        state.setup.gramFormGroups.forEach(a => pushAbbrs(a.gramForms));
+        const filteredArr = arr.filter(a => a[0] !== "");
+        return filteredArr.sort();
+        // console.log(filteredArr);
+    };
+
+
     return (
         <main className="dictionary">
             {(state.allEntries && state.setup) ?
             <>
+                <div id="abbreviations">
+                    <h1>Abbrevations</h1>
+                    <ul className='terms'>
+                        {getAllAbbr().map((a, i) => (
+                        <li><span>{a[0]}</span><span>{a[1]}</span></li>
+                        ))}
+                    </ul>
+                </div>
             {getDisplay().map((a, i) => (
                 <div className="entries" id={`letter-${a.letter}`} key={i}>
                     <h1>{a.letter}</h1>

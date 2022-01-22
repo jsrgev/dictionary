@@ -72,8 +72,8 @@ const EtymologyAbbrs = props => {
                 </i>
             </div>
             <div className="row-content double-input" style={getIndent(0)}>
-                <label htmlFor={`${pathFrag}[${thisIndex}].content`}>Term</label>
-                <input id={`${pathFrag}[${thisIndex}].content`} type="text" value={path[thisIndex].content} onChange={e => handleChange(e.target.value, "content")} />
+                <label htmlFor={`${pathFrag}[${thisIndex}].name`}>Term</label>
+                <input id={`${pathFrag}[${thisIndex}].name`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                 <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbr</label>
                 <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
             </div>

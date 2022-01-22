@@ -174,12 +174,12 @@ const App = () => {
                 },
             ],
             etymologyAbbrs: [
-                {id: "27", abbr: "ext", content: "extended form of"},
-                {id: "28", abbr: "obs", content: "obsolete"},
-                {id: "29", abbr: "old", content: "older form"},
-                {id: "30", abbr: "pos", content: "possibly"},
-                {id: "31", abbr: "rel", content: "related to"},
-                {id: "32", abbr: "tr", content: "truncation"},
+                {id: "27", abbr: "ext", name: "extended form of"},
+                {id: "28", abbr: "obs", name: "obsolete"},
+                {id: "29", abbr: "old", name: "older form"},
+                {id: "30", abbr: "pos", name: "possibly"},
+                {id: "31", abbr: "rel", name: "related to"},
+                {id: "32", abbr: "tr", name: "truncation"},
             ],
         },
         etymologyTags: [

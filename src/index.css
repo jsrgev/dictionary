@@ -403,6 +403,10 @@ footer span:last-child, header h1:last-child {
 
 /* Dictionaries */
 
+#abbreviations {
+	padding-bottom: 1rem;
+}
+
 .dictionary h1 {
 	text-align: left;
 }
@@ -436,7 +440,7 @@ footer span:last-child, header h1:last-child {
 }
 
 .entries {
-	padding-bottom: 1rem;
+	/* padding-bottom: 1rem; */
 	columns: 266px 2;
 }
 
@@ -452,7 +456,7 @@ footer span:last-child, header h1:last-child {
 }
 
 .entries p:last-child {
-	padding-bottom: 0;
+	/* padding-bottom: 0; */
 }
 
 li:nth-last-child(n + 11), li:nth-last-child(n + 11) ~ li, .entries p:nth-last-child(n + 5), .entries p:nth-last-child(n + 5) ~ p {
