@@ -18,7 +18,6 @@ const Entry = props => {
     
     const isDirty = () => JSON.stringify(state.entry) !== JSON.stringify(state.entryCopy);
 
-
     const setScriptForms = obj => {
         obj.scriptForms = state.setup.scripts.map(a => {
             let obj = {

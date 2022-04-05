@@ -12,7 +12,7 @@ export const pronunciationDefault =  {
 };
 
 export const morphDefault = {
-    content: "",
+    // content: "",
     pronunciations: [JSON.parse(JSON.stringify(pronunciationDefault))],
 };
 

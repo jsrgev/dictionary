@@ -141,12 +141,84 @@ export const addPopupHandler = (addPopupVisible, setAddPopupVisible) => {
     }
 };
 
-export const sortEntries = entries => {
-    const collator = new Intl.Collator();          
-    return entries.sort((a, b) => {
-        return collator.compare(a.sortTerm || a.content, b.sortTerm || b.content);
+const splitEntry = (string, sortOrder2) => {
+    let splitString = string.split("");
+    let result = [];
+    splitString.forEach((a, i) => {
+        if (i === 0) {
+            result.push(a);
+        } else {
+            let sequence = result.at(-1) + a;
+            let matches = sortOrder2.some(a => a.some(b => b === sequence));
+            if (matches) {
+                result.splice(-1, 1, sequence);
+            } else {
+                result.push(a);
+            };
         }
-    );
+    });
+    return result;
+};
+
+
+export const sortEntries = (entries, sortOrder) => {
+    let sortOrder2 = sortOrder.map(a => a.split("/"));
+    // console.log(entryArray);
+    // let result = entries.sort((a,b) => {
+
+        // let arrayA = splitEntry(a);
+        // let arrayB = splitEntry(b);
+    // });
+    // console.log(entries);
+    entries.forEach(a => {
+        a.segments = splitEntry(a.sortTerm || a.content, sortOrder2);
+        a.values = a.segments.map(segment => sortOrder2.findIndex(a => a.some(b => b === segment)));
+        // return {segments, values};
+    });
+    let sortedEntries = entries.sort((a, b) => {
+        const comesBefore = (c, d) => {
+            if (c[1] === 26) {
+                // console.log(c, d);
+            }
+            for (let i = 0; i < c.length; i++) {
+                // console.log("i: " + i, c[i], d[i])
+                if (c[1] === 26) {
+                    // console.log(c[i], d[i], c[i] > d[i]);
+                }                    
+                if (c[i] < d[i]) return true;
+                if (c[i] > d[i]) return false;
+                // if they are equal:
+                // console.log(c[i], d[i]);
+                if (!c[i+1] && !d[i+i]) {
+                    console.log("they're equal")
+                    continue;
+                } else if (!c[i+1] && d[i+1]) {
+                    return true;
+                } else if (c[i+1] && !d[i+i]) {
+                    return false;
+                }
+            }
+        }
+            // console.log(a.segments, b.segments);
+        // console.log(b.values);
+        // if (compare(a.values, b.values)) return 1;
+        // if (a.values < b.values) return -1;
+        // if (a.values === b.values) return 0;
+        if (a.segments[1] === 26) {
+            // console.log(comesBefore(a.values, b.values));
+        }
+
+        let result = (comesBefore(a.values, b.values)) ? -1 : 1;
+        // console.log(result);
+        return result;
+    });
+    // console.log(sortedEntries);
+    return sortedEntries;
+    // const collator = new Intl.Collator();          
+    // return entries.sort((a, b) => {
+    //     return collator.compare(a.sortTerm || a.content, b.sortTerm || b.content);
+    //     }
+    // );
 };
 
 

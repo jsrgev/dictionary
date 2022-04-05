@@ -81,7 +81,7 @@ const Morph = props => {
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
-                    <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>           
+                    <i className={`fas fa-minus${path.length === 1 && path[thisIndex].scriptForms[0].content.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>
                     <i className={`fas fa-chevron-${morphOpen ? "up" : "down"}`} onClick={() => setMorphOpen(!morphOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
@@ -96,7 +96,7 @@ const Morph = props => {
                     <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabels && ` - ${scriptLabels[0]}`}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
-                    value={path[thisIndex].scriptForms[0].content}
+                    value={path[thisIndex].scriptForms?.[0].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />

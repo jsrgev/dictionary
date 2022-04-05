@@ -29,14 +29,11 @@ const Dictionary = props => {
         return arr;
     };
     
-
     const getDisplay = () => {
         let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup, state.etymologyTags);
         let finalEntries = splitEntries(allDisplayItems);
         return finalEntries;
     };
-
-    console.log(state.setup);
 
     const getAllAbbr = () => {
         let arr = [];
@@ -51,7 +48,6 @@ const Dictionary = props => {
         state.setup.gramFormGroups.forEach(a => pushAbbrs(a.gramForms));
         const filteredArr = arr.filter(a => a[0] !== "");
         return filteredArr.sort();
-        // console.log(filteredArr);
     };
 
 
@@ -63,7 +59,7 @@ const Dictionary = props => {
                     <h1>Abbrevations</h1>
                     <ul className='terms'>
                         {getAllAbbr().map((a, i) => (
-                        <li><span>{a[0]}</span><span>{a[1]}</span></li>
+                        <li key={i}><span>{a[0]}</span><span>{a[1]}</span></li>
                         ))}
                     </ul>
                 </div>

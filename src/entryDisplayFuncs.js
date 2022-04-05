@@ -4,7 +4,11 @@ import {clone, getPosDef, getGramFormAbbrs, sortEntries} from './utils.js';
 
 
 const filterOutBlanks = set => {
-    return set.filter(a => a.content.trim() !== "");
+    if (set[0]?.scriptForms) {
+        return set.filter(a => a.scriptForms[0].content.trim() !== "");
+    } else {
+        return set.filter(a => a.content.trim() !== "");
+    }
 };
 
 const getNotesDisplay = arr => {
@@ -46,7 +50,6 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
                 {alts}
             </React.Fragment>;
     });
-    // console.log(newArr);
     return newArr;
 };
 
@@ -62,7 +65,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         for (let i=1; i<filteredArr.length; i++) {
             let item = filteredArr[i];
             let obj = {
-                sortTerm: item.content,
+                sortTerm: item.scriptForms[0].content,
                 display:
                     <React.Fragment key={key}>
                         <span key={key} className="for">{item.content}</span> see <span className="for">{filteredArr[0].content}</span>
@@ -78,13 +81,13 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
         let etymologyDisplay = setup.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let obj = {
-            sortTerm: filteredArr[0].content,
+            sortTerm: filteredArr[0].scriptForms[0].content,
             display: <React.Fragment key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</React.Fragment>
         }
         allDisplayItems.push(obj);
         key++;
     })
-    sortEntries(allDisplayItems);
+    sortEntries(allDisplayItems, setup.scripts[0].sortOrder);
     return allDisplayItems;
 };
 
