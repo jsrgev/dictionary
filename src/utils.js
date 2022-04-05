@@ -141,8 +141,8 @@ export const addPopupHandler = (addPopupVisible, setAddPopupVisible) => {
     }
 };
 
-const splitEntry = (string, letterOrder2, diacriticOrder2) => {
-    let splitString = string.split("");
+const splitEntry = (string, letterOrder2) => {
+    let splitString = string.normalize('NFD').split("");
     let result = [];
     splitString.forEach((a, i) => {
         if (i === 0) {
@@ -161,7 +161,9 @@ const splitEntry = (string, letterOrder2, diacriticOrder2) => {
 };
 
 
-export const sortEntries = (entries, letterOrder, diacriticOrder=[]) => {
+export const sortEntries = (entries, letterOrder, diacriticOrder) => {
+    // console.log(letterOrder);
+    // console.log(diacriticOrder);
     let letterOrder2 = letterOrder.map(a => a.split("/"));
     let diacriticOrder2 = diacriticOrder.map(a => a.split("/"));
     // console.log(entryArray);
@@ -172,20 +174,27 @@ export const sortEntries = (entries, letterOrder, diacriticOrder=[]) => {
     // });
     // console.log(entries);
     entries.forEach(a => {
-        a.segments = splitEntry(a.sortTerm || a.content, letterOrder2, diacriticOrder2);
-        a.values = a.segments.map(segment => letterOrder2.findIndex(a => a.some(b => b === segment)));
+        a.segments = splitEntry(a.sortTerm || a.content, letterOrder2);
+        a.values = a.segments.map(segment => {
+            let value = letterOrder2.findIndex(a => a.some(b => b === segment))
+            if (value < 0) {
+                value = diacriticOrder2.findIndex(a => a.some(b => b === segment)) + 1000;
+            }
+            return value;
+        });
         // return {segments, values};
     });
+    console.log(entries)
     let sortedEntries = entries.sort((a, b) => {
         const comesBefore = (c, d) => {
             if (c[1] === 26) {
-                // console.log(c, d);
+                console.log(c, d);
             }
             for (let i = 0; i < c.length; i++) {
                 // console.log("i: " + i, c[i], d[i])
-                if (c[1] === 26) {
+                // if (c[1] === 26) {
                     // console.log(c[i], d[i], c[i] > d[i]);
-                }                    
+                // }
                 if (c[i] < d[i]) return true;
                 if (c[i] > d[i]) return false;
                 // if they are equal:
