@@ -87,7 +87,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         allDisplayItems.push(obj);
         key++;
     })
-    sortEntries(allDisplayItems, setup.scripts[0].sortOrder);
+    sortEntries(allDisplayItems, setup.scripts[0].letterOrder, setup.scripts[0].diacriticOrder);
     return allDisplayItems;
 };
 

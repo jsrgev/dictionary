@@ -59,6 +59,7 @@ export const etymologyAbbrDefault = {
 export const scriptDefault = {
     id: "",
     name: "",
-    sortOrder: [],
+    letterOrder: [],
+    diacriticOrder: []
 };
 

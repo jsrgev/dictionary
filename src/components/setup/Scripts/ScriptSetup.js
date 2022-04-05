@@ -21,11 +21,11 @@ const ScriptSection = props => {
         setState({tempSetup: tempSetupCopy});
     };
 
-    const changeSortOrder = value => {
-        const setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].sortOrder = value.split(" ");
-        setState({tempSetup: setupCopy});
+    const changeSortOrder = (field, value) => {
+        const tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        tempSetupCopyPath[thisIndex][field] = value.split(" ");
+        setState({tempSetup: tempSetupCopy});
     };
 
     const deleteScript = () => {
@@ -76,10 +76,15 @@ const ScriptSection = props => {
                     </div>
                     <div className="row-controls"></div>
                     <div className="row-content" style={getIndent(0)}>
-                        <label htmlFor={`script[${thisIndex}]-name`}>Sort Order</label>
-                        <input id={`script[${thisIndex}]-sortOrder`} type="text" value={path[thisIndex].sortOrder.join(" ")} onChange={e => changeSortOrder(e.target.value)} />
+                        <label htmlFor={`script[${thisIndex}]-name`}>Letter Order</label>
+                        <input id={`script[${thisIndex}]-letterOrder`} type="text" value={path[thisIndex].letterOrder.join(" ")} onChange={e => changeSortOrder("letterOrder", e.target.value)} />
                         {/* <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeSortOrder(e.target.value)} /> */}
-
+                    </div>
+                    <div className="row-controls"></div>
+                    <div className="row-content" style={getIndent(0)}>
+                        <label htmlFor={`script[${thisIndex}]-name`}>Diacritic Order</label>
+                        <input id={`script[${thisIndex}]-diacriticOrder`} type="text" value={path[thisIndex].diacriticOrder.join(" ")} onChange={e => changeSortOrder("diacriticOrder", e.target.value)} />
+                        {/* <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeSortOrder(e.target.value)} /> */}
                     </div>
                 </div>
             </div>

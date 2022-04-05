@@ -19,7 +19,7 @@ const EntriesList = props => {
                 content: a.headword.morphs[0].scriptForms[0].content
             };
         });
-        return sortEntries(entrySet, state.setup.scripts[0].sortOrder);
+        return sortEntries(entrySet, state.setup.scripts[0].letterOrder);
     };
 
     const displayArrows = () => {

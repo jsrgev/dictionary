@@ -141,7 +141,7 @@ export const addPopupHandler = (addPopupVisible, setAddPopupVisible) => {
     }
 };
 
-const splitEntry = (string, sortOrder2) => {
+const splitEntry = (string, letterOrder2, diacriticOrder2) => {
     let splitString = string.split("");
     let result = [];
     splitString.forEach((a, i) => {
@@ -149,7 +149,7 @@ const splitEntry = (string, sortOrder2) => {
             result.push(a);
         } else {
             let sequence = result.at(-1) + a;
-            let matches = sortOrder2.some(a => a.some(b => b === sequence));
+            let matches = letterOrder2.some(a => a.some(b => b === sequence));
             if (matches) {
                 result.splice(-1, 1, sequence);
             } else {
@@ -161,8 +161,9 @@ const splitEntry = (string, sortOrder2) => {
 };
 
 
-export const sortEntries = (entries, sortOrder) => {
-    let sortOrder2 = sortOrder.map(a => a.split("/"));
+export const sortEntries = (entries, letterOrder, diacriticOrder=[]) => {
+    let letterOrder2 = letterOrder.map(a => a.split("/"));
+    let diacriticOrder2 = diacriticOrder.map(a => a.split("/"));
     // console.log(entryArray);
     // let result = entries.sort((a,b) => {
 
@@ -171,8 +172,8 @@ export const sortEntries = (entries, sortOrder) => {
     // });
     // console.log(entries);
     entries.forEach(a => {
-        a.segments = splitEntry(a.sortTerm || a.content, sortOrder2);
-        a.values = a.segments.map(segment => sortOrder2.findIndex(a => a.some(b => b === segment)));
+        a.segments = splitEntry(a.sortTerm || a.content, letterOrder2, diacriticOrder2);
+        a.values = a.segments.map(segment => letterOrder2.findIndex(a => a.some(b => b === segment)));
         // return {segments, values};
     });
     let sortedEntries = entries.sort((a, b) => {
