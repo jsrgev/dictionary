@@ -13,14 +13,18 @@ const EntriesList = props => {
     }, []);
 
     const getSortedEntries = () => {
+        // console.log(state.allEntries);
+        // let selectedScript = state.setup.scripts[0];
+        let {id, letterOrder, diacriticOrder} = state.setup.scripts[0];
         const entrySet = state.allEntries.map(a => {
+            let string = a.headword.morphs[0].scriptForms.find(a => a.refId === id).content;
             return {
                 id: a._id,
-                content: a.headword.morphs[0].scriptForms[0].content
+                content: string
             };
         });
-        // console.log(state.setup.scripts[0]);
-        return sortEntries(entrySet, state.setup.scripts[0].letterOrder, state.setup.scripts[0].diacriticOrder);
+        console.log(entrySet)
+        return sortEntries(entrySet, letterOrder, diacriticOrder);
     };
 
     const displayArrows = () => {
