@@ -19,7 +19,7 @@ const EntriesList = props => {
                 content: a.headword.morphs[0].scriptForms[0].content
             };
         });
-        console.log(state.setup.scripts[0]);
+        // console.log(state.setup.scripts[0]);
         return sortEntries(entrySet, state.setup.scripts[0].letterOrder, state.setup.scripts[0].diacriticOrder);
     };
 

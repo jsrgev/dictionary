@@ -20,7 +20,7 @@ const ScriptSection = props => {
         tempSetupCopyPath[thisIndex][field] = value;
         setState({tempSetup: tempSetupCopy});
     };
-
+    
     const changeSortOrder = (field, value) => {
         const tempSetupCopy = clone(state.tempSetup);
         let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);

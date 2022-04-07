@@ -160,75 +160,99 @@ const splitEntry = (string, letterOrder2) => {
     return result;
 };
 
+const compareCapitals = (a, b) => {
+    for (let i = 0; i < a.length; i++) {
+        // console.log(a)
+        // console.log(a.capitalValue)
+        if (a[i].capitalValue < b[i].capitalValue) return true;
+        if (a[i].capitalValue > b[i].capitalValue) return false;
+    }
+    return true;
+};
+
+
+const compareDiacritics = (a, b) => {
+    // console.log("comparing")
+    for (let i = 0; i < a.length; i++) {
+        let aDiacritics = a[i].diacriticValues.sort();
+        let bDiacritics = b[i].diacriticValues.sort();
+        // letters with more diacritics always come after those with fewer:
+        if (aDiacritics.length < bDiacritics.length) return true;
+        if (aDiacritics.length > bDiacritics.length) return false;
+        // if same number of diacritics:
+        if (aDiacritics.length === 0) continue;
+        for (let j = 0; j < aDiacritics.length; j++) {
+            if (aDiacritics[j] < bDiacritics[j]) return true;
+            if (aDiacritics[j] > bDiacritics[j]) return false;
+        }
+    }
+    // console.log(a, b);
+    // if items are still identical, check for capital/final/etc. letter forms
+    return compareCapitals(a, b);
+};
+
+const comesBefore = (a, b) => {
+    for (let i = 0; i < a.length; i++) {
+        if (a[i].letterValue < b[i].letterValue) return true;
+        if (a[i].letterValue > b[i].letterValue) return false;
+        // if they are equal:
+        // console.log("equal")
+        if (!a[i+1] && b[i+1]) return true; // if second word is longer
+        if (a[i+1] && !b[i+1]) return false; // if first word is longer
+        // console.log(i);
+        // console.log (!a[i+1], !b[i+1]);
+        if (!a[i+1] && !b[i+1]) return compareDiacritics(a, b); // if same length, check diacritics
+    }
+};
+
+const collatorSort = entries => {
+    const collator = new Intl.Collator();          
+    return entries.sort((a, b) => {
+        return collator.compare(a.sortTerm || a.content, b.sortTerm || b.content);
+        }
+    );
+};   
 
 export const sortEntries = (entries, letterOrder, diacriticOrder) => {
-    // console.log(letterOrder);
-    // console.log(diacriticOrder);
+    if (letterOrder.length === 0) return collatorSort(entries);
     let letterOrder2 = letterOrder.map(a => a.split("/"));
-    let diacriticOrder2 = diacriticOrder.map(a => a.split("/"));
-    // console.log(entryArray);
-    // let result = entries.sort((a,b) => {
-
-        // let arrayA = splitEntry(a);
-        // let arrayB = splitEntry(b);
-    // });
-    // console.log(entries);
+    let diacriticOrder2 = diacriticOrder.map(a => {
+        let normalized = a.normalize('NFD').split("");
+        return normalized[1];
+    });
     entries.forEach(a => {
         a.segments = splitEntry(a.sortTerm || a.content, letterOrder2);
-        a.values = a.segments.map(segment => {
-            let value = letterOrder2.findIndex(a => a.some(b => b === segment))
-            if (value < 0) {
-                value = diacriticOrder2.findIndex(a => a.some(b => b === segment)) + 1000;
+        a.values = [];
+        a.segments.forEach(segment => {
+            let value = letterOrder2.findIndex(a => a.some(b => b === segment));
+            if (value > -1) {
+                a.values.push(
+                    {
+                        letterValue: value,
+                        capitalValue: letterOrder2[value].findIndex(a => a === segment),
+                        diacriticValues: []
+                    });
+                    // console.log(a.values)
+            } else {
+                value = diacriticOrder2.findIndex(a => a === segment);
+                // in case a diacritic is entered with no letter before it
+                if (a.values.length === 0) {
+                    a.values.push(
+                        {
+                            letterValue: -1,
+                            capitalValue: 0,
+                            diacriticValues: []
+                        });
+                } 
+                a.values.at(-1).diacriticValues.push(value);
             }
-            return value;
-        });
-        // return {segments, values};
+        }) 
     });
-    console.log(entries)
     let sortedEntries = entries.sort((a, b) => {
-        const comesBefore = (c, d) => {
-            if (c[1] === 26) {
-                console.log(c, d);
-            }
-            for (let i = 0; i < c.length; i++) {
-                // console.log("i: " + i, c[i], d[i])
-                // if (c[1] === 26) {
-                    // console.log(c[i], d[i], c[i] > d[i]);
-                // }
-                if (c[i] < d[i]) return true;
-                if (c[i] > d[i]) return false;
-                // if they are equal:
-                // console.log(c[i], d[i]);
-                if (!c[i+1] && !d[i+i]) {
-                    console.log("they're equal")
-                    continue;
-                } else if (!c[i+1] && d[i+1]) {
-                    return true;
-                } else if (c[i+1] && !d[i+i]) {
-                    return false;
-                }
-            }
-        }
-            // console.log(a.segments, b.segments);
-        // console.log(b.values);
-        // if (compare(a.values, b.values)) return 1;
-        // if (a.values < b.values) return -1;
-        // if (a.values === b.values) return 0;
-        if (a.segments[1] === 26) {
-            // console.log(comesBefore(a.values, b.values));
-        }
-
         let result = (comesBefore(a.values, b.values)) ? -1 : 1;
-        // console.log(result);
         return result;
     });
-    // console.log(sortedEntries);
     return sortedEntries;
-    // const collator = new Intl.Collator();          
-    // return entries.sort((a, b) => {
-    //     return collator.compare(a.sortTerm || a.content, b.sortTerm || b.content);
-    //     }
-    // );
 };
 
 
