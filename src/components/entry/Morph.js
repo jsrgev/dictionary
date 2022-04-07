@@ -76,7 +76,7 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
-    const scriptLabel = state.setup.scripts.length > 1 ? `- ${currentScript.abbr}` : null;
+    const scriptLabel = state.setup.scripts.length > 1 ? ` - ${currentScript.abbr}` : null;
 
     return (
         <>

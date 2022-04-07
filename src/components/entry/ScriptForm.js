@@ -36,7 +36,7 @@ const ScriptForm = (props) => {
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
 
-    console.log(path[thisIndex]);
+    // console.log(path[thisIndex]);
 
     return (
         <>

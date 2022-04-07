@@ -42,8 +42,8 @@ const EntriesSection = props => {
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content language-names">
-                            <label htmlFor='include-pronunciation'>Include pronunciation</label>
                             <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
+                            <label htmlFor='include-pronunciation'>Include pronunciation</label>
                         </div>
                     </div>
                 </div>
@@ -53,8 +53,8 @@ const EntriesSection = props => {
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content language-names">
-                            <label htmlFor='include-etymology'>Include etymology</label>
                             <input id='include-etymology' type="checkbox" checked={state.tempSetup.showEtymology ? true : false} onChange={e => changeCheck("showEtymology")} />
+                            <label htmlFor='include-etymology'>Include etymology</label>
                         </div>
                     </div>
                 </div>
