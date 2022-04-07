@@ -25,6 +25,8 @@ const ScriptForm = (props) => {
         }
     };
 
+    const scriptLabel = state.setup.scripts.find(a => a.id === path[thisIndex].refId).abbr;
+
     const popupItems = [
         ["Note", () => {
             let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;
@@ -34,7 +36,7 @@ const ScriptForm = (props) => {
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
 
-    // console.log(state.entry.headword);
+    console.log(path[thisIndex]);
 
     return (
         <>
@@ -51,7 +53,7 @@ const ScriptForm = (props) => {
 
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>{state.setup.scripts[thisIndex].abbr}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>{scriptLabel}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     className="for norm"
                     value={path[thisIndex].content}

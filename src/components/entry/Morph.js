@@ -22,7 +22,9 @@ const Morph = props => {
         if (value !== undefined) {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            entryCopyPath[thisIndex].scriptForms[0].content = value;
+            // console.log(currentScript);
+            // return;
+            entryCopyPath[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content = value;
             setState({entry: entryCopy});
         }
     }
@@ -59,6 +61,7 @@ const Morph = props => {
     }
 
     // console.log(path[thisIndex]);
+    const currentScript = state.setup.scripts[0];
 
     const getNumber = () => {
         if (labels[0] === "Basic form") {
@@ -73,7 +76,7 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
-    const scriptLabels = state.setup.scripts.length > 1 ? state.setup.scripts.map(a => a.abbr) : null;
+    const scriptLabel = state.setup.scripts.length > 1 ? `- ${currentScript.abbr}` : null;
 
     return (
         <>
@@ -93,10 +96,11 @@ const Morph = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabels && ` - ${scriptLabels[0]}`}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabel}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
-                    value={path[thisIndex].scriptForms?.[0].content}
+                    value={path[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content}
+                    // value={path[thisIndex].scriptForms?.[0].content}
                     onChange={e => handleChange(e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
@@ -104,7 +108,7 @@ const Morph = props => {
                 {/* <div className="row"> */}
                     { state.setup.scripts &&
                     path[thisIndex].scriptForms?.map((a,i) => (
-                        i > 0 &&
+                        (a.refId !== currentScript.id) &&
                         <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow}
                         />
                     ))}

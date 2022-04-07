@@ -10,7 +10,6 @@ const Dictionary = props => {
     }
 
     const splitEntries = (allDisplayItems) => {
-        // const letterOrder = state.setup.letterOrder;
         let arr = [];
         let currentLetter = "";
         allDisplayItems.forEach(a => {
