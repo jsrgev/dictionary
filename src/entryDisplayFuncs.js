@@ -45,7 +45,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
         let others = a.scriptForms.filter(a => a.refId !== currentScriptId);
         let otherMorphs = others.map((a, i, arr) => {
             // let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " / " : "";
-            return <React.Fragment key={i}> / <span className="for">{a.content}</span></React.Fragment>
+            return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>
         });
         let pronunciations = showPronunciation ? getPronunciationsDisplay(a.pronunciations) : "";
         let notes = a.notes ? getNotesDisplay(a.notes) : "";

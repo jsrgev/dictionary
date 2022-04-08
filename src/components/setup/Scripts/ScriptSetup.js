@@ -77,6 +77,11 @@ const ScriptSection = props => {
                         <input id={`script[${thisIndex}]-abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange("abbr", e.target.value)} />
                     </div>
                     <div className="row-controls"></div>
+                    <div className="row-content" double-input style={getIndent(0)}>
+                        <input id={`script[${thisIndex}]-writingDirection`} type="checkbox" checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => changeCheck("writingDirection")} />
+                        <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
+\                    </div>
+                    <div className="row-controls"></div>
                     <div className="row-content" style={getIndent(0)}>
                         <label htmlFor={`script[${thisIndex}]-name`}>Letter Order</label>
                         <input id={`script[${thisIndex}]-letterOrder`} type="text" value={path[thisIndex].letterOrder.join(" ")} onChange={e => changeSortOrder("letterOrder", e.target.value)} />
