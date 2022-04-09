@@ -50,7 +50,7 @@ const ScriptSection = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    // console.log(path);
+    console.log(path[thisIndex].writingDirection === "rtl");
     
     return(
         <div className="row"> 
@@ -77,10 +77,13 @@ const ScriptSection = props => {
                         <input id={`script[${thisIndex}]-abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange("abbr", e.target.value)} />
                     </div>
                     <div className="row-controls"></div>
-                    <div className="row-content" double-input style={getIndent(0)}>
-                        <input id={`script[${thisIndex}]-writingDirection`} type="checkbox" checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => changeCheck("writingDirection")} />
-                        <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
-\                    </div>
+                    <div className="row-content double-input" style={getIndent(0)}>
+                        {/* <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label> */}
+                        <input id={`script[${thisIndex}]-writingDirection-ltr`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => handleChange("writingDirection", "ltr")} />
+                        <label htmlFor={`script[${thisIndex}]-writingDirection-ltr`}>Left to right</label>
+                        <input id={`script[${thisIndex}]-writingDirection-rtl`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "rtl" ? true : false} onChange={e => handleChange("writingDirection", "rtl")} />
+                        <label htmlFor={`script[${thisIndex}]-writingDirection-rtl`}>Right to left</label>
+                    </div>
                     <div className="row-controls"></div>
                     <div className="row-content" style={getIndent(0)}>
                         <label htmlFor={`script[${thisIndex}]-name`}>Letter Order</label>

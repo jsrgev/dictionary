@@ -1269,3 +1269,11 @@ button:disabled, button:disabled:hover {
 	border: 2px solid var(--gray3);
 	color: var(--gray3);
 }
+
+.ltr {
+	direction: ltr;
+}
+
+.rtl {
+	direction: rtl;
+}
