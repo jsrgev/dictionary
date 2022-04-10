@@ -71,14 +71,24 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         let morphs = clone(entry.headword.morphs);
         let filteredArr = filterOutBlanks(morphs);
         if (filteredArr.length === 0) return "";
+        let mainCurrentScript = filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content;
+        let mainOtherScripts = filteredArr[0].scriptForms.filter(a => a.refId !== currentScriptId);
+        let mainOtherScriptsDisplay = mainOtherScripts.map((a, i, arr) => {
+            // let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " / " : "";
+            return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>
+        });
         for (let i=1; i<filteredArr.length; i++) {
             let item = filteredArr[i];
-            // console.log(item)
+            let altMainScript = item.scriptForms.find(a => a.refId === currentScriptId).content;
+            let altOtherScripts = item.scriptForms.filter(a => a.refId !== currentScriptId);
+            let altOtherScriptsDisplay = altOtherScripts.map((a, i, arr) => {
+                return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>
+            });
             let obj = {
                 sortTerm: item.scriptForms.find(a => a.refId === currentScriptId).content,
                 display:
                     <React.Fragment key={key}>
-                        <span key={key} className="for">{item.scriptForms.find(a => a.refId === currentScriptId).content}</span> see <span className="for">{filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content}</span>
+                        <span key={key} className="for">{altMainScript}</span>{altOtherScriptsDisplay} see <span className="for">{mainCurrentScript}</span>{mainOtherScriptsDisplay}
                     </React.Fragment>
             };
             allDisplayItems.push(obj);
