@@ -14,7 +14,7 @@ const Example = props => {
     const path = _.get(state, "entry." + pathFrag);
     // const upPath = _.get(state, "entry." + stringPath);
 
-    const [sectionOpen, setExampleOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
@@ -65,7 +65,7 @@ const Example = props => {
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
                     <i className="fas fa-minus" onClick={deleteExample}></i>            
-                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setExampleOpen(!sectionOpen)}></i>
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

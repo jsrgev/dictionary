@@ -16,7 +16,7 @@ const Phrase = props => {
     const upPath = _.get(state, "entry." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [phraseOpen, setPhraseOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
@@ -63,7 +63,7 @@ const Phrase = props => {
 
     return (
         <>
-            <div className={`row${phraseOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus"
@@ -73,7 +73,7 @@ const Phrase = props => {
                     className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" && !upPath.definitions ? " disabled" : ""}`}
                     onClick={deletePhrase}
                     ></i>            
-                    <i className={`fas fa-chevron-${phraseOpen ? "up" : "down"}`} onClick={() => setPhraseOpen(!phraseOpen)}></i>
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

@@ -6,7 +6,7 @@ const Etymology = props => {
     const {state, setState} = props;
     let pathFrag = "etymology";
 
-    const [etymologyOpen, setEtymologyOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
@@ -74,11 +74,11 @@ const Etymology = props => {
     return (
         <>
 
-            <div className={`row${etymologyOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <i></i>
                     <i></i>
-                    <i className={`fas fa-chevron-${etymologyOpen ? "up" : "down"}`} onClick={() => setEtymologyOpen(!etymologyOpen)}></i>
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                 </div>
                 <div className="row-content">
                     <span>Etymology</span>

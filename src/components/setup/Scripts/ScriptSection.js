@@ -13,7 +13,7 @@ const ScriptSection = props => {
     // const path = _.get(state, "state.tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [rowOpen, setRowOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const addScript = index => {
         let tempSetupCopy = clone(state.tempSetup);
@@ -30,12 +30,12 @@ const ScriptSection = props => {
 
 
     return(
-        <div className={`row${rowOpen ? "" : " closed"}`}>
+        <div className={`row${sectionOpen ? "" : " closed"}`}>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                 <i></i>
-                <i className={`fas fa-chevron-${rowOpen ? "up" : "down"}`} onClick={() => setRowOpen(!rowOpen)}></i>
+                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
             </div>
             <div className="row-content">
                 <span>Scripts</span>

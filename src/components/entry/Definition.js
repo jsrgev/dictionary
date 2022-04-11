@@ -17,7 +17,7 @@ const Definition = props => {
     const upPath = _.get(state, "entry." + stringPath);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [definitionOpen, setDefinitionOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const handleChange = (value) => {
         if (value !== undefined) {
@@ -71,7 +71,7 @@ const Definition = props => {
 
     return (
         <>
-            <div className={`row${definitionOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus"
@@ -82,7 +82,7 @@ const Definition = props => {
                     onClick={deleteDefinition}
                     ></i>
                     {(path[thisIndex].notes || path[thisIndex].examples) ?
-                    <i className={`fas fa-chevron-${definitionOpen ? "up" : "down"}`} onClick={() => setDefinitionOpen(!definitionOpen)}></i> :
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i> :
                     <i></i>
                     }
                     <i

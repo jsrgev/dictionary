@@ -14,7 +14,7 @@ const Pronunciation = (props) => {
     let pathFrag = stringPath + ".pronunciations";
     const path = _.get(state, "entry." + pathFrag);
 
-    const [pronunciationOpen, setPronunciationOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
@@ -54,13 +54,13 @@ const Pronunciation = (props) => {
 
     return (
         <>
-            <div className={`row${pronunciationOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className={`fas fa-minus${path.length === 1 && path[thisIndex].content.trim() === "" ? " disabled" : ""}`} onClick={deletePronunciation}></i>
                     {path[thisIndex].notes ?
-                        <i className={`fas fa-chevron-${pronunciationOpen ? "up" : "down"}`} onClick={() => setPronunciationOpen(!pronunciationOpen)}></i>
+                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         :
                         <i></i>
                     }

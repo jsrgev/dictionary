@@ -14,7 +14,7 @@ const ParadigmForm = (props) => {
     const path = _.get(state, "entry." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [formOpen, setFormOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const changeExists = () => {
         let entryCopy = clone(state.entry);
@@ -126,13 +126,13 @@ const ParadigmForm = (props) => {
 
     return (
         <>
-            <div className={`row${formOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className={!isIrregular() ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                 {/* <i></i> */}
                 <i></i>
-                <i className={!isIrregular() ? "" : `fas fa-chevron-${formOpen ? "up" : "down"}`} onClick={() => setFormOpen(!formOpen)}></i>
+                <i className={!isIrregular() ? "" : `fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndent-1)}>
                     <div>

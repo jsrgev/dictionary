@@ -16,7 +16,7 @@ const Morph = props => {
     const path = _.get(state, "entry." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [morphOpen, setMorphOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const handleChange = value => {
         if (value !== undefined) {
@@ -80,12 +80,12 @@ const Morph = props => {
 
     return (
         <>
-            <div className={`row${morphOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                     <i className={`fas fa-minus${path.length === 1 && path[thisIndex].scriptForms[0].content.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>
-                    <i className={`fas fa-chevron-${morphOpen ? "up" : "down"}`} onClick={() => setMorphOpen(!morphOpen)}></i>
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

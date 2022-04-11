@@ -11,7 +11,7 @@ const PaletteSetup = props => {
     let pathFrag = stringPath;
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [paletteOpen, setPaletteOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
@@ -53,12 +53,12 @@ const PaletteSetup = props => {
 
     return (
             <>
-                <div className={`row${paletteOpen ? "" : " closed"}`}>
+                <div className={`row${sectionOpen ? "" : " closed"}`}>
                     <div className="row-controls">
                         <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                         <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                         <i className="fas fa-minus" onClick={deletePalette}></i>
-                        <i className={`fas fa-chevron-${paletteOpen ? "up" : "down"}`} onClick={() => setPaletteOpen(!paletteOpen)}></i>
+                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                             onClick={e => moveRow(e, thisIndex, pathFrag, true)}

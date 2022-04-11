@@ -11,7 +11,7 @@ const Headword = props => {
 
     const {state, setState, addFunctions, moveRow} = props;
     let {addMorph, addNote} =  addFunctions;
-    const [sectionOpen, setHeadwordOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     let stringPath = "headword"
@@ -38,7 +38,7 @@ const Headword = props => {
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                     <i></i>
-                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setHeadwordOpen(!sectionOpen)}></i>
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                 </div>
                 <div className="row-content">
                     <span>Headword</span>

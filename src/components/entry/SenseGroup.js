@@ -18,7 +18,7 @@ const SenseGroup = props => {
 
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [senseGroupOpen, setSenseGroupOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const addSenseGroup = e => {
         let entryCopy = clone(state.entry);
@@ -65,12 +65,12 @@ const SenseGroup = props => {
 
     return (
         <>
-            <div className={`row${senseGroupOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">  
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                     <i className="fas fa-minus" onClick={deleteSenseGroup}></i>
-                    <i className={`fas fa-chevron-${senseGroupOpen ? "up" : "down"}`} onClick={() => setSenseGroupOpen(!senseGroupOpen)}></i>
+                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

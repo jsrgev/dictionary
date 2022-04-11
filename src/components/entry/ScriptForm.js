@@ -13,7 +13,7 @@ const ScriptForm = (props) => {
     let pathFrag = stringPath + ".scriptForms";
     const path = _.get(state, "entry." + pathFrag);
 
-    const [scriptFormOpen, setScriptFormOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = value => {
@@ -40,13 +40,13 @@ const ScriptForm = (props) => {
 
     return (
         <>
-            <div className={`row${scriptFormOpen ? "" : " closed"}`}>
+            <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i></i>
                     {path[thisIndex].notes ?
-                        <i className={`fas fa-chevron-${scriptFormOpen ? "up" : "down"}`} onClick={() => setScriptFormOpen(!scriptFormOpen)}></i>
+                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         :
                         <i></i>
                     }

@@ -12,7 +12,7 @@ const ScriptSection = props => {
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [rowOpen, setRowOpen] = useState(true);
+    const [sectionOpen, setSectionOpen] = useState(true);
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(state.tempSetup);
@@ -58,7 +58,7 @@ const ScriptSection = props => {
                         <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                         <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                         <i className="fas fa-minus" onClick={deleteScript}></i>
-                        <i className={`fas fa-chevron-${rowOpen ? "up" : "down"}`} onClick={() => setRowOpen(!rowOpen)}></i>
+                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                             onClick={e => moveRow(e, thisIndex, pathFrag, true)}
