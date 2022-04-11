@@ -1,7 +1,7 @@
 import {capitalize, clone, generatePos, getIndent, addPopupHandler, getGramClasses} from '../../utils';
 import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
-import ParadigmForm from './ParadigmForm';
+import GramForms from './GramForms';
 import {useState, useEffect} from 'react';
 import _ from 'lodash';
 
@@ -13,7 +13,6 @@ const PartOfSpeech = (props) => {
     const path = _.get(state, "entry." + pathFrag);
 
     const [posOpen, setPosOpen] = useState(true);
-    const [formsOpen, setFormsOpen] = useState(false);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const deletePos = (e) => {
@@ -185,7 +184,7 @@ const PartOfSpeech = (props) => {
                         {state.setup.partsOfSpeechDefs.map((a,i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={handlePosClick}>{capitalize(a.name)}</li>
                         ))}
-                    </ul>   
+                    </ul>  
                 </div>
                 { path[thisIndex].gramClassGroups?.map((a, i) => (
                         <div className="row" key={i}>
@@ -205,19 +204,8 @@ const PartOfSpeech = (props) => {
                     ))
                 }
                 { allGramForms.length > 0 &&
-                    <div className={`row${formsOpen ? "" : " closed"}`}>
-                        <div className="row-controls">
-                            <i></i>
-                            <i></i>
-                            <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
-                        </div>
-                        <div className="row-content" style={getIndent(prevIndent+1)}>
-                            <div>Forms:</div>
-                        </div>
-                        {allGramForms.map((a, i) => (
-                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
-                        ))}
-                    </div>
+
+                    <GramForms path={path} state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
                 }
             </div>
     </>

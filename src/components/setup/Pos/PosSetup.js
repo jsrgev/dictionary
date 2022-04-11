@@ -3,18 +3,24 @@ import GramClassSelect from './GramClassSelect';
 import GramFormSelect from './GramFormSelect';
 import { clone, addPopupHandler, getIndent } from '../../../utils.js';
 import {posDefault} from '../defaults.js';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import _ from 'lodash';
+import {useUpdateEffect} from 'react-use';
+
 
 const PosSetup = props => {
-
+    
     const {state, setState, thisIndex, moveRow, prevIndent, addPos} = props;
-
+    
     const pathFrag = "partsOfSpeechDefs";
     const path = _.get(state, "tempSetup." + pathFrag);
-
+    
     const [posOpen, setPosOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
+
+    useUpdateEffect(() => {
+        console.log(thisIndex);
+    },[posOpen]);
 
     const handleChange = (value, field) => {
         const setupCopy = clone(state.tempSetup);

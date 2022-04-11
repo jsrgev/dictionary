@@ -49,8 +49,6 @@ const ScriptSection = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-
-    console.log(path[thisIndex].writingDirection === "rtl");
     
     return(
         <div className="row"> 

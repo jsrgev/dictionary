@@ -56,7 +56,6 @@ const EntriesList = props => {
     const getWritingDirection = () => state.setup.scripts[0].writingDirection;
 
     const handleClick = (id) => {
-        console.log("a");
         if (id === state.entry._id) {
             return;
         }
@@ -90,7 +89,7 @@ const EntriesList = props => {
     const check = (e => {
         // console.log("hi");
         const hoverItems = document.querySelectorAll( ":hover" );
-        console.log(hoverItems);
+        // console.log(hoverItems);
         // const clickedItem = hoverItems[hoverItems.length-1];
         // if (clickedItem === undefined || !clickedItem.closest(".palette")) {
             // return;
