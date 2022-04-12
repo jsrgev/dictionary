@@ -11,8 +11,28 @@ const PartOfSpeech = (props) => {
     let pathFrag = stringPath + ".partsOfSpeech";
     // const path = _.get(state, "entry." + pathFrag);
 
-    const [formsOpen, setFormsOpen] = useState(false);
+    const areIrregulars = "irregulars" in path[thisIndex] ? true : false;
+    // console.log(areIrregulars);
 
+    const [sectionOpen, setSectionOpen] = useState(false);
+    console.log(path)
+
+    useEffect(() => {
+        // console.log("asdasdas")
+        if ("irregulars" in path[thisIndex]) {
+                // console.log(areIrregulars);
+
+            setSectionOpen(true)
+        };
+    },[])
+
+    
+    // useEffect(() => {
+    //     console.log("load");
+    // },[])
+
+
+    // const [sectionOpen, setSectionOpen] = useState(false);
 
 
     // const cleanUpGramForms = () => {
@@ -103,11 +123,11 @@ const PartOfSpeech = (props) => {
 
     return (
        
-                    <div className={`row${formsOpen ? "" : " closed"}`}>
+                    <div className={`row${sectionOpen ? "" : " closed"}`}>
                         <div className="row-controls">
                             <i></i>
                             <i></i>
-                            <i className={`fas fa-chevron-${formsOpen ? "up" : "down"}`} onClick={() => setFormsOpen(!formsOpen)}></i>
+                            <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         </div>
                         <div className="row-content" style={getIndent(prevIndent+1)}>
                             <div>Forms:</div>
