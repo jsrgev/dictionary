@@ -15,10 +15,10 @@ const PartOfSpeech = (props) => {
     // console.log(areIrregulars);
 
     const [sectionOpen, setSectionOpen] = useState(false);
-    console.log(path)
+    // console.log(path)
 
     useEffect(() => {
-        // console.log("asdasdas")
+        console.log("useEffect");
         if ("irregulars" in path[thisIndex]) {
                 // console.log(areIrregulars);
 

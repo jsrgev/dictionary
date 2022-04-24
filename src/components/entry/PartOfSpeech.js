@@ -206,7 +206,7 @@ const PartOfSpeech = (props) => {
                 }
                 { allGramForms.length > 0 &&
 
-                    <GramForms path={path} key={Math.floor(Math.random() * 1000)} state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
+                    <GramForms path={path} key={Math.floor(Math.random() * 10)} state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
                 }
             </div>
     </>

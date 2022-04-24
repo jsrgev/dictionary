@@ -232,7 +232,7 @@ const Entry = props => {
                         </div>
                     </div>
                     <div id="entryForm" onKeyDown={handleKeyDown}>
-                        <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].content}</span></h1>
+                        <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].scriptForms[0].content}</span></h1>
                         <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (
