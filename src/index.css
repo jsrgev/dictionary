@@ -619,6 +619,10 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 	border-color: var(--yellow);
 }
 
+input:focus, textarea:focus {
+	background: var(--yellow);
+}
+
 form.contact button, #form-message {
 	padding: .3rem;
 	box-sizing: border-box;

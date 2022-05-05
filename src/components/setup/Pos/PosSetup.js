@@ -10,7 +10,7 @@ import _ from 'lodash';
 
 const PosSetup = props => {
     
-    const {state, setState, thisIndex, moveRow, prevIndent, addPos} = props;
+    const {state, setState, thisIndex, moveRow, prevIndent, addPos, updateSectionClosed} = props;
     
     const pathFrag = "partsOfSpeechDefs";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -18,37 +18,14 @@ const PosSetup = props => {
     // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-    const pathAndIndex = `${pathFrag}[${thisIndex}]`;
-    // console.log(x);
-
-    // const updateSetup = () => {
-    //     axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
-    //     .then(response => {
-    //         let tempSetupClone = clone(state.tempSetup);
-    //         tempSetupClone.dateModified = new Date();
-    //         setState({tempSetup: tempSetupClone, setup:tempSetupClone});
-    //         alert("Your changes have been saved.");
-    //         // cleanUpEntries();
-    //     })
-    //     .catch(err => console.log(err));
-    // };
-
-
-    // useUpdateEffect(() => {
-    //     console.log(pathAndIndex);
-    //     expandCollapse();
-    // },[sectionOpen]);
 
     const expandCollapse = () => {
-        const sectionsOpenCopy = state.sectionsOpen ? clone(state.sectionsOpen) : {};
-        let isOpen = sectionsOpenCopy[pathAndIndex] ?? true;
-        // console.log(isOpen);
-        // isOpen = !isOpen;
-        sectionsOpenCopy[pathAndIndex] = !isOpen;
-        console.log(sectionsOpenCopy);
-        // let setupCopyPath = _.get(setupCopy, pathFrag);
-        // setupCopyPath[thisIndex][field] = value;
-        setState({sectionsOpen: sectionsOpenCopy});
+        const setupCopy = clone(state.tempSetup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        setupCopyPath[thisIndex].sectionClosed = !setupCopyPath[thisIndex].sectionClosed;
+        setState({tempSetup: setupCopy});
+        const obj = `${pathFrag}[${thisIndex}]`
+        updateSectionClosed(obj);
     }
 
     const handleChange = (value, field) => {
@@ -124,20 +101,20 @@ const PosSetup = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-    const sectionIsOpen = state.sectionsOpen?.[pathAndIndex] ?? true;
-    // console.log(state.pathAndIndex)
+    // const sectionIsOpen = state.sectionsOpen?.[pathAndIndex] ?? true;
+    // console.log(updateSectionClosed)
 
     return(
         <>
             {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
-            <div className={`row${ sectionIsOpen ? "" : " closed"}`}>
+            <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
                 { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
                     // <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
-                    <i className={`fas fa-chevron-${sectionIsOpen ? "up" : "down"}`} onClick={() => expandCollapse()}></i>
+                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => expandCollapse()}></i>
                     : <i></i>
                 }
                 <i

@@ -83,6 +83,24 @@ const Setup = props => {
         .catch(err => console.log(err));
     };
 
+    const updateSectionClosed = path => {
+        // console.log(path);
+        // return;
+        // let sectionsOpen = clone(state.setup.sectionsOpen);
+        // let obj = {_id: state.tempSetup._id};
+        // console.log(obj);
+        // axios.post(`${API_BASE}/setup/updateSectionsOpen`, obj)
+        axios.post(`${API_BASE}/setup/updateSectionClosed`, {path})
+        .then(response => {
+            console.log(response.data);
+            // let sectionsOpenClone = clone(state.sectionsOpen);
+            // setState({tempSetup: tempSetupClone, setup:tempSetupClone});
+            // alert("Your changes have been saved.");
+            // cleanUpEntries();
+        })
+        .catch(err => console.log(err));
+    };
+
     const handleSaveButtonClick = () => {
         if (state.tempSetup.targetLanguageName === "" && state.tempSetup.sourceLanguageName === "") {
             alert("Please enter a Target Language name and a Source Language name.");
@@ -114,9 +132,9 @@ const Setup = props => {
             { !state.setup ?
                 <div>Loading</div> :
                 <>
-                <LanguageDataSection state={state} setState={setState} />
+                <LanguageDataSection state={state} setState={setState} updateSectionClosed={updateSectionClosed} />
 
-                <PosSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
+                <PosSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} updateSectionClosed={updateSectionClosed} />
 
                 <GramClassSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
             

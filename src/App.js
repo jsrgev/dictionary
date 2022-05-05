@@ -262,8 +262,9 @@ const App = () => {
         fetchEntries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
-    
-	return (
+
+
+    return (
         <>
         <header>
             <NavBar />
