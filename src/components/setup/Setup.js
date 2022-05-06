@@ -47,6 +47,16 @@ const Setup = props => {
         setState({tempSetup: tempSetupCopy});
     };
 
+    const setSectionClosed = (pathFrag, thisIndex) => {
+        const setupCopy = clone(state.tempSetup);
+        let setupCopyPath = _.get(setupCopy, pathFrag);
+        let newValue = !setupCopyPath[thisIndex].sectionClosed;
+        setupCopyPath[thisIndex].sectionClosed = newValue;
+        setState({tempSetup: setupCopy});
+        const path = `${pathFrag}.${thisIndex}.sectionClosed`
+        // updateSectionClosed(path, newValue);
+    };
+
     // const cleanUpEntries = () => {
     //     if (!state.allEntries) {
     //         return;
@@ -83,23 +93,24 @@ const Setup = props => {
         .catch(err => console.log(err));
     };
 
-    const updateSectionClosed = path => {
-        // console.log(path);
-        // return;
-        // let sectionsOpen = clone(state.setup.sectionsOpen);
-        // let obj = {_id: state.tempSetup._id};
-        // console.log(obj);
-        // axios.post(`${API_BASE}/setup/updateSectionsOpen`, obj)
-        axios.post(`${API_BASE}/setup/updateSectionClosed`, {path})
-        .then(response => {
-            console.log(response.data);
-            // let sectionsOpenClone = clone(state.sectionsOpen);
-            // setState({tempSetup: tempSetupClone, setup:tempSetupClone});
-            // alert("Your changes have been saved.");
-            // cleanUpEntries();
-        })
-        .catch(err => console.log(err));
-    };
+    // const updateSectionClosed = (path, newValue) => {
+    //     // console.log(path);
+    //     // return;
+    //     // let sectionsOpen = clone(state.setup.sectionsOpen);
+    //     // let obj = {_id: state.tempSetup._id};
+    //     // console.log(obj);
+    //     // axios.post(`${API_BASE}/setup/updateSectionsOpen`, obj);
+    //     let {_id} = state.tempSetup;
+    //     axios.post(`${API_BASE}/setup/updateSectionClosed`, {_id, path, newValue})
+    //     .then(response => {
+    //         console.log(response.data);
+    //         // let sectionsOpenClone = clone(state.sectionsOpen);
+    //         // setState({tempSetup: tempSetupClone, setup:tempSetupClone});
+    //         // alert("Your changes have been saved.");
+    //         // cleanUpEntries();
+    //     })
+    //     .catch(err => console.log(err));
+    // };
 
     const handleSaveButtonClick = () => {
         if (state.tempSetup.targetLanguageName === "" && state.tempSetup.sourceLanguageName === "") {
@@ -132,9 +143,9 @@ const Setup = props => {
             { !state.setup ?
                 <div>Loading</div> :
                 <>
-                <LanguageDataSection state={state} setState={setState} updateSectionClosed={updateSectionClosed} />
+                <LanguageDataSection state={state} setState={setState} setSectionClosed={setSectionClosed} />
 
-                <PosSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} updateSectionClosed={updateSectionClosed} />
+                <PosSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} setSectionClosed={setSectionClosed} />
 
                 <GramClassSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
             

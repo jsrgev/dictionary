@@ -10,7 +10,7 @@ const GramFormSelect = props => {
     const pathFrag = stringPath + ".gramFormGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
+    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleClick = async e => {
@@ -57,12 +57,14 @@ const GramFormSelect = props => {
 
     return(
         <>
-            <div className={`row${sectionOpen ? "" : " closed"}`}>
+            <div className="row">
+            {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                {/* <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i> */}
+                <i></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

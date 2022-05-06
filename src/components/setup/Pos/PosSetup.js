@@ -3,30 +3,20 @@ import GramClassSelect from './GramClassSelect';
 import GramFormSelect from './GramFormSelect';
 import { clone, addPopupHandler, getIndent } from '../../../utils.js';
 import {posDefault} from '../defaults.js';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import _ from 'lodash';
 // import {useUpdateEffect} from 'react-use';
 
 
 const PosSetup = props => {
     
-    const {state, setState, thisIndex, moveRow, prevIndent, addPos, updateSectionClosed} = props;
+    const {state, setState, thisIndex, moveRow, prevIndent, addPos, setSectionClosed} = props;
     
     const pathFrag = "partsOfSpeechDefs";
     const path = _.get(state, "tempSetup." + pathFrag);
-    
+
     // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-
-
-    const expandCollapse = () => {
-        const setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex].sectionClosed = !setupCopyPath[thisIndex].sectionClosed;
-        setState({tempSetup: setupCopy});
-        const obj = `${pathFrag}[${thisIndex}]`
-        updateSectionClosed(obj);
-    }
 
     const handleChange = (value, field) => {
         const setupCopy = clone(state.tempSetup);
@@ -101,8 +91,6 @@ const PosSetup = props => {
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-    // const sectionIsOpen = state.sectionsOpen?.[pathAndIndex] ?? true;
-    // console.log(updateSectionClosed)
 
     return(
         <>
@@ -113,8 +101,7 @@ const PosSetup = props => {
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
                 { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
-                    // <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
-                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => expandCollapse()}></i>
+                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag, thisIndex)}></i>
                     : <i></i>
                 }
                 <i
@@ -133,10 +120,10 @@ const PosSetup = props => {
                     <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
                 { path[thisIndex].gramClassGroups?.map((a, i) => (
-                    <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} />))
+                    <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
                 }
                 { path[thisIndex].gramFormGroups?.map((a, i) => (
-                    <GramFormSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramFormOption={addGramFormGroup} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} prevIndent={prevIndent+1} />))
+                    <GramFormSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramFormOption={addGramFormGroup} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
                 }
             </div>
         </>

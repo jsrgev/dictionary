@@ -7,11 +7,13 @@ import _ from 'lodash';
 
 const PosSection = props => {
 
-    const {state, setState, moveRow, prevIndent, updateSectionClosed} = props;
+    const {state, setState, moveRow, prevIndent, setSectionClosed} = props;
 
     const pathFrag = "partsOfSpeechDefs";
+    const path = _.get(state, "tempSetup." + pathFrag);
+    const thisIndex = 0;
 
-    const [sectionOpen, setSectionOpen] = useState(true);
+    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addPos = index => {
@@ -29,19 +31,21 @@ const PosSection = props => {
     ];
 
     return(
-        <div className={`row${sectionOpen ? "" : " closed"}`}>
+        <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
+        {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                 <i></i>
-                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag, thisIndex)}></i>
+                {/* <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i> */}
             </div>
             <div className="row-content">
                 <span>Parts of Speech</span>
             </div>
             <div className="row">
                 {state.tempSetup.partsOfSpeechDefs.map((a,i) => (
-                    <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} prevIndent={prevIndent+1} addPos={addPos} updateSectionClosed={updateSectionClosed} />
+                    <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} prevIndent={prevIndent+1} addPos={addPos} setSectionClosed={setSectionClosed} />
                 ))}
             </div>
         </div>
