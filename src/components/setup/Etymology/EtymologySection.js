@@ -7,42 +7,46 @@ import _ from 'lodash';
 
 const EtymologySection = props => {
 
-    const {state, setState, moveRow} = props;
+    const {state, setState, moveRow, setSectionClosed} = props;
 
-    const pathFrag = "etymologyAbbrs";
-    // const path = _.get(state, "tempSetup." + pathFrag);
+    const pathFrag = "etymologySettings";
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addAbbr = index => {
         let setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-
+        let setupCopyPath = _.get(setupCopy, pathFrag+".etymologyAbbrs");
         let newAbbr = clone(etymologyAbbrDefault);
         newAbbr.id = setupCopy.nextId.toString();
+        // console.log(newAbbr);
         setupCopy.nextId++;
         setupCopyPath.splice(index+1, 0, newAbbr);
+        console.log(setupCopyPath);
+        // return;
         setState({tempSetup: setupCopy});
     };
 
 
     const popupItems =[
-        ["Abbreviation", () => addAbbr(state.tempSetup.etymologyAbbrs.length-1)],
+        ["Abbreviation", () => addAbbr(state.tempSetup.etymologySettings?.etymologyAbbrs.length-1)],
     ];
 
+    // console.log(state.tempSetup.etymologySettings.etymologyAbbrs);
+
     return(
-        <div className={`row${sectionOpen ? "" : " closed"}`}>
+        <div className={`row${ path.sectionClosed ? " closed" : ""}`}>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                 <i></i>
-                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                <i className={`fas fa-chevron-${path.sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag)}></i>
             </div>
             <div className="row-content">
                 <span>Etymologies</span>
             </div>
-            {state.tempSetup.etymologyAbbrs.map((a, i) => (
+            {state.tempSetup.etymologySettings?.etymologyAbbrs?.map((a, i) => (
                 <EtymologyAbbrs state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addAbbr={addAbbr} />
             ))}
         </div>

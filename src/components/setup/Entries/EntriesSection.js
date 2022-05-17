@@ -1,38 +1,32 @@
-import {useState} from 'react';
 import {clone, getIndent} from '../../../utils.js';
 import _ from 'lodash';
 
 const EntriesSection = props => {
 
-    const {state, setState} = props;
+    const {state, setState, setSectionClosed} = props;
 
-    // const pathFrag = "etymologyAbbrs";
-    // const path = _.get(state, "tempSetup." + pathFrag);
-
-    // const handleChange = (field, value) => {
-    //     const tempSetupCopy = clone(state.tempSetup);
-    //     tempSetupCopy[field] = value;
-    //     setState({tempSetup: tempSetupCopy});
-    // };
+    const pathFrag = "entrySettings";
+    const path = _.get(state, "tempSetup." + pathFrag);
 
     const changeCheck = field => {
         const tempSetupCopy = clone(state.tempSetup);
-        let value = _.get(tempSetupCopy, `[${field}]`);
-        _.set(tempSetupCopy, `[${field}]`, !value);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        let value = tempSetupCopyPath[field];
+        // let value = _.get(tempSetupCopy, `[${field}]`);
+        _.set(tempSetupCopyPath, `[${field}]`, !value);
         setState({tempSetup: tempSetupCopy});
     };
 
-
-    const [sectionOpen, setSectionOpen] = useState(true);
+    // console.log(state.tempSetup);
 
     return(
-        <div className={`row${sectionOpen ? "" : " closed"}`}>
+        <div className={`row${ path.sectionClosed ? " closed" : ""}`}>
             <div className="row-controls">
                 {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
                 {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
                 <i></i>
                 <i></i>
-                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                <i className={`fas fa-chevron-${path.sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag)}></i>
             </div>
             <div className="row-content">
                 <span>Entries</span>
@@ -42,7 +36,7 @@ const EntriesSection = props => {
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content language-names">
-                            <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
+                            <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.entrySettings.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                             <label htmlFor='include-pronunciation'>Include pronunciation</label>
                         </div>
                     </div>
@@ -53,7 +47,7 @@ const EntriesSection = props => {
                     <div className="row">
                         <div className="row-controls"></div>
                         <div className="row-content language-names">
-                            <input id='include-etymology' type="checkbox" checked={state.tempSetup.showEtymology ? true : false} onChange={e => changeCheck("showEtymology")} />
+                            <input id='include-etymology' type="checkbox" checked={state.tempSetup.entrySettings.showEtymology ? true : false} onChange={e => changeCheck("showEtymology")} />
                             <label htmlFor='include-etymology'>Include etymology</label>
                         </div>
                     </div>

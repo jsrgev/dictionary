@@ -19,7 +19,7 @@ const PartOfSpeech = (props) => {
         let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         if (path.length === 1) {
-            entryCopyPath.splice(0, 1, generatePos(state.setup.partsOfSpeechDefs[0].name));
+            entryCopyPath.splice(0, 1, generatePos(state.setup.partsOfSpeechDefs.items[0].name));
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
@@ -33,7 +33,7 @@ const PartOfSpeech = (props) => {
         }
         let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
-        entryCopyPath[thisIndex] = generatePos(value, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups);
+        entryCopyPath[thisIndex] = generatePos(value, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups);
         setState({entry: entryCopy});
         return;
     };
@@ -106,7 +106,7 @@ const PartOfSpeech = (props) => {
     }
 
     const getAllGramForms = () => {
-        let posDef = state.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
+        let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
         let gramFormGroups = posDef.gramFormGroups;
         if (!gramFormGroups) {
             return [];
@@ -182,7 +182,7 @@ const PartOfSpeech = (props) => {
                 <div className="row-content" style={getIndent(prevIndent)}>
                     <span>Part of speech</span>
                     <ul className="parts-of-speech">
-                        {state.setup.partsOfSpeechDefs.map((a,i) => (
+                        {state.setup.partsOfSpeechDefs.items.map((a,i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={handlePosClick}>{capitalize(a.name)}</li>
                         ))}
                     </ul>  
@@ -193,7 +193,7 @@ const PartOfSpeech = (props) => {
                             <div className="row-content" style={getIndent(prevIndent+1)}>
                                 <span>{capitalize(state.setup.gramClassGroups.find(b => b.id === a.refId).name)}</span>
                                 <ul>
-                                    { getGramClasses(path[thisIndex].refId, a.refId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups).map((b,j) => (
+                                    { getGramClasses(path[thisIndex].refId, a.refId, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups).map((b,j) => (
                                         <li key={j} value={b.id} 
                                         className={ a.gramClasses.some(a => a === b.id) ? "selected" : ""} 
                                         onClick={e => handleGramClassClick(e, i, a.refId)}>{capitalize(b.name)}</li>

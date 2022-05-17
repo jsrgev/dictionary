@@ -25,7 +25,7 @@ const ScriptForm = (props) => {
         }
     };
 
-    const scriptLabel = state.setup.scripts.find(a => a.id === path[thisIndex].refId).abbr;
+    const scriptLabel = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId).abbr;
 
     const popupItems = [
         ["Note", () => {

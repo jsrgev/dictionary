@@ -19,11 +19,17 @@ const App = () => {
         setup: null,
         tempSetup: {
             nextId: 101,
-            targetLanguageName: "Melfem",
-            sourceLanguageName: "English",
-            partsOfSpeechDefs: partsOfSpeechDefsDefault,
-            showPronunciation: true,
-            palettes: [
+            languageData: {
+                targetLanguageName: "Melfem",
+                sourceLanguageName: "English",
+            },
+            partsOfSpeechDefs: {items: partsOfSpeechDefsDefault},
+            entrySettings: {
+                showEtymology: true,   
+                showPronunciation: true,
+            },
+            palettes: {
+                items: [
                 {
                     name: "IPA",
                     color: "#3b345a",
@@ -62,16 +68,19 @@ const App = () => {
                         },
                     ]      
                 },
-            ],
-            scripts: [
-                {
-                    id: "33",
-                    name: "Roman",
-                    abbr: "Rom",
-                    letterOrder: ['A/a', 'B/b', 'C/c', 'D/d', 'E/e', 'F/f', 'G/g', 'H/h', 'I/i', 'J/j', 'K/k', 'L/l', 'M/m', 'N/n', 'O/o', 'P/p', 'Q/q', 'R/r', 'S/s', 'T/t', 'U/u', 'V/v', 'W/w', 'X/x', 'Y/y', 'Z/z'],
-                    diacriticOrder: []
-                }
-            ],
+                ]
+            },
+            scripts: {
+                items: [
+                    {
+                        id: "33",
+                        name: "Roman",
+                        abbr: "Rom",
+                        letterOrder: ['A/a', 'B/b', 'C/c', 'D/d', 'E/e', 'F/f', 'G/g', 'H/h', 'I/i', 'J/j', 'K/k', 'L/l', 'M/m', 'N/n', 'O/o', 'P/p', 'Q/q', 'R/r', 'S/s', 'T/t', 'U/u', 'V/v', 'W/w', 'X/x', 'Y/y', 'Z/z'],
+                        diacriticOrder: []
+                    }
+                ]
+                },
             gramClassGroups: [
                 {
                     id: "9",
@@ -174,59 +183,61 @@ const App = () => {
                         ],
                 },
             ],
-            etymologyAbbrs: [
-                {id: "27", abbr: "ext", name: "extended form of"},
-                {id: "28", abbr: "obs", name: "obsolete"},
-                {id: "29", abbr: "old", name: "older form"},
-                {id: "30", abbr: "pos", name: "possibly"},
-                {id: "31", abbr: "rel", name: "related to"},
-                {id: "32", abbr: "tr", name: "truncation"},
-            ],
-        },
-        etymologyTags: [
-            {
-                id: "1",
-                name: "foreign word",
-                displayOpen: "[foreign]",
-                displayClose: "[/foreign]",
-                getCode: string => <span className="for">{string}</span>,
-            },
-            {
-                id: "2",
-                name: "stem",
-                displayOpen: "[stem]",
-                displayClose: "[/stem]",
-                getCode: string => <span className="for">{string}</span>,
-            },
-            {
-                id: "3",
-                name: "prefix",
-                displayOpen: "[prefix]",
-                displayClose: "[/prefix]",
-                getCode: string => <><span className="for">{string}</span>-</>,
-            },
-            {
-                id: "4",
-                name: "suffix",
-                displayOpen: "[suffix]",
-                displayClose: "[/suffix]",
-                getCode: string => <>-<span className="for">{string}</span></>,
-            },
-            {
-                id: "5",
-                name: "infix",
-                displayOpen: "[infix]",
-                displayClose: "[/infix]",
-                getCode: string => <>-<span className="for">{string}</span>-</>,
-            },
-            {
-                id: "6",
-                name: "gloss",
-                displayOpen: "[gloss]",
-                displayClose: "[/gloss]",
-                getCode: string => <>‘{string}’</>,
+            etymologySettings: {
+                etymologyAbbrs: [
+                    {id: "27", abbr: "ext", name: "extended form of"},
+                    {id: "28", abbr: "obs", name: "obsolete"},
+                    {id: "29", abbr: "old", name: "older form"},
+                    {id: "30", abbr: "pos", name: "possibly"},
+                    {id: "31", abbr: "rel", name: "related to"},
+                    {id: "32", abbr: "tr", name: "truncation"},
+                ],
+                etymologyTags: [
+                    {
+                        id: "1",
+                        name: "foreign word",
+                        displayOpen: "[foreign]",
+                        displayClose: "[/foreign]",
+                        getCode: string => <span className="for">{string}</span>,
+                    },
+                    {
+                        id: "2",
+                        name: "stem",
+                        displayOpen: "[stem]",
+                        displayClose: "[/stem]",
+                        getCode: string => <span className="for">{string}</span>,
+                    },
+                    {
+                        id: "3",
+                        name: "prefix",
+                        displayOpen: "[prefix]",
+                        displayClose: "[/prefix]",
+                        getCode: string => <><span className="for">{string}</span>-</>,
+                    },
+                    {
+                        id: "4",
+                        name: "suffix",
+                        displayOpen: "[suffix]",
+                        displayClose: "[/suffix]",
+                        getCode: string => <>-<span className="for">{string}</span></>,
+                    },
+                    {
+                        id: "5",
+                        name: "infix",
+                        displayOpen: "[infix]",
+                        displayClose: "[/infix]",
+                        getCode: string => <>-<span className="for">{string}</span>-</>,
+                    },
+                    {
+                        id: "6",
+                        name: "gloss",
+                        displayOpen: "[gloss]",
+                        displayClose: "[/gloss]",
+                        getCode: string => <>‘{string}’</>,
+                    }
+                ]
             }
-        ]
+        },
     });
 
     const fetchEntries = () => {

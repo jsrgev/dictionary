@@ -7,7 +7,7 @@ import _ from 'lodash';
 const PaletteGroupSetup = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, prevIndent} = props;
-
+    // console.log(stringPath)
     const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
 
@@ -54,6 +54,8 @@ const PaletteGroupSetup = props => {
     const isLast = thisIndex === path.length-1;
     
     const groupIsEmpty = () => path[thisIndex].characters.length === 0 && path[thisIndex].name === "";
+
+    // console.log(path);
 
     return(
         <>

@@ -52,7 +52,7 @@ export const paletteDefault = {
 };
 
 export const etymologyAbbrDefault = {
-    content: "",
+    name: "",
     abbr: ""
 };
 

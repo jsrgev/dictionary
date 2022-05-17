@@ -9,7 +9,7 @@ const PaletteSetup = props => {
     const {state, setState, thisIndex, stringPath, moveRow, prevIndent, addPalette} = props;
 
     let pathFrag = stringPath;
-    const path = _.get(state, "tempSetup." + pathFrag);
+    const path = _.get(state, "tempSetup." + pathFrag+".items");
 
     const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -38,7 +38,7 @@ const PaletteSetup = props => {
 
     const deletePalette = index => {
         let tempSetupCopy = clone(state.tempSetup);
-        tempSetupCopy.palettes.splice(thisIndex, 1);
+        tempSetupCopy.palettes.items.splice(thisIndex, 1);
         setState({tempSetup: tempSetupCopy});
     };
 
@@ -49,7 +49,7 @@ const PaletteSetup = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    const stringPathA = stringPath + `[${thisIndex}]`;
+    const stringPathA = stringPath + `[items.${thisIndex}]`;
 
     return (
             <>

@@ -12,17 +12,17 @@ const PosSetup = props => {
     
     const {state, setState, thisIndex, moveRow, prevIndent, addPos, setSectionClosed} = props;
     
-    const pathFrag = "partsOfSpeechDefs";
+    const pathFrag = "partsOfSpeechDefs.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
-        const setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath[thisIndex][field] = value;
-        setState({tempSetup: setupCopy});
+        const tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        tempSetupCopyPath[thisIndex][field] = value;
+        setState({tempSetup: tempSetupCopy});
     };
 
     const addGramClassOption = index => {
@@ -92,6 +92,8 @@ const PosSetup = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
+    // console.log(path);
+
     return(
         <>
             {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
@@ -101,7 +103,7 @@ const PosSetup = props => {
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
                 { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
-                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag, thisIndex)}></i>
+                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                     : <i></i>
                 }
                 <i

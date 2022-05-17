@@ -55,6 +55,8 @@ const GramClassSelect = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
+    // console.log(path);
+
     return(
         <>
             <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
@@ -62,7 +64,7 @@ const GramClassSelect = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? undefined : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag, thisIndex)}></i>
+                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

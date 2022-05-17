@@ -56,12 +56,12 @@ const Morph = props => {
         }]
     ];
     
-    if (state.setup.showPronunciation) {
+    if (state.setup.entrySettings.showPronunciation) {
         popupItems.splice(1, 0, ["Pronunciation", addPronunciation]);
     }
 
     // console.log(path[thisIndex]);
-    const currentScript = state.setup.scripts[0];
+    const currentScript = state.setup.scripts.items[0];
 
     const getNumber = () => {
         if (labels[0] === "Basic form") {
@@ -76,7 +76,7 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
-    const scriptLabel = state.setup.scripts.length > 1 ? ` - ${currentScript.abbr}` : null;
+    const scriptLabel = state.setup.scripts.items.length > 1 ? ` - ${currentScript.abbr}` : null;
 
     return (
         <>
@@ -112,7 +112,7 @@ const Morph = props => {
                         <ScriptForm state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow}
                         />
                     ))}
-                    { state.setup.showPronunciation &&
+                    { state.setup.entrySettings.showPronunciation &&
                     path[thisIndex].pronunciations.map((a,i) => (
                         <Pronunciation state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addPronunciation={addPronunciation} addFunctions={addFunctions} moveRow={moveRow}
                         />

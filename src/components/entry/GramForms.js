@@ -18,7 +18,7 @@ const PartOfSpeech = (props) => {
     // console.log(path)
 
     useEffect(() => {
-        console.log("useEffect");
+        // console.log("useEffect");
         if ("irregulars" in path[thisIndex]) {
                 // console.log(areIrregulars);
 
@@ -71,7 +71,7 @@ const PartOfSpeech = (props) => {
 
 
     const getAllGramForms = () => {
-        let posDef = state.setup.partsOfSpeechDefs.find(a => a.id === path[thisIndex].refId);
+        let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
         let gramFormGroups = posDef.gramFormGroups;
         if (!gramFormGroups) {
             return [];

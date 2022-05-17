@@ -29,7 +29,7 @@ const Dictionary = props => {
     };
     
     const getDisplay = () => {
-        let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup, state.etymologyTags);
+        let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup, state.etymologySettings.etymologyTags);
         let finalEntries = splitEntries(allDisplayItems);
         return finalEntries;
     };
@@ -41,8 +41,8 @@ const Dictionary = props => {
                 arr.push([a.abbr, a.name]);
             })
         }
-        pushAbbrs(state.setup.partsOfSpeechDefs);
-        pushAbbrs(state.setup.etymologyAbbrs);
+        pushAbbrs(state.setup.partsOfSpeechDefs.items);
+        pushAbbrs(state.setup.etymologySettings.etymologyAbbrs);
         state.setup.gramClassGroups.forEach(a => pushAbbrs(a.gramClasses));
         state.setup.gramFormGroups.forEach(a => pushAbbrs(a.gramForms));
         const filteredArr = arr.filter(a => a[0] !== "");

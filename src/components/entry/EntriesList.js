@@ -13,7 +13,7 @@ const EntriesList = props => {
     }, []);
 
     const getSortedEntries = () => {
-        let {id, letterOrder, diacriticOrder} = state.setup.scripts[0];
+        let {id, letterOrder, diacriticOrder} = state.setup.scripts.items[0];
         const entrySet = state.allEntries.map(a => {
             let string = a.headword.morphs[0].scriptForms.find(a => a.refId === id).content;
             return {
@@ -53,7 +53,7 @@ const EntriesList = props => {
         return classes.join(" ");
     };
 
-    const getWritingDirection = () => state.setup.scripts[0].writingDirection;
+    const getWritingDirection = () => state.setup.scripts.items[0].writingDirection;
 
     const handleClick = (id) => {
         if (id === state.entry._id) {

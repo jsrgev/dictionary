@@ -19,7 +19,7 @@ const Entry = props => {
     const isDirty = () => JSON.stringify(state.entry) !== JSON.stringify(state.entryCopy);
 
     const setScriptForms = obj => {
-        obj.scriptForms = state.setup.scripts.map(a => {
+        obj.scriptForms = state.setup.scripts.items.map(a => {
             let obj = {
                 refId: a.id,
                 content: ""
@@ -31,10 +31,10 @@ const Entry = props => {
     const initializeEntry = () => {
         // console.log("initializing");
         let newEntry = clone(entryDefault);
-        const defaultPosId = state.setup.partsOfSpeechDefs[0].id;
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
+        const defaultPosId = state.setup.partsOfSpeechDefs.items[0].id;
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups));
         setScriptForms(newEntry.headword.morphs[0]);
-        // newEntry.headword.morphs[0].scriptForms = state.setup.scripts.map(a => {
+        // newEntry.headword.morphs[0].scriptForms = state.setup.scripts.items.map(a => {
         //     let obj = {
         //         refId: a.id,
         //         content: ""
@@ -118,7 +118,7 @@ const Entry = props => {
             let entryCopyPath = _.get(entryCopy, pathFrag);
             // console.log(state.setup.gramClassGroups);
             // return;
-            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
+            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups));
             setState({entry: entryCopy});
         },
     };
@@ -239,13 +239,13 @@ const Entry = props => {
                                 <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
                             ))
                         }
-                        {(state.entry && state.setup.showEtymology) &&
+                        {(state.entry && state.setup.entrySettings.showEtymology) &&
                             <Etymology state={state} setState={setState} />
                         }
                     </div>
             <div id="bottom-bar">
                 <div>
-                    { state.setup.palettes.map((a, i) => {
+                    { state.setup.palettes?.items.map((a, i) => {
                         let result = null;
                         if (a.display) {
                             const isNotEmpty = a.content.some(b => {

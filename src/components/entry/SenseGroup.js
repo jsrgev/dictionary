@@ -22,21 +22,21 @@ const SenseGroup = props => {
 
     const addSenseGroup = e => {
         let entryCopy = clone(state.entry);
-        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup(state.setup.partsOfSpeechDefs[0].id, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups));
+        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups));
         setState({entry: entryCopy});
     }
     
     const deleteSenseGroup = e => {
         let entryCopy = clone(state.entry);
         if (state.entry.senseGroups.length === 1) {
-            entryCopy.senseGroups = [generateSenseGroup(state.setup.partsOfSpeechDefs[0].id, state.setup.partsOfSpeechDefs, state.setup.gramClassGroups)];
+            entryCopy.senseGroups = [generateSenseGroup(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups)];
         } else {
             entryCopy.senseGroups.splice(thisIndex, 1);
         }
         setState({entry: entryCopy});
     }
     
-    const availablePoses = state.setup.partsOfSpeechDefs.filter(a => {
+    const availablePoses = state.setup.partsOfSpeechDefs.items.filter(a => {
         let alreadySelected = path[thisIndex].partsOfSpeech.some(b => b.refId === a.id);
         return !alreadySelected && a;
     })

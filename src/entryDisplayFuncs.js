@@ -65,7 +65,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
 export const getEntriesDisplay = (entries, setup, etymologyTags) => {
     let allDisplayItems = [];
     let key = 0;
-    let currentScriptId = setup.scripts[0].id;
+    let currentScriptId = setup.scripts.items[0].id;
     entries.forEach(entry => {
         let altDisplayForHeadword = [];
         let morphs = clone(entry.headword.morphs);
@@ -97,9 +97,9 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
             key++;
         };
 
-        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.showPronunciation, currentScriptId);
+        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-        let etymologyDisplay = setup.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
+        let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let obj = {
             sortTerm: filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content,
             display: <React.Fragment key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</React.Fragment>
@@ -107,13 +107,13 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         allDisplayItems.push(obj);
         key++;
     })
-    sortEntries(allDisplayItems, setup.scripts[0].letterOrder, setup.scripts[0].diacriticOrder);
+    sortEntries(allDisplayItems, setup.scripts.items[0].letterOrder, setup.scripts.items[0].diacriticOrder);
     return allDisplayItems;
 };
 
 const getIrregularsDisplay = (irregulars, setup) => {
     let items = [];
-    let currentScriptId = setup.scripts[0].id;
+    let currentScriptId = setup.scripts.items[0].id;
     for (let item of irregulars) {
         let abbrs = getGramFormAbbrs(item.gramFormSet, setup.gramFormGroups);
         if (item.missing) {
@@ -121,7 +121,7 @@ const getIrregularsDisplay = (irregulars, setup) => {
         } else {
             let filteredArr = filterOutBlanks(item.morphs);
             if (filteredArr.length > 0) {
-                let morphs = getMorphsDisplay(item.morphs, false, null, setup.showPronunciation, currentScriptId);
+                let morphs = getMorphsDisplay(item.morphs, false, null, setup.entrySettings.showPronunciation, currentScriptId);
                 let morphsDisplay = morphs.map((a, i, arr) => {
                     let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
                     return <React.Fragment key={i}>{a}{divider}</React.Fragment>
@@ -171,7 +171,7 @@ const getEtymologyDisplay = (etymology, etymologyTags) => {
 };
 
 const getPosDisplay = (posDetails, setup) => {
-    let posDef = getPosDef(posDetails.refId, setup.partsOfSpeechDefs);
+    let posDef = getPosDef(posDetails.refId, setup.partsOfSpeechDefs.items);
     let posAbbr = posDef.abbr;
     let posGramClassAbbrs = posDetails.gramClassGroups?.map(gramClassGroup => {
         let gramClassGroupDef = setup.gramClassGroups.find(a => a.id === gramClassGroup.refId);

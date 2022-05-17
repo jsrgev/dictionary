@@ -47,13 +47,23 @@ const Setup = props => {
         setState({tempSetup: tempSetupCopy});
     };
 
-    const setSectionClosed = (pathFrag, thisIndex) => {
+    // const setSectionClosed = (pathFrag, thisIndex) => {
+    //     const setupCopy = clone(state.tempSetup);
+    //     let setupCopyPath = _.get(setupCopy, pathFrag);
+    //     let newValue = !setupCopyPath[thisIndex].sectionClosed;
+    //     setupCopyPath[thisIndex].sectionClosed = newValue;
+    //     setState({tempSetup: setupCopy});
+    //     const path = `${pathFrag}.${thisIndex}.sectionClosed`
+    //     // updateSectionClosed(path, newValue);
+    // };
+
+    const setSectionClosed = path => {
         const setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        let newValue = !setupCopyPath[thisIndex].sectionClosed;
-        setupCopyPath[thisIndex].sectionClosed = newValue;
+        let setupCopyPath = _.get(setupCopy, path);
+        let newValue = !setupCopyPath.sectionClosed;
+        setupCopyPath.sectionClosed = newValue;
         setState({tempSetup: setupCopy});
-        const path = `${pathFrag}.${thisIndex}.sectionClosed`
+        // const path = `${pathFrag}.${thisIndex}.sectionClosed`
         // updateSectionClosed(path, newValue);
     };
 
@@ -80,7 +90,20 @@ const Setup = props => {
         })
         .catch(err => console.log(err));
     };
-    
+
+    const handleFixButtonClick = () => {
+        const tempSetupCopy = clone(state.tempSetup);
+        let obj = {};
+        // let {etymologyAbbrs, etymologyTags} = tempSetupCopy;
+        // let obj = tempSetupCopy.palettes;
+        // console.log(obj);
+        tempSetupCopy.etymologySettings = obj;
+        // console.log(tempSetupCopy);
+        setState({tempSetup: tempSetupCopy});
+
+        return;
+    };    
+
     const updateSetup = () => {
         axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
         .then(response => {
@@ -113,15 +136,15 @@ const Setup = props => {
     // };
 
     const handleSaveButtonClick = () => {
-        if (state.tempSetup.targetLanguageName === "" && state.tempSetup.sourceLanguageName === "") {
+        if (state.tempSetup.languageData.targetLanguageName === "" && state.tempSetup.languageData.sourceLanguageName === "") {
             alert("Please enter a Target Language name and a Source Language name.");
             return;
         }
-        if (state.tempSetup.targetLanguageName === "") {
+        if (state.tempSetup.languageData.targetLanguageName === "") {
             alert("Please enter a Target Language name.");
             return;
         }
-        if (state.tempSetup.sourceLanguageName === "") {
+        if (state.tempSetup.languageData.sourceLanguageName === "") {
             alert("Please enter a Source Language name.");
             return;
         }
@@ -147,22 +170,22 @@ const Setup = props => {
 
                 <PosSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} setSectionClosed={setSectionClosed} />
 
-                <GramClassSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
+                {/* <GramClassSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
             
-                <GramFormSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
+                <GramFormSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} /> */}
                 
-                <ScriptSection state={state} setState={setState} moveRow={moveRow} />
+                <ScriptSection state={state} setState={setState} moveRow={moveRow} setSectionClosed={setSectionClosed} />
 
-                <EtymologySection state={state} setState={setState} moveRow={moveRow} />
+                <EtymologySection state={state} setState={setState} moveRow={moveRow} setSectionClosed={setSectionClosed} />
 
-                <EntriesSection state={state} setState={setState} moveRow={moveRow} />
+                <EntriesSection state={state} setState={setState} moveRow={moveRow} setSectionClosed={setSectionClosed} />
 
-                <PaletteSection state={state} setState={setState} moveRow={moveRow} />
+                <PaletteSection state={state} setState={setState} moveRow={moveRow} setSectionClosed={setSectionClosed} />
 
 
                 <div id="bottom-bar">
                     <div>
-                        { tempSetup.palettes.map((a, i) => {
+                        { tempSetup.palettes.items.map((a, i) => {
                             let result = null;
                             if (a.display) {
                                 const isNotEmpty = a.content.some(b => {
@@ -170,7 +193,7 @@ const Setup = props => {
                                     return filteredArr.length > 0
                                 });
                                 if (isNotEmpty) {
-                                    result = <Palette state={state} thisIndex={i} key={i} />;
+                                    // result = <Palette state={state} thisIndex={i} key={i} />;
                                 }
                             }
                             return result;
@@ -180,6 +203,7 @@ const Setup = props => {
                     <div>
                         <button onClick={handleRevertButtonClick}>Revert to Saved</button>
                         <button onClick={handleSaveButtonClick}>Save</button>
+                        <button onClick={handleFixButtonClick}>Fix</button>
                     </div>
                 </div>
 

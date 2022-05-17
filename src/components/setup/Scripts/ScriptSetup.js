@@ -8,7 +8,7 @@ const ScriptSection = props => {
 
     const {state, setState, thisIndex, moveRow, addScript} = props;
 
-    const pathFrag = "scripts";
+    const pathFrag = "scripts.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -76,7 +76,7 @@ const ScriptSection = props => {
                     </div>
                     <div className="row-controls"></div>
                     <div className="row-content double-input" style={getIndent(0)}>
-                        {/* <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label> */}
+                        <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
                         <input id={`script[${thisIndex}]-writingDirection-ltr`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => handleChange("writingDirection", "ltr")} />
                         <label htmlFor={`script[${thisIndex}]-writingDirection-ltr`}>Left to right</label>
                         <input id={`script[${thisIndex}]-writingDirection-rtl`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "rtl" ? true : false} onChange={e => handleChange("writingDirection", "rtl")} />

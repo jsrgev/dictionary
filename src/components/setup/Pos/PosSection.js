@@ -11,14 +11,12 @@ const PosSection = props => {
 
     const pathFrag = "partsOfSpeechDefs";
     const path = _.get(state, "tempSetup." + pathFrag);
-    const thisIndex = 0;
 
-    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addPos = index => {
         let tempSetupCopy = clone(state.tempSetup);
-        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag+".items");
         let newPos = clone(posDefault);
         newPos.id = tempSetupCopy.nextId.toString();
         tempSetupCopy.nextId++;
@@ -27,24 +25,24 @@ const PosSection = props => {
     };
 
     const popupItems = [
-        ["Part of speech", () => addPos(state.tempSetup.partsOfSpeechDefs.length)],
+        ["Part of speech", () => addPos(state.tempSetup.partsOfSpeechDefs.items.length)],
     ];
+    
+    // console.log(path);
 
     return(
-        <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
-        {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
+        <div className={`row${ path.sectionClosed ? " closed" : ""}`}>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                 <i></i>
-                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag, thisIndex)}></i>
-                {/* <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i> */}
+                <i className={`fas fa-chevron-${path.sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag)}></i>
             </div>
             <div className="row-content">
                 <span>Parts of Speech</span>
             </div>
             <div className="row">
-                {state.tempSetup.partsOfSpeechDefs.map((a,i) => (
+                {state.tempSetup.partsOfSpeechDefs.items.map((a,i) => (
                     <PosSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} prevIndent={prevIndent+1} addPos={addPos} setSectionClosed={setSectionClosed} />
                 ))}
             </div>

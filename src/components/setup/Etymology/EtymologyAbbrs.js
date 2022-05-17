@@ -8,7 +8,7 @@ const EtymologyAbbrs = props => {
 
     const {state, setState, thisIndex, moveRow, addAbbr} = props;
 
-    const pathFrag = "etymologyAbbrs";
+    const pathFrag = "etymologySettings.etymologyAbbrs";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
