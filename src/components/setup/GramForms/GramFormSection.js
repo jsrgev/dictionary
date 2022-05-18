@@ -26,7 +26,7 @@ const GramFormSection = props => {
     };
 
     const popupItems = [
-        ["Group", () => addGroup(state.tempSetup.gramClassGroups.length)],
+        ["Group", () => addGroup(state.tempSetup.gramClassGroups.items.length)],
     ];
 
     return(

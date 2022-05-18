@@ -8,7 +8,7 @@ const GramClassSelect = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, addGramClassOption, availableGramClassGroups, prevIndent, setSectionClosed} = props;
 
-    let pathFrag = stringPath + ".gramClassGroups";
+    let pathFrag = stringPath + ".gramClassGroups.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [sectionOpen, setSectionOpen] = useState(true);
@@ -77,7 +77,7 @@ const GramClassSelect = props => {
                 <div className="row-content pos-options" style={getIndent(prevIndent)}>
                     <div>Class group</div>
                     <ul>
-                        {state.tempSetup.gramClassGroups.map((a, i) => (
+                        {state.tempSetup.gramClassGroups.items.map((a, i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={e => handleClick(e)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>

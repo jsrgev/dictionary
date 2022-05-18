@@ -173,8 +173,8 @@ const getEtymologyDisplay = (etymology, etymologyTags) => {
 const getPosDisplay = (posDetails, setup) => {
     let posDef = getPosDef(posDetails.refId, setup.partsOfSpeechDefs.items);
     let posAbbr = posDef.abbr;
-    let posGramClassAbbrs = posDetails.gramClassGroups?.map(gramClassGroup => {
-        let gramClassGroupDef = setup.gramClassGroups.find(a => a.id === gramClassGroup.refId);
+    let posGramClassAbbrs = posDetails.gramClassGroups?.items?.map(gramClassGroup => {
+        let gramClassGroupDef = setup.gramClassGroups.items.find(a => a.id === gramClassGroup.refId);
         let arr = gramClassGroup.gramClasses.map(c => {
             return gramClassGroupDef.gramClasses.find(b => b.id === c).abbr;
         })

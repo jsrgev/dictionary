@@ -69,7 +69,7 @@ const GramFormLimitations = props => {
     };
 
     const getGramClasses = gramClassGroupId => {
-        let gramClassGroup = state.tempSetup.gramClassGroups.find(a => a.id === gramClassGroupId);
+        let gramClassGroup = state.tempSetup.gramClassGroups.items.find(a => a.id === gramClassGroupId);
         return gramClassGroup.gramClasses;
     };
 
@@ -105,7 +105,7 @@ const GramFormLimitations = props => {
                 <div className="row-content" style={getIndent(prevIndent)}>
                     <label>In group</label>
                     <ul>
-                        {state.tempSetup.gramClassGroups.map((a, i) => (
+                        {state.tempSetup.gramClassGroups.items.map((a, i) => (
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={() => handleGroupClick(a.id)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>

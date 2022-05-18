@@ -22,14 +22,14 @@ const SenseGroup = props => {
 
     const addSenseGroup = e => {
         let entryCopy = clone(state.entry);
-        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups));
+        entryCopy.senseGroups.splice(thisIndex+1, 0, generateSenseGroup(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items));
         setState({entry: entryCopy});
     }
     
     const deleteSenseGroup = e => {
         let entryCopy = clone(state.entry);
         if (state.entry.senseGroups.length === 1) {
-            entryCopy.senseGroups = [generateSenseGroup(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups)];
+            entryCopy.senseGroups = [generateSenseGroup(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items)];
         } else {
             entryCopy.senseGroups.splice(thisIndex, 1);
         }

@@ -81,7 +81,8 @@ const App = () => {
                     }
                 ]
                 },
-            gramClassGroups: [
+            gramClassGroups: {
+                items: [
                 {
                     id: "9",
                     name: "gender",
@@ -138,7 +139,8 @@ const App = () => {
                         },
                     ],
                 },
-            ],
+                ]
+            },
             gramFormGroups: [
                 {
                     id: "19",

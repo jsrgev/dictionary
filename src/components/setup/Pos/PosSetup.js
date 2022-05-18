@@ -29,10 +29,10 @@ const PosSetup = props => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let obj = {refId: availableGramClassGroups[0].id};
-        if (setupCopyPath[thisIndex].gramClassGroups) {
-            setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, obj);
+        if (setupCopyPath[thisIndex].gramClassGroups.items) {
+            setupCopyPath[thisIndex].gramClassGroups.items.splice(index+1, 0, obj);
         } else {
-            setupCopyPath[thisIndex].gramClassGroups = [obj];
+            setupCopyPath[thisIndex].gramClassGroups.items = [obj];
         }
         setState({tempSetup: setupCopy});
     };
@@ -63,12 +63,12 @@ const PosSetup = props => {
         setState({tempSetup: setupCopy});
     };
 
-    const availableGramClassGroups = state.tempSetup.gramClassGroups.filter(a => {
-        let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.refId === a.id);
+    const availableGramClassGroups = state.tempSetup.gramClassGroups.items.filter(a => {
+        let alreadySelected = path[thisIndex].gramClassGroups?.items?.some(b => b.refId === a.id);
         return !alreadySelected;
     });
 
-    const gramClassAndFormGroups = clone(state.tempSetup.gramClassGroups).concat(clone(state.tempSetup.gramFormGroups));
+    const gramClassAndFormGroups = clone(state.tempSetup.gramClassGroups.items).concat(clone(state.tempSetup.gramFormGroups));
 
     const availableGramClassAndFormGroups = gramClassAndFormGroups.filter(a => {
         let alreadySelected = path[thisIndex].gramFormGroups?.some(b => b.refId === a.id);
@@ -80,7 +80,7 @@ const PosSetup = props => {
     ];
 
     if (availableGramClassGroups.length > 0) {
-        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 ?? -1)]);
+        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.items?.length-1 ?? -1)]);
     }
 
     if (availableGramClassAndFormGroups.length > 0) {
@@ -102,7 +102,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
+                { path[thisIndex].gramClassGroups?.items?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
                     <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                     : <i></i>
                 }
@@ -121,7 +121,7 @@ const PosSetup = props => {
                     <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbreviation</label>
                     <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
-                { path[thisIndex].gramClassGroups?.map((a, i) => (
+                { path[thisIndex].gramClassGroups?.items?.map((a, i) => (
                     <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
                 }
                 { path[thisIndex].gramFormGroups?.map((a, i) => (

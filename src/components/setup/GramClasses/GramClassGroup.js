@@ -9,7 +9,7 @@ const GramClassGroup = props => {
 
     const {state, setState, thisIndex, moveRow, addGroup, prevIndent} = props;
 
-    let pathFrag = "gramClassGroups";
+    let pathFrag = "gramClassGroups.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [sectionOpen, setSectionOpen] = useState(true);

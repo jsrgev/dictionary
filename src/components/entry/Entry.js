@@ -32,7 +32,7 @@ const Entry = props => {
         // console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.setup.partsOfSpeechDefs.items[0].id;
-        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups));
+        newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items));
         setScriptForms(newEntry.headword.morphs[0]);
         // newEntry.headword.morphs[0].scriptForms = state.setup.scripts.items.map(a => {
         //     let obj = {
@@ -118,7 +118,7 @@ const Entry = props => {
             let entryCopyPath = _.get(entryCopy, pathFrag);
             // console.log(state.setup.gramClassGroups);
             // return;
-            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups));
+            entryCopyPath.splice(index+1, 0, generatePos(availablePoses[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items));
             setState({entry: entryCopy});
         },
     };

@@ -53,7 +53,7 @@ const GramForm = props => {
         setState({tempSetup: setupCopy});
     };    
     
-    const availableForLimitationGroups = state.tempSetup.gramClassGroups.filter(a => {
+    const availableForLimitationGroups = state.tempSetup.gramClassGroups.items.filter(a => {
         let alreadySelected = path[thisIndex].constraints?.some(b => b.refId === a.id);
         return !alreadySelected;
     });

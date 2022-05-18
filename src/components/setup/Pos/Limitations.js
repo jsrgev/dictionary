@@ -32,7 +32,7 @@ const Limitations = props => {
         return !isExcluded ?? true;
     };
 
-    const gramClassGroup = state.tempSetup.gramClassGroups.find(a => a.id === upPath.refId);
+    const gramClassGroup = state.tempSetup.gramClassGroups.items.find(a => a.id === upPath.refId);
 
     return(
         <>
