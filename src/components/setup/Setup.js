@@ -93,11 +93,11 @@ const Setup = props => {
 
     const handleFixButtonClick = () => {
         const tempSetupCopy = clone(state.tempSetup);
-        let obj = tempSetupCopy.gramClassGroups;
+        let obj = tempSetupCopy.gramFormGroups;
         // let {etymologyAbbrs, etymologyTags} = tempSetupCopy;
         // let obj = tempSetupCopy.palettes;
         // console.log(obj);
-        tempSetupCopy.gramClassGroups = {items: obj};
+        tempSetupCopy.gramFormGroups = {items: obj};
         // console.log(tempSetupCopy);
         setState({tempSetup: tempSetupCopy});
 
@@ -172,7 +172,7 @@ const Setup = props => {
 
                 <GramClassSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} setSectionClosed={setSectionClosed} />
             
-                <GramFormSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} />
+                <GramFormSection state={state} setState={setState} moveRow={moveRow} prevIndent={prevIndent} setSectionClosed={setSectionClosed} />
                 
                 <ScriptSection state={state} setState={setState} moveRow={moveRow} setSectionClosed={setSectionClosed} />
 

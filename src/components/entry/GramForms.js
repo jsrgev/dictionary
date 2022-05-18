@@ -72,14 +72,14 @@ const PartOfSpeech = (props) => {
 
     const getAllGramForms = () => {
         let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
-        let gramFormGroups = posDef.gramFormGroups;
+        let gramFormGroups = posDef.gramFormGroups.items;
         if (!gramFormGroups) {
             return [];
         }
         let groups = [];
         gramFormGroups.forEach(a => {
             // "gramForms" could be actual gramForms or gramClasses (forms to agree with classes)
-            let gramFormGroupDef = state.setup.gramFormGroups.find(b => b.id === a.refId) || state.setup.gramClassGroups.items.find(b => b.id === a.refId);
+            let gramFormGroupDef = state.setup.gramFormGroups.items.find(b => b.id === a.refId) || state.setup.gramClassGroups.items.find(b => b.id === a.refId);
             let arr = [];
             let gramForms = gramFormGroupDef.gramForms || gramFormGroupDef.gramClasses;
             gramForms.forEach(gramFormDef => {

@@ -136,7 +136,7 @@ const ParadigmForm = (props) => {
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndent-1)}>
                     <div>
-                        {getGramFormAbbrs(gramFormSet, state.setup.gramFormGroups)}
+                        {getGramFormAbbrs(gramFormSet, state.setup.gramFormGroups.items)}
                     </div>
                     <div onClick={changeExists} >
                         {gramFormExists() ? "Exists" : "Missing"}

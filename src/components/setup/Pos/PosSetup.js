@@ -68,7 +68,7 @@ const PosSetup = props => {
         return !alreadySelected;
     });
 
-    const gramClassAndFormGroups = clone(state.tempSetup.gramClassGroups.items).concat(clone(state.tempSetup.gramFormGroups));
+    const gramClassAndFormGroups = clone(state.tempSetup.gramClassGroups.items).concat(clone(state.tempSetup.gramFormGroups.items));
 
     const availableGramClassAndFormGroups = gramClassAndFormGroups.filter(a => {
         let alreadySelected = path[thisIndex].gramFormGroups?.some(b => b.refId === a.id);

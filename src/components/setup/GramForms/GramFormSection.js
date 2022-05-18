@@ -7,12 +7,12 @@ import _ from 'lodash';
 
 const GramFormSection = props => {
 
-    const {state, setState, moveRow, prevIndent} = props;
+    const {state, setState, moveRow, prevIndent, setSectionClosed} = props;
 
-    const pathFrag = "gramFormGroups";
-    // const path = _.get(state, "tempSetup." + pathFrag);
+    const pathFrag = "gramFormGroups.items";
+    const path = _.get(state, "tempSetup." + "gramFormGroups");
 
-    const [sectionOpen, setSectionOpen] = useState(true);
+    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addGroup = index => {
@@ -30,18 +30,18 @@ const GramFormSection = props => {
     ];
 
     return(
-        <div className={`row${sectionOpen ? "" : " closed"}`}>
+        <div className={`row${ path.sectionClosed ? " closed" : ""}`}>
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                 <i></i>
-                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                <i className={`fas fa-chevron-${path.sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed("gramFormGroups")}></i>
             </div>
             <div className="row-content">
                 <span>Grammatical Forms</span>
             </div>
             <div className="row">
-                { state.tempSetup.gramFormGroups.map((a, i) => (
+                { state.tempSetup.gramFormGroups.items.map((a, i) => (
                     <GramFormGroup state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
                 ))}
             </div>

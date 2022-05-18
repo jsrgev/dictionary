@@ -12,7 +12,7 @@ const GramClassSection = props => {
     const pathFrag = "gramClassGroups.items";
     const path = _.get(state, "tempSetup.gramClassGroups");
 
-    const [sectionOpen, setSectionOpen] = useState(true);
+    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addGroup = index => {
@@ -31,7 +31,7 @@ const GramClassSection = props => {
         ["Group", () => addGroup(state.tempSetup.gramClassGroups.items.length)],
     ];
 
-    console.log(path);
+    // console.log(path);
 
     return(
         <div className={`row${ path.sectionClosed ? " closed" : ""}`}>

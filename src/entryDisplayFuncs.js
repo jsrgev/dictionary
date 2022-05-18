@@ -115,7 +115,7 @@ const getIrregularsDisplay = (irregulars, setup) => {
     let items = [];
     let currentScriptId = setup.scripts.items[0].id;
     for (let item of irregulars) {
-        let abbrs = getGramFormAbbrs(item.gramFormSet, setup.gramFormGroups);
+        let abbrs = getGramFormAbbrs(item.gramFormSet, setup.gramFormGroups.items);
         if (item.missing) {
             items.push(<>no <span className="pos-abbr">{abbrs}</span></>);
         } else {

@@ -11,7 +11,12 @@ export const getIndent = (prevIndent = 0) => {
     return {marginLeft: (prevIndent+1)*indentAmount + "rem"} ;
 };
 
-export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
+export const capitalize = string => {
+    console.log(string);
+    return    string.charAt(0).toUpperCase() + string.slice(1)
+};
+
+// export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
 
 // export const capitalize = string => {
 //     console.log(string);

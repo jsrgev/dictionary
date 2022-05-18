@@ -9,7 +9,7 @@ const GramFormGroup = props => {
 
     const {state, setState, thisIndex, moveRow, prevIndent, addGroup} = props;
 
-    let pathFrag = "gramFormGroups";
+    let pathFrag = "gramFormGroups.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [sectionOpen, setSectionOpen] = useState(true);

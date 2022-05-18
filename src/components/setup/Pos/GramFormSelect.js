@@ -7,6 +7,9 @@ const GramFormSelect = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, addGramFormOption, gramClassAndFormGroups, availableGramClassAndFormGroups, prevIndent} = props;
 
+    // console.log(gramClassAndFormGroups);
+    // console.log(availableGramClassAndFormGroups);
+
     const pathFrag = stringPath + ".gramFormGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
 
@@ -52,6 +55,8 @@ const GramFormSelect = props => {
 
     // const stringPathA = pathFrag + `[${thisIndex}]`;
 
+    // console.log(stringPath);
+
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
@@ -78,6 +83,7 @@ const GramFormSelect = props => {
                     <div>Form group</div>
                     <ul>
                         {gramClassAndFormGroups.map((a, i) => (
+                            // <li>{a.name}</li>
                             <li key={i} value={a.id} className={ isCurrentSelection(a.id) ? "selected" : isAvailable(a.id) ? ""  : "disabled" } onClick={e => handleClick(e)}>{capitalize(a.name)}</li>
                         ))}
                     </ul>

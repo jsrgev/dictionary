@@ -141,7 +141,8 @@ const App = () => {
                 },
                 ]
             },
-            gramFormGroups: [
+            gramFormGroups: {
+                items: [
                 {
                     id: "19",
                     name: "number",
@@ -184,7 +185,8 @@ const App = () => {
                         },
                         ],
                 },
-            ],
+                ]
+            },
             etymologySettings: {
                 etymologyAbbrs: [
                     {id: "27", abbr: "ext", name: "extended form of"},
