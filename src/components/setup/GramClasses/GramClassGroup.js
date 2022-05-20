@@ -7,12 +7,11 @@ import _ from 'lodash';
 
 const GramClassGroup = props => {
 
-    const {state, setState, thisIndex, moveRow, addGroup, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, addGroup, prevIndent, setSectionClosed} = props;
 
     let pathFrag = "gramClassGroups.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -64,16 +63,18 @@ const GramClassGroup = props => {
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
+    // console.log(path[thisIndex].gramClasses)
+
     return (
         <>
-            <div className={`row${sectionOpen ? "" : " closed"}`}>
+            <div className={`row${ path[thisIndex].gramClasses.sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGramClassGroup}></i>
                     { 
-                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
-                    }
+                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}].gramClasses`)}></i>
+            }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                         onClick={e => moveRow(e, thisIndex, pathFrag, true)}
@@ -93,7 +94,7 @@ const GramClassGroup = props => {
                     </ul>
                </div>
                { path[thisIndex].gramClasses &&
-                    path[thisIndex].gramClasses.map((a, i) => (
+                    path[thisIndex].gramClasses.items.map((a, i) => (
                         <GramClass key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClass={addGramClass} prevIndent={prevIndent+1} />
                     ))
                 }

@@ -29,10 +29,10 @@ const PosSetup = props => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let obj = {refId: availableGramClassGroups[0].id};
-        if (setupCopyPath[thisIndex].gramClassGroups.items) {
-            setupCopyPath[thisIndex].gramClassGroups.items.splice(index+1, 0, obj);
+        if (setupCopyPath[thisIndex].gramClassGroups) {
+            setupCopyPath[thisIndex].gramClassGroups.splice(index+1, 0, obj);
         } else {
-            setupCopyPath[thisIndex].gramClassGroups.items = [obj];
+            setupCopyPath[thisIndex].gramClassGroups = [obj];
         }
         setState({tempSetup: setupCopy});
     };
@@ -64,7 +64,7 @@ const PosSetup = props => {
     };
 
     const availableGramClassGroups = state.tempSetup.gramClassGroups.items.filter(a => {
-        let alreadySelected = path[thisIndex].gramClassGroups?.items?.some(b => b.refId === a.id);
+        let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.refId === a.id);
         return !alreadySelected;
     });
 
@@ -121,7 +121,7 @@ const PosSetup = props => {
                     <label htmlFor={`${pathFrag}[${thisIndex}].abbr`}>Abbreviation</label>
                     <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
-                { path[thisIndex].gramClassGroups?.items?.map((a, i) => (
+                { path[thisIndex].gramClassGroups?.map((a, i) => (
                     <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
                 }
                 { path[thisIndex].gramFormGroups?.map((a, i) => (

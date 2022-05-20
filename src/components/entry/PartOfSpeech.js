@@ -110,6 +110,7 @@ const PartOfSpeech = (props) => {
 
     const getAllGramForms = () => {
         let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
+        console.log(posDef.gramFormGroups)
         let gramFormGroups = posDef.gramFormGroups.items;
         if (!gramFormGroups) {
             return [];
@@ -164,6 +165,8 @@ const PartOfSpeech = (props) => {
     const isLast = thisIndex === path.length-1;
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
+
+    // console.log(path[thisIndex].gramClassGroups)
 
     return (
         <>

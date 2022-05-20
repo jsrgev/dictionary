@@ -10,7 +10,7 @@ const GramFormSection = props => {
     const {state, setState, moveRow, prevIndent, setSectionClosed} = props;
 
     const pathFrag = "gramFormGroups.items";
-    const path = _.get(state, "tempSetup." + "gramFormGroups");
+    const path = _.get(state, "tempSetup.gramFormGroups");
 
     // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);

@@ -8,7 +8,7 @@ const GramForm = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, addGramClass, prevIndent} = props;
 
-    const pathFrag = stringPath + ".gramClasses";
+    const pathFrag = stringPath + ".gramClasses.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);

@@ -11,7 +11,7 @@ const PartOfSpeech = (props) => {
     let pathFrag = stringPath + ".partsOfSpeech";
     // const path = _.get(state, "entry." + pathFrag);
 
-    const areIrregulars = "irregulars" in path[thisIndex] ? true : false;
+    // const areIrregulars = "irregulars" in path[thisIndex] ? true : false;
     // console.log(areIrregulars);
 
     const [sectionOpen, setSectionOpen] = useState(false);

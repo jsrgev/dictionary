@@ -70,7 +70,7 @@ const GramFormLimitations = props => {
 
     const getGramClasses = gramClassGroupId => {
         let gramClassGroup = state.tempSetup.gramClassGroups.items.find(a => a.id === gramClassGroupId);
-        return gramClassGroup.gramClasses;
+        return gramClassGroup.gramClasses.items;
     };
 
     const popupItems = [

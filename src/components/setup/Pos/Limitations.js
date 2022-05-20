@@ -33,6 +33,7 @@ const Limitations = props => {
     };
 
     const gramClassGroup = state.tempSetup.gramClassGroups.items.find(a => a.id === upPath.refId);
+    // console.log(gramClassGroup);
 
     return(
         <>
@@ -41,7 +42,7 @@ const Limitations = props => {
                 <div className="row-content" style={getIndent(prevIndent)}>
                     <label>Only allow</label>
                     <ul>
-                        {gramClassGroup.gramClasses.map((a, i) => (
+                        {gramClassGroup.gramClasses.items.map((a, i) => (
                             <li key={i} value={a.id} 
                             className={ isSelected(a.id) ? "selected" : "" } 
                             onClick={e => handleClick(e, a.id)}

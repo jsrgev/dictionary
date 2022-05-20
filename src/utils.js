@@ -5,25 +5,12 @@ import {senseGroupDefault, gramFormDefault} from './defaults.js';
 export const API_BASE = "http://localhost:3001/dictionary";
 // export const API_BASE = "http://jsrgev.net/dictionary"
 
-
 export const getIndent = (prevIndent = 0) => {
     const indentAmount = 2;
     return {marginLeft: (prevIndent+1)*indentAmount + "rem"} ;
 };
 
-export const capitalize = string => {
-    console.log(string);
-    return    string.charAt(0).toUpperCase() + string.slice(1)
-};
-
-// export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
-
-// export const capitalize = string => {
-//     console.log(string);
-//     console.log(string.charAt(0));
-//     return string.charAt(0).toUpperCase() + string.slice(1)
-// };
-
+export const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
 
 export const clone = a => JSON.parse(JSON.stringify(a));
 
@@ -64,7 +51,8 @@ export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramC
     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
 
     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId);
-    let gramClasses = thisGroupsGramClasses.gramClasses.filter(a => {
+    console.log(thisGroupsGramClasses);
+    let gramClasses = thisGroupsGramClasses.gramClasses.items.filter(a => {
         return !excluded.some(b => b === a.id);
     });
     return gramClasses;

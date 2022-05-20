@@ -1,7 +1,7 @@
 import './setup.css';
 import PosSection from './Pos/PosSection';
 import PaletteSection from './Palettes/PaletteSection';
-import Palette from '../Palette';
+// import Palette from '../Palette';
 import GramClassSection from './GramClasses/GramClassSection';
 import GramFormSection from './GramForms/GramFormSection';
 import ScriptSection from './Scripts/ScriptSection';
@@ -47,15 +47,7 @@ const Setup = props => {
         setState({tempSetup: tempSetupCopy});
     };
 
-    // const setSectionClosed = (pathFrag, thisIndex) => {
-    //     const setupCopy = clone(state.tempSetup);
-    //     let setupCopyPath = _.get(setupCopy, pathFrag);
-    //     let newValue = !setupCopyPath[thisIndex].sectionClosed;
-    //     setupCopyPath[thisIndex].sectionClosed = newValue;
-    //     setState({tempSetup: setupCopy});
-    //     const path = `${pathFrag}.${thisIndex}.sectionClosed`
-    //     // updateSectionClosed(path, newValue);
-    // };
+
 
     const setSectionClosed = path => {
         const setupCopy = clone(state.tempSetup);
@@ -93,12 +85,25 @@ const Setup = props => {
 
     const handleFixButtonClick = () => {
         const tempSetupCopy = clone(state.tempSetup);
-        let obj = tempSetupCopy.gramFormGroups;
+        console.log(tempSetupCopy.gramClassGroups);
+        tempSetupCopy.gramClassGroups.items.forEach(a => {
+            let obj = [];
+            a.gramClasses.forEach(b => {
+                // console.log(b);
+                obj.push(b);
+            })
+            a.gramClasses = {items: obj}
+            // console.log(a);
+
+        })
+        // let obj = tempSetupCopy.gramFormGroups;
         // let {etymologyAbbrs, etymologyTags} = tempSetupCopy;
         // let obj = tempSetupCopy.palettes;
+
+        // let classes = 
         // console.log(obj);
-        tempSetupCopy.gramFormGroups = {items: obj};
-        // console.log(tempSetupCopy);
+        // tempSetupCopy.gramFormGroups = {items: obj};
+        console.log(tempSetupCopy.gramClassGroups);
         setState({tempSetup: tempSetupCopy});
 
         return;

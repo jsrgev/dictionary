@@ -12,7 +12,7 @@ const PaletteSection = props => {
     const pathFrag = "palettes";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
+    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addPalette = index => {

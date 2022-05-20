@@ -8,11 +8,12 @@ const GramClassSelect = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, addGramClassOption, availableGramClassGroups, prevIndent, setSectionClosed} = props;
 
-    let pathFrag = stringPath + ".gramClassGroups.items";
+    let pathFrag = stringPath + ".gramClassGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
+
+    // console.log(path)
 
     const handleClick = async (e) => {
         let gramClassId = e.target.getAttribute("value");

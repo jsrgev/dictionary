@@ -12,7 +12,6 @@ const EtymologySection = props => {
     const pathFrag = "etymologySettings";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addAbbr = index => {
