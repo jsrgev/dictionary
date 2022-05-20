@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramFormGroup = props => {
 
-    const {state, setState, thisIndex, moveRow, prevIndent, addGroup} = props;
+    const {state, setState, thisIndex, moveRow, prevIndent, addGroup, setSectionClosed} = props;
 
     let pathFrag = "gramFormGroups.items";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -57,17 +57,18 @@ const GramFormGroup = props => {
     
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
+    console.log(path[thisIndex]);
 
     return(
         <>
-            <div className={`row${sectionOpen ? "" : " closed"}`}>
+            <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGroup}></i>
                     { path[thisIndex].gramForms?.length>0 ?
-                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
-                        : <i></i>
+                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
+                    : <i></i>
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
@@ -84,7 +85,7 @@ const GramFormGroup = props => {
                 </div>
                 { path[thisIndex].gramForms &&
                     path[thisIndex].gramForms.map((a, i) => (
-                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramForm={addGramForm} prevIndent={prevIndent+1} />
+                        <GramForm key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramForm={addGramForm} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />
                     ))
                 }
             </div>

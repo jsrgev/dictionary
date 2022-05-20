@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const GramForm = props => {
 
-    const {state, setState, thisIndex, moveRow, stringPath, addGramForm, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, addGramForm, prevIndent, setSectionClosed} = props;
 
     let pathFrag = stringPath + ".gramForms";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -78,14 +78,14 @@ const GramForm = props => {
 
     return(
         <>
-            <div className={`row${sectionOpen ? "" : " closed"}`}>
+            <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGroup}></i>
                     { path[thisIndex].constraints?.length>0 ?
-                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
-                        : <i></i>
+                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
+                    : <i></i>
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

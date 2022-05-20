@@ -42,7 +42,7 @@ const GramFormSection = props => {
             </div>
             <div className="row">
                 { state.tempSetup.gramFormGroups.items.map((a, i) => (
-                    <GramFormGroup state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addGroup={addGroup} prevIndent={prevIndent+1} />
+                    <GramFormGroup state={state} setState={setState} thisIndex={i} moveRow={moveRow} key={i} addGroup={addGroup} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />
                 ))}
             </div>
         </div>
