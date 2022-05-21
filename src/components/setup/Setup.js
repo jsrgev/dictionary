@@ -83,31 +83,31 @@ const Setup = props => {
         .catch(err => console.log(err));
     };
 
-    const handleFixButtonClick = () => {
-        const tempSetupCopy = clone(state.tempSetup);
-        console.log(tempSetupCopy.gramClassGroups);
-        tempSetupCopy.gramClassGroups.items.forEach(a => {
-            let obj = [];
-            a.gramClasses.forEach(b => {
-                // console.log(b);
-                obj.push(b);
-            })
-            a.gramClasses = {items: obj}
-            // console.log(a);
+    // const handleFixButtonClick = () => {
+    //     const tempSetupCopy = clone(state.tempSetup);
+    //     console.log(tempSetupCopy.gramClassGroups);
+    //     tempSetupCopy.gramClassGroups.items.forEach(a => {
+    //         let obj = [];
+    //         a.gramClasses.forEach(b => {
+    //             // console.log(b);
+    //             obj.push(b);
+    //         })
+    //         a.gramClasses = {items: obj}
+    //         // console.log(a);
 
-        })
-        // let obj = tempSetupCopy.gramFormGroups;
-        // let {etymologyAbbrs, etymologyTags} = tempSetupCopy;
-        // let obj = tempSetupCopy.palettes;
+    //     })
+    //     // let obj = tempSetupCopy.gramFormGroups;
+    //     // let {etymologyAbbrs, etymologyTags} = tempSetupCopy;
+    //     // let obj = tempSetupCopy.palettes;
 
-        // let classes = 
-        // console.log(obj);
-        // tempSetupCopy.gramFormGroups = {items: obj};
-        console.log(tempSetupCopy.gramClassGroups);
-        setState({tempSetup: tempSetupCopy});
+    //     // let classes = 
+    //     // console.log(obj);
+    //     // tempSetupCopy.gramFormGroups = {items: obj};
+    //     console.log(tempSetupCopy.gramClassGroups);
+    //     setState({tempSetup: tempSetupCopy});
 
-        return;
-    };    
+    //     return;
+    // };    
 
     const updateSetup = () => {
         axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
@@ -208,7 +208,7 @@ const Setup = props => {
                     <div>
                         <button onClick={handleRevertButtonClick}>Revert to Saved</button>
                         <button onClick={handleSaveButtonClick}>Save</button>
-                        <button onClick={handleFixButtonClick}>Fix</button>
+                        {/* <button onClick={handleFixButtonClick}>Fix</button> */}
                     </div>
                 </div>
 

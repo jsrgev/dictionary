@@ -26,6 +26,7 @@ const PartOfSpeech = (props) => {
         setState({entry: entryCopy});
     };
 
+
     const handlePosClick = async e => {
         let value = e.target.getAttribute("value");
         if (!isAvailable(value)) {
@@ -90,8 +91,8 @@ const PartOfSpeech = (props) => {
         setState({entry: entryCopy});
     }
 
-    const gramClassGroups = path[thisIndex].gramClassGroups.items;
-
+    const gramClassGroups = path[thisIndex].gramClassGroups;
+    
     useEffect(() => {
         cleanUpGramForms();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,8 +111,8 @@ const PartOfSpeech = (props) => {
 
     const getAllGramForms = () => {
         let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
-        console.log(posDef.gramFormGroups)
-        let gramFormGroups = posDef.gramFormGroups.items;
+        // console.log(posDef.gramFormGroups)
+        let gramFormGroups = posDef.gramFormGroups;
         if (!gramFormGroups) {
             return [];
         }
@@ -166,7 +167,7 @@ const PartOfSpeech = (props) => {
 
     const stringPathA = pathFrag + `[${thisIndex}]`;
 
-    // console.log(path[thisIndex].gramClassGroups)
+    // console.log(allGramForms)
 
     return (
         <>
@@ -193,7 +194,7 @@ const PartOfSpeech = (props) => {
                         ))}
                     </ul>  
                 </div>
-                { path[thisIndex].gramClassGroups?.items?.map((a, i) => (
+                { path[thisIndex].gramClassGroups?.map((a, i) => (
                         <div className="row" key={i}>
                             <div className="row-controls"></div>
                             <div className="row-content" style={getIndent(prevIndent+1)}>
@@ -212,7 +213,9 @@ const PartOfSpeech = (props) => {
                 }
                 { allGramForms.length > 0 &&
 
-                    <GramForms path={path} key={Math.floor(Math.random() * 10)} state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
+                    <GramForms path={path}
+                    //  key={Math.floor(Math.random() * 1000)} 
+                    state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
                 }
             </div>
     </>

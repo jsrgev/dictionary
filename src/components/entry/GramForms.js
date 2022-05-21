@@ -1,7 +1,7 @@
 import {getIndent} from '../../utils';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import ParadigmForm from './ParadigmForm';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
@@ -14,17 +14,17 @@ const PartOfSpeech = (props) => {
     // const areIrregulars = "irregulars" in path[thisIndex] ? true : false;
     // console.log(areIrregulars);
 
-    const [sectionOpen, setSectionOpen] = useState(false);
+    const [sectionOpen, setSectionOpen] = useState(true);
     // console.log(path)
 
-    useEffect(() => {
-        // console.log("useEffect");
-        if ("irregulars" in path[thisIndex]) {
-                // console.log(areIrregulars);
+    // useEffect(() => {
+    //     // console.log("useEffect");
+    //     if ("irregulars" in path[thisIndex]) {
+    //             // console.log(areIrregulars);
 
-            setSectionOpen(true)
-        };
-    },[])
+    //         setSectionOpen(true)
+    //     };
+    // },[])
 
     
     // useEffect(() => {
@@ -72,7 +72,8 @@ const PartOfSpeech = (props) => {
 
     const getAllGramForms = () => {
         let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
-        let gramFormGroups = posDef.gramFormGroups.items;
+        let gramFormGroups = posDef.gramFormGroups;
+        // console.log(posDef);
         if (!gramFormGroups) {
             return [];
         }

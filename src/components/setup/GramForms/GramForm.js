@@ -12,7 +12,6 @@ const GramForm = props => {
     let pathFrag = stringPath + ".gramForms";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {

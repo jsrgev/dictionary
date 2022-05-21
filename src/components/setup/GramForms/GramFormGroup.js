@@ -12,7 +12,6 @@ const GramFormGroup = props => {
     let pathFrag = "gramFormGroups.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -57,7 +56,7 @@ const GramFormGroup = props => {
     
     let stringPathA =  pathFrag + `[${thisIndex}]`;
 
-    console.log(path[thisIndex]);
+    // console.log(path[thisIndex]);
 
     return(
         <>

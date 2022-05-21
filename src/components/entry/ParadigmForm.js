@@ -150,6 +150,16 @@ const ParadigmForm = (props) => {
                         <Morph state={state} setState={setState} thisIndex={i} key={i} prevIndent={prevIndent} stringPath={stringPathA} labels={["Form", "Form"]} addFunctions={addFunctions} moveRow={moveRow} />
                     ))
                 }
+
+
+                    {/* {state.entry?.headword?.morphs.map((a,i) => (
+                        <Morph state={state} setState={setState} thisIndex={i} key={i} stringPath={pathFragA} prevIndent={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveRow={moveRow} />
+                    ))
+                } */}
+
+
+
+
             </div>
         </>
 

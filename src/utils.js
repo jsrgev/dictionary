@@ -51,7 +51,7 @@ export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramC
     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
 
     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId);
-    console.log(thisGroupsGramClasses);
+    // console.log(thisGroupsGramClasses);
     let gramClasses = thisGroupsGramClasses.gramClasses.items.filter(a => {
         return !excluded.some(b => b === a.id);
     });

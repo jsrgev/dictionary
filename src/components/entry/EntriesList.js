@@ -88,7 +88,7 @@ const EntriesList = props => {
 
     const check = (e => {
         // console.log("hi");
-        const hoverItems = document.querySelectorAll( ":hover" );
+        // const hoverItems = document.querySelectorAll( ":hover" );
         // console.log(hoverItems);
         // const clickedItem = hoverItems[hoverItems.length-1];
         // if (clickedItem === undefined || !clickedItem.closest(".palette")) {

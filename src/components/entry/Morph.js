@@ -22,7 +22,8 @@ const Morph = props => {
         if (value !== undefined) {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            // console.log(currentScript);
+            // console.log(pathFrag);
+            // console.log(value);
             // return;
             entryCopyPath[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content = value;
             setState({entry: entryCopy});
