@@ -218,6 +218,8 @@ const Entry = props => {
         isDirty() 
     );
 
+    console.log(state.entry);
+
     return (
         <main id="entry">
             { (!state.setup || !state.entry) ?
@@ -233,7 +235,7 @@ const Entry = props => {
                     </div>
                     <div id="entryForm" onKeyDown={handleKeyDown}>
                         <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].scriptForms[0].content}</span></h1>
-                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} />
+                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (
                                 <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />

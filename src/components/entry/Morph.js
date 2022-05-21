@@ -9,7 +9,7 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveRow} = props;
+    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveRow, setScriptForms} = props;
     const {addMorph, addNote} = addFunctions;
 
     let pathFrag = stringPath + "";
@@ -34,7 +34,9 @@ const Morph = props => {
         let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         if (entryCopyPath.length === 1) {
-            entryCopyPath.splice(0, 1, clone(morphDefault));
+            let obj = clone(morphDefault);
+            setScriptForms(obj);
+            entryCopyPath.splice(0, 1, obj);
         } else {
             entryCopyPath.splice(thisIndex, 1);
         }
