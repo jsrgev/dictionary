@@ -54,6 +54,14 @@ input[type="color" i]::-moz-color-swatch {
     grid-template-columns: 9rem 1fr 9rem 1fr;
 }
 
+.double-radio-buttons {
+	/* display: grid; */
+	/* margin: 1rem 40px 1rem; */
+	/* gap: 1rem 40px; */
+	grid-template-columns: 9rem max-content 9rem max-content 9rem;
+}
+
+
 .triple-input {
     grid-template-columns: 9rem 1fr 9rem max-content 9rem max-content;
 }

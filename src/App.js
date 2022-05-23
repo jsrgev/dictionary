@@ -278,11 +278,12 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-
     return (
         <>
         <header>
-            <NavBar />
+        {state.setup &&
+            <NavBar languageData={state.setup.languageData} />
+        }
         </header>
         <Routes>
             <Route exact path="/" element={<Entry state={state} setState={setState} />} />

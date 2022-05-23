@@ -9,8 +9,8 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveRow, setScriptForms} = props;
-    const {addMorph, addNote} = addFunctions;
+    const {state, setState, thisIndex, stringPath, prevIndent, labels, addFunctions, moveRow} = props;
+    const {setScriptForms, addMorph, addNote} = addFunctions;
 
     let pathFrag = stringPath + "";
     const path = _.get(state, "entry." + pathFrag);

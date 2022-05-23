@@ -75,7 +75,7 @@ const ScriptSection = props => {
                         <input id={`script[${thisIndex}]-abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange("abbr", e.target.value)} />
                     </div>
                     <div className="row-controls"></div>
-                    <div className="row-content double-input" style={getIndent(0)}>
+                    <div className="row-content double-radio-buttons" style={getIndent(0)}>
                         <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
                         <input id={`script[${thisIndex}]-writingDirection-ltr`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => handleChange("writingDirection", "ltr")} />
                         <label htmlFor={`script[${thisIndex}]-writingDirection-ltr`}>Left to right</label>

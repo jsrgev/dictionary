@@ -4,7 +4,7 @@ import {clone, handleInputBlur, getIndent, addPopupHandler} from '../../utils.js
 import {useState} from 'react';
 import _ from "lodash";
 
-const ScriptForm = (props) => {
+const ScriptForm = props => {
 
     const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, moveRow} = props;
     const {addNote} = addFunctions;
@@ -25,8 +25,11 @@ const ScriptForm = (props) => {
         }
     };
 
-    const scriptLabel = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId).abbr;
-
+    const getScriptLabel = () => {
+        const script = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId);
+        return (script.abbr?.length > 1) ? script.abbr : script.name;
+    };
+    
     const popupItems = [
         ["Note", () => {
             let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;
@@ -35,9 +38,7 @@ const ScriptForm = (props) => {
     ];
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
-
-    // console.log(path[thisIndex]);
-
+    
     return (
         <>
             <div className={`row${sectionOpen ? "" : " closed"}`}>
@@ -53,7 +54,7 @@ const ScriptForm = (props) => {
 
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>{scriptLabel}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>{getScriptLabel()}</label>
                     <input type="text" id={`${pathFrag}[${thisIndex}]`}
                     className="for norm"
                     value={path[thisIndex].content}

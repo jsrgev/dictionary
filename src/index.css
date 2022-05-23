@@ -489,8 +489,6 @@ li:nth-last-child(n + 11), li:nth-last-child(n + 11) ~ li, .entries p:nth-last-c
 	grid-template-columns: 1fr 1fr;
 }
 
-
-
 /* Table of Contents */
 
 .toc ol {

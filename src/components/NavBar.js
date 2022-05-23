@@ -1,15 +1,15 @@
 import {NavLink} from 'react-router-dom';
 import {capitalize} from '../utils.js';
-import { languageData } from '../languageSettings.js';
 
+const NavBar = props => {
+    const {languageData} = props;
 
-const NavBar = () => {
     return (
         <nav>
         <ul>
             <li id="site-title">Geriadur</li>
             <li>
-            {`${capitalize(languageData.languageName)}-English`}
+            {`${capitalize(languageData.targetLanguageName)}-${capitalize(languageData.sourceLanguageName)}`}
             </li>
             <li><NavLink exact="true" to='/'>Word entry</NavLink></li>
             <li><NavLink exact="true" to='/setup'>Setup</NavLink></li>

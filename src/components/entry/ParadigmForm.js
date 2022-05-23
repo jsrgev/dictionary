@@ -5,10 +5,10 @@ import AddPopup from '../AddPopup';
 import {useState} from 'react';
 import _ from 'lodash';
 
-const ParadigmForm = (props) => {
+const ParadigmForm = props => {
 
-    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow, setScriptForms} = props;
-    const {addMorph} = addFunctions;
+    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow} = props;
+    const {setScriptForms, addMorph} = addFunctions;
 
     let pathFrag = stringPath;
     const path = _.get(state, "entry." + pathFrag);

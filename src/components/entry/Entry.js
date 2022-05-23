@@ -18,22 +18,12 @@ const Entry = props => {
     
     const isDirty = () => JSON.stringify(state.entry) !== JSON.stringify(state.entryCopy);
 
-    const setScriptForms = obj => {
-        obj.scriptForms = state.setup.scripts.items.map(a => {
-            let obj = {
-                refId: a.id,
-                content: ""
-            }
-            return obj;
-        });
-    };
-
     const initializeEntry = () => {
         // console.log("initializing");
         let newEntry = clone(entryDefault);
         const defaultPosId = state.setup.partsOfSpeechDefs.items[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items));
-        setScriptForms(newEntry.headword.morphs[0]);
+        addFunctions.setScriptForms(newEntry.headword.morphs[0]);
         // newEntry.headword.morphs[0].scriptForms = state.setup.scripts.items.map(a => {
         //     let obj = {
         //         refId: a.id,
@@ -65,11 +55,20 @@ const Entry = props => {
     };
 
     const addFunctions = {
+        setScriptForms: obj => {
+            obj.scriptForms = state.setup.scripts.items.map(a => {
+                let obj = {
+                    refId: a.id,
+                    content: ""
+                }
+                return obj;
+            });
+        },
         addMorph: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             let obj = clone(morphDefault);
-            setScriptForms(obj);
+            this.setScriptForms(obj);
             entryCopyPath.splice(index+1, 0, obj);
             setState({entry: entryCopy});
         },
@@ -218,7 +217,7 @@ const Entry = props => {
         isDirty() 
     );
 
-    console.log(state.entry);
+    // console.log(state.entry);
 
     return (
         <main id="entry">
@@ -235,10 +234,10 @@ const Entry = props => {
                     </div>
                     <div id="entryForm" onKeyDown={handleKeyDown}>
                         <h1>{state.entry._id ? "Editing Entry: " : "New Entry: "}<span className="hw">{state.entry.headword.morphs[0].scriptForms[0].content}</span></h1>
-                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
+                        <Headword state={state} setState={setState} addFunctions={addFunctions} moveRow={moveRow} />
                         {state.entry &&
                             state.entry.senseGroups.map((a,i) => (
-                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
+                                <SenseGroup state={state} setState={setState} key={i} thisIndex={i} addFunctions={addFunctions} moveRow={moveRow} />
                             ))
                         }
                         {(state.entry && state.setup.entrySettings.showEtymology) &&
