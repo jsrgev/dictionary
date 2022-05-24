@@ -29,7 +29,7 @@ const ScriptForm = props => {
         const script = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId);
         return (script.abbr?.length > 1) ? script.abbr : script.name;
     };
-    
+
     const popupItems = [
         ["Note", () => {
             let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;
@@ -38,7 +38,6 @@ const ScriptForm = props => {
     ];
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
-    
     return (
         <>
             <div className={`row${sectionOpen ? "" : " closed"}`}>

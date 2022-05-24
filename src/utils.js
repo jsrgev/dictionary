@@ -207,6 +207,7 @@ const collatorSort = entries => {
 };   
 
 export const sortEntries = (entries, letterOrder, diacriticOrder) => {
+    console.log(entries)
     if (letterOrder.length === 0) return collatorSort(entries);
     let letterOrder2 = letterOrder.map(a => a.split("/"));
     let diacriticOrder2 = diacriticOrder.map(a => {
@@ -214,6 +215,7 @@ export const sortEntries = (entries, letterOrder, diacriticOrder) => {
         return normalized[1];
     });
     entries.forEach(a => {
+        // console.log(a);
         a.segments = splitEntry(a.sortTerm || a.content, letterOrder2);
         a.values = [];
         a.segments.forEach(segment => {

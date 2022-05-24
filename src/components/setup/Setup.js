@@ -109,7 +109,55 @@ const Setup = props => {
     //     return;
     // };    
 
+    const deleteScriptForms = scriptId => {
+        const {allEntries} = state;
+        let areMatches = false;
+        for (let entry of allEntries) {
+            for (let morph of entry.headword.morphs) {
+                for (let scriptForm of morph.scriptForms) {
+                    if (scriptForm.refId === scriptId) {
+                        areMatches = true;
+                        break;
+                    };
+                }
+            }
+        }
+        if (areMatches) {
+            return areMatches;
+        }
+        for (let entry of allEntries) {
+            for (let senseGroup of entry.senseGroups) {
+                for (let partOfSpeech of senseGroup.partsOfSpeech) {
+                    if (partOfSpeech.irregulars) {
+                        for (let irregular of partOfSpeech.irregulars) {
+                            if (irregular.morphs) {
+                                for (let morph of irregular.morphs) {
+                                    for (let scriptForm of morph.scriptForms) {
+                                        if (scriptForm.refId === scriptId) {
+                                            areMatches = true;
+                                            break;
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return areMatches;
+    };
+
+
     const updateSetup = () => {
+        if (tempSetup.scriptsToDelete) {
+            tempSetup.scriptsToDelete.forEach(scriptId => {
+                
+            })
+            // console.log(tempSetup.scriptsToDelete);
+
+        }
+        // return;
         axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
         .then(response => {
             let tempSetupClone = clone(state.tempSetup);

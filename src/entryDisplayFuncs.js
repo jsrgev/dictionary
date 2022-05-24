@@ -4,6 +4,7 @@ import {clone, getPosDef, getGramFormAbbrs, sortEntries} from './utils.js';
 
 
 const filterOutBlanks = set => {
+    // console.log(set[0]);
     if (set[0]?.scriptForms) {
         return set.filter(a => a.scriptForms[0].content.trim() !== "");
     } else {
@@ -41,6 +42,8 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
     // console.log(arr)
     let newArr = arr.map((a, i) => {
         let mainWord = a.scriptForms.find(a => a.refId === currentScriptId).content;
+        if (mainWord === "") mainWord = "☐";
+        // console.log(mainWord)
         let morph = <span className={morphType}>{mainWord}</span>;
         let others = a.scriptForms.filter(a => a.refId !== currentScriptId);
         let otherMorphs = others.map((a, i, arr) => {
@@ -59,16 +62,20 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
 };
 
 
-export const getEntriesDisplay = (entries, setup, etymologyTags) => {
+export const getEntriesDisplay = (entries, setup) => {
     let allDisplayItems = [];
     let key = 0;
     let currentScriptId = setup.scripts.items[0].id;
+    console.log(entries);
     entries.forEach(entry => {
         let altDisplayForHeadword = [];
         let morphs = clone(entry.headword.morphs);
-        let filteredArr = filterOutBlanks(morphs);
+        // let filteredArr = filterOutBlanks(morphs);
+        let filteredArr = morphs;
         if (filteredArr.length === 0) return "";
         let mainCurrentScript = filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content;
+        if (mainCurrentScript === "") mainCurrentScript = "☐";
+        // console.log(mainCurrentScript);
         let mainOtherScripts = filteredArr[0].scriptForms.filter(a => a.refId !== currentScriptId);
         let mainOtherScriptsDisplay = mainOtherScripts.map((a, i, arr) => {
             // let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " / " : "";
@@ -81,26 +88,39 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
             let altOtherScriptsDisplay = altOtherScripts.map((a, i, arr) => {
                 return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>
             });
+            let sortTerm = item.scriptForms.find(a => a.refId === currentScriptId).content;
+            if (sortTerm === "") {
+                sortTerm = "☐";
+            }
+            // console.log(sortTerm)
             let obj = {
-                sortTerm: item.scriptForms.find(a => a.refId === currentScriptId).content,
+                // sortTerm: item.scriptForms.find(a => a.refId === currentScriptId).content,
+                sortTerm,
                 display:
                     <React.Fragment key={key}>
                         <span key={key} className="for">{altMainScript}</span>{altOtherScriptsDisplay} see <span className="for">{mainCurrentScript}</span>{mainOtherScriptsDisplay}
                     </React.Fragment>
             };
+            console.log(sortTerm)
             allDisplayItems.push(obj);
             let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId);
             altDisplayForHeadword.push(fullDisplay);
             key++;
         };
-
+console.log(mainCurrentScript)
         let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-        let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
+        let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, setup.etymologySettings.etymologyTags) : "";
+        let sortTerm = filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content;
+        if (sortTerm === "") {
+            sortTerm = "☐";
+        }
         let obj = {
-            sortTerm: filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content,
+            // sortTerm: filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content,
+            sortTerm,
             display: <React.Fragment key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</React.Fragment>
         }
+        console.log(obj);
         allDisplayItems.push(obj);
         key++;
     })
