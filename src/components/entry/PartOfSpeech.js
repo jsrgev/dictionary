@@ -69,23 +69,25 @@ const PartOfSpeech = (props) => {
         const isMultiChoice = state.setup.gramClassGroups.items.find(a => a.id === classGroupId).multiChoice;
         let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
-        let index = entryCopyPath[thisIndex].gramClassGroups.items[i].gramClasses.findIndex(a => a === value);
+        // console.log(entryCopyPath[thisIndex].gramClassGroups)
+        // return;
+        let index = entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.findIndex(a => a === value);
 
         if (!isMultiChoice) {
             if (index === 0) {
                 return;
             } else {
-                entryCopyPath[thisIndex].gramClassGroups.items[i].gramClasses.splice(0, 1, value);
+                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(0, 1, value);
             }
         } else {
             if (index >= 0) {
-                if (entryCopyPath[thisIndex].gramClassGroups.items[i].gramClasses.length === 1) {
+                if (entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.length === 1) {
                     return;
                 } else {
-                    entryCopyPath[thisIndex].gramClassGroups.items[i].gramClasses.splice(index, 1);
+                    entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.splice(index, 1);
                 }
             } else {
-                entryCopyPath[thisIndex].gramClassGroups.items[i].gramClasses.push(value);
+                entryCopyPath[thisIndex].gramClassGroups[i].gramClasses.push(value);
             }
         }
         setState({entry: entryCopy});
@@ -127,7 +129,6 @@ const PartOfSpeech = (props) => {
                 if (gramFormDef.constraints) {
                     gramFormDef.constraints.forEach(group => {
                         let allCurrentGramClasses = [];
-                        // path[thisIndex].gramClassGroups.items.forEach(a => {
                         path[thisIndex].gramClassGroups.forEach(a => {
                             a.gramClasses.forEach(b => {
                                 allCurrentGramClasses.push(b);

@@ -81,6 +81,13 @@ const Morph = props => {
 
     const scriptLabel = state.setup.scripts.items.length > 1 ? ` - ${currentScript.abbr}` : null;
 
+    const getScriptLabel = () => {
+        // const script = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId);
+        let scriptName = (currentScript.abbr?.length > 1) ? currentScript.abbr : currentScript.name;
+        // console.log(scriptName)
+        return state.setup.scripts.items.length > 1 ? ` - ${scriptName}` : null;
+    };
+
     return (
         <>
             <div className={`row${sectionOpen ? "" : " closed"}`}>
@@ -99,7 +106,7 @@ const Morph = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{scriptLabel}</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`} >{thisIndex===0 ? labels[0] : labels[1]}{getNumber()}{getScriptLabel()}</label>
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
                     value={path[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content}

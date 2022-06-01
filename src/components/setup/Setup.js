@@ -16,7 +16,7 @@ const Setup = props => {
 
     const {state, setState} = props;
     const prevIndent = -1;
-    const tempSetup = state.tempSetup;
+    const {setup, tempSetup} = state;
 
 
     // const fix = () => {
@@ -46,7 +46,6 @@ const Setup = props => {
         tempSetupCopyPath.splice(position, 0, thisItemCopy);
         setState({tempSetup: tempSetupCopy});
     };
-
 
 
     const setSectionClosed = path => {
@@ -110,33 +109,77 @@ const Setup = props => {
     // };    
 
     const deleteScriptForms = scriptId => {
-        const {allEntries} = state;
-        let areMatches = false;
-        for (let entry of allEntries) {
+        // const {allEntries} = state;
+        let allEntriesCopy = clone(state.allEntries);
+
+        for (let entry of allEntriesCopy) {
             for (let morph of entry.headword.morphs) {
-                for (let scriptForm of morph.scriptForms) {
-                    if (scriptForm.refId === scriptId) {
-                        areMatches = true;
-                        break;
-                    };
-                }
+                let index = morph.scriptForms.findIndex(a => a.refId === scriptId);
+                morph.scriptForms.splice(index, 1);
+                // console.log(x);
+                // for (let scriptForm of morph.scriptForms) {
+                //     console.log(scriptForm.refId, scriptId);
+                //     if (scriptForm.refId === scriptId) {
+                //         console.log(scriptForm);
+                //     };
+                // }
             }
         }
-        if (areMatches) {
-            return areMatches;
-        }
-        for (let entry of allEntries) {
+        for (let entry of allEntriesCopy) {
             for (let senseGroup of entry.senseGroups) {
                 for (let partOfSpeech of senseGroup.partsOfSpeech) {
                     if (partOfSpeech.irregulars) {
                         for (let irregular of partOfSpeech.irregulars) {
                             if (irregular.morphs) {
                                 for (let morph of irregular.morphs) {
-                                    for (let scriptForm of morph.scriptForms) {
-                                        if (scriptForm.refId === scriptId) {
-                                            areMatches = true;
-                                            break;
-                                        };
+                                    let index = morph.scriptForms.findIndex(a => a.refId === scriptId);
+                                    morph.scriptForms.splice(index, 1);
+                                    // for (let scriptForm of morph.scriptForms) {
+                                    //     if (scriptForm.refId === scriptId) {
+
+                                    //         console.log(scriptForm);
+                                    //     };
+                                    // }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        setState({allEntries: allEntriesCopy});
+    };
+
+    const addNewScriptFields = () => {
+
+        let newScriptIds = tempSetup.scripts.items.flatMap(a => {
+            let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
+            return (isNew) ? a.id : [];
+        })
+
+        // return;
+
+        let allEntriesCopy = clone(state.allEntries);
+
+        for (let id of newScriptIds) {
+            let obj = {
+                refId: id,
+                content: ""
+            };
+
+            for (let entry of allEntriesCopy) {
+                
+                for (let morph of entry.headword.morphs) {
+                    morph.scriptForms.push(clone(obj));
+                }
+
+                for (let senseGroup of entry.senseGroups) {
+                    for (let partOfSpeech of senseGroup.partsOfSpeech) {
+                        if (partOfSpeech.irregulars) {
+                            for (let irregular of partOfSpeech.irregulars) {
+                                if (irregular.morphs) {
+                                    for (let morph of irregular.morphs) {
+                                        morph.scriptForms.push(clone(obj));
                                     }
                                 }
                             }
@@ -145,28 +188,88 @@ const Setup = props => {
                 }
             }
         }
-        return areMatches;
+        setState({allEntries: allEntriesCopy});
     };
 
-
     const updateSetup = () => {
+        // console.log(tempSetup.scriptsToDelete);
+        // let obj =  [
+        //     {
+        //         id: "1",
+        //         name: "foreign word",
+        //         displayOpen: "[foreign]",
+        //         displayClose: "[/foreign]",
+        //         // getCode: string => <span className="for">{string}</span>,
+        //         getCode: string => string,
+        //     },
+        //     {
+        //         id: "2",
+        //         name: "stem",
+        //         displayOpen: "[stem]",
+        //         displayClose: "[/stem]",
+        //         getCode: string => <span className="for">{string}</span>,
+        //     },
+        //     {
+        //         id: "3",
+        //         name: "prefix",
+        //         displayOpen: "[prefix]",
+        //         displayClose: "[/prefix]",
+        //         getCode: string => <><span className="for">{string}</span>-</>,
+        //     },
+        //     {
+        //         id: "4",
+        //         name: "suffix",
+        //         displayOpen: "[suffix]",
+        //         displayClose: "[/suffix]",
+        //         getCode: string => <>-<span className="for">{string}</span></>,
+        //     },
+        //     {
+        //         id: "5",
+        //         name: "infix",
+        //         displayOpen: "[infix]",
+        //         displayClose: "[/infix]",
+        //         getCode: string => <>-<span className="for">{string}</span>-</>,
+        //     },
+        //     {
+        //         id: "6",
+        //         name: "gloss",
+        //         displayOpen: "[gloss]",
+        //         displayClose: "[/gloss]",
+        //         getCode: string => <>‘{string}’</>,
+        //     }
+        // ]
+        // tempSetup.etymologySettings.etymologyTags = obj;
         if (tempSetup.scriptsToDelete) {
             tempSetup.scriptsToDelete.forEach(scriptId => {
-                
+                // console.log("deleteScriptForms")
+                deleteScriptForms(scriptId);
             })
             // console.log(tempSetup.scriptsToDelete);
 
         }
+        addNewScriptFields();
+
         // return;
         axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
         .then(response => {
             let tempSetupClone = clone(state.tempSetup);
             tempSetupClone.dateModified = new Date();
+            // console.log(tempSetupClone.etymologySettings.etymologyTags[0])
             setState({tempSetup: tempSetupClone, setup:tempSetupClone});
             alert("Your changes have been saved.");
             // cleanUpEntries();
         })
         .catch(err => console.log(err));
+
+        // axios.post(`${API_BASE}/entry/updateAll`, clone())
+        // .then(response => {
+        //     let tempSetupClone = clone(state.tempSetup);
+        //     tempSetupClone.dateModified = new Date();
+        //     setState({tempSetup: tempSetupClone, setup:tempSetupClone});
+        //     alert("Your changes have been saved.");
+        //     // cleanUpEntries();
+        // })
+        // .catch(err => console.log(err));
     };
 
     // const updateSectionClosed = (path, newValue) => {
@@ -212,7 +315,8 @@ const Setup = props => {
         setState({tempSetup: state.setup});
     };
     
-    // console.log(tempSetup);
+    // console.log(tempSetup.etymologySettings.etymologyTags[0]);
+    // console.log(setup.etymologySettings.etymologyTags[0]);
 
     return (
         <main id="setup">

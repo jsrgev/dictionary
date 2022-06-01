@@ -217,7 +217,7 @@ const Entry = props => {
         isDirty() 
     );
 
-    // console.log(state.entry);
+    // console.log(state.setup.etymologySettings.etymologyTags[0]);
 
     return (
         <main id="entry">

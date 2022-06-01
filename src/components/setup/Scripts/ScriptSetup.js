@@ -80,7 +80,7 @@ const ScriptSection = props => {
     const deleteScript = () => {
         const scriptId = path[thisIndex].id;
         const isInUse = checkScriptInUse(scriptId);
-
+        // console.log(isInUse);
         if (isInUse) {
             let response = window.confirm("Are you sure you want to delete this script? If so, all forms already saved for this script will be deleted from their entries after you save the setup.");
             if (!response) {
@@ -91,21 +91,34 @@ const ScriptSection = props => {
                 tempSetupCopy.scriptsToDelete = []
             }
             tempSetupCopy.scriptsToDelete.push(scriptId);
+            let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+            if (path.length === 1) {
+                let newScript = clone(scriptDefault);
+                newScript.id = tempSetupCopy.nextId.toString();
+                tempSetupCopy.nextId++;
+                tempSetupCopyPath.splice(0, 1, newScript);
+            } else {
+                tempSetupCopyPath.splice(thisIndex, 1);
+            }
+
+
+
             setState({tempSetup: tempSetupCopy});    
-        }
-        // console.log(isInUse);
-        // return;
-        let tempSetupCopy = clone(state.tempSetup);
-        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-        if (path.length === 1) {
-            let newScript = clone(scriptDefault);
-            newScript.id = tempSetupCopy.nextId.toString();
-            tempSetupCopy.nextId++;
-            tempSetupCopyPath.splice(0, 1, newScript);
         } else {
-            tempSetupCopyPath.splice(thisIndex, 1);
+
+            // return;
+            let tempSetupCopy = clone(state.tempSetup);
+            let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+            if (path.length === 1) {
+                let newScript = clone(scriptDefault);
+                newScript.id = tempSetupCopy.nextId.toString();
+                tempSetupCopy.nextId++;
+                tempSetupCopyPath.splice(0, 1, newScript);
+            } else {
+                tempSetupCopyPath.splice(thisIndex, 1);
+            }
+            setState({tempSetup: tempSetupCopy});
         }
-        setState({tempSetup: tempSetupCopy});
     };
 
     const popupItems = [

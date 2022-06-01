@@ -29,7 +29,7 @@ const Dictionary = props => {
     };
     
     const getDisplay = () => {
-        let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup, state.setup.etymologySettings.etymologyTags);
+        let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup, state.etymologyTags);
         let finalEntries = splitEntries(allDisplayItems);
         return finalEntries;
     };

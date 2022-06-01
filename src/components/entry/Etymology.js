@@ -44,7 +44,7 @@ const Etymology = props => {
         }
 
         if (clickedItem.closest("#etymology-tags")) {
-            const tagMatch = state.setup.etymologySettings.etymologyTags.find(a => a.id === clickedItemValue);
+            const tagMatch = state.etymologyTags.find(a => a.id === clickedItemValue);
             // move cursor to position after opening tag
             positionsToSkip = tagMatch.displayOpen.length;
             const tags = tagMatch.displayOpen + tagMatch.displayClose;
@@ -106,7 +106,7 @@ const Etymology = props => {
                         </ul>
                         <label>Insert tags</label>
                         <ul id="etymology-tags">
-                            {state.setup.etymologySettings?.etymologyTags.map((a, i) => (
+                            {state.etymologyTags?.map((a, i) => (
                                 <React.Fragment key={i}>
                                     <li value={a.id}>{a.name}</li>
                                     {/* <li>{a.displayClose}</li> */}

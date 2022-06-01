@@ -62,11 +62,11 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
 };
 
 
-export const getEntriesDisplay = (entries, setup) => {
+export const getEntriesDisplay = (entries, setup, etymologyTags) => {
     let allDisplayItems = [];
     let key = 0;
     let currentScriptId = setup.scripts.items[0].id;
-    console.log(entries);
+    // console.log(entries);
     entries.forEach(entry => {
         let altDisplayForHeadword = [];
         let morphs = clone(entry.headword.morphs);
@@ -107,10 +107,10 @@ export const getEntriesDisplay = (entries, setup) => {
             altDisplayForHeadword.push(fullDisplay);
             key++;
         };
-console.log(mainCurrentScript)
+// console.log(mainCurrentScript)
         let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-        let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, setup.etymologySettings.etymologyTags) : "";
+        let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let sortTerm = filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content;
         if (sortTerm === "") {
             sortTerm = "☐";
@@ -120,7 +120,7 @@ console.log(mainCurrentScript)
             sortTerm,
             display: <React.Fragment key={key}>{morphsDisplay}{senseGroupDisplay}{etymologyDisplay}</React.Fragment>
         }
-        console.log(obj);
+        // console.log(obj);
         allDisplayItems.push(obj);
         key++;
     })
@@ -161,6 +161,7 @@ const getEtymologyDisplay = (etymology, etymologyTags) => {
     let arr = etymology.split(/(\[.+?\])/g);
     let filteredArr = arr.filter(a => a !== "");
     let arrClone = clone(filteredArr);
+    // console.log(arrClone)
     let arr2 = [];
     for (let i = 0; i < arrClone.length; i++) {
         let tags = etymologyTags.find(a => a.displayOpen === arrClone[i]);

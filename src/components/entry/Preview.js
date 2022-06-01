@@ -7,8 +7,8 @@ const Preview = (props) => {
     const {state} = props;
 
     const getDisplay = () => {
-        console.log(state.entry);
-        let allDisplayItems = getEntriesDisplay([state.entry], state.setup);
+        // console.log(state.eymologyTags);
+        let allDisplayItems = getEntriesDisplay([state.entry], state.setup, state.etymologyTags);
         let finalEntries = allDisplayItems.map(a => a.display);
         return finalEntries;
     };

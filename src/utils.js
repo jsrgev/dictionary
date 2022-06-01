@@ -207,7 +207,7 @@ const collatorSort = entries => {
 };   
 
 export const sortEntries = (entries, letterOrder, diacriticOrder) => {
-    console.log(entries)
+    // console.log(entries)
     if (letterOrder.length === 0) return collatorSort(entries);
     let letterOrder2 = letterOrder.map(a => a.split("/"));
     let diacriticOrder2 = diacriticOrder.map(a => {
