@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 const ScriptSection = props => {
 
-    const {state, setState, thisIndex, moveRow, addScript} = props;
+    const {state, setState, thisIndex, addScript} = props;
 
     const pathFrag = "scripts.items";
     const path = _.get(state, "tempSetup." + pathFrag);
@@ -121,15 +121,25 @@ const ScriptSection = props => {
         }
     };
 
+    const moveRow = (e, up) => {
+        if (e.target.classList.contains("disabled")) return;
+        let position = up ? thisIndex-1 : thisIndex+1;
+        let tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        let thisItemCopy = clone(tempSetupCopyPath[thisIndex]);
+        tempSetupCopyPath.splice(thisIndex, 1);
+        tempSetupCopyPath.splice(position, 0, thisItemCopy);
+        _.set(tempSetupCopyPath, `[0][display]`, true);
+        setState({tempSetup: tempSetupCopy});
+    };
+    
     const popupItems = [
         ["Script", () => addScript(thisIndex)],
     ];
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
-    
 
-    
     return(
         <div className="row"> 
             <div className="row">
@@ -141,11 +151,11 @@ const ScriptSection = props => {
                         <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                            onClick={e => moveRow(e, thisIndex, pathFrag, true)}
+                            onClick={e => moveRow(e, true)}
                         ></i>
                         <i
                             className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                            onClick={e => moveRow(e, thisIndex, pathFrag, false)}>
+                            onClick={e => moveRow(e, false)}>
                         </i>
                     </div>
                     <div className="row-content double-input">
