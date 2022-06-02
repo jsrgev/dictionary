@@ -37,16 +37,17 @@ const getAltDisplayForHeadword = (altDisplayForHeadword) => {
     })
 };
 
-const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId) => {
+const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds) => {
     let morphType = isHeadword ? "hw" : "for";
-    // console.log(arr)
+    console.log(otherScriptIds)
     let newArr = arr.map((a, i) => {
+        console.log(arr);
         let mainWord = a.scriptForms.find(a => a.refId === currentScriptId).content;
         if (mainWord === "") mainWord = "☐";
-        // console.log(mainWord)
         let morph = <span className={morphType}>{mainWord}</span>;
-        let others = a.scriptForms.filter(a => a.refId !== currentScriptId);
+        let others = a.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId))
         let otherMorphs = others.map((a, i, arr) => {
+            console.log(arr[i])
             // let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " / " : "";
             let divider = arr[i].content !== '' ? " " : "";
             return <React.Fragment key={i}>{divider}<span className="for">{a.content}</span></React.Fragment>
@@ -61,12 +62,16 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
     return newArr;
 };
 
+const getOtherScriptIds = (id, scripts) => {
+    let otherScripts = scripts.filter(a => a.id !== id && a.display);
+    return otherScripts.map(a => a.id);
+};
 
 export const getEntriesDisplay = (entries, setup, etymologyTags) => {
     let allDisplayItems = [];
     let key = 0;
     let currentScriptId = setup.scripts.items[0].id;
-    // console.log(entries);
+    let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
     entries.forEach(entry => {
         let altDisplayForHeadword = [];
         let morphs = clone(entry.headword.morphs);
@@ -75,8 +80,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         if (filteredArr.length === 0) return "";
         let mainCurrentScript = filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content;
         if (mainCurrentScript === "") mainCurrentScript = "☐";
-        // console.log(mainCurrentScript);
-        let mainOtherScripts = filteredArr[0].scriptForms.filter(a => a.refId !== currentScriptId);
+        let mainOtherScripts = filteredArr[0].scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
         let mainOtherScriptsDisplay = mainOtherScripts.map((a, i, arr) => {
             // let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " / " : "";
             return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>
@@ -84,7 +88,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         for (let i=1; i<filteredArr.length; i++) {
             let item = filteredArr[i];
             let altMainScript = item.scriptForms.find(a => a.refId === currentScriptId).content;
-            let altOtherScripts = item.scriptForms.filter(a => a.refId !== currentScriptId);
+            let altOtherScripts = item.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
             let altOtherScriptsDisplay = altOtherScripts.map((a, i, arr) => {
                 return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>
             });
@@ -103,12 +107,12 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
             };
             console.log(sortTerm)
             allDisplayItems.push(obj);
-            let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId);
+            let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds);
             altDisplayForHeadword.push(fullDisplay);
             key++;
         };
 // console.log(mainCurrentScript)
-        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId);
+        let morphsDisplay = getMorphsDisplay([filteredArr[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
         let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let sortTerm = filteredArr[0].scriptForms.find(a => a.refId === currentScriptId).content;
@@ -131,6 +135,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
 const getIrregularsDisplay = (irregulars, setup) => {
     let items = [];
     let currentScriptId = setup.scripts.items[0].id;
+    let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
     for (let item of irregulars) {
         let abbrs = getGramFormAbbrs(item.gramFormSet, setup.gramFormGroups.items);
         if (item.missing) {
@@ -138,7 +143,7 @@ const getIrregularsDisplay = (irregulars, setup) => {
         } else {
             let filteredArr = filterOutBlanks(item.morphs);
             if (filteredArr.length > 0) {
-                let morphs = getMorphsDisplay(item.morphs, false, null, setup.entrySettings.showPronunciation, currentScriptId);
+                let morphs = getMorphsDisplay(item.morphs, false, null, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds);
                 let morphsDisplay = morphs.map((a, i, arr) => {
                     let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " or " : "";
                     return <React.Fragment key={i}>{a}{divider}</React.Fragment>

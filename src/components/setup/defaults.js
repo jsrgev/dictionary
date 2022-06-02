@@ -61,6 +61,7 @@ export const scriptDefault = {
     name: "",
     letterOrder: [],
     diacriticOrder: [],
-    writingDirection: "ltr"
+    writingDirection: "ltr",
+    display: true
 };
 

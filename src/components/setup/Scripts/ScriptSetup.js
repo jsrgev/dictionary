@@ -128,6 +128,8 @@ const ScriptSection = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
     
+
+    
     return(
         <div className="row"> 
             <div className="row">
@@ -177,7 +179,7 @@ const ScriptSection = props => {
                         <div className="row">
                             <div className="row-controls"></div>
                             <div className="row-content language-names">
-                                <input id='include-etymology' type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
+                                <input id='include-etymology' disabled={thisIndex === 0 ? true : false} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
                                 <label htmlFor='include-etymology'>Display script</label>
                             </div>
                         </div>
