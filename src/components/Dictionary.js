@@ -37,13 +37,15 @@ const Dictionary = props => {
     const getAllAbbr = () => {
         let arr = [];
         const pushAbbrs = set => {
+            console.log(set);
             set.forEach(a => {
                 arr.push([a.abbr, a.name]);
             })
         }
         pushAbbrs(state.setup.partsOfSpeechDefs.items);
         pushAbbrs(state.setup.etymologySettings.etymologyAbbrs);
-        state.setup.gramClassGroups.items.forEach(a => pushAbbrs(a.gramClasses));
+        console.log(state.setup.gramClassGroups.items);
+        state.setup.gramClassGroups.items.forEach(a => pushAbbrs(a.gramClasses.items));
         state.setup.gramFormGroups.items.forEach(a => pushAbbrs(a.gramForms));
         const filteredArr = arr.filter(a => a[0] !== "");
         return filteredArr.sort();
