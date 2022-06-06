@@ -40,7 +40,7 @@ const ScriptSection = props => {
                 <span>Scripts</span>
             </div>
             { state.tempSetup.scripts.items.map((a, i) => (
-                <ScriptSetup state={state} setState={setState} thisIndex={i} key={i} addScript={addScript} />
+                <ScriptSetup state={state} setState={setState} thisIndex={i} key={i} addScript={addScript}setSectionClosed={setSectionClosed} />
             ))
             }
         </div>

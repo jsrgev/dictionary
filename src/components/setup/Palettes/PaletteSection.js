@@ -39,7 +39,7 @@ const PaletteSection = props => {
                 <span>Character Palettes</span>
             </div>
             { state.tempSetup.palettes?.items.map((a, i) => (
-                <PaletteSetup state={state} setState={setState} moveRow={moveRow} stringPath="palettes" thisIndex={i} key={i} prevIndent={0} addPalette={addPalette} />
+                <PaletteSetup state={state} setState={setState} moveRow={moveRow} stringPath="palettes" thisIndex={i} key={i} prevIndent={0} addPalette={addPalette} setSectionClosed={setSectionClosed} />
             ))}
         </div>
     );

@@ -6,18 +6,19 @@ import _ from 'lodash';
 
 const ScriptSection = props => {
 
-    const {state, setState, thisIndex, addScript} = props;
+    const {state, setState, thisIndex, addScript, setSectionClosed} = props;
 
     const pathFrag = "scripts.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-    const [sectionOpen, setSectionOpen] = useState(true);
 
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(state.tempSetup);
         let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        console.log(tempSetupCopyPath);
         tempSetupCopyPath[thisIndex][field] = value;
+        console.log(tempSetupCopyPath[thisIndex][field]);
         setState({tempSetup: tempSetupCopy});
     };
     
@@ -143,12 +144,12 @@ const ScriptSection = props => {
     return(
         <div className="row"> 
             <div className="row">
-                <div className="row">
+                <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                     <div className="row-controls">
                         <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                         <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
                         <i className="fas fa-minus" onClick={deleteScript}></i>
-                        <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                        <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                         <i
                             className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                             onClick={e => moveRow(e, true)}
@@ -161,40 +162,34 @@ const ScriptSection = props => {
                     <div className="row-content double-input">
                         <label htmlFor={`script[${thisIndex}]-name`}>Name</label>
                         <input id={`script[${thisIndex}]-name`} type="text" value={path[thisIndex].name} onChange={e => handleChange("name", e.target.value)} />
-                        <label htmlFor={`script[${thisIndex}]-name`}>Abbreviation</label>
+                        <label htmlFor={`script[${thisIndex}]-abbr`}>Abbreviation</label>
                         <input id={`script[${thisIndex}]-abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange("abbr", e.target.value)} />
                     </div>
-                    <div className="row-controls"></div>
-                    <div className="row-content double-radio-buttons" style={getIndent(0)}>
-                        <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
-                        <input id={`script[${thisIndex}]-writingDirection-ltr`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => handleChange("writingDirection", "ltr")} />
-                        <label htmlFor={`script[${thisIndex}]-writingDirection-ltr`}>Left to right</label>
-                        <input id={`script[${thisIndex}]-writingDirection-rtl`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "rtl" ? true : false} onChange={e => handleChange("writingDirection", "rtl")} />
-                        <label htmlFor={`script[${thisIndex}]-writingDirection-rtl`}>Right to left</label>
-                    </div>
-                    <div className="row-controls"></div>
-                    <div className="row-content" style={getIndent(0)}>
-                        <label htmlFor={`script[${thisIndex}]-name`}>Letter Order</label>
-                        <input id={`script[${thisIndex}]-letterOrder`} type="text" value={path[thisIndex].letterOrder.join(" ")} onChange={e => changeSortOrder("letterOrder", e.target.value)} />
-                        {/* <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeSortOrder(e.target.value)} /> */}
-                    </div>
-                    <div className="row-controls"></div>
-                    <div className="row-content" style={getIndent(0)}>
-                        <label htmlFor={`script[${thisIndex}]-name`}>Diacritic Order</label>
-                        <input id={`script[${thisIndex}]-diacriticOrder`} type="text" value={path[thisIndex].diacriticOrder.join(" ")} onChange={e => changeSortOrder("diacriticOrder", e.target.value)} />
-                        {/* <input className="for norm" id={`${pathFrag}[${thisIndex}].characters`} type="text" value={path[thisIndex].characters.join(" ")} onChange={e => changeSortOrder(e.target.value)} /> */}
-                    </div>
-                    <div className="row" style={getIndent(0)}>
                     <div className="row">
-                        <div className="row">
-                            <div className="row-controls"></div>
-                            <div className="row-content language-names">
-                                <input id='include-etymology' disabled={thisIndex === 0 ? true : false} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
-                                <label htmlFor='include-etymology'>Display script</label>
-                            </div>
+                        {/* <div className="row-controls"></div>
+                        <div className="row-content double-radio-buttons" style={getIndent(0)}>
+                            <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
+                            <input id={`script[${thisIndex}]-writingDirection-ltr`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => handleChange("writingDirection", "ltr")} />
+                            <label htmlFor={`script[${thisIndex}]-writingDirection-ltr`}>Left to right</label>
+                            <input id={`script[${thisIndex}]-writingDirection-rtl`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "rtl" ? true : false} onChange={e => handleChange("writingDirection", "rtl")} />
+                            <label htmlFor={`script[${thisIndex}]-writingDirection-rtl`}>Right to left</label>
+                        </div> */}
+                        {/* <div className="row-controls"></div>
+                        <div className="row-content" style={getIndent(0)}>
+                            <label htmlFor={`script[${thisIndex}]-name`}>Letter Order</label>
+                            <input id={`script[${thisIndex}]-letterOrder`} type="text" value={path[thisIndex].letterOrder.join(" ")} onChange={e => changeSortOrder("letterOrder", e.target.value)} />
                         </div>
+                        <div className="row-controls"></div>
+                        <div className="row-content" style={getIndent(0)}>
+                            <label htmlFor={`script[${thisIndex}]-name`}>Diacritic Order</label>
+                            <input id={`script[${thisIndex}]-diacriticOrder`} type="text" value={path[thisIndex].diacriticOrder.join(" ")} onChange={e => changeSortOrder("diacriticOrder", e.target.value)} />
+                        </div>
+                        <div className="row-controls"></div>
+                        <div className="row-content" style={getIndent(0)}>
+                            <input id={`script[${thisIndex}].display`} disabled={thisIndex === 0 ? true : false} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
+                            <label htmlFor={`script[${thisIndex}].display`}>Display script</label>
+                        </div> */}
                     </div>
-                </div>
                 </div>
             </div>
         </div>
