@@ -39,15 +39,15 @@ const getAltDisplayForHeadword = (altDisplayForHeadword) => {
 
 const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds) => {
     let morphType = isHeadword ? "hw" : "for";
-    console.log(otherScriptIds)
+    // console.log(otherScriptIds)
     let newArr = arr.map((a, i) => {
-        console.log(arr);
+        // console.log(arr);
         let mainWord = a.scriptForms.find(a => a.refId === currentScriptId).content;
         if (mainWord === "") mainWord = "☐";
         let morph = <span className={morphType}>{mainWord}</span>;
         let others = a.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId))
         let otherMorphs = others.map((a, i, arr) => {
-            console.log(arr[i])
+            // console.log(arr[i])
             // let divider = ((arr.length > 1) && (i < arr.length-1) ) ? " / " : "";
             let divider = arr[i].content !== '' ? " " : "";
             return <React.Fragment key={i}>{divider}<span className="for">{a.content}</span></React.Fragment>

@@ -108,6 +108,48 @@ const Setup = props => {
     //     return;
     // };    
 
+    // const addNewScriptFields = () => {
+
+    //     let scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
+    //         let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
+    //         return (isNew) ? a.id : [];
+    //     })
+
+    //     // return;
+
+    //     let allEntriesCopy = clone(state.allEntries);
+
+    //     for (let id of scriptsToAdd) {
+    //         let obj = {
+    //             refId: id,
+    //             content: ""
+    //         };
+
+    //         for (let entry of allEntriesCopy) {
+                
+    //             for (let morph of entry.headword.morphs) {
+    //                 morph.scriptForms.push(clone(obj));
+    //             }
+
+    //             for (let senseGroup of entry.senseGroups) {
+    //                 for (let partOfSpeech of senseGroup.partsOfSpeech) {
+    //                     if (partOfSpeech.irregulars) {
+    //                         for (let irregular of partOfSpeech.irregulars) {
+    //                             if (irregular.morphs) {
+    //                                 for (let morph of irregular.morphs) {
+    //                                     morph.scriptForms.push(clone(obj));
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     setState({allEntries: allEntriesCopy});
+    // };
+
+
     const deleteScriptForms = scriptId => {
         // const {allEntries} = state;
         let allEntriesCopy = clone(state.allEntries);
@@ -147,98 +189,14 @@ const Setup = props => {
                 }
             }
         }
+        scriptsArr.push(scriptId);
+        console.log(scriptId);
         setState({allEntries: allEntriesCopy});
     };
 
-    const addNewScriptFields = () => {
+    let scriptsArr = [];
 
-        let newScriptIds = tempSetup.scripts.items.flatMap(a => {
-            let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
-            return (isNew) ? a.id : [];
-        })
-
-        // return;
-
-        let allEntriesCopy = clone(state.allEntries);
-
-        for (let id of newScriptIds) {
-            let obj = {
-                refId: id,
-                content: ""
-            };
-
-            for (let entry of allEntriesCopy) {
-                
-                for (let morph of entry.headword.morphs) {
-                    morph.scriptForms.push(clone(obj));
-                }
-
-                for (let senseGroup of entry.senseGroups) {
-                    for (let partOfSpeech of senseGroup.partsOfSpeech) {
-                        if (partOfSpeech.irregulars) {
-                            for (let irregular of partOfSpeech.irregulars) {
-                                if (irregular.morphs) {
-                                    for (let morph of irregular.morphs) {
-                                        morph.scriptForms.push(clone(obj));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        setState({allEntries: allEntriesCopy});
-    };
-
-    const updateSetup = () => {
-        // console.log(tempSetup.scriptsToDelete);
-        // let obj =  [
-        //     {
-        //         id: "1",
-        //         name: "foreign word",
-        //         displayOpen: "[foreign]",
-        //         displayClose: "[/foreign]",
-        //         // getCode: string => <span className="for">{string}</span>,
-        //         getCode: string => string,
-        //     },
-        //     {
-        //         id: "2",
-        //         name: "stem",
-        //         displayOpen: "[stem]",
-        //         displayClose: "[/stem]",
-        //         getCode: string => <span className="for">{string}</span>,
-        //     },
-        //     {
-        //         id: "3",
-        //         name: "prefix",
-        //         displayOpen: "[prefix]",
-        //         displayClose: "[/prefix]",
-        //         getCode: string => <><span className="for">{string}</span>-</>,
-        //     },
-        //     {
-        //         id: "4",
-        //         name: "suffix",
-        //         displayOpen: "[suffix]",
-        //         displayClose: "[/suffix]",
-        //         getCode: string => <>-<span className="for">{string}</span></>,
-        //     },
-        //     {
-        //         id: "5",
-        //         name: "infix",
-        //         displayOpen: "[infix]",
-        //         displayClose: "[/infix]",
-        //         getCode: string => <>-<span className="for">{string}</span>-</>,
-        //     },
-        //     {
-        //         id: "6",
-        //         name: "gloss",
-        //         displayOpen: "[gloss]",
-        //         displayClose: "[/gloss]",
-        //         getCode: string => <>‘{string}’</>,
-        //     }
-        // ]
-        // tempSetup.etymologySettings.etymologyTags = obj;
+    const deleteScriptFormsHandler = () => {
         if (tempSetup.scriptsToDelete) {
             tempSetup.scriptsToDelete.forEach(scriptId => {
                 // console.log("deleteScriptForms")
@@ -247,10 +205,37 @@ const Setup = props => {
             // console.log(tempSetup.scriptsToDelete);
 
         }
-        addNewScriptFields();
+    };
 
-        // return;
-        axios.post(`${API_BASE}/setup/update`, clone(state.tempSetup))
+
+    const updateSetup = async () => {
+        // console.log(tempSetup.scriptsToDelete);
+        // await deleteScriptFormsHandler();
+
+        // if (tempSetup.scriptsToDelete) {
+        //     tempSetup.scriptsToDelete.forEach(scriptId => {
+        //         // console.log("deleteScriptForms")
+        //         deleteScriptForms(scriptId);
+        //     })
+        //     // console.log(tempSetup.scriptsToDelete);
+
+        // }
+        // await addNewScriptFields();
+
+        // if (tempSetup.scriptsToDelete) {
+        //     console.log(tempSetup.scriptsToDelete);
+        // }
+
+        // let scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
+        //     let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
+        //     return (isNew) ? a.id : [];
+        // })
+        let obj = clone(state.tempSetup);
+        obj.scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
+            let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
+            return (isNew) ? a.id : [];
+        })
+        axios.post(`${API_BASE}/setup/update`, obj)
         .then(response => {
             let tempSetupClone = clone(state.tempSetup);
             tempSetupClone.dateModified = new Date();

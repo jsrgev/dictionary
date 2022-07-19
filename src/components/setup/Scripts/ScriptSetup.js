@@ -16,9 +16,9 @@ const ScriptSection = props => {
     const handleChange = (field, value) => {
         const tempSetupCopy = clone(state.tempSetup);
         let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-        console.log(tempSetupCopyPath);
+        // console.log(tempSetupCopyPath);
         tempSetupCopyPath[thisIndex][field] = value;
-        console.log(tempSetupCopyPath[thisIndex][field]);
+        // console.log(tempSetupCopyPath[thisIndex][field]);
         setState({tempSetup: tempSetupCopy});
     };
     
@@ -101,7 +101,6 @@ const ScriptSection = props => {
             } else {
                 tempSetupCopyPath.splice(thisIndex, 1);
             }
-
 
 
             setState({tempSetup: tempSetupCopy});    

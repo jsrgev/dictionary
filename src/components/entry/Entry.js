@@ -265,7 +265,7 @@ const Entry = props => {
                     {state.entry._id ?
                     <>
                         <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
-                        <button onClick={handleNewBlankEntryClick}>New Blank Entry</button>
+                        <button onClick={handleNewBlankEntryClick}>New Entry</button>
                         <button onClick={revertToSaved}>Revert to Saved</button>
                         <button onClick={handleDeleteClick}>Delete</button>
                         <button onClick={handleUpdateClick}>Save Changes</button>
