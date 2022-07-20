@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const ScriptSection = props => {
 
-    const {state, setState, moveRow, setSectionClosed} = props;
+    const {state, setState, setSectionClosed} = props;
 
     const pathFrag = "scripts";
     const path = _.get(state, "tempSetup." + pathFrag);

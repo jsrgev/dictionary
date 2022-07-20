@@ -108,138 +108,18 @@ const Setup = props => {
     //     return;
     // };    
 
-    // const addNewScriptFields = () => {
-
-    //     let scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
-    //         let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
-    //         return (isNew) ? a.id : [];
-    //     })
-
-    //     // return;
-
-    //     let allEntriesCopy = clone(state.allEntries);
-
-    //     for (let id of scriptsToAdd) {
-    //         let obj = {
-    //             refId: id,
-    //             content: ""
-    //         };
-
-    //         for (let entry of allEntriesCopy) {
-                
-    //             for (let morph of entry.headword.morphs) {
-    //                 morph.scriptForms.push(clone(obj));
-    //             }
-
-    //             for (let senseGroup of entry.senseGroups) {
-    //                 for (let partOfSpeech of senseGroup.partsOfSpeech) {
-    //                     if (partOfSpeech.irregulars) {
-    //                         for (let irregular of partOfSpeech.irregulars) {
-    //                             if (irregular.morphs) {
-    //                                 for (let morph of irregular.morphs) {
-    //                                     morph.scriptForms.push(clone(obj));
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     setState({allEntries: allEntriesCopy});
-    // };
-
-
-    const deleteScriptForms = scriptId => {
-        // const {allEntries} = state;
-        let allEntriesCopy = clone(state.allEntries);
-
-        for (let entry of allEntriesCopy) {
-            for (let morph of entry.headword.morphs) {
-                let index = morph.scriptForms.findIndex(a => a.refId === scriptId);
-                morph.scriptForms.splice(index, 1);
-                // console.log(x);
-                // for (let scriptForm of morph.scriptForms) {
-                //     console.log(scriptForm.refId, scriptId);
-                //     if (scriptForm.refId === scriptId) {
-                //         console.log(scriptForm);
-                //     };
-                // }
-            }
-        }
-        for (let entry of allEntriesCopy) {
-            for (let senseGroup of entry.senseGroups) {
-                for (let partOfSpeech of senseGroup.partsOfSpeech) {
-                    if (partOfSpeech.irregulars) {
-                        for (let irregular of partOfSpeech.irregulars) {
-                            if (irregular.morphs) {
-                                for (let morph of irregular.morphs) {
-                                    let index = morph.scriptForms.findIndex(a => a.refId === scriptId);
-                                    morph.scriptForms.splice(index, 1);
-                                    // for (let scriptForm of morph.scriptForms) {
-                                    //     if (scriptForm.refId === scriptId) {
-
-                                    //         console.log(scriptForm);
-                                    //     };
-                                    // }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        scriptsArr.push(scriptId);
-        console.log(scriptId);
-        setState({allEntries: allEntriesCopy});
-    };
-
-    let scriptsArr = [];
-
-    const deleteScriptFormsHandler = () => {
-        if (tempSetup.scriptsToDelete) {
-            tempSetup.scriptsToDelete.forEach(scriptId => {
-                // console.log("deleteScriptForms")
-                deleteScriptForms(scriptId);
-            })
-            // console.log(tempSetup.scriptsToDelete);
-
-        }
-    };
-
 
     const updateSetup = async () => {
-        // console.log(tempSetup.scriptsToDelete);
-        // await deleteScriptFormsHandler();
 
-        // if (tempSetup.scriptsToDelete) {
-        //     tempSetup.scriptsToDelete.forEach(scriptId => {
-        //         // console.log("deleteScriptForms")
-        //         deleteScriptForms(scriptId);
-        //     })
-        //     // console.log(tempSetup.scriptsToDelete);
-
-        // }
-        // await addNewScriptFields();
-
-        // if (tempSetup.scriptsToDelete) {
-        //     console.log(tempSetup.scriptsToDelete);
-        // }
-
-        // let scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
-        //     let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
-        //     return (isNew) ? a.id : [];
-        // })
         let obj = clone(state.tempSetup);
         obj.scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
-            let isNew = !state.setup.scripts.items.some(b => b.id === a.id);
+            let isNew = !setup.scripts.items.some(b => b.id === a.id);
             return (isNew) ? a.id : [];
         })
         axios.post(`${API_BASE}/setup/update`, obj)
         .then(response => {
             let tempSetupClone = clone(state.tempSetup);
             tempSetupClone.dateModified = new Date();
-            // console.log(tempSetupClone.etymologySettings.etymologyTags[0])
             setState({tempSetup: tempSetupClone, setup:tempSetupClone});
             alert("Your changes have been saved.");
             // cleanUpEntries();
@@ -297,15 +177,12 @@ const Setup = props => {
     };
 
     const handleRevertButtonClick = () => {
-        setState({tempSetup: state.setup});
+        setState({tempSetup: setup});
     };
     
-    // console.log(tempSetup.etymologySettings.etymologyTags[0]);
-    // console.log(setup.etymologySettings.etymologyTags[0]);
-
     return (
         <main id="setup">
-            { !state.setup ?
+            { !setup ?
                 <div>Loading</div> :
                 <>
                 <LanguageDataSection state={state} setState={setState} setSectionClosed={setSectionClosed} />

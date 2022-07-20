@@ -79,7 +79,7 @@ const Morph = props => {
 
     let stringPathA = `${stringPath}[${thisIndex}]`;
 
-    const scriptLabel = state.setup.scripts.items.length > 1 ? ` - ${currentScript.abbr}` : null;
+    // const scriptLabel = state.setup.scripts.items.length > 1 ? ` - ${currentScript.abbr}` : null;
 
     const getScriptLabel = () => {
         // const script = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId);

@@ -1,6 +1,6 @@
 import AddPopup from '../../AddPopup';
 import {useState} from 'react';
-import {clone, addPopupHandler, getIndent} from '../../../utils.js';
+import {clone, addPopupHandler} from '../../../utils.js';
 import {scriptDefault} from '../defaults.js';
 import _ from 'lodash';
 
@@ -22,22 +22,22 @@ const ScriptSection = props => {
         setState({tempSetup: tempSetupCopy});
     };
     
-    const changeCheck = field => {
-        const tempSetupCopy = clone(state.tempSetup);
-        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-        let value = tempSetupCopyPath[thisIndex][field];
-        // console.log(value);
-        _.set(tempSetupCopyPath, `[${thisIndex}][${field}]`, !value);
-        // console.log(tempSetupCopyPath);
-        setState({tempSetup: tempSetupCopy});
-    };
+    // const changeCheck = field => {
+    //     const tempSetupCopy = clone(state.tempSetup);
+    //     let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+    //     let value = tempSetupCopyPath[thisIndex][field];
+    //     // console.log(value);
+    //     _.set(tempSetupCopyPath, `[${thisIndex}][${field}]`, !value);
+    //     // console.log(tempSetupCopyPath);
+    //     setState({tempSetup: tempSetupCopy});
+    // };
     
-    const changeSortOrder = (field, value) => {
-        const tempSetupCopy = clone(state.tempSetup);
-        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-        tempSetupCopyPath[thisIndex][field] = value.split(" ");
-        setState({tempSetup: tempSetupCopy});
-    };
+    // const changeSortOrder = (field, value) => {
+    //     const tempSetupCopy = clone(state.tempSetup);
+    //     let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+    //     tempSetupCopyPath[thisIndex][field] = value.split(" ");
+    //     setState({tempSetup: tempSetupCopy});
+    // };
 
     const checkScriptInUse = scriptId => {
         const {allEntries} = state;
