@@ -46,13 +46,6 @@ const EntriesList = props => {
 
     window.onresize = displayArrows;
 
-    const getArrowClasses = () => {
-        let classes  = [];
-        if (topArrowShown) classes.push("top-arrow");
-        if (bottomArrowShown) classes.push("bottom-arrow");
-        return classes.join(" ");
-    };
-
     const getWritingDirection = () => state.setup.scripts.items[0].writingDirection;
 
     const handleClick = (id) => {

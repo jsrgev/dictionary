@@ -65,4 +65,3 @@ export const scriptDefault = {
     writingDirection: "ltr",
     display: true
 };
-

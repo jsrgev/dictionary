@@ -118,7 +118,7 @@ const Setup = props => {
             let isNew = !setup.scripts.items.some(b => b.id === a.id);
             return (isNew) ? a.id : [];
         });
-        console.log(state.changes);
+        // console.log(state.changes);
         // return;
         obj.scriptsToDelete = state.changes.scriptsToDelete;
         // console.log(obj.scriptsToDelete ?? [], obj.scriptsToAdd);

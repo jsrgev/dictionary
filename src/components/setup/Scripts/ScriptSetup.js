@@ -165,7 +165,7 @@ const ScriptSection = props => {
                         </i>
                     </div>
                     <div className="row-content triple-input-2" style={getIndent(0)}>
-                        <input id={`script[${thisIndex}]-display`} type="checkbox" value={path[thisIndex].display} onChange={e => changeCheck("display")} />
+                        <input id={`script[${thisIndex}]-display`} type="checkbox" checked={path[thisIndex].display ? true : false} disabled={thisIndex === 0 ? true : false} onChange={e => changeCheck("display")} />
                         <label htmlFor={`script[${thisIndex}]-display`}>Display</label>
                         <label htmlFor={`script[${thisIndex}]-name`}>Name</label>
                         <input id={`script[${thisIndex}]-name`} type="text" value={path[thisIndex].name} onChange={e => handleChange("name", e.target.value)} />
