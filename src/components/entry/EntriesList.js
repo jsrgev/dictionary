@@ -100,11 +100,13 @@ const EntriesList = props => {
         <div id="entries-list-section">
             <h2>Entries</h2>
             <input type="text" value={filterTerm} onChange={e => changeFilterTerm(e.target.value)} aria-label="Filter entries" placeholder="Filter entries..."/>
-            <ul id="entries-list" onScroll={displayArrows} className={`for norm ${getArrowClasses()} ${getWritingDirection()}`} onClick={check}>
+            <div className={`top-arrow ${topArrowShown ? "top-arrow-visible" : ""}`}></div>
+            <ul id="entries-list" onScroll={displayArrows} className={`for norm ${getWritingDirection()}`} onClick={check}>
                 {filteredEntries.map((a, i) => (
                     <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content === "" ? "☐" : a.content}</li>
                 ))}
             </ul>
+            <div className={`bottom-arrow ${bottomArrowShown ? "bottom-arrow-visible" : ""}`}></div>
         </div>
     )
 };

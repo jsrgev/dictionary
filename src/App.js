@@ -16,6 +16,11 @@ const App = () => {
         allEntries: [],
         entry: null,
         entryCopy: null,
+        changes: {
+            scriptsToDelete: [],
+            scriptsToAdd: [],
+            areEntriesUpdated: false
+        },
         setup: null,
         tempSetup: {
             nextId: 101,
@@ -83,6 +88,7 @@ const App = () => {
                     }
                 ]
                 },
+            scriptsToAdd: [],
             gramClassGroups: {
                 items: [
                 {
@@ -291,7 +297,7 @@ const App = () => {
         </header>
         <Routes>
             <Route exact path="/" element={<Entry state={state} setState={setState} />} />
-            <Route exact path="/setup" element={<Setup state={state} setState={setState} />} />
+            <Route exact path="/setup" element={<Setup state={state} setState={setState} fetchEntries={fetchEntries} />} />
             <Route exact path="/dictionary" element={<Dictionary state={state} />} />
             <Route exact path="/about" element={<About />} />
             {/* <Route exact path="/entry" component={Home} /> */}

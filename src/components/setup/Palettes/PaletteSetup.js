@@ -83,7 +83,7 @@ const PaletteSetup = props => {
                     </div>
                     <div className="row">
                         {path[thisIndex].content.map((a,i) => (
-                            <PaletteGroupSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} prevIndent={prevIndent+1} />
+                            <PaletteGroupSetup key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />
                             ))}
                     </div>
                 </div>

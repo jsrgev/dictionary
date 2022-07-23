@@ -1,6 +1,6 @@
 import AddPopup from '../../AddPopup';
 import {useState} from 'react';
-import {clone, addPopupHandler} from '../../../utils.js';
+import {clone, addPopupHandler, getIndent} from '../../../utils.js';
 import {scriptDefault} from '../defaults.js';
 import _ from 'lodash';
 
@@ -25,12 +25,21 @@ const ScriptSection = props => {
     // const changeCheck = field => {
     //     const tempSetupCopy = clone(state.tempSetup);
     //     let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-    //     let value = tempSetupCopyPath[thisIndex][field];
-    //     // console.log(value);
-    //     _.set(tempSetupCopyPath, `[${thisIndex}][${field}]`, !value);
-    //     // console.log(tempSetupCopyPath);
+    //     let value = tempSetupCopyPath[field];
+    //     // let value = _.get(tempSetupCopy, `[${field}]`);
+    //     _.set(tempSetupCopyPath, `[${field}]`, !value);
     //     setState({tempSetup: tempSetupCopy});
     // };
+
+    const changeCheck = field => {
+        const tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        let value = tempSetupCopyPath[thisIndex][field];
+        // console.log(value);
+        _.set(tempSetupCopyPath, `[${thisIndex}][${field}]`, !value);
+        // console.log(tempSetupCopyPath);
+        setState({tempSetup: tempSetupCopy});
+    };
     
     // const changeSortOrder = (field, value) => {
     //     const tempSetupCopy = clone(state.tempSetup);
@@ -87,11 +96,8 @@ const ScriptSection = props => {
             if (!response) {
                 return;
             }
+
             const tempSetupCopy = clone(state.tempSetup);
-            if (!tempSetupCopy.scriptsToDelete) {
-                tempSetupCopy.scriptsToDelete = []
-            }
-            tempSetupCopy.scriptsToDelete.push(scriptId);
             let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
             if (path.length === 1) {
                 let newScript = clone(scriptDefault);
@@ -101,12 +107,12 @@ const ScriptSection = props => {
             } else {
                 tempSetupCopyPath.splice(thisIndex, 1);
             }
+            const changesCopy = clone(state.changes);
+            changesCopy.scriptsToDelete.push(scriptId);
 
-
-            setState({tempSetup: tempSetupCopy});    
+            setState({tempSetup: tempSetupCopy, changes: changesCopy});    
         } else {
 
-            // return;
             let tempSetupCopy = clone(state.tempSetup);
             let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
             if (path.length === 1) {
@@ -158,7 +164,9 @@ const ScriptSection = props => {
                             onClick={e => moveRow(e, false)}>
                         </i>
                     </div>
-                    <div className="row-content double-input">
+                    <div className="row-content triple-input-2" style={getIndent(0)}>
+                        <input id={`script[${thisIndex}]-display`} type="checkbox" value={path[thisIndex].display} onChange={e => changeCheck("display")} />
+                        <label htmlFor={`script[${thisIndex}]-display`}>Display</label>
                         <label htmlFor={`script[${thisIndex}]-name`}>Name</label>
                         <input id={`script[${thisIndex}]-name`} type="text" value={path[thisIndex].name} onChange={e => handleChange("name", e.target.value)} />
                         <label htmlFor={`script[${thisIndex}]-abbr`}>Abbreviation</label>

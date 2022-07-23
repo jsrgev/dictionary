@@ -31,22 +31,22 @@ const EntriesSection = props => {
             <div className="row-content">
                 <span>Entries</span>
             </div>
-            <div className="row" style={getIndent(0)}>
+            <div className="row">
                 <div className="row">
                     <div className="row">
                         <div className="row-controls"></div>
-                        <div className="row-content language-names">
+                        <div className="row-content checkbox-label" style={getIndent(0)}>
                             <input id='include-pronunciation' type="checkbox" checked={state.tempSetup.entrySettings.showPronunciation ? true : false} onChange={e => changeCheck("showPronunciation")} />
                             <label htmlFor='include-pronunciation'>Include pronunciation</label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="row" style={getIndent(0)}>
+            <div className="row">
                 <div className="row">
                     <div className="row">
                         <div className="row-controls"></div>
-                        <div className="row-content language-names">
+                        <div className="row-content checkbox-label" style={getIndent(0)}>
                             <input id='include-etymology' type="checkbox" checked={state.tempSetup.entrySettings.showEtymology ? true : false} onChange={e => changeCheck("showEtymology")} />
                             <label htmlFor='include-etymology'>Include etymology</label>
                         </div>

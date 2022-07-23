@@ -61,10 +61,18 @@ input[type="color" i]::-moz-color-swatch {
 	grid-template-columns: 9rem max-content 9rem max-content 9rem;
 }
 
+.checkbox-label {
+    grid-template-columns: max-content 1fr;
+}
 
 .triple-input {
     grid-template-columns: 9rem 1fr 9rem max-content 9rem max-content;
 }
+
+.triple-input-2 {
+    grid-template-columns: max-content 9rem 9rem 1fr 9rem 1fr;
+}
+
 
 /* .pos-options {
     grid-template-columns: 7rem 1fr;

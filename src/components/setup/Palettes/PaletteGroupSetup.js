@@ -6,12 +6,11 @@ import _ from 'lodash';
 
 const PaletteGroupSetup = props => {
 
-    const {state, setState, thisIndex, moveRow, stringPath, prevIndent} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, prevIndent, setSectionClosed} = props;
     // console.log(stringPath)
     const pathFrag = stringPath + ".content";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -59,12 +58,12 @@ const PaletteGroupSetup = props => {
 
     return(
         <>
-            <div className={`row${sectionOpen ? "" : " closed"}`}>
+            <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className={`fas fa-minus${path.length === 1 && groupIsEmpty() ? " disabled" : ""}`} onClick={deleteGroup}></i>
-                    <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+                    <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                         onClick={e => moveRow(e, thisIndex, pathFrag, true)}

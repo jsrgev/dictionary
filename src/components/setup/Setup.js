@@ -14,7 +14,7 @@ import EntriesSection from './Entries/EntriesSection';
 
 const Setup = props => {
 
-    const {state, setState} = props;
+    const {state, setState, fetchEntries} = props;
     const prevIndent = -1;
     const {setup, tempSetup} = state;
 
@@ -108,21 +108,36 @@ const Setup = props => {
     //     return;
     // };    
 
+    // console.log(state.status.areEntriesUpdated);
 
     const updateSetup = async () => {
 
         let obj = clone(state.tempSetup);
         obj.scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
+            if (state.allEntries.length < 1) return [];
             let isNew = !setup.scripts.items.some(b => b.id === a.id);
             return (isNew) ? a.id : [];
-        })
+        });
+        console.log(state.changes);
+        // return;
+        obj.scriptsToDelete = state.changes.scriptsToDelete;
+        // console.log(obj.scriptsToDelete ?? [], obj.scriptsToAdd);
         axios.post(`${API_BASE}/setup/update`, obj)
-        .then(response => {
+        .then(res => {
             let tempSetupClone = clone(state.tempSetup);
             tempSetupClone.dateModified = new Date();
-            setState({tempSetup: tempSetupClone, setup:tempSetupClone});
+            let changesClone = clone(state.changes);
+            changesClone.areEntriesUpdated = res.data.areEntriesUpdated;
+            changesClone.scriptsToDelete = [];
+            setState({tempSetup: tempSetupClone, setup:tempSetupClone, changes:changesClone});
             alert("Your changes have been saved.");
+            // console.log(res.data);
+            return res.data.areEntriesUpdated;
             // cleanUpEntries();
+        })
+        .then(areEntriesUpdated => {
+            console.log(areEntriesUpdated);
+            if (areEntriesUpdated) fetchEntries();
         })
         .catch(err => console.log(err));
 

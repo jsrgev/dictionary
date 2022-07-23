@@ -828,10 +828,13 @@ nav ul {
 #entries-list-section input {
 	margin-bottom: 1rem;
 	background: #ffffff;
+    height: 1.7rem;
 }
 
 #entries-list {
-    height: calc(100% - 16px - 1.4 * 1.1rem - 1.4 * 1rem - 2px - 1rem);
+	/* top margin, heading, bottom margin, input, 2px padding, bottom margin */
+	height: calc(100% - 1.4 * 1.1rem - 1rem - 1.7rem - 2px - 1rem);
+	/* height: calc(100% - 16px - 1.4 * 1.1rem - 1.4 * 1rem - 2px - 1rem); */
 	overflow: scroll;
 	position: relative;
 }
@@ -849,51 +852,60 @@ nav ul {
 	font-weight: 600;
 }
 
-#entries-list::before {
-	position: sticky;
-	top: -.3em;
-	left: calc(50% - .5rem);
-	transform: translate(-50%);
+
+
+/* ********************* */
+
+
+.top-arrow, .bottom-arrow {
+	position: relative;
+	/* width: 1rem; */
+	/* height: 1rem; */
+	/* border-bottom: 1px solid red; */
+}
+
+.top-arrow::before {
+    display: inline-block;
+	position: absolute;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
+	font-size: 1.7rem;
 	content: "\f0d8";
-	font-size: 1.7rem;
 	color: var(--transparentblue);
-	line-height: 0;
+	top: 0;
+	left: calc(50% - .5rem);
+	line-height: .6;
 	opacity: 0;
 	transition: .3s;
 }
 
-#entries-list.top-arrow::before {
-	opacity: 1;
-}
-
-#entries-list::after {
-	position: sticky;
-	bottom: -.1rem;
-	left: calc(50% - .5rem);
-	transform: translate(-50%);
+.bottom-arrow::before {
+    display: inline-block;
+	position: absolute;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
-	content: "\f0d7";
 	font-size: 1.7rem;
+	content: "\f0d7";
 	color: var(--transparentblue);
-	line-height: 0;
+	left: calc(50% - .5rem);
+	bottom: 0;
+	line-height: .6;
 	opacity: 0;
 	transition: .3s;
 }
 
-#entries-list.bottom-arrow::after {
+.top-arrow-visible::before, .bottom-arrow-visible::before {
 	opacity: 1;
 }
 
-#entries-list li:first-child {
-	margin-top: -1.4rem;
-}
-
-#entries-list li:last-child {
-	margin-bottom: -1.4rem;
-}
 
 #preview {
 	background: var(--light-green);
