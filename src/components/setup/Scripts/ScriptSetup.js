@@ -41,12 +41,12 @@ const ScriptSection = props => {
         setState({tempSetup: tempSetupCopy});
     };
     
-    // const changeSortOrder = (field, value) => {
-    //     const tempSetupCopy = clone(state.tempSetup);
-    //     let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
-    //     tempSetupCopyPath[thisIndex][field] = value.split(" ");
-    //     setState({tempSetup: tempSetupCopy});
-    // };
+    const changeSortOrder = (field, value) => {
+        const tempSetupCopy = clone(state.tempSetup);
+        let tempSetupCopyPath = _.get(tempSetupCopy, pathFrag);
+        tempSetupCopyPath[thisIndex][field] = value.split(" ");
+        setState({tempSetup: tempSetupCopy});
+    };
 
     const checkScriptInUse = scriptId => {
         const {allEntries} = state;
@@ -164,24 +164,24 @@ const ScriptSection = props => {
                             onClick={e => moveRow(e, false)}>
                         </i>
                     </div>
-                    <div className="row-content triple-input-2" style={getIndent(0)}>
-                        <input id={`script[${thisIndex}]-display`} type="checkbox" checked={path[thisIndex].display ? true : false} disabled={thisIndex === 0 ? true : false} onChange={e => changeCheck("display")} />
-                        <label htmlFor={`script[${thisIndex}]-display`}>Display</label>
+                    <div className="row-content double-input" style={getIndent(0)}>
+                        {/* <input id={`script[${thisIndex}]-display`} type="checkbox" checked={path[thisIndex].display ? true : false} disabled={thisIndex === 0 ? true : false} onChange={e => changeCheck("display")} /> */}
+                        {/* <label htmlFor={`script[${thisIndex}]-display`}>Display</label> */}
                         <label htmlFor={`script[${thisIndex}]-name`}>Name</label>
                         <input id={`script[${thisIndex}]-name`} type="text" value={path[thisIndex].name} onChange={e => handleChange("name", e.target.value)} />
                         <label htmlFor={`script[${thisIndex}]-abbr`}>Abbreviation</label>
                         <input id={`script[${thisIndex}]-abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange("abbr", e.target.value)} />
                     </div>
                     <div className="row">
-                        {/* <div className="row-controls"></div>
+                        <div className="row-controls"></div>
                         <div className="row-content double-radio-buttons" style={getIndent(0)}>
                             <label htmlFor={`script[${thisIndex}]-writingDirection`}>Writing Direction</label>
                             <input id={`script[${thisIndex}]-writingDirection-ltr`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "ltr" ? true : false} onChange={e => handleChange("writingDirection", "ltr")} />
                             <label htmlFor={`script[${thisIndex}]-writingDirection-ltr`}>Left to right</label>
                             <input id={`script[${thisIndex}]-writingDirection-rtl`} type="radio" name={`script[${thisIndex}]-writingDirection`} checked={path[thisIndex].writingDirection === "rtl" ? true : false} onChange={e => handleChange("writingDirection", "rtl")} />
                             <label htmlFor={`script[${thisIndex}]-writingDirection-rtl`}>Right to left</label>
-                        </div> */}
-                        {/* <div className="row-controls"></div>
+                        </div>
+                        <div className="row-controls"></div>
                         <div className="row-content" style={getIndent(0)}>
                             <label htmlFor={`script[${thisIndex}]-name`}>Letter Order</label>
                             <input id={`script[${thisIndex}]-letterOrder`} type="text" value={path[thisIndex].letterOrder.join(" ")} onChange={e => changeSortOrder("letterOrder", e.target.value)} />
@@ -192,10 +192,10 @@ const ScriptSection = props => {
                             <input id={`script[${thisIndex}]-diacriticOrder`} type="text" value={path[thisIndex].diacriticOrder.join(" ")} onChange={e => changeSortOrder("diacriticOrder", e.target.value)} />
                         </div>
                         <div className="row-controls"></div>
-                        <div className="row-content" style={getIndent(0)}>
+                        <div className="row-content checkbox-label" style={getIndent(0)}>
                             <input id={`script[${thisIndex}].display`} disabled={thisIndex === 0 ? true : false} type="checkbox" checked={path[thisIndex].display ? true : false} onChange={e => changeCheck("display")} />
                             <label htmlFor={`script[${thisIndex}].display`}>Display script</label>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

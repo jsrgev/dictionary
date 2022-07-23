@@ -853,10 +853,6 @@ nav ul {
 }
 
 
-
-/* ********************* */
-
-
 .top-arrow, .bottom-arrow {
 	position: relative;
 	/* width: 1rem; */
@@ -951,6 +947,7 @@ input {
 
 input[type="checkbox"] {
 	width: auto;
+	margin: 0;
 }
 
 input:hover, textarea:hover, input:focus, textarea:focus {
