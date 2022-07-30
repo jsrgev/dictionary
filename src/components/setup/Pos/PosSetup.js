@@ -26,6 +26,8 @@ const PosSetup = props => {
     };
 
     const addGramClassOption = index => {
+        console.log(index)
+        console.log(path[thisIndex].gramClassGroups)
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         let obj = {refId: availableGramClassGroups[0].id};
@@ -80,7 +82,7 @@ const PosSetup = props => {
     ];
 
     if (availableGramClassGroups.length > 0) {
-        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.items?.length-1 ?? -1)]);
+        popupItems.push(["Class option", () => addGramClassOption(path[thisIndex].gramClassGroups?.length-1 ?? -1)]);
     }
 
     if (availableGramClassAndFormGroups.length > 0) {
@@ -92,8 +94,6 @@ const PosSetup = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    // console.log(path);
-
     return(
         <>
             {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
@@ -102,7 +102,7 @@ const PosSetup = props => {
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                 <i className="fas fa-minus" onClick={deletePos}></i>
-                { path[thisIndex].gramClassGroups?.items?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
+                { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
                     <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                     : <i></i>
                 }

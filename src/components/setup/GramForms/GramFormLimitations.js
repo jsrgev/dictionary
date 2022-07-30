@@ -13,20 +13,40 @@ const GramFormLimitations = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleGroupClick = gramClassGroupId => {
-        if (path[thisIndex].refId === gramClassGroupId) {
+        if (path[thisIndex].refId === gramClassGroupId || !isAvailable(gramClassGroupId)) {
             return;
         }
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.map(a => a.id);
+        let gramClassGroup = availableForLimitationGroups.find(a => a.id === gramClassGroupId);
+        
+        let gramClassesToExclude = gramClassGroup.gramClasses.map(a => a.id);
         gramClassesToExclude.shift();
+        
         let obj = {
-            refId: availableForLimitationGroups[0].id,
+            refId: gramClassGroupId,
             excludedGramClasses: gramClassesToExclude
         };
         setupCopyPath[thisIndex] = obj;
         setState({tempSetup: setupCopy});
     };
+
+// previous version of function
+    // const handleGroupClick = gramClassGroupId => {
+    //     if (path[thisIndex].refId === gramClassGroupId) {
+    //         return;
+    //     }
+    //     let setupCopy = clone(state.tempSetup);
+    //     let setupCopyPath = _.get(setupCopy, pathFrag);
+    //     let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.items.map(a => a.id);
+    //     gramClassesToExclude.shift();
+    //     let obj = {
+    //         refId: availableForLimitationGroups[0].id,
+    //         excludedGramClasses: gramClassesToExclude
+    //     };
+    //     setupCopyPath[thisIndex] = obj;
+    //     setState({tempSetup: setupCopy});
+    // };
     
     const handleGramClassClick = (gramClassId, numOfClasses) => {
         let setupCopy = clone(state.tempSetup);
@@ -70,7 +90,7 @@ const GramFormLimitations = props => {
 
     const getGramClasses = gramClassGroupId => {
         let gramClassGroup = state.tempSetup.gramClassGroups.items.find(a => a.id === gramClassGroupId);
-        return gramClassGroup.gramClasses.items;
+        return gramClassGroup.gramClasses;
     };
 
     const popupItems = [

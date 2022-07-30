@@ -5,7 +5,7 @@ import GramForms from './GramForms';
 import {useState, useEffect} from 'react';
 import _ from 'lodash';
 
-const PartOfSpeech = (props) => {
+const PartOfSpeech = props => {
     const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveRow, setScriptForms} = props;
     const {addPos} = addFunctions;
 
@@ -54,6 +54,7 @@ const PartOfSpeech = (props) => {
             })
             if (formShouldntExist) irregularsToDelete.push(i);
         });
+        console.log(irregularsToDelete)
         if (irregularsToDelete.length > 0) {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, `${pathFrag}[${thisIndex}].irregulars`);
@@ -121,8 +122,11 @@ const PartOfSpeech = (props) => {
         let groups = [];
         gramFormGroups.forEach(a => {
             // "gramForms" could be actual gramForms or gramClasses (forms to agree with classes)
+            // console.log(a);
+            // console.log(state.setup.gramFormGroups.items);
             let gramFormGroupDef = state.setup.gramFormGroups.items.find(b => b.id === a.refId) || state.setup.gramClassGroups.items.find(b => b.id === a.refId);
             let arr = [];
+            // console.log(gramFormGroupDef);
             let gramForms = gramFormGroupDef.gramForms || gramFormGroupDef.gramClasses;
             gramForms.forEach(gramFormDef => {
                 let applicable = true;  

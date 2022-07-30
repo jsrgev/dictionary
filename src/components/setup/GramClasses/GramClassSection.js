@@ -12,17 +12,16 @@ const GramClassSection = props => {
     const pathFrag = "gramClassGroups.items";
     const path = _.get(state, "tempSetup.gramClassGroups");
 
-    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addGroup = index => {
         const setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-
+        
         let newGramClassGroup = clone(gramClassGroupDefault);
         newGramClassGroup.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
-
+        
         setupCopyPath.splice(index+1, 0, newGramClassGroup);
         setState({tempSetup: setupCopy});
     };

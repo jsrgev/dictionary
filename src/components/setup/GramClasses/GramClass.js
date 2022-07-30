@@ -8,7 +8,7 @@ const GramForm = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, addGramClass, prevIndent} = props;
 
-    const pathFrag = stringPath + ".gramClasses.items";
+    const pathFrag = stringPath + ".gramClasses";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -20,9 +20,63 @@ const GramForm = props => {
         setState({tempSetup: setupCopy});
     };
 
+
+    const cleanUpPosDefs = setupCopy => {
+        for (let posDef of setupCopy.partsOfSpeechDefs.items) {
+            if (posDef.gramClassGroups) {
+                for (let gramClassGroup of posDef.gramClassGroups) {
+                    if (gramClassGroup.excluded) {
+                        let index = gramClassGroup.excluded.findIndex(a => a === path[thisIndex].id)
+                        if (index > -1) {
+                            if (gramClassGroup.excluded.length === 1) {
+                                delete gramClassGroup.excluded;
+                            } else {
+                                gramClassGroup.excluded.splice(index, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+
+
+    const cleanUpGramFormLimitations = setupCopy => {
+        console.log(path[thisIndex].id)
+        for (let gramFormGroup of setupCopy.gramFormGroups.items) {
+            for (let gramForm of gramFormGroup.gramForms) {
+                if (gramForm.constraints) {
+
+                    for (let constraint of gramForm.constraints) {
+                        
+                        
+                        let index = constraint.excludedGramClasses.findIndex(a => a === path[thisIndex].id)
+                        if (index > -1) {
+                            // console.log(gramForm)
+                            // if (gramForm.constraints.length === 1) {
+                                // delete gramForm.constraints;
+                            // } else {
+                                constraint.excludedGramClasses.splice(index, 1);
+                            // }
+                            // console.log(gramForm)
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // gramFormGroups > items > [] > gramForms > [] > constraints > [] > refId > excludedGramClasses > []
+
+
     
-    const deleteGroup = () => {
+    const deleteGramClass = () => {
         let setupCopy = clone(state.tempSetup);
+        cleanUpPosDefs(setupCopy);
+        cleanUpGramFormLimitations(setupCopy);
+        setState({tempSetup: setupCopy});
+        // return;
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramClass = clone(gramClassDefault);
@@ -48,7 +102,7 @@ const GramForm = props => {
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                    <i className="fas fa-minus" onClick={deleteGroup}></i>
+                    <i className="fas fa-minus" onClick={deleteGramClass}></i>
                     <i></i>
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

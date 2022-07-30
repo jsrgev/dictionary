@@ -10,6 +10,7 @@ const GramClassGroup = props => {
     const {state, setState, thisIndex, moveRow, addGroup, prevIndent, setSectionClosed} = props;
 
     let pathFrag = "gramClassGroups.items";
+    // console.log(pathFrag);
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -22,18 +23,56 @@ const GramClassGroup = props => {
     };
 
     const addGramClass = (index, pathFrag) => {
-        console.log("adding")
+        // console.log("adding")
+        // console.log(epathFrag);
+        // return;
         let setupCopy = clone(state.tempSetup);
+        // console.log(state.tempSetup.gramClassGroups.items);
         let setupCopyPath = _.get(setupCopy, pathFrag);
+        // console.log(setupCopyPath);
         let newGramClass = clone(gramClassDefault);
         newGramClass.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(index+1, 0, newGramClass);
+        console.log(setupCopyPath);
+        // return;
         setState({tempSetup: setupCopy});
     };
 
+
+    const cleanUpPosDefs = setupCopy => {
+        for (let posDef of setupCopy.partsOfSpeechDefs.items) {
+            if (posDef.gramClassGroups) {
+                let index = posDef.gramClassGroups.findIndex(a => a.refId === path[thisIndex].id)
+                if (index > -1) posDef.gramClassGroups.splice(index, 1);
+            }
+        }
+    };
+
+    const cleanUpGramFormLimitations = setupCopy => {
+        for (let gramFormGroup of setupCopy.gramFormGroups.items) {
+            for (let gramForm of gramFormGroup.gramForms) {
+                if (gramForm.constraints) {
+                    let index = gramForm.constraints.findIndex(a => a.refId === path[thisIndex].id)
+                    if (index > -1) {
+                        console.log(gramForm)
+                        if (gramForm.constraints.length === 1) {
+                            delete gramForm.constraints;
+                        } else {
+                            gramForm.constraints.splice(index, 1);
+                        }
+                        console.log(gramForm)
+                    }
+                }
+            }
+        }
+    };
+
+
     const deleteGramClassGroup = () => {
         let setupCopy = clone(state.tempSetup);
+        cleanUpGramFormLimitations(setupCopy);
+        cleanUpPosDefs(setupCopy);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramClassGroup = clone(gramClassGroupDefault);
@@ -67,13 +106,13 @@ const GramClassGroup = props => {
 
     return (
         <>
-            <div className={`row${ path[thisIndex].gramClasses.sectionClosed ? " closed" : ""}`}>
+            <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <i className="fas fa-minus" onClick={deleteGramClassGroup}></i>
                     { 
-                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}].gramClasses`)}></i>
+                <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
             }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
@@ -85,7 +124,7 @@ const GramClassGroup = props => {
                     ></i>
                 </div>
                 <div className="row-content double-input" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>GroupX</label>
                     <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Allow multiple</label>
                     <ul>
@@ -94,7 +133,7 @@ const GramClassGroup = props => {
                     </ul>
                </div>
                { path[thisIndex].gramClasses &&
-                    path[thisIndex].gramClasses.items.map((a, i) => (
+                    path[thisIndex].gramClasses.map((a, i) => (
                         <GramClass key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClass={addGramClass} prevIndent={prevIndent+1} />
                     ))
                 }

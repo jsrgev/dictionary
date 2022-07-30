@@ -19,22 +19,64 @@ const Setup = props => {
     const {setup, tempSetup} = state;
 
 
-    // const fix = () => {
-    //     const tempSetupCopy = clone(tempSetup);
+    const fix = () => {
+        const tempSetupCopy = clone(tempSetup);
 
-    //     let ipa = tempSetup.ipa;
-    //     // console.log(ipa);
-    //     ipa.name = "IPA";
-    //     ipa.color = "#3b345a";
-    //     tempSetupCopy.palettes = [ipa];
-    //     // return;
-    //     //         let obj = [tempSetup.ipa];
-    //     // ;
-    //     //         _.set(tempSetupCopy, `[${palettes}]`, obj);
-    //     setState({tempSetup: tempSetupCopy});
-    //     delete tempSetupCopy.ipa;
-    // };
+        for (let gramClassGroup of tempSetupCopy.gramClassGroups.items) {
+            let arr = gramClassGroup.gramClasses.items;
+            gramClassGroup.gramClasses = arr;
+            // console.log(arr);
+            // console.log(gramClassGroup);
+            // console.log(gramClassGroup.gramClasses);
+            // for (let gramForm of gramFormGroup.gramForms) {
+                // if (gramForm.constraints) {
+                //     let index = gramForm.constraints.findIndex(a => a.refId === path[thisIndex].id)
+                //     if (index > -1) {
+                //         console.log(gramForm)
+                //         if (gramForm.constraints.length === 1) {
+                //             delete gramForm.constraints;
+                //         } else {
+                //             gramForm.constraints.splice(index, 1);
+                //         }
+                //         console.log(gramForm)
+                //     }
+                // }
+            // }
+        }
+        // console.log(tempSetupCopy.gramClassGroups);
+        setState({tempSetup: tempSetupCopy});
+        return;
+        // let ipa = tempSetup.ipa;
+        // console.log(ipa);
+        // ipa.name = "IPA";
+        // ipa.color = "#3b345a";
+        // tempSetupCopy.palettes = [ipa];
+        tempSetupCopy.gramFormGroups.items[1] = {
+            id: "24",
+            name: "definiteness",
+            gramForms: [
+                {
+                    id: "25",
+                    name: "indefinite",
+                    abbr: "ind",
+                },
+                {
+                    id: "26",
+                    name: "definite",
+                    abbr: "def",
+                },
+                ],
+        };
+        // console.log(tempSetupCopy.gramFormGroups);
+        // return;
+        //         let obj = [tempSetup.ipa];
+        // ;
+        //         _.set(tempSetupCopy, `[${palettes}]`, obj);
+        setState({tempSetup: tempSetupCopy});
+        // delete tempSetupCopy.ipa;
+    };
 
+    // console.log(tempSetup.gramClasses);
 
     const moveRow = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
@@ -82,7 +124,8 @@ const Setup = props => {
         .catch(err => console.log(err));
     };
 
-    // const handleFixButtonClick = () => {
+    const handleFixButtonClick = () => {
+        fix();
     //     const tempSetupCopy = clone(state.tempSetup);
     //     console.log(tempSetupCopy.gramClassGroups);
     //     tempSetupCopy.gramClassGroups.items.forEach(a => {
@@ -106,7 +149,7 @@ const Setup = props => {
     //     setState({tempSetup: tempSetupCopy});
 
     //     return;
-    // };    
+    };    
 
     // console.log(state.status.areEntriesUpdated);
 
@@ -136,7 +179,7 @@ const Setup = props => {
             // cleanUpEntries();
         })
         .then(areEntriesUpdated => {
-            console.log(areEntriesUpdated);
+            // console.log(areEntriesUpdated);
             if (areEntriesUpdated) fetchEntries();
         })
         .catch(err => console.log(err));

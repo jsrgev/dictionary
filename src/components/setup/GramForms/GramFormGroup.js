@@ -31,8 +31,20 @@ const GramFormGroup = props => {
         setState({tempSetup: setupCopy});
     };
 
+    const cleanUpPosDefs = setupCopy => {
+        for (let posDef of setupCopy.partsOfSpeechDefs.items) {
+            if (posDef.gramFormGroups) {
+                let index = posDef.gramFormGroups.findIndex(a => a.refId === path[thisIndex].id)
+                if (index > -1) posDef.gramFormGroups.splice(index, 1);
+            }
+        }
+    };
+    
+    
     const deleteGroup = () => {
         let setupCopy = clone(state.tempSetup);
+        // erase references in all posDefs to the gramFormGroup being deleted
+        cleanUpPosDefs(setupCopy);
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramFormGroup = clone(gramFormGroupDefault);
@@ -79,7 +91,7 @@ const GramFormGroup = props => {
                     ></i>
                 </div>
                 <div className="row-content" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>GroupX</label>
                     <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                 </div>
                 { path[thisIndex].gramForms &&

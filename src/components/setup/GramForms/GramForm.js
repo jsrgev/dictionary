@@ -8,9 +8,9 @@ import _ from 'lodash';
 const GramForm = props => {
 
     const {state, setState, thisIndex, moveRow, stringPath, addGramForm, prevIndent, setSectionClosed} = props;
-
     let pathFrag = stringPath + ".gramForms";
     const path = _.get(state, "tempSetup." + pathFrag);
+    // console.log("tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
@@ -38,6 +38,8 @@ const GramForm = props => {
     const addConstraint = (index) => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, pathFrag);
+        // console.log(availableForLimitationGroups[0].gramClasses)
+        // return;
         let gramClassesToExclude = availableForLimitationGroups[0].gramClasses.map(a => a.id);
         gramClassesToExclude.shift();
         let obj = {
@@ -74,6 +76,8 @@ const GramForm = props => {
     const isLast = thisIndex === path.length-1;
     
     const stringPathA = pathFrag + `[${thisIndex}]`;
+
+    // console.log(path[thisIndex]);
 
     return(
         <>

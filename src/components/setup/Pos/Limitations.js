@@ -42,7 +42,7 @@ const Limitations = props => {
                 <div className="row-content" style={getIndent(prevIndent)}>
                     <label>Only allow</label>
                     <ul>
-                        {gramClassGroup.gramClasses.items.map((a, i) => (
+                        {gramClassGroup.gramClasses.map((a, i) => (
                             <li key={i} value={a.id} 
                             className={ isSelected(a.id) ? "selected" : "" } 
                             onClick={e => handleClick(e, a.id)}
