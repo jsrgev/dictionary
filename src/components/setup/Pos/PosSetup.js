@@ -15,7 +15,6 @@ const PosSetup = props => {
     const pathFrag = "partsOfSpeechDefs.items";
     const path = _.get(state, "tempSetup." + pathFrag);
 
-    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const handleChange = (value, field) => {
@@ -63,8 +62,19 @@ const PosSetup = props => {
             setupCopyPath.splice(thisIndex, 1);
         }
         setState({tempSetup: setupCopy});
-    };
+    }
 
+    const deleteGroup = (index, group) => {
+        let setupCopy = clone(state.tempSetup);
+        let setupCopyPath = _.get(setupCopy, pathFrag + `[${thisIndex}]`);
+        if (setupCopyPath[group].length === 1) {
+            delete setupCopyPath[group];
+        } else {
+            setupCopyPath[group].splice(index, 1);
+        }
+        setState({tempSetup: setupCopy});
+    };
+    
     const availableGramClassGroups = state.tempSetup.gramClassGroups.items.filter(a => {
         let alreadySelected = path[thisIndex].gramClassGroups?.some(b => b.refId === a.id);
         return !alreadySelected;
@@ -96,7 +106,6 @@ const PosSetup = props => {
 
     return(
         <>
-            {/* <div className={`row${sectionOpen ? "" : " closed"}`}> */}
             <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
@@ -122,10 +131,10 @@ const PosSetup = props => {
                     <input id={`${pathFrag}[${thisIndex}].abbr`} type="text" value={path[thisIndex].abbr} onChange={e => handleChange(e.target.value, "abbr")} />
                 </div>
                 { path[thisIndex].gramClassGroups?.map((a, i) => (
-                    <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
+                    <GramClassSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramClassOption={addGramClassOption} availableGramClassGroups={availableGramClassGroups} deleteGroup={deleteGroup} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
                 }
                 { path[thisIndex].gramFormGroups?.map((a, i) => (
-                    <GramFormSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramFormOption={addGramFormGroup} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
+                    <GramFormSelect key={i} state={state} setState={setState} thisIndex={i} moveRow={moveRow} stringPath={stringPathA} addGramFormOption={addGramFormGroup} gramClassAndFormGroups={gramClassAndFormGroups} availableGramClassAndFormGroups={availableGramClassAndFormGroups} deleteGroup={deleteGroup} prevIndent={prevIndent+1} setSectionClosed={setSectionClosed} />))
                 }
             </div>
         </>

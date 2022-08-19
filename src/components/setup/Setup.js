@@ -19,65 +19,6 @@ const Setup = props => {
     const {setup, tempSetup} = state;
 
 
-    const fix = () => {
-        const tempSetupCopy = clone(tempSetup);
-
-        for (let gramClassGroup of tempSetupCopy.gramClassGroups.items) {
-            let arr = gramClassGroup.gramClasses.items;
-            gramClassGroup.gramClasses = arr;
-            // console.log(arr);
-            // console.log(gramClassGroup);
-            // console.log(gramClassGroup.gramClasses);
-            // for (let gramForm of gramFormGroup.gramForms) {
-                // if (gramForm.constraints) {
-                //     let index = gramForm.constraints.findIndex(a => a.refId === path[thisIndex].id)
-                //     if (index > -1) {
-                //         console.log(gramForm)
-                //         if (gramForm.constraints.length === 1) {
-                //             delete gramForm.constraints;
-                //         } else {
-                //             gramForm.constraints.splice(index, 1);
-                //         }
-                //         console.log(gramForm)
-                //     }
-                // }
-            // }
-        }
-        // console.log(tempSetupCopy.gramClassGroups);
-        setState({tempSetup: tempSetupCopy});
-        return;
-        // let ipa = tempSetup.ipa;
-        // console.log(ipa);
-        // ipa.name = "IPA";
-        // ipa.color = "#3b345a";
-        // tempSetupCopy.palettes = [ipa];
-        tempSetupCopy.gramFormGroups.items[1] = {
-            id: "24",
-            name: "definiteness",
-            gramForms: [
-                {
-                    id: "25",
-                    name: "indefinite",
-                    abbr: "ind",
-                },
-                {
-                    id: "26",
-                    name: "definite",
-                    abbr: "def",
-                },
-                ],
-        };
-        // console.log(tempSetupCopy.gramFormGroups);
-        // return;
-        //         let obj = [tempSetup.ipa];
-        // ;
-        //         _.set(tempSetupCopy, `[${palettes}]`, obj);
-        setState({tempSetup: tempSetupCopy});
-        // delete tempSetupCopy.ipa;
-    };
-
-    // console.log(tempSetup.gramClasses);
-
     const moveRow = (e, index, pathFrag, up) => {
         if (e.target.classList.contains("disabled")) return;
         let position = up ? index-1 : index+1;
@@ -96,77 +37,44 @@ const Setup = props => {
         let newValue = !setupCopyPath.sectionClosed;
         setupCopyPath.sectionClosed = newValue;
         setState({tempSetup: setupCopy});
-        // const path = `${pathFrag}.${thisIndex}.sectionClosed`
-        // updateSectionClosed(path, newValue);
     };
-
-    // const cleanUpEntries = () => {
-    //     if (!state.allEntries) {
-    //         return;
-    //     }
-    //     let allEntriesCopy = clone(state.allEntries);
-    //     console.log(allEntriesCopy);
-
-    //     for (let entry of allEntriesCopy) {
-    //         // console.log(entry.senseGroups);
-    //         for (let senseGroup of entry.senseGroups) {
-    //             console.log(senseGroup);
-    //         } 
-    //     }
-    // };
 
     const saveNewSetup = () => {
         axios.post(`${API_BASE}/setup/new`, clone(state.tempSetup))
         .then(response => {
             setState({tempSetup: response.data, setup:response.data});
-            // cleanUpEntries();
         })
         .catch(err => console.log(err));
     };
 
-    const handleFixButtonClick = () => {
-        fix();
-    //     const tempSetupCopy = clone(state.tempSetup);
-    //     console.log(tempSetupCopy.gramClassGroups);
-    //     tempSetupCopy.gramClassGroups.items.forEach(a => {
-    //         let obj = [];
-    //         a.gramClasses.forEach(b => {
-    //             // console.log(b);
-    //             obj.push(b);
-    //         })
-    //         a.gramClasses = {items: obj}
-    //         // console.log(a);
+    // const handleFixButtonClick = () => {
+    // };    
 
-    //     })
-    //     // let obj = tempSetupCopy.gramFormGroups;
-    //     // let {etymologyAbbrs, etymologyTags} = tempSetupCopy;
-    //     // let obj = tempSetupCopy.palettes;
-
-    //     // let classes = 
-    //     // console.log(obj);
-    //     // tempSetupCopy.gramFormGroups = {items: obj};
-    //     console.log(tempSetupCopy.gramClassGroups);
-    //     setState({tempSetup: tempSetupCopy});
-
-    //     return;
-    };    
-
-    // console.log(state.status.areEntriesUpdated);
+    const didGramClassesOrFormsChange = () => {
+        let sections = ["partsOfSpeechDefs", "gramClassGroups", "gramFormGroups"];
+        for (let section of sections) {
+            if (JSON.stringify(state.setup[section]) !== JSON.stringify(state.tempSetup[section])) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     const updateSetup = async () => {
-
+        console.log("updateSetup");
         let obj = clone(state.tempSetup);
+
+        obj.fixGramClassesAndForms = didGramClassesOrFormsChange();
         obj.scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
             if (state.allEntries.length < 1) return [];
             let isNew = !setup.scripts.items.some(b => b.id === a.id);
             return (isNew) ? a.id : [];
         });
-        // console.log(state.changes);
-        // return;
         obj.scriptsToDelete = state.changes.scriptsToDelete;
-        // console.log(obj.scriptsToDelete ?? [], obj.scriptsToAdd);
+
         axios.post(`${API_BASE}/setup/update`, obj)
         .then(res => {
+            // console.log("first then");
             let tempSetupClone = clone(state.tempSetup);
             tempSetupClone.dateModified = new Date();
             let changesClone = clone(state.changes);
@@ -174,45 +82,16 @@ const Setup = props => {
             changesClone.scriptsToDelete = [];
             setState({tempSetup: tempSetupClone, setup:tempSetupClone, changes:changesClone});
             alert("Your changes have been saved.");
-            // console.log(res.data);
             return res.data.areEntriesUpdated;
-            // cleanUpEntries();
         })
         .then(areEntriesUpdated => {
             // console.log(areEntriesUpdated);
             if (areEntriesUpdated) fetchEntries();
+            // console.log("fetchEntries");
         })
         .catch(err => console.log(err));
 
-        // axios.post(`${API_BASE}/entry/updateAll`, clone())
-        // .then(response => {
-        //     let tempSetupClone = clone(state.tempSetup);
-        //     tempSetupClone.dateModified = new Date();
-        //     setState({tempSetup: tempSetupClone, setup:tempSetupClone});
-        //     alert("Your changes have been saved.");
-        //     // cleanUpEntries();
-        // })
-        // .catch(err => console.log(err));
     };
-
-    // const updateSectionClosed = (path, newValue) => {
-    //     // console.log(path);
-    //     // return;
-    //     // let sectionsOpen = clone(state.setup.sectionsOpen);
-    //     // let obj = {_id: state.tempSetup._id};
-    //     // console.log(obj);
-    //     // axios.post(`${API_BASE}/setup/updateSectionsOpen`, obj);
-    //     let {_id} = state.tempSetup;
-    //     axios.post(`${API_BASE}/setup/updateSectionClosed`, {_id, path, newValue})
-    //     .then(response => {
-    //         console.log(response.data);
-    //         // let sectionsOpenClone = clone(state.sectionsOpen);
-    //         // setState({tempSetup: tempSetupClone, setup:tempSetupClone});
-    //         // alert("Your changes have been saved.");
-    //         // cleanUpEntries();
-    //     })
-    //     .catch(err => console.log(err));
-    // };
 
     const handleSaveButtonClick = () => {
         if (state.tempSetup.languageData.targetLanguageName === "" && state.tempSetup.languageData.sourceLanguageName === "") {

@@ -30,6 +30,38 @@ const ScriptForm = props => {
         return (script.abbr?.length > 1) ? script.abbr : script.name;
     };
 
+
+
+    const getAllHeadwords = () => {
+        let currentScriptId = state.setup.scripts.items[0].id;
+        let entrySet = [];
+        for (let entry of state.allEntries) {
+            for (let morph of entry.headword.morphs) {
+                let string = morph.scriptForms.find(a => a.refId === currentScriptId).content;
+                entrySet.push(string);
+            }
+        }
+        return entrySet;
+    };
+
+    const isHomograph = morph => {
+        if (!stringPath.startsWith("headword")) {
+            return false;
+        }
+        const allHeadwords = getAllHeadwords().sort();
+        let duplicates = allHeadwords.filter((a, i, arr) => a === arr[i+1]);
+        // console.log(duplicates)
+        return duplicates.some(a => a === morph);
+    }
+        
+    const currentScript = state.setup.scripts.items[0];
+    let currentMorph = path[thisIndex].content;
+    console.log(currentMorph + " - " + isHomograph(currentMorph));
+    // console.log(isHomograph(currentMorph));
+
+
+    // console.log(path[thisIndex]);
+
     const popupItems = [
         ["Note", () => {
             let index = (path[thisIndex].notes) ? path[thisIndex].notes.length-1 : 0;

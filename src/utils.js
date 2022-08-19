@@ -49,6 +49,7 @@ export const getAllGramClassGroups = (posId, partsOfSpeechDefs) => {
 export const getGramClasses = (posId, gramClassGroupId, partsOfSpeechDefs, gramClassGroups) => {
     let posDef = getPosDef(posId, partsOfSpeechDefs);
     let excluded = posDef.gramClassGroups.find(a => a.refId === gramClassGroupId).excluded || [];
+    // console.log(excluded);
 
     let thisGroupsGramClasses = gramClassGroups.find(a => a.id === gramClassGroupId);
     // console.log(thisGroupsGramClasses);
@@ -79,6 +80,10 @@ export const generatePos = (posId, partsOfSpeechDefs, gramClassGroups) => {
     if (gramClassGroupIds) {
         obj.gramClassGroups = [];
         gramClassGroupIds.forEach(gramClassGroupId => {
+            // console.log(posId);
+            // console.log(gramClassGroupId);
+            // console.log(partsOfSpeechDefs);
+            // console.log(gramClassGroups);
             let gramClasses = getGramClasses(posId, gramClassGroupId, partsOfSpeechDefs, gramClassGroups);
             obj.gramClassGroups.push(
                 {
@@ -121,7 +126,7 @@ export const handleInputBlur = e => {
     return newValue;
 };
 
-const closePopup = (setAddPopupVisible) => {
+const closePopup = setAddPopupVisible => {
     setAddPopupVisible(false)
 };
 
@@ -254,7 +259,8 @@ export const sortEntries = (entries, letterOrder, diacriticOrder) => {
 export const getGramFormAbbrs = (gramFormSet, gramFormGroupDefs) => {
     let gramFormNames = gramFormSet.map(a => {
         let gramForm = gramFormGroupDefs.reduce((acc2, b) => {
-            let result = b.gramForms.find(c => c.id === a);
+            let gramForms = b.gramForms || b.gramClasses;
+            let result = gramForms.find(c => c.id === a);
             return result ? (acc2 += `${result.abbr}.`) : acc2;
         }, ""); 
         return gramForm;

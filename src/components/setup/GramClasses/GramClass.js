@@ -40,43 +40,25 @@ const GramForm = props => {
         }
     };
 
-
-
     const cleanUpGramFormLimitations = setupCopy => {
         console.log(path[thisIndex].id)
         for (let gramFormGroup of setupCopy.gramFormGroups.items) {
             for (let gramForm of gramFormGroup.gramForms) {
                 if (gramForm.constraints) {
-
                     for (let constraint of gramForm.constraints) {
-                        
-                        
                         let index = constraint.excludedGramClasses.findIndex(a => a === path[thisIndex].id)
-                        if (index > -1) {
-                            // console.log(gramForm)
-                            // if (gramForm.constraints.length === 1) {
-                                // delete gramForm.constraints;
-                            // } else {
-                                constraint.excludedGramClasses.splice(index, 1);
-                            // }
-                            // console.log(gramForm)
-                        }
+                        if (index > -1) constraint.excludedGramClasses.splice(index, 1);
                     }
                 }
             }
         }
     };
-
-    // gramFormGroups > items > [] > gramForms > [] > constraints > [] > refId > excludedGramClasses > []
-
-
     
     const deleteGramClass = () => {
         let setupCopy = clone(state.tempSetup);
         cleanUpPosDefs(setupCopy);
         cleanUpGramFormLimitations(setupCopy);
         setState({tempSetup: setupCopy});
-        // return;
         let setupCopyPath = _.get(setupCopy, pathFrag);
         if (setupCopyPath.length === 1) {
             let newGramClass = clone(gramClassDefault);

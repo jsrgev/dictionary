@@ -5,7 +5,7 @@ import {useState} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = (props) => {
-    const { path, state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveRow, setScriptForms} = props;
+    const { path, state, setState, thisIndex, prevIndent, stringPath, addFunctions, availablePoses, moveRow, setScriptForms, cleanUpIrregulars} = props;
     const {addPos} = addFunctions;
 
     let pathFrag = stringPath + ".partsOfSpeech";
@@ -70,8 +70,9 @@ const PartOfSpeech = (props) => {
     // },[gramClassGroups]);
 
 
-    const getAllGramForms = () => {
-        let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
+    const getAllGramForms = (gramClassGroups, thisRefId) => {
+        // console.log(gramClassGroups);
+        let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === thisRefId);
         let gramFormGroups = posDef.gramFormGroups;
         // console.log(posDef);
         if (!gramFormGroups) {
@@ -88,8 +89,8 @@ const PartOfSpeech = (props) => {
                 if (gramFormDef.constraints) {
                     gramFormDef.constraints.forEach(group => {
                         let allCurrentGramClasses = [];
-                        // path[thisIndex].gramClassGroups.items.forEach(a => {
-                            path[thisIndex].gramClassGroups.forEach(a => {
+                            gramClassGroups.forEach(a => {
+                                // console.log(a);
                                 a.gramClasses.forEach(b => {
                                 allCurrentGramClasses.push(b);
                             });
@@ -116,7 +117,8 @@ const PartOfSpeech = (props) => {
         return (typeof(allGramForms[0]) === "string") ? [allGramForms] : allGramForms;
     };
 
-    const allGramForms = getAllGramForms();
+    const allGramForms = getAllGramForms(path[thisIndex].gramClassGroups, path[thisIndex].refId);
+    // console.log(allGramForms)
     const popupItems = [];
 
     if (availablePoses.length > 0) {
@@ -124,20 +126,19 @@ const PartOfSpeech = (props) => {
     }
 
     return (
-       
-                    <div className={`row${sectionOpen ? "" : " closed"}`}>
-                        <div className="row-controls">
-                            <i></i>
-                            <i></i>
-                            <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
-                        </div>
-                        <div className="row-content" style={getIndent(prevIndent+1)}>
-                            <div>Forms:</div>
-                        </div>
-                        {allGramForms.map((a, i) => (
-                            <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPath} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} />
-                        ))}
-                    </div>
+        <div className={`row${sectionOpen ? "" : " closed"}`}>
+            <div className="row-controls">
+                <i></i>
+                <i></i>
+                <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
+            </div>
+            <div className="row-content" style={getIndent(prevIndent+1)}>
+                <div>Forms:</div>
+            </div>
+            {allGramForms.map((a, i) => (
+                <ParadigmForm key={i} thisIndex={i} gramFormSet={a} state={state} setState={setState} prevIndent={prevIndent+2} stringPath={stringPath} addFunctions={addFunctions} moveRow={moveRow} setScriptForms={setScriptForms} cleanUpIrregulars={cleanUpIrregulars} />
+            ))}
+        </div>
     )
 };
 

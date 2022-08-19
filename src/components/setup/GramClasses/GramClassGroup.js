@@ -8,9 +8,7 @@ import _ from 'lodash';
 const GramClassGroup = props => {
 
     const {state, setState, thisIndex, moveRow, addGroup, prevIndent, setSectionClosed} = props;
-
     let pathFrag = "gramClassGroups.items";
-    // console.log(pathFrag);
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -23,19 +21,13 @@ const GramClassGroup = props => {
     };
 
     const addGramClass = (index, pathFrag) => {
-        // console.log("adding")
-        // console.log(epathFrag);
-        // return;
         let setupCopy = clone(state.tempSetup);
-        // console.log(state.tempSetup.gramClassGroups.items);
         let setupCopyPath = _.get(setupCopy, pathFrag);
-        // console.log(setupCopyPath);
         let newGramClass = clone(gramClassDefault);
         newGramClass.id = setupCopy.nextId.toString();
         setupCopy.nextId++;
         setupCopyPath.splice(index+1, 0, newGramClass);
         console.log(setupCopyPath);
-        // return;
         setState({tempSetup: setupCopy});
     };
 
@@ -124,7 +116,7 @@ const GramClassGroup = props => {
                     ></i>
                 </div>
                 <div className="row-content double-input" style={getIndent(prevIndent)}>
-                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>GroupX</label>
+                    <label htmlFor={`${pathFrag}[${thisIndex}]`}>Group</label>
                     <input htmlFor={`${pathFrag}[${thisIndex}]`} type="text" value={path[thisIndex].name} onChange={e => handleChange(e.target.value, "name")} />
                     <label>Allow multiple</label>
                     <ul>

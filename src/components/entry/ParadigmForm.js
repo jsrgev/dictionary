@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 const ParadigmForm = props => {
 
-    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow} = props;
+    const {state, setState, prevIndent, stringPath, addFunctions, gramFormSet, moveRow, cleanUpIrregulars} = props;
     const {setScriptForms, addMorph} = addFunctions;
 
     let pathFrag = stringPath;
@@ -17,6 +17,7 @@ const ParadigmForm = props => {
     const [sectionOpen, setSectionOpen] = useState(true);
 
     const changeExists = () => {
+        let needCleanUp = true;
         let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         let index = getIndex();
@@ -30,23 +31,25 @@ const ParadigmForm = props => {
             entryCopyPath.irregulars.push(obj);
         } else if (entryCopyPath.irregulars[index].missing) {
             if (entryCopyPath.irregulars[index].morphs) {
-
                 delete entryCopyPath.irregulars[index].missing;
             } else if (entryCopyPath.irregulars.length > 1) {
                 delete entryCopyPath.irregulars.splice(index, 1);
             } else {
                 delete entryCopyPath.irregulars;
             }
+            needCleanUp = false;
         } else {
             entryCopyPath.irregulars[index] = obj;
         }
         setState({entry: entryCopy});
+        if (needCleanUp) cleanUpIrregulars();
     };
 
     const changeRegular = () => {
         if (!gramFormExists()) {
             return;
         }
+        let needCleanUp = false;
         let entryCopy = clone(state.entry);
         let entryCopyPath = _.get(entryCopy, pathFrag);
         let index = getIndex();
@@ -56,6 +59,7 @@ const ParadigmForm = props => {
             } else {
                 entryCopyPath.irregulars.splice(index, 1);
             }
+            needCleanUp = true;
         } else {
             let obj = {
                 gramFormSet: gramFormSet,
@@ -70,21 +74,8 @@ const ParadigmForm = props => {
             }
         }
         setState({entry: entryCopy});
+        if (needCleanUp) cleanUpIrregulars();
     };
-    
-    // console.log(gramFormSet);
-
-    // const getGramFormAbbrs = () => {
-    //     let gramFormNames = gramFormSet.map(a => {
-    //         let gramForm = state.setup.gramFormGroups.reduce((acc2, b) => {
-    //             let result = b.gramForms.find(c => c.id === a);
-    //             return result ? (acc2 += `${result.abbr}.`) : acc2;
-    //         }, ""); 
-    //         return gramForm;
-    //     });
-    //     let filteredGramFormNames = gramFormNames.filter(a => a);        
-    //     return filteredGramFormNames.join(" ");
-    // };
     
     const gramFormExists = () => {
         let index = getIndex();
@@ -119,10 +110,10 @@ const ParadigmForm = props => {
         popupItems.push(["Alternate form", () => addMorph(path.irregulars[getIndex()].morphs.length-1, pathFrag+`.irregulars[${getIndex()}].morphs`)]);
     }
 
+    // formGroups + classGroups
+    let combinedGramFormGroups = state.setup.gramFormGroups.items.concat(state.setup.gramClassGroups.items);
+
     let stringPathA = pathFrag + `.irregulars[${getIndex()}].morphs`;
-
-    // console.log(path);
-
 
     return (
         <>
@@ -136,7 +127,7 @@ const ParadigmForm = props => {
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndent-1)}>
                     <div>
-                        {getGramFormAbbrs(gramFormSet, state.setup.gramFormGroups.items)}
+                        {getGramFormAbbrs(gramFormSet, combinedGramFormGroups)}
                     </div>
                     <div onClick={changeExists} >
                         {gramFormExists() ? "Exists" : "Missing"}

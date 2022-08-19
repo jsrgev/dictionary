@@ -105,7 +105,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
                         <span key={key} className="for">{altMainScript}</span>{altOtherScriptsDisplay} see <span className="for">{mainCurrentScript}</span>{mainOtherScriptsDisplay}
                     </React.Fragment>
             };
-            console.log(sortTerm)
+            // console.log(sortTerm)
             allDisplayItems.push(obj);
             let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds);
             altDisplayForHeadword.push(fullDisplay);

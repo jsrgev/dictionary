@@ -2,7 +2,7 @@ import {capitalize, clone, generatePos, getIndent, addPopupHandler, getGramClass
 import AddPopup from '../AddPopup';
 // import {partsOfSpeechDefs} from '../../languageSettings.js';
 import GramForms from './GramForms';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import _ from 'lodash';
 
 const PartOfSpeech = props => {
@@ -36,10 +36,11 @@ const PartOfSpeech = props => {
         let entryCopyPath = _.get(entryCopy, pathFrag);
         entryCopyPath[thisIndex] = generatePos(value, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items);
         setState({entry: entryCopy});
-        return;
+        cleanUpIrregulars();
     };
 
-    const cleanUpGramForms = () => {
+    const cleanUpIrregulars = () => {
+        console.log("cleanUpIrregulars");
         let irregulars = path[thisIndex].irregulars;
         if (!irregulars) {
             return;
@@ -92,14 +93,15 @@ const PartOfSpeech = props => {
             }
         }
         setState({entry: entryCopy});
+        cleanUpIrregulars();
     }
 
-    const gramClassGroups = path[thisIndex].gramClassGroups;
+    // const gramClassGroups = path[thisIndex].gramClassGroups;
     
-    useEffect(() => {
-        cleanUpGramForms();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[gramClassGroups]);
+    // useEffect(() => {
+    //     cleanUpGramForms();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // },[gramClassGroups]);
 
     const isAvailable = posId => {
         return availablePoses.some(a => a.id === posId);
@@ -114,7 +116,7 @@ const PartOfSpeech = props => {
 
     const getAllGramForms = () => {
         let posDef = state.setup.partsOfSpeechDefs.items.find(a => a.id === path[thisIndex].refId);
-        // console.log(posDef.gramFormGroups)
+        // console.log(posDef)
         let gramFormGroups = posDef.gramFormGroups;
         if (!gramFormGroups) {
             return [];
@@ -122,11 +124,8 @@ const PartOfSpeech = props => {
         let groups = [];
         gramFormGroups.forEach(a => {
             // "gramForms" could be actual gramForms or gramClasses (forms to agree with classes)
-            // console.log(a);
-            // console.log(state.setup.gramFormGroups.items);
             let gramFormGroupDef = state.setup.gramFormGroups.items.find(b => b.id === a.refId) || state.setup.gramClassGroups.items.find(b => b.id === a.refId);
             let arr = [];
-            // console.log(gramFormGroupDef);
             let gramForms = gramFormGroupDef.gramForms || gramFormGroupDef.gramClasses;
             gramForms.forEach(gramFormDef => {
                 let applicable = true;  
@@ -217,10 +216,7 @@ const PartOfSpeech = props => {
                     ))
                 }
                 { allGramForms.length > 0 &&
-
-                    <GramForms path={path}
-                    //  key={Math.floor(Math.random() * 1000)} 
-                    state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
+                    <GramForms path={path} cleanUpIrregulars={cleanUpIrregulars} state={state} setState={setState} thisIndex={thisIndex} prevIndent={0} stringPath={stringPathA} addFunctions={addFunctions} availablePoses={availablePoses} moveRow={moveRow} setScriptForms={setScriptForms} />
                 }
             </div>
     </>

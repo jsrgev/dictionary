@@ -55,7 +55,9 @@ const EntriesList = props => {
         if (isDirty()) {
             let response;
             if (state.entry._id) {
-                response = window.confirm("Are you sure you want to open this entry? Changes to the current entry will not be saved.");
+                // console.log(JSON.stringify(state.entry));
+                // console.log(JSON.stringify(state.entryCopy));                
+                    response = window.confirm("Are you sure you want to open this entry? Changes to the current entry will not be saved.");
             } else {
                 response = window.confirm("Are you sure you want to leave? The new entry will not be saved.");
             }
@@ -64,11 +66,19 @@ const EntriesList = props => {
             }
         }
         let thisEntry = state.allEntries.find(a => a._id === id);
+        // console.log(thisEntry);
+        // console.log(JSON.stringify(thisEntry));
         setState({entry: thisEntry, entryCopy: thisEntry});
         setTimeout(() => {
             displayArrows();
+            // console.log(JSON.stringify(state.entry));
+            // console.log(JSON.stringify(state.entryCopy));                
         }, 10); ;
     }
+    // console.log(state.entry);
+    // console.log(state.entryCopy);
+            // console.log(JSON.stringify(state.entry));
+            // console.log(JSON.stringify(state.entryCopy));                
 
     const isActive = id => id === state.entry._id;
 

@@ -12,10 +12,22 @@ const Limitations = props => {
     const handleClick = (e, gramClassId) => {
         let setupCopy = clone(state.tempSetup);
         let setupCopyPath = _.get(setupCopy, stringPath);
+        // console.log(setupCopyPath);
         if (setupCopyPath.excluded) {
             let index = setupCopyPath.excluded.findIndex(a => a === gramClassId);
+            let max = gramClassGroup.gramClasses.length;
+            if (setupCopyPath.excluded.length === max-1) {
+                console.log(index)
+                // return;
+            }
+            // if it's not already found in excluded, add it
             if (index < 0) {
+                // at least one class has to be allowed. if the number of exclusions is one short of total class number, ignore the click
+                if (setupCopyPath.excluded.length === max-1) {
+                    return;
+                }
                 setupCopyPath.excluded.push(gramClassId);
+            // if excluded is going to be empty, delete it
             } else if (setupCopyPath.excluded.length === 1) {
                 delete setupCopyPath.excluded;
             } else {
@@ -33,7 +45,6 @@ const Limitations = props => {
     };
 
     const gramClassGroup = state.tempSetup.gramClassGroups.items.find(a => a.id === upPath.refId);
-    // console.log(gramClassGroup);
 
     return(
         <>

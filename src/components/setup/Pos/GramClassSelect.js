@@ -6,14 +6,12 @@ import Limitations from './Limitations.js';
 
 const GramClassSelect = props => {
 
-    const {state, setState, thisIndex, moveRow, stringPath, addGramClassOption, availableGramClassGroups, prevIndent, setSectionClosed} = props;
+    const {state, setState, thisIndex, moveRow, stringPath, addGramClassOption, availableGramClassGroups, deleteGroup, prevIndent, setSectionClosed} = props;
 
     let pathFrag = stringPath + ".gramClassGroups";
     const path = _.get(state, "tempSetup." + pathFrag);
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
-
-    // console.log(path)
 
     const handleClick = async (e) => {
         let gramClassId = e.target.getAttribute("value");
@@ -28,13 +26,6 @@ const GramClassSelect = props => {
 
         setState({tempSetup: setupCopy});
     };
-    
-    const deletePos = () => {
-        let setupCopy = clone(state.tempSetup);
-        let setupCopyPath = _.get(setupCopy, pathFrag);
-        setupCopyPath.splice(thisIndex, 1);
-        setState({tempSetup: setupCopy});
-    };
 
     const popupItems = [];
 
@@ -45,7 +36,6 @@ const GramClassSelect = props => {
     const isAvailable = gramClassGroupId => {
         return availableGramClassGroups.some(a => a.id === gramClassGroupId);
     };
-    
 
     const isCurrentSelection = gramClassGroupId =>  {
         return path[thisIndex].refId === gramClassGroupId;
@@ -56,15 +46,13 @@ const GramClassSelect = props => {
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
 
-    // console.log(path);
-
     return(
         <>
             <div className={`row${ path[thisIndex].sectionClosed ? " closed" : ""}`}>
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className={`fas fa-plus${popupItems.length === 0 ? " disabled" : ""}`} onClick={popupItems.length === 0 ? undefined : () => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                <i className="fas fa-minus" onClick={deletePos}></i>
+                <i className="fas fa-minus" onClick={e => deleteGroup(thisIndex, "gramClassGroups")}></i>
                 <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

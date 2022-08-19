@@ -12,7 +12,6 @@ const GramFormSection = props => {
     const pathFrag = "gramFormGroups.items";
     const path = _.get(state, "tempSetup.gramFormGroups");
 
-    // const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
 
     const addGroup = index => {

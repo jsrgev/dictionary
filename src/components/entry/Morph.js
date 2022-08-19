@@ -18,14 +18,11 @@ const Morph = props => {
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [sectionOpen, setSectionOpen] = useState(true);
 
-    const handleChange = value => {
+    const handleChange = (field, value) => {
         if (value !== undefined) {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            // console.log(pathFrag);
-            // console.log(value);
-            // return;
-            entryCopyPath[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content = value;
+            entryCopyPath[thisIndex].scriptForms.find(a => a.refId === currentScript.id)[field] = value;
             setState({entry: entryCopy});
         }
     }
@@ -63,8 +60,34 @@ const Morph = props => {
         popupItems.splice(1, 0, ["Pronunciation", addPronunciation]);
     }
 
-    // console.log(path[thisIndex]);
+
+
+    const getAllHeadwords = () => {
+        let currentScriptId = state.setup.scripts.items[0].id;
+        let entrySet = [];
+        for (let entry of state.allEntries) {
+            for (let morph of entry.headword.morphs) {
+                // console.log(currentScriptId);
+                // console.log(morph.scriptForms.find(a => a.refId === currentScriptId));
+                let string = morph.scriptForms.find(a => a.refId === currentScriptId).content;
+                entrySet.push(string);
+            }
+        }
+        return entrySet;
+    };
+
+    const isHomograph = morph => {
+        if (labels[0] !== "Basic form") {
+            return false;
+        }
+        const allHeadwords = getAllHeadwords().sort();
+        let duplicates = allHeadwords.filter((a, i, arr) => a === arr[i+1]);
+        return duplicates.some(a => a === morph);
+    }
+        
     const currentScript = state.setup.scripts.items[0];
+    let currentMorph = path[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content;
+    // console.log(currentMorph + " - " + isHomograph(currentMorph));
 
     const getNumber = () => {
         if (labels[0] === "Basic form") {
@@ -110,11 +133,24 @@ const Morph = props => {
                     <input id={`${pathFrag}[${thisIndex}]`} type="text"
                     className="for norm"
                     value={path[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content}
-                    // value={path[thisIndex].scriptForms?.[0].content}
-                    onChange={e => handleChange(e.target.value)}
+                    onChange={e => handleChange("content", e.target.value)}
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
+
+                {isHomograph(currentMorph) &&
+
+                    <div className="row-content" style={getIndent(prevIndent)}>
+                        <label htmlFor={`${pathFrag}[${thisIndex}]-homograph`}>Headword number</label>
+                        <input id={`${pathFrag}[${thisIndex}]-homograph`} type="number"
+                        className="for norm"
+                        value={path[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content}
+                        onChange={e => handleChange("homograph", e.target.value)}
+                        onBlur={e => handleChange(handleInputBlur(e))}
+                        />
+                    </div>
+                }
+                    
                 {/* <div className="row"> */}
                     { state.setup.scripts &&
                     path[thisIndex].scriptForms?.map((a,i) => (

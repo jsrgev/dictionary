@@ -24,14 +24,6 @@ const Entry = props => {
         const defaultPosId = state.setup.partsOfSpeechDefs.items[0].id;
         newEntry.senseGroups.push(generateSenseGroup(defaultPosId, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items));
         addFunctions.setScriptForms(newEntry.headword.morphs[0]);
-        // newEntry.headword.morphs[0].scriptForms = state.setup.scripts.items.map(a => {
-        //     let obj = {
-        //         refId: a.id,
-        //         content: ""
-        //     }
-        //     return obj;
-        // });
-        // console.log(newEntry.headword.morphs[0]);
         setState({entry: newEntry, entryCopy: newEntry});
     };
 
@@ -57,6 +49,7 @@ const Entry = props => {
     const addFunctions = {
         setScriptForms: obj => {
             obj.scriptForms = state.setup.scripts.items.map(a => {
+                // console.log(a);
                 let obj = {
                     refId: a.id,
                     content: ""
@@ -68,7 +61,7 @@ const Entry = props => {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
             let obj = clone(morphDefault);
-            this.setScriptForms(obj);
+            addFunctions.setScriptForms(obj);
             entryCopyPath.splice(index+1, 0, obj);
             setState({entry: entryCopy});
         },
