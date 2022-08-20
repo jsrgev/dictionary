@@ -88,6 +88,7 @@ export const getEntriesDisplay = (entries, setup, etymologyTags) => {
         for (let i=1; i<filteredArr.length; i++) {
             let item = filteredArr[i];
             let altMainScript = item.scriptForms.find(a => a.refId === currentScriptId).content;
+            if (altMainScript === "") altMainScript = "☐";
             let altOtherScripts = item.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
             let altOtherScriptsDisplay = altOtherScripts.map((a, i, arr) => {
                 return <React.Fragment key={i}> <span className="for">{a.content}</span></React.Fragment>

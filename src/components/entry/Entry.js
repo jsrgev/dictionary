@@ -52,7 +52,8 @@ const Entry = props => {
                 // console.log(a);
                 let obj = {
                     refId: a.id,
-                    content: ""
+                    content: "",
+                    homograph: 0,
                 }
                 return obj;
             });

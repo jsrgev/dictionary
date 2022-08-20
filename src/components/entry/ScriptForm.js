@@ -6,7 +6,7 @@ import _ from "lodash";
 
 const ScriptForm = props => {
 
-    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, moveRow} = props;
+    const {state, setState, thisIndex, morphIndex, prevIndent, stringPath, addFunctions, moveRow} = props;
     const {addNote} = addFunctions;
     // const path = state.entry.headword[morphIndex].scriptForms;
 
@@ -31,32 +31,42 @@ const ScriptForm = props => {
     };
 
 
-
     const getAllHeadwords = () => {
-        let currentScriptId = state.setup.scripts.items[0].id;
+        let currentScriptId = state.setup.scripts.items.find(a => a.id === path[thisIndex].refId).id;
+        // console.log(currentScriptId);
         let entrySet = [];
         for (let entry of state.allEntries) {
-            for (let morph of entry.headword.morphs) {
-                let string = morph.scriptForms.find(a => a.refId === currentScriptId).content;
-                entrySet.push(string);
+            let {morphs} = entry.headword;
+
+            if (entry._id === state.entry._id) {
+                for (let morph of state.entry.headword.morphs) {
+                    let scriptForm = morph.scriptForms.find(a => a.refId === currentScriptId);
+                    entrySet.push(scriptForm.content);
+                }
+            } else {
+                for (let i = 0; i < morphs.length; i++) {
+                    let scriptForm = morphs[i].scriptForms.find(a => a.refId === currentScriptId);
+                    entrySet.push(scriptForm.content);
+                }
             }
         }
         return entrySet;
     };
 
     const isHomograph = morph => {
-        if (!stringPath.startsWith("headword")) {
-            return false;
-        }
+        if (morph === "") return false;
         const allHeadwords = getAllHeadwords().sort();
+        console.log(allHeadwords)
         let duplicates = allHeadwords.filter((a, i, arr) => a === arr[i+1]);
         // console.log(duplicates)
         return duplicates.some(a => a === morph);
     }
-        
+    
     const currentScript = state.setup.scripts.items[0];
     let currentMorph = path[thisIndex].content;
-    console.log(currentMorph + " - " + isHomograph(currentMorph));
+    console.log(isHomograph(path[thisIndex].content));
+
+    // console.log(currentMorph + " - " + isHomograph(currentMorph));
     // console.log(isHomograph(currentMorph));
 
 
