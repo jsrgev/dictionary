@@ -81,9 +81,9 @@ const Homographs = props => {
         <>
             <div className={`row${sectionOpen ? "" : " closed"}`}>
                 <div className="row-controls">
-                   <i></i>
-                   <i></i>
-                   <i></i>
+                   <span></span>
+                   <span></span>
+                   <span></span>
                     {/* <i className={`fas fa-minus${path.length === 1 && path[thisIndex].scriptForms[0].content.trim() === "" ? " disabled" : ""}`} onClick={deleteMorph}></i>
                     <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i> */}
                     <i

@@ -54,7 +54,7 @@ const Note = props => {
                     onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}
                     ></i>
                     <i className="fas fa-minus" onClick={deleteNote}></i>
-                    <i></i>
+                    <span></span>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
                     onClick={e => moveRow(e, thisIndex, pathFrag, true)}

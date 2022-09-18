@@ -24,8 +24,8 @@ const EntriesSection = props => {
             <div className="row-controls">
                 {/* <AddPopup popupItems={popupItems} visible={addPopupVisible} /> */}
                 {/* <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i> */}
-                <i></i>
-                <i></i>
+                <span></span>
+                <span></span>
                 <i className={`fas fa-chevron-${path.sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(pathFrag)}></i>
             </div>
             <div className="row-content">

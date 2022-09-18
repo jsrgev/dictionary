@@ -62,7 +62,7 @@ const Pronunciation = (props) => {
                     {path[thisIndex].notes ?
                         <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         :
-                        <i></i>
+                        <span></span>
                     }
 
                     <i

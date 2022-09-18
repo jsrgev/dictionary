@@ -79,7 +79,7 @@ const GramFormGroup = props => {
                     <i className="fas fa-minus" onClick={deleteGroup}></i>
                     { path[thisIndex].gramForms?.length>0 ?
                     <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
-                    : <i></i>
+                    : <span></span>
                     }
                     <i
                         className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

@@ -37,7 +37,7 @@ const GramClassSection = props => {
             <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
-                <i></i>
+                <span></span>
                 <i className={`fas fa-chevron-${path.sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed("gramClassGroups")}></i>
             </div>
             <div className="row-content">

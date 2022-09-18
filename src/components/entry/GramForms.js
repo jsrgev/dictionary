@@ -128,8 +128,8 @@ const PartOfSpeech = (props) => {
     return (
         <div className={`row${sectionOpen ? "" : " closed"}`}>
             <div className="row-controls">
-                <i></i>
-                <i></i>
+                <span></span>
+                <span></span>
                 <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
             </div>
             <div className="row-content" style={getIndent(prevIndent+1)}>

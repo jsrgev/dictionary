@@ -113,7 +113,7 @@ const PosSetup = props => {
                 <i className="fas fa-minus" onClick={deletePos}></i>
                 { path[thisIndex].gramClassGroups?.length>0 || path[thisIndex].gramFormGroups?.length>0 ?
                     <i className={`fas fa-chevron-${path[thisIndex].sectionClosed ? "down" : "up"}`} onClick={() => setSectionClosed(`${pathFrag}[${thisIndex}]`)}></i>
-                    : <i></i>
+                    : <span></span>
                 }
                 <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

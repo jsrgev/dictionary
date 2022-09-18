@@ -83,7 +83,7 @@ const Definition = props => {
                     ></i>
                     {(path[thisIndex].notes || path[thisIndex].examples) ?
                     <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i> :
-                    <i></i>
+                    <span></span>
                     }
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}

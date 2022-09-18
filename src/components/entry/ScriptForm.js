@@ -16,6 +16,7 @@ const ScriptForm = props => {
     const path = _.get(state, "entry." + pathFrag);
 
     const [sectionOpen, setSectionOpen] = useState(true);
+    const [homographSectionOpen, setHomographSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [thisEditHomographs, setThisEditHomographs] = useState(false);
     // const [homographs, setHomographs] = useState([]);
@@ -174,6 +175,7 @@ const ScriptForm = props => {
     ];
 
     // console.log(thisEditHomographs?.scriptForm === path[thisIndex].content);
+    const showHomographSection = thisEditHomographs?.scriptForm === path[thisIndex].content;
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
     return (
@@ -182,11 +184,11 @@ const ScriptForm = props => {
                 <div className="row-controls">
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                    <i></i>
-                    {path[thisIndex].notes ?
+                    <span></span>
+                    {path[thisIndex].notes || showHomographSection ?
                         <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         :
-                        <i></i>
+                        <span></span>
                     }
 
                 </div>
@@ -199,12 +201,15 @@ const ScriptForm = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
-                {(thisEditHomographs?.scriptForm === path[thisIndex].content) &&
+                {(showHomographSection) &&
                     <>
+                        <div className={`row${homographSectionOpen ? "" : " closed"}`}>
+
                         <div className="row-controls">
-                            <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                            <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                            <i></i>
+                            <span></span>
+                            <span></span>
+                            <i className={`fas fa-chevron-${homographSectionOpen ? "up" : "down"}`} onClick={() => setHomographSectionOpen(!homographSectionOpen)}></i>
+                            <span></span>
                         </div>
 
                         <div className="row-content" style={getIndent(prevIndent + 1)}>
@@ -212,47 +217,12 @@ const ScriptForm = props => {
                         </div>
                         {thisEditHomographs.items.map((a,i) => (
                             <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} currentScriptId={currentScriptId} thisEditHomographs={thisEditHomographs} />
-                        ))
+                            ))
                         }   
-                    </>
-
-
-
-                }
-                {/* {homographs.length > 1   &&
-                    <>
-                        <div className="row-controls">
-                            <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                            <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                            <i></i>
-                        </div>
-
-                        <div className="row-content" style={getIndent(prevIndent + 1)}>
-                            <span>Homograph Order</span>
                         </div>
                     </>
-                } */}
-                {/* {homographs.length > 1 &&
-                    // <>
-                    //     <div className="row-controls">
-                    //         <AddPopup popupItems={popupItems} visible={addPopupVisible} />
-                    //         <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
-                    //         <i></i>
-                    //     </div>
-
-                    //     <div className="row-content" style={getIndent(prevIndent)}>
-                    //         <span>Homograph Order</span>
-                    //     </div>
-                    //     <span></span>
-                    //     return(
-                        
-                        homographs.map((a,i) => (
-                            <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} homograph={a} currentScriptId={currentScriptId} />
-                        ))
-                        // )
-                    // </> */
-                // }
                 }
+
                 {path[thisIndex].notes?.map((a,i) => (
                     <Note state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} thisEditHomographs={thisEditHomographs} />
                 ))}

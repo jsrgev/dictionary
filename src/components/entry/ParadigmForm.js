@@ -121,8 +121,8 @@ const ParadigmForm = props => {
                 <div className="row-controls">
                 <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                 <i className={!isIrregular() ? "" : "fas fa-plus"} onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>
-                {/* <i></i> */}
-                <i></i>
+                {/* <span></span> */}
+                <span></span>
                 <i className={!isIrregular() ? "" : `fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                 </div>
                 <div className="row-content paradigmForms" style={getIndent(prevIndent-1)}>
