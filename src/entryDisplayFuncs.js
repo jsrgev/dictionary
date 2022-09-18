@@ -31,6 +31,7 @@ const getPronunciationsDisplay = arr => {
 
 const getAltDisplayForHeadword = (altDisplayForHeadword) => {
     return altDisplayForHeadword.map((a,i) => {
+        // console.log(i);
         return <React.Fragment key={i}> or {a}</React.Fragment>
     })
 };
@@ -42,6 +43,7 @@ const getHomographNum = (scriptForm, tempHomographs) => {
 };
 
 const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds, tempHomographs) => {
+    // console.log(altDisplayForHeadword);
     let morphType = isHeadword ? "hw" : "for";
 
     let newArr = arr.map((a, i) => {
@@ -55,7 +57,13 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
         });
         let pronunciations = showPronunciation ? getPronunciationsDisplay(a.pronunciations) : "";
         let notes = a.notes ? getNotesDisplay(a.notes) : "";
-        let alts = a.isHeadword ? getAltDisplayForHeadword(altDisplayForHeadword) : "";
+        // console.log(a.isHeadword)
+        let alts = isHeadword ? getAltDisplayForHeadword(altDisplayForHeadword) : "";
+        if (a.isHeadword) {
+            console.log(getAltDisplayForHeadword(altDisplayForHeadword));
+
+            console.log(alts)
+        }
         return <React.Fragment key={i}>
                 {morph}{otherMorphs}{pronunciations}{notes}{alts}
             </React.Fragment>;
@@ -176,18 +184,19 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
         // get displays for alternate forms of headword. (starts at i=1 to skip initial entry which is the main one)
         for (let i=1; i<morphs.length; i++) {
             let item = morphs[i];
-
+            // console.log(item);
             // gets "or bbb" forms to insert into main entry display
             let obj = getAltDisplayItems(item, currentScriptId, otherScriptIds, tempHomographs, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
             allDisplayItems.push(obj);
 
             // gets "aaa see bbb" for display on separate line
-            let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds, tempHomographs);
+            let fullDisplay = getMorphsDisplay([item], false, null, null, currentScriptId, otherScriptIds, tempHomographs);
             altDisplayForHeadword.push(fullDisplay);
 
             key++;
         }
-
+        // console.log(altDisplayForHeadword)
+        // gets display for primary form of headword
         let morphsDisplay = getMorphsDisplay([morphs[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds, tempHomographs);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
         let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
