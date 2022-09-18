@@ -1,24 +1,36 @@
-import {getIndent} from '../../utils.js';
+import {clone, getIndent} from '../../utils.js';
 import _ from "lodash";
 import {getHomographDisplay} from '../../entryDisplayFuncs.js';
 
 const Homographs = props => {
 
-    const {state, thisIndex, stringPath, prevIndent, moveRow, currentScriptId} = props;
+    const {state, setState, thisIndex, stringPath, prevIndent, currentScriptId} = props;
+
+    // let pathFrag = stringPath;
     
     let pathFrag = stringPath + ".items";
-    const path = _.get(state, pathFrag);
-    const upPath = _.get(state, stringPath);
+    const path = _.get(state, "editHomographs" + pathFrag);
+    // const path = _.get(state, pathFrag);
+    const upPath = _.get(state, "editHomographs" + stringPath);
     
-    // const handleChange = (field, value) => {
-        //     if (value !== undefined) {
-            //         let entryCopy = clone(state.entry);
-            //         let entryCopyPath = _.get(entryCopy, pathFrag);
-            //         entryCopyPath[thisIndex].scriptForms.find(a => a.refId === currentScript.id)[field] = value;
-            //         setState({entry: entryCopy});
-            //     }
-            // }
-        
+    // console.log(pathFrag);
+    
+    const moveRow = (e, up) => {
+        const index = thisIndex;
+        if (e.target.classList.contains("disabled")) return;
+        let position = up ? index-1 : index+1;
+        let editHomographsCopy = clone(state.editHomographs);
+        let editHomographsCopyPath = _.get(editHomographsCopy, pathFrag);
+        let thisItemCopy = clone(editHomographsCopyPath[index]);
+        editHomographsCopyPath.splice(index, 1);
+        editHomographsCopyPath.splice(position, 0, thisItemCopy);
+        for (let i=0; i < editHomographsCopyPath.length; i++) {
+            editHomographsCopyPath[i].homograph = i+1;
+        }
+        setState({editHomographs: editHomographsCopy});
+    };
+
+
 
     const isFirst = thisIndex === 0;
     const isLast = thisIndex === path.length-1;
@@ -41,11 +53,11 @@ const Homographs = props => {
                    <span></span>
                     <i
                     className={`fas fa-arrow-up${isFirst ? " disabled" : ""}`}
-                    onClick={e => moveRow(e, thisIndex, pathFrag, true)}
+                    onClick={e => moveRow(e, true)}
                     ></i>
                     <i
                     className={`fas fa-arrow-down${isLast ? " disabled" : ""}`}
-                    onClick={e => moveRow(e, thisIndex, pathFrag, false)}
+                    onClick={e => moveRow(e, false)}
                     ></i>
                 </div>
                 <div className="row-content single" style={getIndent(prevIndent)}>

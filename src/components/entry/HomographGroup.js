@@ -5,10 +5,10 @@ import _ from "lodash";
 
 const HomographGroup = props => {
 
-    const {state, setState, thisIndex, prevIndent, addFunctions, moveRow, currentScriptId} = props;
+    const {state, setState, thisIndex, prevIndent, addFunctions, currentScriptId} = props;
 
-    let pathFrag = `editHomographs[${thisIndex}]`;
-    const path = _.get(state, pathFrag);
+    let pathFrag = `[${thisIndex}]`;
+    const path = _.get(state, "editHomographs" + pathFrag);
 
     // console.log(path);
 
@@ -28,7 +28,7 @@ const HomographGroup = props => {
                 <span>Homograph Order</span>
             </div>
             {path.items.map((a,i) => (
-                <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+2} stringPath={pathFrag} addFunctions={addFunctions} moveRow={moveRow} currentScriptId={currentScriptId} />
+                <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+2} stringPath={pathFrag} addFunctions={addFunctions} currentScriptId={currentScriptId} />
                 ))
             }   
             </div>

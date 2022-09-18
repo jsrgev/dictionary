@@ -142,6 +142,7 @@ const ScriptForm = props => {
         }
 
         if (obj.items.length === 0) return null;
+        obj.items.sort((a,b) => a.homograph - b.homograph); // b - a for reverse sort
 
         // if homographs were found, add current form from current entry
         let currentMorphObject = {
@@ -194,7 +195,7 @@ const ScriptForm = props => {
                 </div>
                 {(showHomographGroup) &&
                     <>
-                        <HomographGroup state={state} setState={setState} key={homographIndex} thisIndex={homographIndex} prevIndent={prevIndent+2} addFunctions={addFunctions} moveRow={moveRow} currentScriptId={currentScriptId} />
+                        <HomographGroup state={state} setState={setState} key={homographIndex} thisIndex={homographIndex} prevIndent={prevIndent+2} addFunctions={addFunctions} currentScriptId={currentScriptId} />
                     </>
                 }
 

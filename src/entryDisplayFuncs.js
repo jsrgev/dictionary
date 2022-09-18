@@ -31,7 +31,6 @@ const getPronunciationsDisplay = arr => {
 
 const getAltDisplayForHeadword = (altDisplayForHeadword) => {
     return altDisplayForHeadword.map((a,i) => {
-        // console.log(i);
         return <React.Fragment key={i}> or {a}</React.Fragment>
     })
 };
