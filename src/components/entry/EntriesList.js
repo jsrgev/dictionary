@@ -15,10 +15,13 @@ const EntriesList = props => {
     const getSortedEntries = () => {
         let {id, letterOrder, diacriticOrder} = state.setup.scripts.items[0];
         const entrySet = state.allEntries.map(a => {
-            let string = a.headword.morphs[0].scriptForms.find(a => a.refId === id).content;
+            
+            // console.log(a);
+            let scriptForm = a.headword.morphs[0].scriptForms.find(a => a.scriptRefId === id);
             return {
                 id: a._id,
-                content: string
+                content: scriptForm.content,
+                homograph: scriptForm.homograph
             };
         });
         return sortEntries(entrySet, letterOrder, diacriticOrder);
@@ -99,6 +102,14 @@ const EntriesList = props => {
         // };
     });
 
+    const getHomographNum = number => {
+        let homograph = number > 0 ? number : "";
+        // console.log(homograph)
+        return <sup>{homograph}</sup>;
+    }
+
+    // console.log(filteredEntries);
+
     return (
         <div id="entries-list-section">
             <h2>Entries</h2>
@@ -106,7 +117,7 @@ const EntriesList = props => {
             <div className={`top-arrow ${topArrowShown ? "top-arrow-visible" : ""}`}></div>
             <ul id="entries-list" onScroll={displayArrows} className={`for norm ${getWritingDirection()}`} onClick={check}>
                 {filteredEntries.map((a, i) => (
-                    <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content === "" ? "☐" : a.content}</li>
+                    <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content === "" ? "☐" : a.content}{getHomographNum(a.homograph)}</li>
                 ))}
             </ul>
             <div className={`bottom-arrow ${bottomArrowShown ? "bottom-arrow-visible" : ""}`}></div>

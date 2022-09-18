@@ -998,6 +998,11 @@ fieldset {
 	grid-column: span 2;
 }
 
+.row-content.single {
+	/* gap: .5rem 1rem; */
+	grid-template-columns: 1fr;
+}
+
 .paradigmForms {
 	grid-template-columns: 6rem 6rem 6rem;
 }

@@ -54,13 +54,13 @@ const ScriptSection = props => {
         for (let entry of allEntries) {
             for (let morph of entry.headword.morphs) {
                 for (let scriptForm of morph.scriptForms) {
-                    if (scriptForm.refId === scriptId) {
+                    if (scriptForm.scriptRefId === scriptId) {
                         areMatches = true;
                         break;
                     };
                 }
             }
-        }
+        }   
         if (areMatches) {
             return areMatches;
         }
@@ -72,7 +72,7 @@ const ScriptSection = props => {
                             if (irregular.morphs) {
                                 for (let morph of irregular.morphs) {
                                     for (let scriptForm of morph.scriptForms) {
-                                        if (scriptForm.refId === scriptId) {
+                                        if (scriptForm.scriptRefId === scriptId) {
                                             areMatches = true;
                                             break;
                                         };
@@ -90,7 +90,7 @@ const ScriptSection = props => {
     const deleteScript = () => {
         const scriptId = path[thisIndex].id;
         const isInUse = checkScriptInUse(scriptId);
-        // console.log(isInUse);
+        console.log(isInUse);
         if (isInUse) {
             let response = window.confirm("Are you sure you want to delete this script? If so, all forms already saved for this script will be deleted from their entries after you save the setup.");
             if (!response) {

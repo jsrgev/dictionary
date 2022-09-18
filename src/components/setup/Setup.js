@@ -61,16 +61,18 @@ const Setup = props => {
     }
 
     const updateSetup = async () => {
-        console.log("updateSetup");
+        // console.log("updateSetup");
         let obj = clone(state.tempSetup);
 
         obj.fixGramClassesAndForms = didGramClassesOrFormsChange();
+        // console.log(obj.fixGramClassesAndForms)
         obj.scriptsToAdd = tempSetup.scripts.items.flatMap(a => {
             if (state.allEntries.length < 1) return [];
             let isNew = !setup.scripts.items.some(b => b.id === a.id);
             return (isNew) ? a.id : [];
         });
         obj.scriptsToDelete = state.changes.scriptsToDelete;
+        // console.log(obj.scriptsToDelete)
 
         axios.post(`${API_BASE}/setup/update`, obj)
         .then(res => {

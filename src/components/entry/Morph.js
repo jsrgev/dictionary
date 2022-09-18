@@ -19,6 +19,17 @@ const Morph = props => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [sectionOpen, setSectionOpen] = useState(true);
+    // const [sectionOpen, setSectionOpen] = useState(true);
+    // let tempHomographs = []
+
+    // const getTempHomographs = () => {
+    //     path[thisIndex].scriptForms.forEach((a, i) => {
+    //         let obj = {
+    //             script: 179,
+    //             homographs: []''
+    //         }
+    //     }
+    // }
 
     // const handleChange = (field, value) => {
     //     if (value !== undefined) {
@@ -63,29 +74,6 @@ const Morph = props => {
     }
 
 
-
-    // const getAllHeadwords = () => {
-    //     let currentScriptId = state.setup.scripts.items[0].id;
-    //     let entrySet = [];
-    //     for (let entry of state.allEntries) {
-    //         for (let morph of entry.headword.morphs) {
-    //             // console.log(currentScriptId);
-    //             // console.log(morph.scriptForms.find(a => a.refId === currentScriptId));
-    //             let string = morph.scriptForms.find(a => a.refId === currentScriptId).content;
-    //             entrySet.push(string);
-    //         }
-    //     }
-    //     return entrySet;
-    // };
-
-    // const isHomograph = morph => {
-    //     // if (labels[0] !== "Basic form") {
-    //     //     return false;
-    //     // }
-    //     const allHeadwords = getAllHeadwords().sort();
-    //     let duplicates = allHeadwords.filter((a, i, arr) => a === arr[i+1]);
-    //     return duplicates.some(a => a === morph);
-    // }
         
     const currentScript = state.setup.scripts.items[0];
     // let currentMorph = path[thisIndex].scriptForms.find(a => a.refId === currentScript.id).content;
@@ -115,8 +103,8 @@ const Morph = props => {
     //     return state.setup.scripts.items.length > 1 ? ` - ${scriptName}` : null;
     // };
 
+    // to display scripts in order set in setup
     const getReorderedScriptForms = () => {
-        // let arr = clone(path[thisIndex].scriptForms);
         let arr = [];
         path[thisIndex].scriptForms.forEach((a, i) => {
             let obj = clone(a);
@@ -128,20 +116,7 @@ const Morph = props => {
                 arr.push(obj);
             }
         })
-        // console.log(arr);
         return arr;
-        // console.log(path[thisIndex].scriptForms);
-        // let currentScriptIndex = arr.findIndex(a => a.refId === currentScript.id);
-        // arr.splice(currentScriptIndex, 1);
-        // arr.splice(0, 0, path[thisIndex].scriptForms[currentScriptIndex]);
-        // console.log(arr)
-        // return arr;
-        // console.log(index);
-        // const {scriptForms} = path[thisIndex];
-        // ?.map((a,i) => (
-            // (
-        // let arr = [];
-
     };
 
     return (
@@ -174,10 +149,6 @@ const Morph = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     /> */}
                 </div>
-
-                {/* {isHomograph(currentMorph) &&
-                    <Homographs />
-                } */}
                     
                 {/* <div className="row"> */}
                     { state.setup.scripts &&

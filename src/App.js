@@ -249,7 +249,9 @@ const App = () => {
                 displayClose: "[/gloss]",
                 getCode: string => <>‘{string}’</>,
             }
-        ]
+        ],
+        savedHomographs: [],
+        editHomographs: [],
 });
 
     const fetchEntries = () => {
@@ -275,6 +277,7 @@ const App = () => {
             } else {
                 setState({setup: state.tempSetup});
             }
+            setState({setupIsSet: true});
         })
         .catch(err => console.error(`Error: ${err}`));
 

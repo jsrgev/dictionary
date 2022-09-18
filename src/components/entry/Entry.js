@@ -31,7 +31,8 @@ const Entry = props => {
         state.setup &&
         initializeEntry();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[state.setup]);
+    },[state.setupIsSet]);
+    // },[]);
 
     useEffect(() => {
         return () => {
@@ -48,15 +49,34 @@ const Entry = props => {
 
     const addFunctions = {
         setScriptForms: obj => {
-            obj.scriptForms = state.setup.scripts.items.map(a => {
+            let tempSetupCopy = clone(state.tempSetup);
+            obj.scriptForms = [];
+            state.setup.scripts.items.forEach(a => {
                 // console.log(a);
-                let obj = {
-                    refId: a.id,
+                let newId = "sf" + tempSetupCopy.nextId;
+                let scriptForm = {
+                    id: newId,
+                    scriptRefId: a.id,
                     content: "",
                     homograph: 0,
                 }
-                return obj;
+                tempSetupCopy.nextId++;
+                obj.scriptForms.push(scriptForm);
+                setState({tempSetup: tempSetupCopy});
+                setState({setup: tempSetupCopy});
             });
+
+
+            // obj.scriptForms = state.setup.scripts.items.map(a => {
+            //     // console.log(a);
+            //     let obj = {
+            //         id: newId,
+            //         scriptRefId: a.id,
+            //         content: "",
+            //         homograph: 1,
+            //     }
+            //     return obj;
+            // });
         },
         addMorph: (index, pathFrag) => {
             let entryCopy = clone(state.entry);
@@ -133,8 +153,16 @@ const Entry = props => {
         setState({allEntries: allEntriesCopy});
     };
 
+    const getObjToSend = () => {
+        return {
+            setupId: state.tempSetup._id,
+            nextId: state.tempSetup.nextId,
+            entryFields: clone(state.entry)
+        }
+    };
+
     const addEntry = () => {
-        axios.post(`${API_BASE}/entry/add`, clone(state.entry))
+        axios.post(`${API_BASE}/entry/add`, getObjToSend())
         .then(response => {
             addToEntries(response.data);
             initializeEntry();
@@ -144,7 +172,7 @@ const Entry = props => {
     };
 
     const updateEntry = () => {
-        axios.post(`${API_BASE}/entry/update`, clone(state.entry))
+        axios.post(`${API_BASE}/entry/update`, getObjToSend())
         .then(response => {
             let allEntriesClone = clone(state.allEntries);
 
@@ -238,41 +266,41 @@ const Entry = props => {
                             <Etymology state={state} setState={setState} />
                         }
                     </div>
-            <div id="bottom-bar">
-                <div>
-                    { state.setup.palettes?.items.map((a, i) => {
-                        let result = null;
-                        if (a.display) {
-                            const isNotEmpty = a.content.some(b => {
-                                const filteredArr = b.characters.filter(c => c !== "");
-                                return filteredArr.length > 0
-                            });
-                            if (isNotEmpty) {
-                                result = <Palette state={state} thisIndex={i} key={i} />;
+                    <div id="bottom-bar">
+                        <div>
+                            { state.setup.palettes?.items.map((a, i) => {
+                                let result = null;
+                                if (a.display) {
+                                    const isNotEmpty = a.content.some(b => {
+                                        const filteredArr = b.characters.filter(c => c !== "");
+                                        return filteredArr.length > 0
+                                    });
+                                    if (isNotEmpty) {
+                                        result = <Palette state={state} thisIndex={i} key={i} />;
+                                    }
+                                }
+                                return result;
+                                })
                             }
-                        }
-                        return result;
-                        })
-                    }
-                </div>
-                <div>
-                    {state.entry._id ?
-                    <>
-                        <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
-                        <button onClick={handleNewBlankEntryClick}>New Entry</button>
-                        <button onClick={revertToSaved}>Revert to Saved</button>
-                        <button onClick={handleDeleteClick}>Delete</button>
-                        <button onClick={handleUpdateClick}>Save Changes</button>
-                    </>
-                    :
-                    <>
-                        <button onClick={initializeEntry}>Clear All</button>
-                        <button onClick={handleSaveNewClick}>Save</button>
-                    </>
-                    }
-                </div>
-            </div>
-            </>
+                        </div>
+                        <div>
+                            {state.entry._id ?
+                            <>
+                                <button onClick={handleCopyToNewEntryClick}>Copy to New Entry</button>
+                                <button onClick={handleNewBlankEntryClick}>New Entry</button>
+                                <button onClick={revertToSaved}>Revert to Saved</button>
+                                <button onClick={handleDeleteClick}>Delete</button>
+                                <button onClick={handleUpdateClick}>Save Changes</button>
+                            </>
+                            :
+                            <>
+                                <button onClick={initializeEntry}>Clear All</button>
+                                <button onClick={handleSaveNewClick}>Save</button>
+                            </>
+                            }
+                        </div>
+                    </div>
+                </>
             }
         </main>
     );
