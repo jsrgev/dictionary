@@ -1,31 +1,25 @@
 import AddPopup from '../AddPopup';
 import Note from './Note';
-import Homograph from './Homograph';
+import HomographGroup from './HomographGroup';
 import {clone, handleInputBlur, getIndent, addPopupHandler} from '../../utils.js';
 import {useState, useEffect} from 'react';
 import _ from "lodash";
-import { generatePath } from 'react-router-dom';
 
 const ScriptForm = props => {
 
-    const {state, setState, thisIndex, morphIndex, prevIndent, stringPath, addFunctions, moveRow} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, moveRow} = props;
     const {addNote} = addFunctions;
-    // const path = state.entry.headword[morphIndex].scriptForms;
 
     let pathFrag = stringPath + ".scriptForms";
     const path = _.get(state, "entry." + pathFrag);
 
     const [sectionOpen, setSectionOpen] = useState(true);
-    const [homographSectionOpen, setHomographSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [thisEditHomographs, setThisEditHomographs] = useState(false);
-    // const [homographs, setHomographs] = useState([]);
-    // const [editHomographs, seteditHomographs] = useState([]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
+    
     const thisScriptForm = path[thisIndex].content;
-
+    
     const handleChange = value => {
         if (value !== undefined) {
             let entryCopy = clone(state.entry);
@@ -35,9 +29,8 @@ const ScriptForm = props => {
             setState({entry:entryCopy});
         }
     };
-
+    
     const generateNumberedHomographs = homographsFound => {
-        // console.log(homographsFound);
         let numberedHomographs = clone(homographsFound);
         let currentCount = numberedHomographs.items.reduce((prev, curr) => {
             return (prev.homograph > curr.homograph) ? prev.homograph : curr.homograph
@@ -55,16 +48,13 @@ const ScriptForm = props => {
     const updateHomographs = () => {
         let index = state.editHomographs.findIndex(a => a.id === path[thisIndex].id);
         
-        // if there is something saved to state.editHomographs
-        
+        // if there is something saved to state.editHomographs        
         if (index > -1) {
             // if no change return
             if (state.editHomographs[index].scriptForm === thisScriptForm)
             return;
         } else if (thisScriptForm === "") return;
-        
-        // console.log(thisScriptForm);
-        
+                
         // get all homographs based on currently entered text
 
         let savedHomographsCopy = clone(state.savedHomographs);
@@ -100,24 +90,23 @@ const ScriptForm = props => {
         setState({savedHomographs: savedHomographsCopy, editHomographs: editHomographsCopy});
         setThisEditHomographs(state.editHomographs.find(a => a.id === path[thisIndex].id));    };
 
-    // const thisEditHomographs = state.editHomographs.find(a => a.id === path[thisIndex].id);
 
     useEffect( () => {
         updateHomographs();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[state.entry]);
     
     
     useEffect( () => {
         setThisEditHomographs(state.editHomographs.find(a => a.id === path[thisIndex].id));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[updateHomographs]);
-    // console.log(thisEditHomographs);
 
     const getScriptLabel = () => {
         const script = state.setup.scripts.items.find(a => a.id === path[thisIndex].scriptRefId);
         return (script.abbr?.length > 1) ? script.abbr : script.name;
     };
 
-    // let homographsUpdated = false;
 
     const currentScriptId = state.setup.scripts.items.find(a => a.id === path[thisIndex].scriptRefId).id;
     
@@ -174,8 +163,10 @@ const ScriptForm = props => {
         }]
     ];
 
-    // console.log(thisEditHomographs?.scriptForm === path[thisIndex].content);
-    const showHomographSection = thisEditHomographs?.scriptForm === path[thisIndex].content;
+    const showHomographGroup = thisEditHomographs?.scriptForm === path[thisIndex].content;
+
+    let homographIndex = state.editHomographs.findIndex(a => a.id === path[thisIndex].id);
+    // console.log(homographIndex);
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
     return (
@@ -185,7 +176,7 @@ const ScriptForm = props => {
                     <AddPopup popupItems={popupItems} visible={addPopupVisible} />
                     <i className="fas fa-plus" onClick={() => addPopupHandler(addPopupVisible, setAddPopupVisible)}></i>           
                     <span></span>
-                    {path[thisIndex].notes || showHomographSection ?
+                    {path[thisIndex].notes || showHomographGroup ?
                         <i className={`fas fa-chevron-${sectionOpen ? "up" : "down"}`} onClick={() => setSectionOpen(!sectionOpen)}></i>
                         :
                         <span></span>
@@ -201,25 +192,9 @@ const ScriptForm = props => {
                     onBlur={e => handleChange(handleInputBlur(e))}
                     />
                 </div>
-                {(showHomographSection) &&
+                {(showHomographGroup) &&
                     <>
-                        <div className={`row${homographSectionOpen ? "" : " closed"}`}>
-
-                        <div className="row-controls">
-                            <span></span>
-                            <span></span>
-                            <i className={`fas fa-chevron-${homographSectionOpen ? "up" : "down"}`} onClick={() => setHomographSectionOpen(!homographSectionOpen)}></i>
-                            <span></span>
-                        </div>
-
-                        <div className="row-content" style={getIndent(prevIndent + 1)}>
-                            <span>Homograph Order</span>
-                        </div>
-                        {thisEditHomographs.items.map((a,i) => (
-                            <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+2} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} currentScriptId={currentScriptId} thisEditHomographs={thisEditHomographs} />
-                            ))
-                        }   
-                        </div>
+                        <HomographGroup state={state} setState={setState} key={homographIndex} thisIndex={homographIndex} prevIndent={prevIndent+2} addFunctions={addFunctions} moveRow={moveRow} currentScriptId={currentScriptId} />
                     </>
                 }
 
