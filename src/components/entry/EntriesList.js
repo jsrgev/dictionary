@@ -1,4 +1,5 @@
-import { sortEntries } from "../../utils";
+import { sortEntries, sortByHomographNums } from "../../utils";
+import React from "react";
 import {useState, useEffect} from 'react';
 
 const EntriesList = props => {
@@ -13,18 +14,22 @@ const EntriesList = props => {
     }, []);
 
     const getSortedEntries = () => {
-        let {id, letterOrder, diacriticOrder} = state.setup.scripts.items[0];
-        const entrySet = state.allEntries.map(a => {
-            
-            // console.log(a);
-            let scriptForm = a.headword.morphs[0].scriptForms.find(a => a.scriptRefId === id);
-            return {
-                id: a._id,
-                content: scriptForm.content,
-                homograph: scriptForm.homograph
-            };
-        });
-        return sortEntries(entrySet, letterOrder, diacriticOrder);
+        let {id : currentScriptId, letterOrder, diacriticOrder} = state.setup.scripts.items[0];
+        const entrySet = [];
+        for (let entry of state.allEntries) {
+            entry.headword.morphs.forEach((morph, i) => {
+                let scriptForm = morph.scriptForms.find(a => a.scriptRefId === currentScriptId);
+                let obj = {
+                    id: entry._id,
+                    content: scriptForm.content,
+                    homograph: scriptForm.homograph,
+                    morph: i
+                };
+                entrySet.push(obj);
+            });
+        }
+        let sortedEntries = sortEntries(entrySet, letterOrder, diacriticOrder);
+        return sortByHomographNums(sortedEntries);
     };
 
     const displayArrows = () => {
@@ -58,8 +63,6 @@ const EntriesList = props => {
         if (isDirty()) {
             let response;
             if (state.entry._id) {
-                // console.log(JSON.stringify(state.entry));
-                // console.log(JSON.stringify(state.entryCopy));                
                     response = window.confirm("Are you sure you want to open this entry? Changes to the current entry will not be saved.");
             } else {
                 response = window.confirm("Are you sure you want to leave? The new entry will not be saved.");
@@ -69,20 +72,11 @@ const EntriesList = props => {
             }
         }
         let thisEntry = state.allEntries.find(a => a._id === id);
-        // console.log(thisEntry);
-        // console.log(JSON.stringify(thisEntry));
-        setState({entry: thisEntry, entryCopy: thisEntry});
+        setState({entry: thisEntry, entryCopy: thisEntry, savedHomographs: [], editHomographs: []});
         setTimeout(() => {
             displayArrows();
-            // console.log(JSON.stringify(state.entry));
-            // console.log(JSON.stringify(state.entryCopy));                
         }, 10); ;
     }
-    // console.log(state.entry);
-    // console.log(state.entryCopy);
-            // console.log(JSON.stringify(state.entry));
-            // console.log(JSON.stringify(state.entryCopy));                
-
     const isActive = id => id === state.entry._id;
 
     const filteredEntries = getSortedEntries().filter(a => {
@@ -102,13 +96,26 @@ const EntriesList = props => {
         // };
     });
 
-    const getHomographNum = number => {
-        let homograph = number > 0 ? number : "";
-        // console.log(homograph)
-        return <sup>{homograph}</sup>;
-    }
+    // const getHomographNum = number => {
+    //     let homograph = number > 0 ? number : "";
+    //     // console.log(homograph)
+    //     return <sup>{homograph}</sup>;
+    // }
 
     // console.log(filteredEntries);
+
+    
+    const getDisplayForm = (entry) => {
+        if (entry.content === "") return "☐";
+        // console.log(React);
+        // let x =  <React.Fragment></React.Fragment>;
+        let homographDisplay = entry.homograph === 0 ? "" : <React.Fragment><sup>{entry.homograph}</sup></React.Fragment>;
+        let preliminary = <React.Fragment>{entry.content}{homographDisplay}</React.Fragment>;
+
+        return preliminary
+        // return entry.morph === 0 ? preliminary : `(${preliminary})`;
+        return "";
+    };
 
     return (
         <div id="entries-list-section">
@@ -117,7 +124,7 @@ const EntriesList = props => {
             <div className={`top-arrow ${topArrowShown ? "top-arrow-visible" : ""}`}></div>
             <ul id="entries-list" onScroll={displayArrows} className={`for norm ${getWritingDirection()}`} onClick={check}>
                 {filteredEntries.map((a, i) => (
-                    <li key={i} className={isActive(a.id) ? "active" : null} onClick={() => handleClick(a.id)}>{a.content === "" ? "☐" : a.content}{getHomographNum(a.homograph)}</li>
+                    <li key={i} className={`${isActive(a.id) ? "active" : null}${a.morph > 0 ? " altForm" : ""}`} onClick={() => handleClick(a.id)}>{getDisplayForm(a)}</li>
                 ))}
             </ul>
             <div className={`bottom-arrow ${bottomArrowShown ? "bottom-arrow-visible" : ""}`}></div>

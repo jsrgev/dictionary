@@ -9,7 +9,7 @@ import {useState} from 'react';
 
 const Headword = props => {
 
-    const {state, setState, addFunctions, moveRow} = props;
+    const {state, setState, addFunctions, moveRow, updateHomographs} = props;
     let {addMorph, addNote} =  addFunctions;
     const [sectionOpen, setSectionOpen] = useState(true);
     const [addPopupVisible, setAddPopupVisible] = useState(false);
@@ -44,7 +44,7 @@ const Headword = props => {
                     <span>Headword</span>
                 </div>
                 {state.entry?.headword?.morphs.map((a,i) => (
-                    <Morph state={state} setState={setState} thisIndex={i} key={i} stringPath={pathFragA} prevIndent={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveRow={moveRow} />
+                    <Morph state={state} setState={setState} thisIndex={i} key={i} stringPath={pathFragA} prevIndent={0} labels={["Basic form", "Alternate"]}  addFunctions={addFunctions} moveRow={moveRow} updateHomographs={updateHomographs} />
                 ))
                 }
                 {state.entry?.headword?.morphs.notes?.map((a,i) => (

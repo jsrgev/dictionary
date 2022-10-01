@@ -11,7 +11,7 @@ import _ from "lodash";
 
 const Morph = props => {
 
-    const {state, setState, thisIndex, stringPath, prevIndent, addFunctions, moveRow} = props;
+    const {state, setState, thisIndex, stringPath, prevIndent, addFunctions, moveRow, updateHomographs} = props;
     const {setScriptForms, addMorph, addNote} = addFunctions;
 
     let pathFrag = stringPath + "";
@@ -19,26 +19,10 @@ const Morph = props => {
 
     const [addPopupVisible, setAddPopupVisible] = useState(false);
     const [sectionOpen, setSectionOpen] = useState(true);
-    // const [sectionOpen, setSectionOpen] = useState(true);
-    // let tempHomographs = []
 
-    // const getTempHomographs = () => {
-    //     path[thisIndex].scriptForms.forEach((a, i) => {
-    //         let obj = {
-    //             script: 179,
-    //             homographs: []''
-    //         }
-    //     }
-    // }
 
-    // const handleChange = (field, value) => {
-    //     if (value !== undefined) {
-    //         let entryCopy = clone(state.entry);
-    //         let entryCopyPath = _.get(entryCopy, pathFrag);
-    //         entryCopyPath[thisIndex].scriptForms.find(a => a.refId === currentScript.id)[field] = value;
-    //         setState({entry: entryCopy});
-    //     }
-    // }
+
+
 
     const deleteMorph = e => {
         let entryCopy = clone(state.entry);
@@ -153,7 +137,7 @@ const Morph = props => {
                 {/* <div className="row"> */}
                     { state.setup.scripts &&
                     getReorderedScriptForms().map((a,i) => (
-                        <ScriptForm state={state} setState={setState} key={i} thisIndex={a.origIndex} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} morphIndex={thisIndex}
+                        <ScriptForm state={state} setState={setState} key={i} thisIndex={a.origIndex} prevIndent={prevIndent+1} stringPath={stringPathA} addFunctions={addFunctions} moveRow={moveRow} morphIndex={thisIndex} updateHomographs={updateHomographs}
                         />
                     ))}
                     { state.setup.entrySettings.showPronunciation &&

@@ -7,7 +7,7 @@ import _ from "lodash";
 
 const ScriptForm = props => {
 
-    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, moveRow} = props;
+    const {state, setState, thisIndex, prevIndent, stringPath, addFunctions, moveRow, updateHomographs} = props;
     const {addNote} = addFunctions;
 
     let pathFrag = stringPath + ".scriptForms";
@@ -24,83 +24,51 @@ const ScriptForm = props => {
         if (value !== undefined) {
             let entryCopy = clone(state.entry);
             let entryCopyPath = _.get(entryCopy, pathFrag);
-            
             entryCopyPath[thisIndex].content = value;
             setState({entry:entryCopy});
         }
     };
     
-    const generateNumberedHomographs = homographsFound => {
-        let numberedHomographs = clone(homographsFound);
-        let currentCount = numberedHomographs.items.reduce((prev, curr) => {
-            return (prev.homograph > curr.homograph) ? prev.homograph : curr.homograph
-        })
-        numberedHomographs.items.forEach(a => {
-            if (a.homograph < 1) {
-                currentCount++;
-                a.homograph = currentCount;
-            }
-            return a;
-        })
-        return numberedHomographs;
-    };
+    // const updateEntryHomograph = (scriptFormId, newNumber) => {
+    //     let {morphs} = state.entry.headword;
+    //     for (let i=0; i < morphs.length; i++) {
+    //         let {scriptForms} = morphs[i];
+    //         for (let j=0; j < scriptForms.length; j++) {
+    //             if (scriptForms[j].id === scriptFormId) {
+    //                 let entryClone = clone(state.entry);
+    //                 entryClone.headword.morphs[i].scriptForms[j].homograph = newNumber;
+    //                 setState({entry: entryClone});
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // };
 
-    const updateHomographs = () => {
-        let index = state.editHomographs.findIndex(a => a.id === path[thisIndex].id);
-        
-        // if there is something saved to state.editHomographs        
-        if (index > -1) {
-            // if no change return
-            if (state.editHomographs[index].scriptForm === thisScriptForm)
-            return;
-        } else if (thisScriptForm === "") return;
-                
-        // get all homographs based on currently entered text
+    // what if two identical scriptForms on new entry, different morph forms
+    // have to get homograph#s from state.editHomographs?
 
-        let savedHomographsCopy = clone(state.savedHomographs);
-        let editHomographsCopy = clone(state.editHomographs);
 
-        let homographsFound;
-        let numberedHomographs;
-
-        const determineAction = () => {
-            if (index > -1 && thisScriptForm === "") return "splice";                
-            homographsFound = getHomographs();
-            if (!homographsFound) {
-                return (index > -1) ? "splice" : "return";
-            }
-            numberedHomographs = generateNumberedHomographs(homographsFound);
-            return (index > -1) ? "replace" : "push";
-        };
-        
-        let action = determineAction();
-
-        if (action === "return") return;
-        if (action === "splice") {
-            savedHomographsCopy.splice(index, 1);
-            editHomographsCopy.splice(index, 1);
-        } else if (action === "replace") {
-            savedHomographsCopy[index] = homographsFound;
-            editHomographsCopy[index] = numberedHomographs;
-        } else if (action === "push") {
-            savedHomographsCopy.push(homographsFound);
-            editHomographsCopy.push(numberedHomographs);
-        }
-
-        setState({savedHomographs: savedHomographsCopy, editHomographs: editHomographsCopy});
-        setThisEditHomographs(state.editHomographs.find(a => a.id === path[thisIndex].id));    };
 
 
     useEffect( () => {
+        // console.log("useEffect")
         updateHomographs();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[state.entry]);
     
+    // console.log(state.editHomographs);
+
     
+    // useEffect( () => {
+    //     setThisEditHomographs(state.editHomographs.find(a => a.id === path[thisIndex].id));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // },[updateHomographs]);
+
     useEffect( () => {
         setThisEditHomographs(state.editHomographs.find(a => a.id === path[thisIndex].id));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[updateHomographs]);
+    },[state.editHomographs]);
+
 
     const getScriptLabel = () => {
         const script = state.setup.scripts.items.find(a => a.id === path[thisIndex].scriptRefId);
@@ -110,51 +78,7 @@ const ScriptForm = props => {
 
     const currentScriptId = state.setup.scripts.items.find(a => a.id === path[thisIndex].scriptRefId).id;
     
-    const getHomographs = () => {
-        const currentScriptForm = path[thisIndex];
-        if (currentScriptForm.content === "") return [];
-        let obj = {
-            id: currentScriptForm.id,
-            scriptForm: currentScriptForm.content,
-            items: []
-        };
 
-        // for each homograph, need entry id, morph index, scriptForm index
-
-        // add forms for all other saved entries
-        for (let entry of state.allEntries) {
-            if (entry._id !== state.entry._id) {
-                let {morphs} = entry.headword;
-                for (let i = 0; i < morphs.length; i++) {
-                    let index = morphs[i].scriptForms.findIndex(a => a.scriptRefId === currentScriptId);
-                    let scriptForm = morphs[i].scriptForms[index];
-                    if (scriptForm.content === currentScriptForm.content) {
-                        let item = {
-                            id: scriptForm.id,
-                            entryId: entry._id,
-                            scriptForm: scriptForm.content,
-                            homograph: scriptForm.homograph
-                        }
-                        obj.items.push(item);
-                    }
-                }
-            }
-        }
-
-        if (obj.items.length === 0) return null;
-        obj.items.sort((a,b) => a.homograph - b.homograph); // b - a for reverse sort
-
-        // if homographs were found, add current form from current entry
-        let currentMorphObject = {
-            id: currentScriptForm.id,
-            entryId: state.entry._id,
-            scriptForm: currentScriptForm.content,
-            homograph: currentScriptForm.homograph
-        }
-
-        obj.items.push(currentMorphObject);
-        return obj;
-    };
 
 
     const popupItems = [
@@ -164,12 +88,14 @@ const ScriptForm = props => {
         }]
     ];
 
-    const showHomographGroup = thisEditHomographs?.scriptForm === path[thisIndex].content;
-
-    let homographIndex = state.editHomographs.findIndex(a => a.id === path[thisIndex].id);
-    // console.log(homographIndex);
+    const homographIndex = state.editHomographs.findIndex(a => a.id === path[thisIndex].id);
+    const showHomographGroup = (thisEditHomographs?.scriptForm === path[thisIndex].content && homographIndex > -1);
+    // console.log(state.editHomographs)
+    // console.log(thisEditHomographs)
+    // console.log(path[thisIndex])
 
     let stringPathA  = pathFrag + `[${thisIndex}]`;
+
     return (
         <>
             <div className={`row${sectionOpen ? "" : " closed"}`}>
@@ -195,7 +121,9 @@ const ScriptForm = props => {
                 </div>
                 {(showHomographGroup) &&
                     <>
-                        <HomographGroup state={state} setState={setState} key={homographIndex} thisIndex={homographIndex} prevIndent={prevIndent+2} addFunctions={addFunctions} currentScriptId={currentScriptId} />
+                        <HomographGroup state={state} setState={setState} key={homographIndex} thisIndex={homographIndex} prevIndent={prevIndent+1} addFunctions={addFunctions} currentScriptId={currentScriptId} 
+                        // updateEntryHomograph={updateEntryHomograph}
+                         thisScriptFormId={path[thisIndex].id} />
                     </>
                 }
 

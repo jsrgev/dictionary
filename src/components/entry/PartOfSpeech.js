@@ -40,7 +40,7 @@ const PartOfSpeech = props => {
     };
 
     const cleanUpIrregulars = () => {
-        console.log("cleanUpIrregulars");
+        // console.log("cleanUpIrregulars");
         let irregulars = path[thisIndex].irregulars;
         if (!irregulars) {
             return;

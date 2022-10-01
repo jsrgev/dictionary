@@ -35,24 +35,24 @@ const getAltDisplayForHeadword = (altDisplayForHeadword) => {
     })
 };
 
-const getHomographNum = (scriptForm, tempHomographs) => {
-    let homograph = tempHomographs?.items.find(a => a.id === scriptForm.id);
+const getHomographNum = (scriptForm, editHomographs) => {
+    let homograph = editHomographs?.items.find(a => a.id === scriptForm.id);
     if (!homograph) return "";
     return <React.Fragment><sup>{homograph.homograph}</sup></React.Fragment>
 };
 
-const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds, tempHomographs) => {
+const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds, editHomographs) => {
     // console.log(altDisplayForHeadword);
     let morphType = isHeadword ? "hw" : "for";
 
     let newArr = arr.map((a, i) => {
         let mainWord = a.scriptForms.find(a => a.scriptRefId === currentScriptId);
         if (mainWord.content === "") mainWord.content = "☐";
-        let morph = <React.Fragment><span className={morphType}>{mainWord.content}</span>{getHomographNum(mainWord, tempHomographs)}</React.Fragment>;
+        let morph = <React.Fragment><span className={morphType}>{mainWord.content}</span>{getHomographNum(mainWord, editHomographs)}</React.Fragment>;
         let others = a.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId))
         let otherMorphs = others.map((a, i, arr) => {
             let divider = arr[i].content !== '' ? " " : "";
-            return <React.Fragment key={i}>{divider}<span className="for">{a.content}</span>{getHomographNum(a, "tempHomographs")}</React.Fragment>
+            return <React.Fragment key={i}>{divider}<span className="for">{a.content}</span>{getHomographNum(a, "editHomographs")}</React.Fragment>
         });
         let pronunciations = showPronunciation ? getPronunciationsDisplay(a.pronunciations) : "";
         let notes = a.notes ? getNotesDisplay(a.notes) : "";
@@ -76,12 +76,12 @@ const getOtherScriptIds = (id, scripts) => {
 };
 
 
-const getAltDisplayItems = (item, currentScriptId, otherScriptIds, tempHomographs, key, mainCurrentScript, mainOtherScriptsDisplay) => {
+const getAltDisplayItems = (item, currentScriptId, otherScriptIds, editHomographs, key, mainCurrentScript, mainOtherScriptsDisplay) => {
     // console.log(item);
     let altMainScriptForm = item.scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
     let altOtherScripts = item.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
     let altOtherScriptsDisplay = altOtherScripts.map((a, i, arr) => {
-        return <React.Fragment key={i}> <span className="for">{a.content}</span>{getHomographNum(a, tempHomographs)}</React.Fragment>
+        return <React.Fragment key={i}> <span className="for">{a.content}</span>{getHomographNum(a, editHomographs)}</React.Fragment>
     });
     let mainScriptForm = item.scriptForms.find(a => a.scriptRefId === currentScriptId);
     let sortTerm = item.scriptForms.find(a => a.scriptRefId === currentScriptId).content;
@@ -90,26 +90,23 @@ const getAltDisplayItems = (item, currentScriptId, otherScriptIds, tempHomograph
         sortTerm,
         display:
             <React.Fragment key={key}>
-                <span key={key} className="for">{altMainScriptForm}</span>{getHomographNum(mainScriptForm, tempHomographs)}{altOtherScriptsDisplay} see <span className="for">{mainCurrentScript}</span>{mainOtherScriptsDisplay}
+                <span key={key} className="for">{altMainScriptForm}</span>{getHomographNum(mainScriptForm, editHomographs)}{altOtherScriptsDisplay} see <span className="for">{mainCurrentScript}</span>{mainOtherScriptsDisplay}
             </React.Fragment>
     };
     return obj;
 };
 
-export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTags, tempHomographs) => {
-        // console.log(isMain);
+export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTags, thisEditHomographs) => {
     let allDisplayItems = [];
     let key = 0;
     let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
-    
     entries.forEach(entry => {
         let morphs = clone(entry.headword.morphs);
         if (morphs.length === 0) return "";
-        // console.log(entry)
 
         let mainOtherScripts = morphs[0].scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
         let mainOtherScriptsDisplay = mainOtherScripts.map((a, i) => {
-            return <React.Fragment key={i}> <span className="for">{a.content}</span>{getHomographNum(a, tempHomographs.items)}</React.Fragment>
+            return <React.Fragment key={i}> <span className="for">{a.content}</span>{getHomographNum(a, thisEditHomographs.items)}</React.Fragment>
         });
         
         let altDisplayForHeadword = [];
@@ -118,20 +115,16 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
         let homographMorph;
         for (let i=0; i<morphs.length; i++) {
             let currentScriptForm = morphs[i].scriptForms.find(a => a.scriptRefId === currentScriptId);
-            // console.log(tempHomographs);
-            // console.log(currentScriptForm.content);
-            // console.log(tempHomographs.scriptForm);
-            if (currentScriptForm.content === tempHomographs.scriptForm) {
+            if (currentScriptForm.content === thisEditHomographs.scriptForm) {
                 isMain = i === 0;
                 homographMorph = morphs[i];
                 break;
             }
-            // console.log(currentScriptForm)
         };
         let mainCurrentScriptForm = !isMain ? morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId).content : null;
 
         if (!isMain) {
-            let obj = getAltDisplayItems(homographMorph, currentScriptId, otherScriptIds, tempHomographs, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
+            let obj = getAltDisplayItems(homographMorph, currentScriptId, otherScriptIds, thisEditHomographs, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
             allDisplayItems.push(obj);
             return allDisplayItems;
 
@@ -140,13 +133,13 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
         for (let i=1; i<morphs.length; i++) {
             let item = morphs[i];
 
-            let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds, tempHomographs);
+            let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds, thisEditHomographs);
             altDisplayForHeadword.push(fullDisplay);
 
             key++;
         }
 
-        let morphsDisplay = getMorphsDisplay([morphs[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds, tempHomographs);
+        let morphsDisplay = getMorphsDisplay([morphs[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds, thisEditHomographs);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
         let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let sortTerm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
@@ -162,7 +155,7 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
 };
 
 
-export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags, tempHomographs) => {
+export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags, editHomographs) => {
     let allDisplayItems = [];
     let key = 0;
     let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
@@ -175,7 +168,7 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
         
         let mainOtherScripts = morphs[0].scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
         let mainOtherScriptsDisplay = mainOtherScripts.map((a, i, arr) => {
-            return <React.Fragment key={i}> <span className="for">{a.content}</span>{getHomographNum(a, tempHomographs)}</React.Fragment>
+            return <React.Fragment key={i}> <span className="for">{a.content}</span>{getHomographNum(a, editHomographs)}</React.Fragment>
         });
         
         let altDisplayForHeadword = [];
@@ -185,18 +178,18 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
             let item = morphs[i];
             // console.log(item);
             // gets "or bbb" forms to insert into main entry display
-            let obj = getAltDisplayItems(item, currentScriptId, otherScriptIds, tempHomographs, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
+            let obj = getAltDisplayItems(item, currentScriptId, otherScriptIds, editHomographs, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
             allDisplayItems.push(obj);
 
             // gets "aaa see bbb" for display on separate line
-            let fullDisplay = getMorphsDisplay([item], false, null, null, currentScriptId, otherScriptIds, tempHomographs);
+            let fullDisplay = getMorphsDisplay([item], false, null, null, currentScriptId, otherScriptIds, editHomographs);
             altDisplayForHeadword.push(fullDisplay);
 
             key++;
         }
         // console.log(altDisplayForHeadword)
         // gets display for primary form of headword
-        let morphsDisplay = getMorphsDisplay([morphs[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds, tempHomographs);
+        let morphsDisplay = getMorphsDisplay([morphs[0]], true, altDisplayForHeadword, setup.entrySettings.showPronunciation, currentScriptId, otherScriptIds, editHomographs);
         let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
         let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
         let sortTerm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
@@ -274,7 +267,7 @@ const getEtymologyDisplay = (etymology, etymologyTags) => {
 const getPosDisplay = (posDetails, setup) => {
     let posDef = getPosDef(posDetails.refId, setup.partsOfSpeechDefs.items);
     let posAbbr = posDef.abbr;
-    let posGramClassAbbrs = posDetails.gramClassGroups?.items?.map(gramClassGroup => {
+    let posGramClassAbbrs = posDetails.gramClassGroups?.map(gramClassGroup => {
         let gramClassGroupDef = setup.gramClassGroups.items.find(a => a.id === gramClassGroup.refId);
         let arr = gramClassGroup.gramClasses.map(c => {
             return gramClassGroupDef.gramClasses.find(b => b.id === c).abbr;

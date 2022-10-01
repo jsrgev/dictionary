@@ -1,16 +1,17 @@
 import Homograph from './Homograph';
-import {getIndent} from '../../utils.js';
+import {getIndent, sortByHomographNums} from '../../utils.js';
 import {useState} from 'react';
 import _ from "lodash";
 
 const HomographGroup = props => {
 
-    const {state, setState, thisIndex, prevIndent, addFunctions, currentScriptId} = props;
+    const {state, setState, thisIndex, prevIndent, addFunctions, currentScriptId, thisScriptFormId} = props;
 
-    let pathFrag = `[${thisIndex}]`;
+    const pathFrag = `[${thisIndex}]`;
     const path = _.get(state, "editHomographs" + pathFrag);
 
-    // console.log(path);
+    const homographEntries = sortByHomographNums(path.items);
+
 
     const [sectionOpen, setSectionOpen] = useState(true);
     
@@ -24,11 +25,11 @@ const HomographGroup = props => {
                 <span></span>
             </div>
 
-            <div className="row-content" style={getIndent(prevIndent + 1)}>
+            <div className="row-content" style={getIndent(prevIndent)}>
                 <span>Homograph Order</span>
             </div>
-            {path.items.map((a,i) => (
-                <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+2} stringPath={pathFrag} addFunctions={addFunctions} currentScriptId={currentScriptId} />
+            {homographEntries.map((a,i) => (
+                <Homograph state={state} setState={setState} key={i} thisIndex={i} prevIndent={prevIndent+1} stringPath={pathFrag} addFunctions={addFunctions} currentScriptId={currentScriptId} thisScriptFormId={thisScriptFormId} />
                 ))
             }   
             </div>

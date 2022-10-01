@@ -1293,3 +1293,25 @@ button:disabled, button:disabled:hover {
 .rtl {
 	direction: rtl;
 }
+
+
+.row.highlight {
+	background: var(--light-green);
+	position: relative;
+	/* border: 2px solid rgb(27, 243, 27); */
+}
+
+.row.highlight:before {
+	content: "";
+	position: absolute;
+	width: 4rem;
+	height: 100%;
+	background: #ffffff;
+	/* border: 2px solid #ffffff; */
+	/* border-right-color: rgb(27, 243, 27); */
+}
+
+.altForm {
+	font-style: oblique;
+	color: var(--purple);
+}

@@ -255,6 +255,15 @@ export const sortEntries = (entries, letterOrder, diacriticOrder) => {
     return sortedEntries;
 };
 
+export const sortByHomographNums = entries => {
+    return entries.sort((a, b) => {
+        if (a.content === b.content) {
+            if (a.homograph < b.homograph) return -1;
+            if (a.homograph > b.homograph) return 1;
+        }
+        return 0;
+    });
+};
 
 export const getGramFormAbbrs = (gramFormSet, gramFormGroupDefs) => {
     let gramFormNames = gramFormSet.map(a => {
