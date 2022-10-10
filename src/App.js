@@ -252,6 +252,7 @@ const App = () => {
         ],
         savedHomographs: [],
         editHomographs: [],
+        potentialEntryUpdates: [],
 });
 
     const fetchEntries = () => {
