@@ -306,9 +306,11 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
     );
     let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
     let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
-    let sortTerm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
+    let currentScriptForm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId);
+    // let sortTerm = .content || "☐";
     let obj = {
-      sortTerm,
+      sortTerm: currentScriptForm.content || "☐",
+      homograph: currentScriptForm.homograph,
       display: (
         <React.Fragment key={key}>
           {morphsDisplay}

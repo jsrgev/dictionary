@@ -29,6 +29,8 @@ const Dictionary = props => {
 
   const getDisplay = () => {
     let allDisplayItems = getEntriesDisplay(state.allEntries, state.setup, state.setup.scripts.items[0].id, state.etymologyTags);
+    // console.log("allDisplayItems");
+    // console.log(allDisplayItems);
     let finalEntries = splitEntries(allDisplayItems);
     return finalEntries;
   };
