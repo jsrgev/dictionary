@@ -1,4 +1,5 @@
-import { clone, getIndent } from "../../utils.js";
+import { clone, getIndent, updateHomographNums } from "../../utils.js";
+import { getEntriesDisplay } from "../../entryDisplayFuncs.js";
 import _ from "lodash";
 import { getHomographDisplay } from "../../entryDisplayFuncs.js";
 
@@ -7,7 +8,6 @@ const Homographs = props => {
 
   let pathFrag = stringPath + ".items";
   const path = _.get(state, "editHomographs" + pathFrag);
-  const upPath = _.get(state, "editHomographs" + stringPath);
 
   const moveRow = (e, up) => {
     const index = thisIndex;
@@ -37,28 +37,28 @@ const Homographs = props => {
       thisEntry = state.entry;
     }
 
-    // update homograph nums based on state.editHomogrphss
-    let entryClone = clone(thisEntry);
-    for (let morph of entryClone.headword.morphs) {
-      for (let scriptForm of morph.scriptForms) {
-        for (let homographSet of state.editHomographs) {
-          let match = homographSet.items.find(item => item.id === scriptForm.id);
-          if (match) scriptForm.homograph = match.homograph;
-        }
-      }
-    }
+    let updatedEntry = updateHomographNums(thisEntry, state.editHomographs);
 
-    // const thisEntry = state.allEntries.find(a => a._id === path[thisIndex].entryId) ?? state.entry;
-    let allDisplayItems = getHomographDisplay([entryClone], state.setup, currentScriptId, state.etymologyTags, upPath);
+    let allDisplayItems = getEntriesDisplay(
+      [updatedEntry],
+      state.setup,
+      state.setup.scripts.items[0].id,
+      state.etymologyTags,
+      path[thisIndex].scriptForm
+    );
+
+    // let allDisplayItems = getHomographDisplay([updatedEntry], state.setup, currentScriptId, state.etymologyTags);
 
     return allDisplayItems.map(a => a.display);
   };
 
-  const isCurrent = thisScriptFormId === path[thisIndex].id;
+  // const isCurrent = thisScriptFormId === path[thisIndex].id;
+
+  // console.log(path[thisIndex]);
 
   return (
     <>
-      <div className={`row${isCurrent ? " highlight" : ""}`} aria-current={isCurrent ? true : false}>
+      <div className={`row${path[thisIndex].current ? " highlight" : ""}`} aria-current={path[thisIndex].current ? true : false}>
         <div className="row-controls">
           <span></span>
           <span></span>

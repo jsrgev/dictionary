@@ -312,7 +312,7 @@ const Entry = props => {
 
   useEffect(() => {
     if (state.entry?._id) {
-      console.log("useEffect");
+      //   console.log("useEffect");
       updateHomographs();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

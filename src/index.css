@@ -1294,5 +1294,5 @@ button:disabled:hover {
 
 .altForm {
   font-style: oblique;
-  color: var(--purple);
+  /* color: var(--purple); */
 }

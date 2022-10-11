@@ -187,11 +187,8 @@ const comesBefore = (a, b) => {
     if (a[i].letterValue < b[i].letterValue) return true;
     if (a[i].letterValue > b[i].letterValue) return false;
     // if they are equal:
-    // console.log("equal")
     if (!a[i + 1] && b[i + 1]) return true; // if second word is longer
     if (a[i + 1] && !b[i + 1]) return false; // if first word is longer
-    // console.log(i);
-    // console.log (!a[i+1], !b[i+1]);
     if (!a[i + 1] && !b[i + 1]) return compareDiacritics(a, b); // if same length, check diacritics
   }
 };
@@ -267,4 +264,17 @@ export const getGramFormAbbrs = (gramFormSet, gramFormGroupDefs) => {
   });
   let filteredGramFormNames = gramFormNames.filter(a => a);
   return filteredGramFormNames.join(" ");
+};
+
+export const updateHomographNums = (entry, editHomographs) => {
+  let entryClone = clone(entry);
+  for (let morph of entryClone.headword.morphs) {
+    for (let scriptForm of morph.scriptForms) {
+      for (let homographSet of editHomographs) {
+        let match = homographSet.items.find(item => item.id === scriptForm.id);
+        if (match) scriptForm.homograph = match.homograph;
+      }
+    }
+  }
+  return entryClone;
 };

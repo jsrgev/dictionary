@@ -40,27 +40,16 @@ const getAltDisplayForHeadword = altDisplayForHeadword => {
   });
 };
 
-const getHomographNum = (scriptForm, editHomographs) => {
-  // console.log(homograph);
-  let num = scriptForm.homograph;
-  //   console.log(num);
-  if (!num) {
-    // console.log(scriptForm);
-    // console.log(editHomographs);
-    let homograph = editHomographs?.items.find(a => a.id === scriptForm.id);
-    // console.log()
-    if (!homograph) return "";
-    num = homograph.homograph;
-  }
-  //   console.log(num);
+const getHomographNum = scriptForm => {
+  if (scriptForm.homograph === 0) return "";
   return (
     <React.Fragment>
-      <sup>{num}</sup>
+      <sup>{scriptForm.homograph}</sup>
     </React.Fragment>
   );
 };
 
-const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds, editHomographs) => {
+const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciation, currentScriptId, otherScriptIds) => {
   // console.log(altDisplayForHeadword);
   let morphType = isHeadword ? "hw" : "for";
 
@@ -73,7 +62,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
         {/* 
         // TTHIS ONEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //  */}
-        {getHomographNum(mainWord, editHomographs)}
+        {getHomographNum(mainWord)}
       </React.Fragment>
     );
     let others = a.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
@@ -83,7 +72,7 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
         <React.Fragment key={i}>
           {divider}
           <span className="for">{a.content}</span>
-          {getHomographNum(a, "editHomographs")}
+          {getHomographNum(a)}
         </React.Fragment>
       );
     });
@@ -114,7 +103,7 @@ const getOtherScriptIds = (id, scripts) => {
   return otherScripts.map(a => a.id);
 };
 
-const getAltDisplayItems = (item, currentScriptId, otherScriptIds, editHomographs, key, mainCurrentScript, mainOtherScriptsDisplay) => {
+const getAltDisplayItems = (item, currentScriptId, otherScriptIds, key, mainCurrentScript, mainOtherScriptsDisplay) => {
   // console.log(item);
   let altMainScriptForm = item.scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
   let altOtherScripts = item.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
@@ -123,7 +112,7 @@ const getAltDisplayItems = (item, currentScriptId, otherScriptIds, editHomograph
       <React.Fragment key={i}>
         {" "}
         <span className="for">{a.content}</span>
-        {getHomographNum(a, editHomographs)}
+        {getHomographNum(a)}
       </React.Fragment>
     );
   });
@@ -137,9 +126,9 @@ const getAltDisplayItems = (item, currentScriptId, otherScriptIds, editHomograph
         <span key={key} className="for">
           {altMainScriptForm}
         </span>
-        {getHomographNum(mainScriptForm, editHomographs)}
+        {getHomographNum(mainScriptForm)}
         {altOtherScriptsDisplay} see <span className="for">{mainCurrentScript.content}</span>
-        {getHomographNum(mainCurrentScript, editHomographs)}
+        {getHomographNum(mainCurrentScript)}
         {mainOtherScriptsDisplay}
       </React.Fragment>
     ),
@@ -161,10 +150,7 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
         <React.Fragment key={i}>
           {" "}
           <span className="for">{a.content}</span>
-          {getHomographNum(
-            a
-            // thisEditHomographs?.items
-          )}
+          {getHomographNum(a)}
         </React.Fragment>
       );
     });
@@ -173,9 +159,9 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
 
     let isMain;
     let homographMorph;
-    // console.log(morphs);
+    console.log(morphs);
     for (let i = 0; i < morphs.length; i++) {
-      // console.log(morphs[i]);
+      console.log(morphs[i].scriptForms[0]);
       // let currentScriptForm = morphs[i].scriptForms.find(a => a.scriptRefId === currentScriptId);
       // console.log(currentScriptForm.content, thisEditHomographs.scriptForm);
       // if (currentScriptForm.content === thisEditHomographs.scriptForm) {
@@ -188,31 +174,15 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
     let mainCurrentScriptForm = !isMain ? morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId) : null;
 
     if (!isMain) {
-      let obj = getAltDisplayItems(
-        homographMorph,
-        currentScriptId,
-        otherScriptIds,
-        null,
-        key,
-        mainCurrentScriptForm,
-        mainOtherScriptsDisplay
-      );
+      let obj = getAltDisplayItems(homographMorph, currentScriptId, otherScriptIds, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
       allDisplayItems.push(obj);
       return allDisplayItems;
     }
 
     for (let i = 1; i < morphs.length; i++) {
       let item = morphs[i];
-
-      let fullDisplay = getMorphsDisplay(
-        [item],
-        null,
-        null,
-        null,
-        currentScriptId,
-        otherScriptIds
-        // thisEditHomographs
-      );
+      console.log(item);
+      let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds);
       altDisplayForHeadword.push(fullDisplay);
 
       key++;
@@ -225,7 +195,6 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
       setup.entrySettings.showPronunciation,
       currentScriptId,
       otherScriptIds
-      // thisEditHomographs
     );
     let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
     let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
@@ -247,7 +216,7 @@ export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTa
   return allDisplayItems;
 };
 
-export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags, editHomographs) => {
+export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags, homographScriptForm) => {
   let allDisplayItems = [];
   let key = 0;
   let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
@@ -264,7 +233,7 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
         <React.Fragment key={i}>
           {" "}
           <span className="for">{a.content}</span>
-          {getHomographNum(a, editHomographs)}
+          {getHomographNum(a)}
         </React.Fragment>
       );
     });
@@ -274,52 +243,58 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
     // get displays for alternate forms of headword. (starts at i=1 to skip initial entry which is the main one)
     for (let i = 1; i < morphs.length; i++) {
       let item = morphs[i];
-      // console.log(item);
-      // gets "or bbb" forms to insert into main entry display
-      let obj = getAltDisplayItems(
-        item,
-        currentScriptId,
-        otherScriptIds,
-        editHomographs,
-        key,
-        mainCurrentScriptForm,
-        mainOtherScriptsDisplay
-      );
-      allDisplayItems.push(obj);
+      console.log(mainCurrentScriptForm.content, homographScriptForm);
+      console.log(morphs[0].scriptForms);
+      console.log(item.scriptForms);
 
-      // gets "aaa see bbb" for display on separate line
-      let fullDisplay = getMorphsDisplay([item], false, null, null, currentScriptId, otherScriptIds, editHomographs);
+      // console.log(scriptFormId);
+
+      // if (!onlyMain) {
+
+      // gets "b see a" forms to insert into main entry display
+      if (mainCurrentScriptForm.content !== homographScriptForm) {
+        let obj = getAltDisplayItems(item, currentScriptId, otherScriptIds, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
+        allDisplayItems.push(obj);
+      }
+
+      // gets "a or b" for display on separate line
+
+      let fullDisplay = getMorphsDisplay([item], false, null, null, currentScriptId, otherScriptIds);
       altDisplayForHeadword.push(fullDisplay);
 
       key++;
     }
     // console.log(altDisplayForHeadword)
+
     // gets display for primary form of headword
-    let morphsDisplay = getMorphsDisplay(
-      [morphs[0]],
-      true,
-      altDisplayForHeadword,
-      setup.entrySettings.showPronunciation,
-      currentScriptId,
-      otherScriptIds,
-      editHomographs
-    );
-    let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-    let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
     let currentScriptForm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId);
-    // let sortTerm = .content || "☐";
-    let obj = {
-      sortTerm: currentScriptForm.content || "☐",
-      homograph: currentScriptForm.homograph,
-      display: (
-        <React.Fragment key={key}>
-          {morphsDisplay}
-          {senseGroupDisplay}
-          {etymologyDisplay}
-        </React.Fragment>
-      ),
-    };
-    allDisplayItems.push(obj);
+    // console.log(currentScriptForm, homographScriptForm);
+    if (homographScriptForm === undefined || homographScriptForm === currentScriptForm.content) {
+      let morphsDisplay = getMorphsDisplay(
+        [morphs[0]],
+        true,
+        altDisplayForHeadword,
+        setup.entrySettings.showPronunciation,
+        currentScriptId,
+        otherScriptIds
+      );
+      let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
+      let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
+      // let sortTerm = .content || "☐";
+      let obj = {
+        sortTerm: currentScriptForm.content || "☐",
+        homograph: currentScriptForm.homograph,
+        display: (
+          <React.Fragment key={key}>
+            {morphsDisplay}
+            {senseGroupDisplay}
+            {etymologyDisplay}
+          </React.Fragment>
+        ),
+      };
+      allDisplayItems.push(obj);
+    }
+
     key++;
   });
   sortEntries(allDisplayItems, setup.scripts.items[0].letterOrder, setup.scripts.items[0].diacriticOrder);
