@@ -18,7 +18,11 @@ const PartOfSpeech = props => {
     let entryCopy = clone(state.entry);
     let entryCopyPath = _.get(entryCopy, pathFrag);
     if (path.length === 1) {
-      entryCopyPath.splice(0, 1, generatePos(state.setup.partsOfSpeechDefs.items[0].name));
+      entryCopyPath.splice(
+        0,
+        1,
+        generatePos(state.setup.partsOfSpeechDefs.items[0].id, state.setup.partsOfSpeechDefs.items, state.setup.gramClassGroups.items)
+      );
     } else {
       entryCopyPath.splice(thisIndex, 1);
     }

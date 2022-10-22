@@ -4,7 +4,7 @@ import { useState } from "react";
 import _ from "lodash";
 
 const HomographGroup = props => {
-  const { state, setState, thisIndex, prevIndent, addFunctions, currentScriptId, thisScriptFormId } = props;
+  const { state, setState, thisIndex, prevIndent, addFunctions, currentScriptId, thisScriptFormId, thisScriptId } = props;
 
   const pathFrag = `[${thisIndex}]`;
   const path = _.get(state, "editHomographs" + pathFrag);
@@ -37,6 +37,7 @@ const HomographGroup = props => {
             addFunctions={addFunctions}
             currentScriptId={currentScriptId}
             thisScriptFormId={thisScriptFormId}
+            thisScriptId={thisScriptId}
           />
         ))}
       </div>

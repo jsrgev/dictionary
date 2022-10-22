@@ -41,6 +41,7 @@ const getAltDisplayForHeadword = altDisplayForHeadword => {
 };
 
 const getHomographNum = scriptForm => {
+  // console.log(scriptForm);
   if (scriptForm.homograph === 0) return "";
   return (
     <React.Fragment>
@@ -65,7 +66,8 @@ const getMorphsDisplay = (arr, isHeadword, altDisplayForHeadword, showPronunciat
         {getHomographNum(mainWord)}
       </React.Fragment>
     );
-    let others = a.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
+    let others = a.scriptForms.filter(a => a.scriptRefId !== currentScriptId);
+    // console.log(others);
     let otherMorphs = others.map((a, i, arr) => {
       let divider = arr[i].content !== "" ? " " : "";
       return (
@@ -103,11 +105,12 @@ const getOtherScriptIds = (id, scripts) => {
   return otherScripts.map(a => a.id);
 };
 
-const getAltDisplayItems = (item, currentScriptId, otherScriptIds, key, mainCurrentScript, mainOtherScriptsDisplay) => {
+const getAltDisplayItems = (item, currentScriptId, key, mainCurrentScript, mainOtherScriptsDisplay) => {
   // console.log(item);
   let altMainScriptForm = item.scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
-  let altOtherScripts = item.scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
+  let altOtherScripts = item.scriptForms.filter(a => a.scriptRefId !== currentScriptId);
   let altOtherScriptsDisplay = altOtherScripts.map((a, i, arr) => {
+    // console.log(a);
     return (
       <React.Fragment key={i}>
         {" "}
@@ -136,99 +139,20 @@ const getAltDisplayItems = (item, currentScriptId, otherScriptIds, key, mainCurr
   return obj;
 };
 
-export const getHomographDisplay = (entries, setup, currentScriptId, etymologyTags) => {
-  let allDisplayItems = [];
-  let key = 0;
-  let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
-  entries.forEach(entry => {
-    let morphs = clone(entry.headword.morphs);
-    if (morphs.length === 0) return "";
-
-    let mainOtherScripts = morphs[0].scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
-    let mainOtherScriptsDisplay = mainOtherScripts.map((a, i) => {
-      return (
-        <React.Fragment key={i}>
-          {" "}
-          <span className="for">{a.content}</span>
-          {getHomographNum(a)}
-        </React.Fragment>
-      );
-    });
-
-    let altDisplayForHeadword = [];
-
-    let isMain;
-    let homographMorph;
-    console.log(morphs);
-    for (let i = 0; i < morphs.length; i++) {
-      console.log(morphs[i].scriptForms[0]);
-      // let currentScriptForm = morphs[i].scriptForms.find(a => a.scriptRefId === currentScriptId);
-      // console.log(currentScriptForm.content, thisEditHomographs.scriptForm);
-      // if (currentScriptForm.content === thisEditHomographs.scriptForm) {
-      isMain = i === 0;
-      // console.log(isMain);
-      homographMorph = morphs[i];
-      // break;
-      // }
-    }
-    let mainCurrentScriptForm = !isMain ? morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId) : null;
-
-    if (!isMain) {
-      let obj = getAltDisplayItems(homographMorph, currentScriptId, otherScriptIds, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
-      allDisplayItems.push(obj);
-      return allDisplayItems;
-    }
-
-    for (let i = 1; i < morphs.length; i++) {
-      let item = morphs[i];
-      console.log(item);
-      let fullDisplay = getMorphsDisplay([item], null, null, null, currentScriptId, otherScriptIds);
-      altDisplayForHeadword.push(fullDisplay);
-
-      key++;
-    }
-
-    let morphsDisplay = getMorphsDisplay(
-      [morphs[0]],
-      true,
-      altDisplayForHeadword,
-      setup.entrySettings.showPronunciation,
-      currentScriptId,
-      otherScriptIds
-    );
-    let senseGroupDisplay = getSenseGroups(entry.senseGroups, setup);
-    let etymologyDisplay = setup.entrySettings.showEtymology ? getEtymologyDisplay(entry.etymology, etymologyTags) : "";
-    let sortTerm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId).content || "☐";
-    let obj = {
-      sortTerm,
-      display: (
-        <React.Fragment key={key}>
-          {morphsDisplay}
-          {senseGroupDisplay}
-          {etymologyDisplay}
-        </React.Fragment>
-      ),
-    };
-    allDisplayItems.push(obj);
-    key++;
-  });
-  // sortEntries(allDisplayItems, setup.scripts.items[0].letterOrder, setup.scripts.items[0].diacriticOrder);
-  return allDisplayItems;
-};
-
 export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags, homographScriptForm) => {
   let allDisplayItems = [];
   let key = 0;
   let otherScriptIds = getOtherScriptIds(currentScriptId, setup.scripts.items);
-
   entries.forEach(entry => {
     let morphs = clone(entry.headword.morphs);
     if (morphs.length === 0) return "";
 
     let mainCurrentScriptForm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId) || "☐";
-
-    let mainOtherScripts = morphs[0].scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
+    let mainOtherScripts = morphs[0].scriptForms.filter(a => a.scriptRefId !== currentScriptId);
+    // let mainOtherScripts = morphs[0].scriptForms.filter(a => otherScriptIds.find(b => b === a.refId));
+    // console.log(mainOtherScripts);
     let mainOtherScriptsDisplay = mainOtherScripts.map((a, i, arr) => {
+      // console.log(a);
       return (
         <React.Fragment key={i}>
           {" "}
@@ -243,32 +167,26 @@ export const getEntriesDisplay = (entries, setup, currentScriptId, etymologyTags
     // get displays for alternate forms of headword. (starts at i=1 to skip initial entry which is the main one)
     for (let i = 1; i < morphs.length; i++) {
       let item = morphs[i];
-      console.log(mainCurrentScriptForm.content, homographScriptForm);
-      console.log(morphs[0].scriptForms);
-      console.log(item.scriptForms);
 
-      // console.log(scriptFormId);
-
-      // if (!onlyMain) {
-
-      // gets "b see a" forms to insert into main entry display
+      // gets "b see a" forms to display on same line
       if (mainCurrentScriptForm.content !== homographScriptForm) {
-        let obj = getAltDisplayItems(item, currentScriptId, otherScriptIds, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
+        let obj = getAltDisplayItems(item, currentScriptId, key, mainCurrentScriptForm, mainOtherScriptsDisplay);
         allDisplayItems.push(obj);
       }
 
-      // gets "a or b" for display on separate line
-
+      // gets "a or b" to insert into main entry display
       let fullDisplay = getMorphsDisplay([item], false, null, null, currentScriptId, otherScriptIds);
       altDisplayForHeadword.push(fullDisplay);
 
       key++;
     }
-    // console.log(altDisplayForHeadword)
 
     // gets display for primary form of headword
     let currentScriptForm = morphs[0].scriptForms.find(a => a.scriptRefId === currentScriptId);
     // console.log(currentScriptForm, homographScriptForm);
+
+    // conditional is for displays for Homograph.js, so if there are multiple morphs, only the one that is a homograph will be returned for display
+    // console.log(homographScriptForm, currentScriptForm.content);
     if (homographScriptForm === undefined || homographScriptForm === currentScriptForm.content) {
       let morphsDisplay = getMorphsDisplay(
         [morphs[0]],

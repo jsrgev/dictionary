@@ -48,9 +48,10 @@ const ScriptForm = props => {
 
   useEffect(() => {
     // console.log("useEffect");
-    updateHomographs(path[thisIndex].id, path[thisIndex].content);
+    // updateHomographs(path[thisIndex].id, path[thisIndex].content, path[thisIndex].scriptRefId);
+    updateHomographs(path[thisIndex]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [path[thisIndex].content]);
+  }, [path[thisIndex].content, path[thisIndex].id]);
 
   // console.log(state.editHomographs);
 
@@ -71,7 +72,7 @@ const ScriptForm = props => {
     return script.abbr?.length > 1 ? script.abbr : script.name;
   };
 
-  const currentScriptId = state.setup.scripts.items.find(a => a.id === path[thisIndex].scriptRefId).id;
+  // const currentScriptId = state.setup.scripts.items.find(a => a.id === path[thisIndex].scriptRefId).id;
 
   const popupItems = [
     [
@@ -84,7 +85,12 @@ const ScriptForm = props => {
   ];
 
   const homographIndex = state.editHomographs.findIndex(a => a.id === path[thisIndex].id);
-  const showHomographGroup = thisEditHomographs?.scriptForm === path[thisIndex].content && homographIndex > -1;
+  // console.log(path[thisIndex].content, path[thisIndex].id, homographIndex);
+  // console.log(state.editHomographs[homographIndex]?.items);
+  const showHomographGroup =
+    thisEditHomographs?.scriptForm === path[thisIndex].content &&
+    homographIndex > -1 &&
+    state.editHomographs[homographIndex].items.length > 0;
   // console.log(state.editHomographs)
   // console.log(thisEditHomographs)
   // console.log(path[thisIndex])
@@ -124,9 +130,8 @@ const ScriptForm = props => {
               thisIndex={homographIndex}
               prevIndent={prevIndent + 1}
               addFunctions={addFunctions}
-              currentScriptId={currentScriptId}
-              // updateEntryHomograph={updateEntryHomograph}
               thisScriptFormId={path[thisIndex].id}
+              thisScriptId={path[thisIndex].scriptRefId}
             />
           </>
         )}

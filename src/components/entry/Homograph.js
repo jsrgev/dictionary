@@ -1,10 +1,9 @@
 import { clone, getIndent, updateHomographNums } from "../../utils.js";
 import { getEntriesDisplay } from "../../entryDisplayFuncs.js";
 import _ from "lodash";
-import { getHomographDisplay } from "../../entryDisplayFuncs.js";
 
 const Homographs = props => {
-  const { state, setState, thisIndex, stringPath, prevIndent, currentScriptId, thisScriptFormId } = props;
+  const { state, setState, thisIndex, stringPath, prevIndent, thisScriptId } = props;
 
   let pathFrag = stringPath + ".items";
   const path = _.get(state, "editHomographs" + pathFrag);
@@ -22,11 +21,10 @@ const Homographs = props => {
     for (let i = 0; i < editHomographsCopyPath.length; i++) {
       editHomographsCopyPath[i].homograph = i + 1;
     }
-    // console.log(editHomographsCopy);
     setState({ editHomographs: editHomographsCopy });
   };
 
-  // console.log(upPath);
+  // console.log(path);
 
   const isFirst = thisIndex === 0;
   const isLast = thisIndex === path.length - 1;
@@ -36,23 +34,19 @@ const Homographs = props => {
     if (!thisEntry || thisEntry._id === state.entry._id) {
       thisEntry = state.entry;
     }
-
     let updatedEntry = updateHomographNums(thisEntry, state.editHomographs);
 
     let allDisplayItems = getEntriesDisplay(
       [updatedEntry],
       state.setup,
-      state.setup.scripts.items[0].id,
+      // state.setup.scripts.items[0].id,
+      thisScriptId,
       state.etymologyTags,
       path[thisIndex].scriptForm
     );
 
-    // let allDisplayItems = getHomographDisplay([updatedEntry], state.setup, currentScriptId, state.etymologyTags);
-
     return allDisplayItems.map(a => a.display);
   };
-
-  // const isCurrent = thisScriptFormId === path[thisIndex].id;
 
   // console.log(path[thisIndex]);
 

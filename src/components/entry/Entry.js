@@ -16,6 +16,8 @@ const Entry = props => {
 
   const didHomographsChange = () => {
     const editHomographsWithoutCurrent = clone(state.editHomographs);
+    // console.log(editHomographsWithoutCurrent);
+    if (editHomographsWithoutCurrent.length === 0) return false;
     for (let homographSet of editHomographsWithoutCurrent) {
       for (let i = 0; i < homographSet.items.length; i++) {
         if (homographSet.items[i].current) {
@@ -24,6 +26,11 @@ const Entry = props => {
         }
       }
     }
+    // console.log(state.savedHomographs);
+    // console.log(editHomographsWithoutCurrent);
+    // console.log(JSON.stringify(state.savedHomographs));
+    // console.log(JSON.stringify(editHomographsWithoutCurrent));
+    // console.log(JSON.stringify(state.savedHomographs) === JSON.stringify(editHomographsWithoutCurrent));
     return JSON.stringify(state.savedHomographs) !== JSON.stringify(editHomographsWithoutCurrent);
   };
 
@@ -147,9 +154,10 @@ const Entry = props => {
   };
 
   const generateNumberedHomographs = allHomographs => {
-    // console.log(allHomographs)
+    // console.log(allHomographs);
     allHomographs.items.sort((a, b) => a.homograph - b.homograph);
     let index = allHomographs.items.findIndex(a => a.current);
+    // console.log(allHomographs.items[index]);
     if (allHomographs.items[index].homograph === 0) {
       allHomographs.items.push(...allHomographs.items.splice(index, 1));
     }
@@ -165,23 +173,10 @@ const Entry = props => {
 
   //   console.log(state.editHomographs);
 
-  const updateHomographs = (scriptFormId, newScriptFormContent) => {
-    // console.log(`updateHomographs: ${scriptFormId}`);
-    const index = state.editHomographs.findIndex(a => a.id === scriptFormId);
-    const prevScriptFormContent = state.editHomographs[index]?.scriptForm;
-    // console.log(`${prevScriptFormContent} → ${newScriptFormContent}`);
-    // console.log(index);
-    // console.log(state.editHomographs);
-    let editHomographsCopy = clone(state.editHomographs);
-    // console.log(editHomographsCopy);
-    // this scriptForm is being changed, so if there were already homographs for it, they are no loger relevant and must be deleted from state.
-    // console.log(index, scriptFormId);
-    // return;
-    // let savedHomographsCopy = clone(state.savedHomographs);
+  const updatePotentialUpdates = (index, scriptForm, prevScriptFormContent) => {
+    console.log(index);
+    let { id: scriptFormId, content: newScriptFormContent } = scriptForm;
     if (index > -1) {
-      //   let editHomographsCopy = clone(state.editHomographs);
-      //   let savedHomographsCopy = clone(state.savedHomographs);
-
       // if this is an existing entry, changing this scriptForm so it is not a homograph may leave a gap in numbering of the other homographs. they have to be renumbered before this one is deleted.
       // updated versions of those relevant entries will be saved to state.potentialEntryUpdates. they'll only actually be updated if/when this entry is saved
       if (state.entry._id) {
@@ -194,14 +189,6 @@ const Entry = props => {
         potentialEntryUpdatesCopy.push(obj);
         setState({ potentialEntryUpdates: potentialEntryUpdatesCopy });
       }
-      //   return;
-      //   editHomographsCopy.splice(index, 1);
-      //   savedHomographsCopy.splice(index, 1);
-      //   setState({
-      //     editHomographs: editHomographsCopy,
-      //     savedHomographs: savedHomographsCopy,
-      //   });
-      //   return;
     } else {
       let potentialUpdatesIndex = state.potentialEntryUpdates?.findIndex(
         a => a.scriptFormId === scriptFormId && a.scriptFormContent === newScriptFormContent
@@ -214,109 +201,81 @@ const Entry = props => {
         setState({ potentialEntryUpdates: potentialEntryUpdatesCopy });
       }
     }
-    // console.log("here");
-    let newSavedHomographs = [];
-    let newEditHomographs = [];
-    for (let morph of state.entry.headword.morphs) {
-      for (let scriptForm of morph.scriptForms) {
-        let homographsFound = getHomographs(scriptForm);
-        if (homographsFound.length === 0) continue;
-
-        newSavedHomographs.push(homographsFound.otherEntriesHomographs);
-
-        let allHomographs = clone(homographsFound.otherEntriesHomographs);
-        allHomographs.items.push(homographsFound.currentHomograph);
-
-        let numberedHomographs = generateNumberedHomographs(allHomographs);
-        newEditHomographs.push(numberedHomographs);
-      }
-    }
-    // console.log(newEditHomographs);
-    // return;
-    if (index > -1 && prevScriptFormContent !== newScriptFormContent) {
-      //   console.log("here");
-      let x = editHomographsCopy[index];
-      //   let { items } = x;
-      //   console.log(x);
-      let { items } = x;
-      for (let i = items.length - 1; i >= 0; i--) {
-        if (items[i].current) {
-          items[i].homograph = 0;
-        } else {
-          items.splice(i, 1);
-        }
-      }
-      //   console.log(x);
-      newEditHomographs.push(x);
-    }
-    // return;
-    // console.log(newEditHomographs);
-
-    setState({ savedHomographs: newSavedHomographs, editHomographs: newEditHomographs });
   };
 
-  //   console.log(state.editHomographs);
-  //   console.log(state.potentialEntryUpdates);
+  // console.log(state.entry?.headword.morphs[0].scriptForms);
+  const updateHomographs = scriptForm => {
+    setState(previousState => {
+      console.log(`updateHomographs: scriptForm: ${scriptForm.id} ${scriptForm.content}`);
+      let { id: scriptFormId, content: newScriptFormContent, scriptRefId } = scriptForm;
+      let editHomographsCopy = clone(previousState.editHomographs);
+      let savedHomographsCopy = clone(previousState.savedHomographs);
+      // console.log(previousState);
+      let index = editHomographsCopy.findIndex(a => a.id === scriptFormId);
+      // const savedHomographsIndex = savedHomographsCopy.findIndex(a => a?.id === scriptFormId);
+      // console.log(`${prevScriptFormContent} → ${newScriptFormContent}`);
+
+      if (index === -1) index = editHomographsCopy.length;
+
+      // this scriptForm is being changed, so if there were already homographs for it, they are no longer relevant and must be deleted from state.
+
+      let { otherEntriesHomographs, allEntriesHomographs } = getHomographs(scriptForm);
+
+      savedHomographsCopy[index] = otherEntriesHomographs;
+      editHomographsCopy[index] = allEntriesHomographs;
+
+      return { savedHomographs: savedHomographsCopy, editHomographs: editHomographsCopy };
+    });
+  };
+
+  // console.log(state.savedHomographs);
+  // console.log(state.editHomographs);
+
+  // console.log(state.potentialEntryUpdates);
 
   const getHomographs = currentScriptForm => {
-    if (currentScriptForm.content === "") return [];
-    let otherEntriesHomographs = {
-      id: currentScriptForm.id,
-      scriptForm: currentScriptForm.content,
-      items: [],
-    };
-
+    let defaultHomographObj = { id: currentScriptForm.id, scriptForm: "", items: [] };
+    let otherEntriesHomographs = clone(defaultHomographObj);
+    let allEntriesHomographs = clone(defaultHomographObj);
     // for each homograph, need entry id, morph index, scriptForm index
 
     // add forms for all other saved entries
-    for (let entry of state.allEntries) {
-      if (entry._id !== state.entry._id) {
-        let { morphs } = entry.headword;
-        for (let i = 0; i < morphs.length; i++) {
-          // this gets first script, has to be amended to allow for multiple scripts
-
-          // let index = morphs[i].scriptForms.findIndex(a => a.scriptRefId === currentScriptId);
-          let index = 0;
-          let scriptForm = morphs[i].scriptForms[index];
-          if (scriptForm.content === currentScriptForm.content) {
-            let item = {
-              id: scriptForm.id,
-              entryId: entry._id,
-              scriptForm: scriptForm.content,
-              homograph: scriptForm.homograph,
-            };
-            otherEntriesHomographs.items.push(item);
+    if (currentScriptForm.content !== "") {
+      for (let entry of state.allEntries) {
+        if (entry._id !== state.entry._id) {
+          let { morphs } = entry.headword;
+          for (let i = 0; i < morphs.length; i++) {
+            let scriptForm = morphs[i].scriptForms.find(a => a.scriptRefId === currentScriptForm.scriptRefId);
+            if (scriptForm.content === currentScriptForm.content) {
+              let item = {
+                id: scriptForm.id,
+                entryId: entry._id,
+                scriptForm: scriptForm.content,
+                homograph: scriptForm.homograph,
+              };
+              otherEntriesHomographs.items.push(item);
+            }
           }
         }
       }
+
+      otherEntriesHomographs.items.sort((a, b) => a.homograph - b.homograph);
+      allEntriesHomographs = clone(otherEntriesHomographs);
+      // if homographs were found, add current form from current entry
+      if (otherEntriesHomographs.items.length > 0) {
+        let item = {
+          id: currentScriptForm.id,
+          entryId: state.entry._id,
+          scriptForm: currentScriptForm.content,
+          homograph: currentScriptForm.homograph,
+          current: true,
+        };
+        allEntriesHomographs.items.push(item);
+        allEntriesHomographs = generateNumberedHomographs(allEntriesHomographs);
+      }
     }
-
-    if (otherEntriesHomographs.items.length === 0) return [];
-    otherEntriesHomographs.items.sort((a, b) => a.homograph - b.homograph);
-
-    // if homographs were found, add current form from current entry
-    let currentHomograph = {
-      id: currentScriptForm.id,
-      entryId: state.entry._id,
-      scriptForm: currentScriptForm.content,
-      homograph: currentScriptForm.homograph,
-      current: true,
-    };
-
-    // current form, if 0, should be last in list
-    // there could be two 0s, if only 2 homographs
-    // but still need to sort all forms including current, if current already has another
-
-    return { otherEntriesHomographs, currentHomograph };
+    return { otherEntriesHomographs, allEntriesHomographs };
   };
-
-  useEffect(() => {
-    if (state.entry?._id) {
-      //   console.log("useEffect");
-      updateHomographs();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.entry?._id]);
 
   const updateEntryHomographs = () => {
     if (state.editHomographs.length < 1) return state.entry;
@@ -342,7 +301,7 @@ const Entry = props => {
   const getOtherHomographsToUpdate = () => {
     if (state.editHomographs.length < 1) return [];
     let homographsToUpdate = [];
-    console.log(state.editHomographs);
+    // console.log(state.editHomographs);
     for (let i = 0; i < state.editHomographs.length; i++) {
       let savedSet = state.savedHomographs.find(a => a.id === state.editHomographs[i].id);
       if (!savedSet) continue;

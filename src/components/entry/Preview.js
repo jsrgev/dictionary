@@ -1,5 +1,5 @@
 import React from "react";
-import { clone, updateHomographNums } from "../../utils.js";
+import { updateHomographNums } from "../../utils.js";
 import { getEntriesDisplay } from "../../entryDisplayFuncs.js";
 
 const Preview = props => {
@@ -17,7 +17,7 @@ const Preview = props => {
   return (
     <>
       <h2>Preview</h2>
-      {state.entry && getDisplay().map((a, i) => <p key={i}>{a}</p>)}
+      {/* {state.entry && getDisplay().map((a, i) => <p key={i}>{a}</p>)} */}
     </>
   );
 };
